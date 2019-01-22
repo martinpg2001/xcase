@@ -33,7 +33,7 @@ public class InvokeAdvancedActionMethod extends BaseEBayMethod {
         LOGGER.debug("endpoint is " + endpoint);
         CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponseMethod("POST", endpoint, headers, null, null, null);
         int responseCode = commonHttpResponse.getResponseCode();
-        if (responseCode == 200) {
+        if (responseCode == 202) {
             try {
                 JsonElement jsonElement = ConverterUtils.parseStringToJson(commonHttpResponse.getResponseEntityString());;
                 if (!jsonElement.isJsonNull()) {

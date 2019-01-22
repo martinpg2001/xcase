@@ -57,7 +57,7 @@ public class EBayApplication {
 			String accessToken = createApplicationAccessTokenResponse.getAccessToken();
 			LOGGER.debug("got access token " + accessToken);
 			LOGGER.debug("about to invoke advanced action");
-			String endpoint = "https://open.api.ebay.com/shopping?callname=FindProducts&appid=YourAppIDHere&version=1063&siteid=0&responseencoding=NV";
+			String endpoint = "https://api.sandbox.ebay.com/shopping?callname=FindProducts&appid=" + clientId + "&version=1063&siteid=0&responseencoding=NV";
 			InvokeAdvancedActionRequest invokeAdvancedActionRequest = EBayRequestFactory
 					.createInvokeAdvancedActionRequest(accessToken, endpoint);
 			LOGGER.debug("created invokeAdvancedActionRequest");

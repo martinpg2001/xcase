@@ -235,3 +235,4 @@ platform/target/maven-archiver/pom.properties
 platform/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
 platform/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
 platform/settings.xml
+platform/ebay-local-config.properties
