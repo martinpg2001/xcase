@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<operation id="Send HTTP request to web server" class="XCaseGeneric.ActionHTTPRequest">
+    <credentials authentication="NTLM" username="Administrator" password="tsunami" domain="IAINTERNAL" />
+    <url host="cheechee" method="GET" path="/walls500" querystring="" saveresponse="false" scheme="http" />
+    <expected>
+        <response code="OK" />
+    </expected>
+</operation>

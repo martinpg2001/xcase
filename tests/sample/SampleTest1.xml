@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<operations id="This test does nothing" status="Complete">
+    <operation id="Do nothing" class="XCaseGeneric.ActionDoNothing">
+        <dummy ida="$guida" idbx="$guidbx" idat="$guidat" idcz1="$guidcz1" >
+            <expected ida="$guida" idbx="$guidbx" idat="$guidat" idcz1="$guidcz1" />
+        </dummy>
+    </operation>
+    <operation id="Send HTTP request to web server" class="XCaseGeneric.ActionHTTPRequest">
+        <credentials authentication="NTLM" username="Administrator" password="$envsample2" domain="DUMMY" />
+        <url host="www.google.com" method="GET" path="" querystring="$envsample1" saveresponse="false" scheme="http" />
+        <expected>
+            <response code="OK" />
+        </expected>
+    </operation>
+</operations>

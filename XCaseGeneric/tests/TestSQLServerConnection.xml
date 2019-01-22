@@ -1,0 +1,3 @@
+<operation id="Test connection to SQL server database" class="XCaseGeneric.ActionSQLTestConnection">
+    <connectionstring>Data Source=Bala;Initial Catalog=QATuesday;User Id=sa;Password=Tsunami9;integrated security=false;</connectionstring>
+</operation>

@@ -1,0 +1,220 @@
+<style>
+  @variables {
+    hoverBackgroundColor: #659EC7;
+    mainMenuColor: #41627E;
+    backgroundColor: #A8BFD7;
+  }
+  
+  .contextDetailTable {
+    border-width: 1px;
+    width: 80%;
+  }
+  
+  .contextDetailTable th {
+    border-style: solid;
+    border-width: 1px;    
+  }
+  
+  .contextDetailTable td {
+    border-style: solid;
+    border-width: 1px;    
+  }
+  
+  .contextListTable {
+    border-style: solid;
+    border-width: 1px;
+    text-align: left;
+    width: 80%;
+  }
+  
+  .contextListTable th {
+    border-style: solid;
+    border-width: 1px;    
+  }
+  
+  .contextListTable td {
+    border-style: solid;
+    border-width: 1px;    
+  }
+  
+  .contextMenu {
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  
+  .contextMenu ul {
+    background-color: #41627E;
+    border: 1px solid #9A9A9A;
+    list-style: none;
+    margin: 1px 1px 1px 0px;
+    padding: 0 1 0 1;
+    text-decoration: none;
+    width: 100%;
+  }
+  
+  .contextMenu ul li {
+    background-color: #41627E;
+    float: left;
+    font: bold 11px/16px arial, helvetica, sans-serif;
+    width: 5em;
+  }
+
+  .contextMenu ul li:hover {
+    background-color: #659EC7;
+    float: left;
+    font: bold 11px/16px arial, helvetica, sans-serif;
+    width: 5em;
+  }
+  
+  .contextMenu ul li ul {
+    display: hide;
+  }
+  
+  .contextMenu ul li:hover ul {
+    background-color: #659EC7;
+    display: block;
+  }
+  
+  .contextMenu ul li ul li {
+    display: none;
+  }
+  
+  .contextMenu ul li:hover ul li {
+    background-color: #659EC7;
+    display: block;
+    list-style: none;
+    position: relative;
+    text-decoration: none;
+    width: 10em;
+  }
+
+  .contextMenu ul li ul li a {
+    display: none;
+  }
+  
+  .contextMenu ul li:hover ul li a {
+    display: block;
+    float:left;
+    list-style: none;
+    text-decoration: none;
+  }
+  
+  .login
+  {
+    background-color: #A8BFD7;
+  }
+  
+  .logTable
+  {
+    background-color: #A8BFD7;
+    border: 1;
+    rules: rows;
+    width: 90%;
+  }
+  
+  .logTable td.even
+  {
+    background-color: 99bbee;
+    text-align: left;
+    width: 25%;
+  }
+  
+  .logTable td.odd
+  {
+    background-color: aaccff;
+    text-align: left;
+    width: 25%;
+  }
+
+  .logTable th
+  {
+    background-color: 77aacc;
+    text-align: left;
+    width: 25%;
+  }
+  
+  .logTable tr
+  {
+    background-color: aaccff;
+  }
+  
+  .result {
+    background-color: #A8BFD7;
+    float: right;
+    margin: 0 auto; 
+    width: 80%;
+  }
+  
+  .header {
+    /* float: left; */
+    /* margin:0 auto; */
+    margin-top: 30px;
+    width: 100%;
+  }
+
+  body {
+    background-color: #A8BFD7;
+    behavior: url(csshover.htc);
+    font: bold 11px/16px arial, helvetica, sans-serif;
+  }
+
+  .action {
+    float: left;
+    margin: 0 auto; 
+    width: 20%;
+  }
+
+  .action a {
+    color: #000;
+    text-decoration: none;
+  }
+
+  .action ul {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 0;
+    width: 120px;
+  }
+
+  .action ul li {
+    font: bold 11px/16px arial, helvetica, sans-serif;
+    background: #41627E;
+    border-bottom: 1px solid #fff;
+    position: relative;
+    float: left;
+    width: 100%;
+  }
+
+  .action ul li ul li {
+    background: #41627E;
+    width: 200px;
+  }
+
+  .action ul li a {
+    display: block;
+    padding: 2px 3px;
+  }
+
+  .action ul li a:hover {
+    color: #a00;
+    background: #659EC7;
+    border-right: 1px solid #fff;
+    border-left: 1px solid #fff;
+  }
+
+  .action ul li ul li a:hover {
+    background: #659EC7;
+    border-left: 1px solid #fff;
+  }
+
+  .action ul ul {
+    position: absolute;
+    top: 0;
+    display: none;
+  }
+
+  .action ul li:hover ul {
+    display: block;
+    left: 120px;
+  }
+</style>

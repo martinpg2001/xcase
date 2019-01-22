@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Product Id="*" Name="XCaseServiceClient" Language="1033" Version="!(bind.FileVersion.XCaseServiceClient.exe)" Manufacturer="XCase" UpgradeCode="d8133456-a6e2-4adc-8e1b-6f475ae7722e">
+        <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+        <MajorUpgrade AllowSameVersionUpgrades="no" DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+        <MediaTemplate EmbedCab="yes" />
+        <Feature Id="ProductFeature" Title="XCaseServiceClient" Level="1">
+            <ComponentGroupRef Id="ProductComponents" />
+            <ComponentRef Id="ApplicationShortcutDesktop"/>
+        </Feature>
+        <UIRef Id="WixUI_InstallDir" />
+        <WixVariable Id="WixUILicenseRtf" Value="XCaseLicense.rtf" />
+    </Product>
+
+    <Fragment>
+      <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="DesktopFolder" Name="Desktop">
+        <Component Id="ApplicationShortcutDesktop" Guid="*">
+          <Shortcut Icon="Icon.exe" Id="ApplicationDesktopShortcut"
+             Name="XCase Service Client"
+             Description="XCase Service Client"
+             Target="[INSTALLFOLDER]XCaseServiceClient.exe"
+             WorkingDirectory="INSTALLFOLDER">
+            <Icon Id="Icon.exe" SourceFile="icon.ico" />
+          </Shortcut>
+          <RemoveFolder Id="DesktopFolder" On="uninstall"/>
+          <RegistryValue
+            Root="HKCU"
+            Key="Software/XCaseServiceClient"
+            Name="installed"
+            Type="integer"
+            Value="1"
+            KeyPath="yes"/>
+        </Component>
+      </Directory>
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="XCaseServiceClient" />
+        </Directory>
+      </Directory>
+      <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+    </Fragment>
+
+    <Fragment>
+        <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+          <Component Id="XCaseServiceClient" Guid="*">
+            <File Id="XCaseServiceClient.exe" Name="$(var.XCaseServiceClient.TargetFileName)" Source="$(var.XCaseServiceClient.TargetPath)" DiskId="1" />
+          </Component>
+          <Component Id="XCaseServiceClient.config" Guid="*">
+            <File Id="XCaseServiceClient.exe.config" Name="$(var.XCaseServiceClient.TargetFileName).config" Source="$(var.XCaseServiceClient.TargetPath).config" DiskId="1" />
+          </Component>
+          <Component Id="XCase.ProxyGenerator" Guid="*">
+            <File Id="XCase.ProxyGenerator.dll" Name="XCase.ProxyGenerator.dll" Source="$(var.XCaseServiceClient.ProjectDir)/bin/debug/XCase.ProxyGenerator.dll" DiskId="1" />
+          </Component>
+          <Component Id="XCase.REST.ProxyGenerator" Guid="*">
+            <File Id="XCase.REST.ProxyGenerator.dll" Name="XCase.REST.ProxyGenerator.dll" Source="$(var.XCaseServiceClient.ProjectDir)/bin/debug/XCase.REST.ProxyGenerator.dll" DiskId="1" />
+          </Component>
+          <Component Id="System.Net.Http.Formatting" Guid="*">
+            <File Id="System.Net.Http.Formatting.dll" Name="System.Net.Http.Formatting.dll" Source="$(var.XCaseServiceClient.ProjectDir)/bin/debug/System.Net.Http.Formatting.dll" DiskId="1" />
+          </Component>     
+          <Component Id="XCaseServiceClient.log4net.dll" Guid="*">
+            <File Id="log4net.dll" Name="log4net.dll" Source="$(var.XCaseServiceClient.ProjectDir)../Lib/log4net.dll" DiskId="1" />
+          </Component>
+          <Component Id="XCaseServiceClient.log4net.xml" Guid="*">
+            <File Id="log4net.xml" Name="log4net.xml" Source="$(var.XCaseServiceClient.ProjectDir)log4net.xml" DiskId="1" />
+          </Component>
+          <Component Id="XCaseServiceClient.nunit.framework.dll" Guid="*">
+            <File Id="nunit.framework.dll" Name="nunit.framework.dll" Source="$(var.XCaseServiceClient.ProjectDir)../Lib/nunit.framework.dll" DiskId="1" />
+          </Component>
+          <Component Id="XCaseServiceClient.Newtonsoft.Json.dll" Guid="*">
+            <File Id="Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" Source="$(var.XCaseServiceClient.ProjectDir)packages/Newtonsoft.Json.6.0.8/lib/net45/Newtonsoft.Json.dll" DiskId="1" />
+          </Component>
+          <Component Id="Help.css" Guid="*">
+            <File Id="Help.css" Name="Help.css" Source="$(var.XCaseServiceClient.ProjectDir)Help.css" DiskId="1" />
+          </Component>
+          <Component Id="Help.html" Guid="*">
+            <File Id="Help.html" Name="Help.html" Source="$(var.XCaseServiceClient.ProjectDir)Help.html" DiskId="1" />
+          </Component>
+        </ComponentGroup>
+    </Fragment>
+</Wix>

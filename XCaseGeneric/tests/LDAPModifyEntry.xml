@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<operation id="Modify an LDAP entry" class="XCaseGeneric.ActionLDAPModifyEntry">
+    <ldap base="cn=Users,dc=xcase-auk,dc=com" server="Auk" username="Administrator" password="tsunami" entryname="cn=martin" >
+        <property name="" value="" />
+        <property name="" value="" />
+    </ldap>
+</operation>

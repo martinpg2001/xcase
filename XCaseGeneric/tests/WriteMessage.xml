@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<operation id="Write message" class="XCaseGeneric.ActionWriteMessage">
+    <message>This is a message</message>
+</operation>

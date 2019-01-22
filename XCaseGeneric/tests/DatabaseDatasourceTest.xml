@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<operations>
+  <operation id="Create database datasource" class="XCaseGeneric.ActionCreateDatasource">
+    <datasource name="azureDatasource" type="database" database="martinazure" encrypted="true" server="wf3ryktok7.database.windows.net" supportedtype="Microsoft SQL Server Azure" username="martinpg@wf3ryktok7" password="ng062010@" />
+  </operation>
+  <operation id="Execute queries" class="XCaseGeneric.ActionSQLQuery">
+    <datasource name="azureDatasource" />
+    <commandstring>IF OBJECT_ID('dbo.USERS', 'U') IS NOT NULL DROP TABLE dbo.USERS</commandstring>
+    <commandstring>CREATE TABLE dbo.USERS (Username nvarchar(32), CONSTRAINT PK_USERNAME PRIMARY KEY (Username))</commandstring>
+    <commandstring>INSERT INTO USERS VALUES ('Martin')</commandstring>
+    <commandstring>UPDATE USERS SET Username = 'Pratibha'</commandstring>
+    <commandstring>DELETE FROM USERS</commandstring>
+    <commandstring>DROP TABLE dbo.USERS</commandstring>
+  </operation>
+  <operation id="Delete database datasource" class="XCaseGeneric.ActionDeleteDatasource">
+    <datasource name="azureDatasource" />
+  </operation>
+</operations>

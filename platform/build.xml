@@ -1,0 +1,274 @@
+<?xml version="1.0"?>
+<project name="test" default="compile-all" basedir=".">
+    <property environment="env"/>
+    <property name="build" value="build"/>
+    <property name="classpath" value = "${jars};${build};./" />
+    <property name="junitjar" value="lib/junit-4.12.jar"/>
+    <property name="release-dir" value="harness-release"/>
+    <property name="src" value="src/java"/>
+    <property name="src-xcase-box" value="src/java/com/xcase/box"/>
+    <property name="src-xcase-common" value="src/java/com/xcase/common"/>
+    <property name="src-xcase-integrate" value="src/java/com/xcase/integrate"/>
+    <property name="src-xcase-msgraph" value="src/java/com/xcase/msgraph"/>
+    <property name="src-xcase-open" value="src/java/com/xcase/open"/>
+    <property name="src-xcase-salesforce" value="src/java/com/xcase/salesforce"/>
+    <property name="src-xcase-sharepoint" value="src/java/com/xcase/sharepoint"/>
+    <property name="src-xcase-webservice" value="src/java/com/xcase/webservice"/>
+    <property name="ssh-jar" value="lib/ganymed-ssh2.jar" />
+    <property name="tst-dir" location="src/junit" />
+    <property name="tst.dir" location="src/testng" />
+    <property name="TALK" value="false" />
+    <property name="tomcat.home" value="${env.TOMCAT_HOME}"/>
+    <property name="version" value="1.0.0"/>
+    <path id="classpath.base">
+    	<pathelement location="lib/activation-1.1.jar" />
+        <pathelement location="lib/ant.jar" />
+        <pathelement location="lib/antlr-2.7.7.jar" />
+        <pathelement location="lib/ant-jsch.jar" />
+        <pathelement location="lib/ant-launcher.jar" />
+        <pathelement location="lib/asm-3.2.jar" />
+        <pathelement location="lib/axiom-api-1.2.14.jar" />
+        <pathelement location="lib/axiom-compat-1.2.14.jar" />
+        <pathelement location="lib/axiom-dom-1.2.14.jar" />
+        <pathelement location="lib/axiom-impl-1.2.14.jar" />
+        <pathelement location="lib/axis2-adb-1.7.8.jar" />
+        <pathelement location="lib/axis2-kernel-1.7.8.jar" />
+        <pathelement location="lib/axis2-transport-base-1.7.8.jar" />
+        <pathelement location="lib/axis2-transport-http-1.7.8.jar" />
+        <pathelement location="lib/axis2-transport-local-1.7.8.jar" />
+        <pathelement location="lib/bcprov.jar" />
+        <pathelement location="lib/commons-cli-1.4.jar" />
+        <pathelement location="lib/commons-codec-1.7.jar" />
+        <pathelement location="lib/commons-collections4-4.0.jar" />
+        <pathelement location="lib/commons-exec-1.3.jar" />
+        <pathelement location="lib/commons-httpclient-3.1.jar" />
+        <pathelement location="lib/commons-lang3-3.4.jar" />
+        <pathelement location="lib/commons-logging-1.1.2.jar" />
+        <pathelement location="lib/commons-io-2.4.jar" />
+        <pathelement location="lib/dom4j-1.6.1.jar" />
+        <pathelement location="lib/ganymed-ssh2.jar" />
+        <pathelement location="lib/gson-2.2.3.jar" />
+        <pathelement location="lib/guava-19.0.jar" />
+        <pathelement location="lib/hamcrest-core-1.3.jar" />
+        <pathelement location="lib/httpclient-4.5.5.jar" />
+        <pathelement location="lib/httpcore-4.4.9.jar" />
+        <pathelement location="lib/httpmime-4.5.5.jar" />
+        <pathelement location="lib/ifxjdbc.jar" />
+        <pathelement location="lib/java-sharepoint-2.0-BETA2.jar" />
+    	<pathelement location="lib/jaxb-api-2.3.0.jar" />
+        <pathelement location="lib/jcifs-1.2.24.jar" />
+        <pathelement location="lib/jcommander-1.7.jar" />
+        <pathelement location="lib/jconn4.jar" />
+        <pathelement location="lib/jdom2-2.0.6.jar" />
+        <pathelement location="lib/jna-4.2.2.jar" />
+        <pathelement location="lib/jna-platform-4.2.2.jar" />
+        <pathelement location="lib/jnaexamples.jar" />
+        <pathelement location="lib/jsch-0.1.54.jar" />
+        <pathelement location="lib/jsoup-1.11.3.jar" />
+        <pathelement location="lib/jtds.jar" />
+        <pathelement location="lib/junit-4.12.jar" />
+        <pathelement location="lib/log4j-api-2.3.jar" />
+        <pathelement location="lib/mail.jar" />
+        <pathelement location="lib/mysql.jar" />
+        <pathelement location="lib/oracle.jar" />
+        <pathelement location="lib/scriptom-1.5.4b11.jar" />
+        <pathelement location="lib/selenium-java-2.53.0.jar" />
+        <pathelement location="lib/sqljdbc4.jar" />
+        <pathelement location="lib/testng-6.9.10.jar" />
+    </path>
+    <path id="classpath.run">
+    	<pathelement location="lib/activation-1.1.jar" />
+        <pathelement location="lib/ant.jar" />
+        <pathelement location="lib/antlr-2.7.7.jar" />
+        <pathelement location="lib/ant-jsch.jar" />
+        <pathelement location="lib/ant-launcher.jar" />
+        <pathelement location="lib/asm-3.2.jar" />
+        <pathelement location="lib/axis2-adb-1.7.8.jar" />
+        <pathelement location="lib/axis2-kernel-1.7.8.jar" />
+        <pathelement location="lib/axis2-transport-base-1.7.8.jar" />
+        <pathelement location="lib/axis2-transport-http-1.7.8.jar" />
+        <pathelement location="lib/axis2-transport-local-1.7.8.jar" />
+        <pathelement location="lib/bcprov.jar" />
+        <pathelement location="lib/commons-cli-1.4.jar" />
+        <pathelement location="lib/commons-exec-1.3.jar" />
+        <pathelement location="lib/commons-io-2.4.jar" />
+        <pathelement location="lib/commons-lang3-3.4.jar" />
+        <pathelement location="lib/ganymed-ssh2.jar" />
+        <pathelement location="lib/guava-19.0.jar" />
+        <pathelement location="lib/httpclient-4.5.5.jar" />
+        <pathelement location="lib/httpcore-4.4.9.jar" />
+        <pathelement location="lib/httpmime-4.5.5.jar" />
+        <pathelement location="lib/ifxjdbc.jar" />
+        <pathelement location="lib/jaf.jar" />
+    	<pathelement location="lib/jaxb-api-2.3.0.jar" />
+        <pathelement location="lib/jcommander-1.7.jar" />
+        <pathelement location="lib/jconn4.jar" />
+        <pathelement location="lib/jdom2-2.0.6.jar" />
+        <pathelement location="lib/jna-4.2.2.jar" />
+        <pathelement location="lib/jsch-0.1.54.jar" />
+        <pathelement location="lib/jsoup-1.11.3.jar" />
+        <pathelement location="lib/jtds.jar" />
+        <pathelement location="lib/junit-4.12.jar" />
+        <pathelement location="lib/log4j-api-2.3.jar" />
+        <pathelement location="lib/mail.jar" />
+        <pathelement location="lib/oracle.jar" />
+        <pathelement location="lib/selenium-java-2.53.0.jar" />
+        <pathelement location="lib/sqljdbc4.jar" />
+        <pathelement location="lib/testng-6.9.10.jar" />
+    </path>
+    <path id="classpath.ssh">
+        <pathelement location="${ssh-jar}" />
+    </path>
+    <path id="classpath.mocquer">
+        <pathelement location="lib/mocquer.jar" />
+        <pathelement location="lib/dunamis.jar" />
+        <pathelement location="lib/bcel-5.1.jar" />
+    </path>
+    <path id="classpath.test">
+        <pathelement location="${tst-dir}" />
+        <pathelement location="${junitjar}" />
+        <pathelement location="lib/log4j-api-2.3.jar" />
+        <pathelement location="lib/log4j-core-2.3.jar" />
+        <pathelement location="lib/log4j.jar" />
+        <path refid="classpath.base" />
+        <path refid="classpath.mocquer" />
+    </path>
+    <path id="classpath.build">
+        <pathelement location="${build}" />
+    </path>
+    <taskdef name="testng" classname="org.testng.TestNGAntTask">
+        <classpath location="lib/testng-6.9.10.jar" />
+    </taskdef>
+    <target name="build" depends="jar">
+    </target>
+    <target name="clean-compile">
+        <delete verbose="${TALK}" failonerror="false" >
+            <fileset dir="${build}" includes="**/*.class" />
+        </delete>
+    </target>
+    <target name="clean" depends="clean-compile" />
+    <target name="clean-compile-test">
+        <delete verbose="${TALK}">
+            <fileset dir="${tst-dir}" includes="**/*.class" />
+        </delete>
+    </target>
+    <target name="compile" depends="init" description="Compiles all classes">
+        <javac
+            srcdir="${src}"
+            destdir="${build}"
+            includes="${file}"
+            debug="on"
+            source="1.7"
+            classpath="${classpath}" >
+            <compilerarg value="-Xlint:deprecation"/>
+            <!--compilerarg value="-Xlint:unchecked"/-->
+        </javac>
+    </target>
+    <target name="compile-all" depends="compile-xcase" />
+    <target name="compile-single" depends="init" description="Compiles current file (NetBeans only)">
+        <fail unless="file">Must set property 'file'</fail>
+        <javac srcdir="${src}" destdir="${build}" includes="${file}" classpath="${classpath}" debug="on" source="1.5">
+            <compilerarg value="-Xlint:deprecation"/>
+            <compilerarg value="-Xlint:unchecked"/>
+        </javac>
+    </target>
+    <target name="compile-xcase" depends="compile-xcase-common,compile-xcase-box,compile-xcase-integrate,compile-xcase-msgraph,compile-xcase-open,compile-xcase-salesforce,compile-xcase-sharepoint,compile-xcase-webservice" />
+    <target name="compile-xcase-box">
+        <javac srcdir="${src-xcase-box}" destdir="${build}" debug="on">
+            <classpath refid="classpath.base" />
+            <compilerarg value="-Xlint:-unchecked"/>
+        </javac>
+    </target>
+    <target name="compile-xcase-common">
+        <javac srcdir="${src-xcase-common}" destdir="${build}" debug="on">
+            <classpath refid="classpath.base" />
+            <compilerarg value="-Xlint:-unchecked"/>
+        </javac>
+    </target>
+    <target name="compile-xcase-integrate">
+        <javac srcdir="${src-xcase-integrate}" destdir="${build}" debug="on">
+            <classpath refid="classpath.base" />
+            <compilerarg value="-Xlint:-unchecked"/>
+        </javac>
+    </target>
+    <target name="compile-xcase-msgraph">
+        <javac srcdir="${src-xcase-msgraph}" destdir="${build}" debug="on">
+            <classpath refid="classpath.base" />
+            <compilerarg value="-Xlint:-unchecked"/>
+        </javac>
+    </target>
+    <target name="compile-xcase-open">
+        <javac srcdir="${src-xcase-open}" destdir="${build}" debug="on">
+            <classpath refid="classpath.base" />
+            <compilerarg value="-Xlint:-unchecked"/>
+        </javac>
+    </target>
+    <target name="compile-xcase-salesforce">
+        <javac srcdir="${src-xcase-salesforce}" destdir="${build}" debug="on">
+            <classpath refid="classpath.base" />
+            <compilerarg value="-Xlint:-unchecked"/>
+        </javac>
+    </target>
+    <target name="compile-xcase-sharepoint">
+        <javac srcdir="${src-xcase-sharepoint}" destdir="${build}" debug="on">
+            <classpath refid="classpath.base" />
+            <compilerarg value="-Xlint:-unchecked"/>
+        </javac>
+    </target>
+    <target name="compile-xcase-webservice">
+        <javac srcdir="${src-xcase-webservice}" destdir="${build}" debug="on">
+            <classpath refid="classpath.base" />
+            <compilerarg value="-Xlint:-unchecked"/>
+        </javac>
+    </target>
+    <target name="doc" description="build javadocs">
+        <javadoc packagenames="com.xcase.harness.*"
+            classpath="lib/jansi-1.14.jar"
+            sourcepath="${src}"
+            defaultexcludes="yes"
+            destdir="docs/api"
+            author="false"
+            use="true"
+            source="1.7"
+            windowtitle="Harness API">
+            <classpath refid="classpath.test" />
+            <classpath location="${build}"/>
+        </javadoc>
+    </target>
+    <target name="init" description="Creates required directories">
+        <mkdir dir="${build}"/>
+    </target>
+    <target name="jar" depends="init,compile-all" description="Builds platform jar without a clean compile" >
+        <delete file="lib/xcase-${version}.jar"/>
+        <copy overwrite="true" todir="${build}" >
+            <fileset file="*.properties" >
+                <exclude name="*local*.properties"/>
+            </fileset>
+        </copy>
+        <copy file="${src}/log4j2.xml" todir="${build}" />
+        <jar basedir="${build}" duplicate="preserve" jarfile="lib/xcase-${version}.jar" manifest="mainClass">
+            <fileset dir="${build}"/>
+        </jar>
+    </target>
+    <target name="makerelease">
+        <delete dir="${release-dir}"/>
+        <delete file="${release-dir}.tgz"/>
+        <mkdir dir="${release-dir}"/>
+        <mkdir dir="${release-dir}/lib"/>
+        <copy file="lib/rbservice-client.jar" todir="${release-dir}/lib" />
+    	<copy file="lib/activation-1.1.jar" todir="${release-dir}/lib" />
+        <copy file="lib/asm-1.5.2.jar" todir="${release-dir}/lib" />
+        <copy file="lib/bcprov.jar" todir="${release-dir}/lib" />
+        <copy file="lib/commons-cli-1.4.jar" todir="${release-dir}/lib" />
+        <copy file="lib/ganymed-ssh2.jar" todir="${release-dir}/lib" />
+    	<copy file="lib/jaxb-api-2.3.0.jar" todir="${release-dir}/lib" />
+        <copy file="lib/jdom2-2.0.6.jar" todir="${release-dir}/lib" />
+        <copy file="lib/jsch-0.1.54.jar" todir="${release-dir}/lib" />
+        <copy file="lib/jsoup-1.11.3.jar" todir="${release-dir}/lib" />
+        <copy file="lib/jtds.jar" todir="${release-dir}/lib" />
+        <copy file="lib/oracle.jar" todir="${release-dir}/lib" />
+        <copy file="lib/harness.jar" todir="${release-dir}/lib" />
+        <copy file="runnerApp.sh" todir="${release-dir}" />
+        <tar destfile="harness-release.tgz" compression="gzip" basedir="." includes="${release-dir}/*,${release-dir}/lib/*"/>
+    </target>
+</project>

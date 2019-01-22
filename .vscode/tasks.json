@@ -1,0 +1,36 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "0.1.0",
+    "command": "msbuild",
+    "args": [
+    ],
+    "taskSelector": "/t:",
+    "showOutput": "silent",
+    "tasks": [
+        {
+            "args": [
+                "XCaseServiceClient.sln",
+                "/property:GenerateFullPaths=true"
+            ],
+            "taskName": "buildXCaseServiceClient",
+            // Show the output window always.
+            "showOutput": "always",
+            // Use the standard MS compiler pattern to detect errors, warnings and infos
+            "problemMatcher": "$msCompile",
+            "suppressTaskName": true
+        },
+        {
+            "args": [
+                "XCasePlatform.sln",
+                "/property:GenerateFullPaths=true"
+            ],
+            "taskName": "buildXCasePlatform",
+            // Show the output window always.
+            "showOutput": "always",
+            // Use the standard MS compiler pattern to detect errors, warnings and infos
+            "problemMatcher": "$msCompile",
+            "suppressTaskName": true
+        }
+    ]
+}

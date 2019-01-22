@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<operation class="XCaseGeneric.ActionRestartWindowsService">
+    <windowsconnectionstring>server=pushmipullyu.dodsonfogg.xcase.net;username=Administrator;password=tsunami;domain=DODSON</windowsconnectionstring>
+    <services timeout="30">WBExtensionService,WBSchedulerService</services>
+</operation>

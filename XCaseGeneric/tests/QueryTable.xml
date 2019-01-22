@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<operations>
+    <operation id="Query users table" class="XCaseGeneric.ActionSQLCheckTable">
+        <connectionstring>Data Source=Qawin1;Initial Catalog=walls414;User Id=sa;Password=;integrated security=false</connectionstring>
+        <querystring>SELECT UserName, Name FROM USERS WHERE UserId = 1</querystring>
+        <checkcolumns>
+            <checkcolumn name="UserName" expectedvalue="admin" />
+            <checkcolumn name="Name" expectedvalue="Administrator" />
+        </checkcolumns>
+    </operation>
+</operations>

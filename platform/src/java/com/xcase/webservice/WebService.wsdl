@@ -1,0 +1,264 @@
+This XML file does not appear to have any style information associated with it. The document tree is shown below.
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.intapp.com/WSEngine/SOAP" targetNamespace="http://www.intapp.com/WSEngine/SOAP">
+    <types>
+        <xsd:schema targetNamespace="http://www.intapp.com/WSEngine/SOAP" elementFormDefault="qualified">
+            <xsd:simpleType name="ResultStatusType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="OK"/>
+                    <xsd:enumeration value="WARNING"/>
+                    <xsd:enumeration value="ERROR"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="ExecutionStateType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="EXECUTING"/>
+                    <xsd:enumeration value="PENDING"/>
+                    <xsd:enumeration value="FINISHED"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:element name="login">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="username" type="xsd:string"/>
+                        <xsd:element name="password" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="loginResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="sessionID" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="logout">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="sessionID" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="getStatus">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="sessionID" type="xsd:string"/>
+                        <xsd:element name="correlationID" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="getStatusResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="resultStatus" type="tns:ResultStatusType"/>
+                        <xsd:element name="executionState" type="tns:ExecutionStateType"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="cancel">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="sessionID" type="xsd:string"/>
+                        <xsd:element name="correlationID" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:complexType name="output_WebService">
+                <xsd:sequence>
+                    <xsd:element name="output" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="invokeAsyncWebService">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="sessionID" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="invokeAsyncWebServiceResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="correlationID" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="invokeSyncWebService">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="sessionID" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="invokeSyncWebServiceResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="resultStatus" type="tns:ResultStatusType"/>
+                        <xsd:element name="executionState" type="tns:ExecutionStateType"/>
+                        <xsd:element name="correlationID" type="xsd:string"/>
+                        <xsd:element name="output" type="tns:output_WebService"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="getResultForWebService">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="sessionID" type="xsd:string"/>
+                        <xsd:element name="correlationID" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="getResultForWebServiceResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="resultStatus" type="tns:ResultStatusType"/>
+                        <xsd:element name="executionState" type="tns:ExecutionStateType"/>
+                        <xsd:element name="output" type="tns:output_WebService"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </types>
+    <message name="LoginInput">
+        <part name="parameters" element="tns:login"/>
+    </message>
+    <message name="LoginOutput">
+        <part name="parameters" element="tns:loginResponse"/>
+    </message>
+    <message name="LogoutInput">
+        <part name="parameters" element="tns:logout"/>
+    </message>
+    <message name="GetStatusInput">
+        <part name="parameters" element="tns:getStatus"/>
+    </message>
+    <message name="GetStatusOutput">
+        <part name="parameters" element="tns:getStatusResponse"/>
+    </message>
+    <message name="CancelInput">
+        <part name="parameters" element="tns:cancel"/>
+    </message>
+    <message name="WebServiceInvokeAsyncInput">
+        <part name="parameters" element="tns:invokeAsyncWebService"/>
+    </message>
+    <message name="WebServiceInvokeAsyncOutput">
+        <part name="parameters" element="tns:invokeAsyncWebServiceResponse"/>
+    </message>
+    <message name="WebServiceInvokeSyncInput">
+        <part name="parameters" element="tns:invokeSyncWebService"/>
+    </message>
+    <message name="WebServiceInvokeSyncOutput">
+        <part name="parameters" element="tns:invokeSyncWebServiceResponse"/>
+    </message>
+    <message name="WebServiceGetResultInput">
+        <part name="parameters" element="tns:getResultForWebService"/>
+    </message>
+    <message name="WebServiceGetResultOutput">
+        <part name="parameters" element="tns:getResultForWebServiceResponse"/>
+    </message>
+    <portType name="IntAppType">
+        <operation name="login">
+            <documentation>This is the login operation.</documentation>
+            <input message="tns:LoginInput"/>
+            <output message="tns:LoginOutput"/>
+        </operation>
+        <operation name="logout">
+            <documentation>This is the logout operation.</documentation>
+            <input message="tns:LogoutInput"/>
+        </operation>
+        <operation name="getStatus">
+            <documentation>This is the get status operation.</documentation>
+            <input message="tns:GetStatusInput"/>
+            <output message="tns:GetStatusOutput"/>
+        </operation>
+        <operation name="cancel">
+            <documentation>
+                This operation cancels an asynchronous rule invocation.
+            </documentation>
+            <input message="tns:CancelInput"/>
+        </operation>
+        <operation name="invokeAsyncWebService">
+            <documentation>
+                This is the asynchronous operation for rule 'Web Service Rule'.
+            </documentation>
+            <input message="tns:WebServiceInvokeAsyncInput"/>
+            <output message="tns:WebServiceInvokeAsyncOutput"/>
+        </operation>
+        <operation name="invokeSyncWebService">
+            <documentation>
+                This is the synchronous operation for rule 'Web Service Rule'.
+            </documentation>
+            <input message="tns:WebServiceInvokeSyncInput"/>
+            <output message="tns:WebServiceInvokeSyncOutput"/>
+        </operation>
+        <operation name="getResultForWebService">
+            <documentation>
+                This is the get result operation for rule 'Web Service Rule'.
+            </documentation>
+            <input message="tns:WebServiceGetResultInput"/>
+            <output message="tns:WebServiceGetResultOutput"/>
+        </operation>
+    </portType>
+    <binding name="IntAppBinding" type="tns:IntAppType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="login">
+            <soap:operation soapAction="http://www.intapp.com/WSEngine/SOAP#login" style="document"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="logout">
+            <soap:operation soapAction="http://www.intapp.com/WSEngine/SOAP#logout" style="document"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+        </operation>
+        <operation name="getStatus">
+            <soap:operation soapAction="http://www.intapp.com/WSEngine/SOAP#getStatus" style="document"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="cancel">
+            <soap:operation soapAction="http://www.intapp.com/WSEngine/SOAP#cancel" style="document"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+        </operation>
+        <operation name="invokeAsyncWebService">
+            <soap:operation soapAction="http://www.intapp.com/WSEngine/SOAP#invokeAsyncWebService" style="document"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="invokeSyncWebService">
+            <soap:operation soapAction="http://www.intapp.com/WSEngine/SOAP#invokeSyncWebService" style="document"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="getResultForWebService">
+            <soap:operation soapAction="http://www.intapp.com/WSEngine/SOAP#getResultForWebService" style="document"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    <service name="IntApp">
+        <port name="IntApp" binding="tns:IntAppBinding">
+            <soap:address location="https://nightly51/soap"/>
+        </port>
+    </service>
+</definitions>

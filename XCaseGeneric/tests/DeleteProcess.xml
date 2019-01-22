@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<operations id="This test executes the AddClientUsers method" initializeenvironment="true" status="Complete" >
+  <operation id="Create Open database datasource" class="XCaseGeneric.ActionCreateDatasource" >
+    <datasource name="OpenDatabase" type="database" supportedtype="Microsoft SQL Server 2005" server="$envDATABASE_SERVER" database="$envDATABASE_DATABASE" domain="$envDATABASE_DOMAIN" password="$envDATABASE_PASSWORD" trustedconnection="$envDATABASE_INTEGRATED" username="$envDATABASE_USERNAME" />
+  </operation>
+  <operation id="Create Intake Web service datasource" class="XCaseGeneric.ActionCreateDatasource" >
+    <datasource name="OpenCommon" type="webservice" domain="$envCREDENTIALS_DOMAIN" endpoint="$envCOMMON_ENDPOINT" password="$envCREDENTIALS_PASSWORD" username="$envCREDENTIALS_USERNAME" />
+  </operation>
+  <operation id="Delete process" class=" XCaseGeneric.ActionDeleteProcesses" >
+    <processes>
+      <process name="chromedriver" ></process>
+      <process name="chrome" ></process>
+    </processes>
+  </operation>
+  <operation id="Remove datasources" class="XCaseGeneric.ActionDeleteDatasource">
+    <datasource name="OpenDatabase" />
+    <datasource name="OpenCommon" />
+  </operation>
+</operations>

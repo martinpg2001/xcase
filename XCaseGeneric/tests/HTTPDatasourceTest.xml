@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<operations>
+  <operation id="Create HTTP datasource" class="XCaseGeneric.ActionCreateDatasource">
+    <datasource name="TimeMobileDatasource" type="http" server="mulefa" username="IAINTERNAL\mdev" password="tsunami" />
+  </operation>
+  <operation id="Execute HTTP requests" class="XCaseGeneric.ActionHTTPRequest">
+    <url datasource="TimeMobileDatasource" method="GET" path="timemobile" />
+    <expected>
+      <response code="Found" />
+    </expected>
+  </operation>
+  <operation id="Execute HTTP requests" class="XCaseGeneric.ActionHTTPRequest">
+    <url datasource="TimeMobileDatasource" method="GET" path="timemobile/Home" />
+    <expected>
+      <response code="Found" />
+    </expected>
+  </operation>
+  <operation id="Delete HTTP datasource" class="XCaseGeneric.ActionDeleteDatasource">
+    <datasource name="TimeMobileDatasource" />
+  </operation>
+</operations>

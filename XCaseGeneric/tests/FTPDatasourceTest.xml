@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<operations>
+  <operation id="Create FTP datasource" class="XCaseGeneric.ActionCreateDatasource">
+    <datasource name="hippoDatasource" type="ftp" server="hippo" username="ftp" password="" path="" file="" ssl="false" binary="false" />
+  </operation>
+  <operation id="Make directory" class="XCaseGeneric.ActionFTPMakeDirectory">
+    <ftp datasource="hippoDatasource" basepath="test" newdirectory="test2" />
+  </operation>
+  <operation id="Upload file" class="XCaseGeneric.ActionFTPPut">
+    <ftp datasource="hippoDatasource" sourcepath="D:/temp" file="Directory1.xml" targetpath="test/test2" />
+  </operation>
+  <operation id="Get file" class="XCaseGeneric.ActionFTPGet">
+    <ftp datasource="hippoDatasource" sourcepath="test/test2" file="Directory1.xml" targetpath="D:/temp" />
+  </operation>
+  <operation id="Delete file" class="XCaseGeneric.ActionFTPDelete">
+    <ftp datasource="hippoDatasource" path="test/test2" file="Directory1.xml" />
+  </operation>
+  <operation id="Delete test1 directory" class="XCaseGeneric.ActionFTPDelete">
+    <ftp datasource="hippoDatasource" path="test" file="test2" />
+  </operation>
+  <operation id="Delete FTP datasource" class="XCaseGeneric.ActionDeleteDatasource">
+    <datasource name="hippoDatasource" />
+  </operation>
+</operations>

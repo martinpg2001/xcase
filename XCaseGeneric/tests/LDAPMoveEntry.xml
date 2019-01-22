@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<operation id="Move an LDAP entry" class="XCaseGeneric.ActionLDAPMoveEntry">
+    <ldap base="cn=Users,dc=xcase-auk,dc=com" server="Auk" username="Administrator" password="tsunami" entryname="cn=martin" newbase="" />
+</operation>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<operation id="Search LDAP directory" class="XCaseGeneric.ActionLDAPSearchDirectory">
+    <ldap domain="DODSON" server="Pickwick" username="Administrator" password="Tsunami9" base="dc=dodsonfogg,dc=xcase,dc=net" searchfilter="(&amp;((objectCategory=user))(memberOf=CN=Domain Admins,CN=Users,dc=dodsonfogg,dc=xcase,dc=net))" sortoption="" />
+</operation>

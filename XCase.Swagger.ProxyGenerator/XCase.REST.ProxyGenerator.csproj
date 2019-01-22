@@ -1,0 +1,271 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{473BDC2B-42FD-4490-9DF3-CECB8BB3433C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>XCase.REST.ProxyGenerator</RootNamespace>
+    <AssemblyName>XCase.REST.ProxyGenerator</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin">
+      <HintPath>..\XCaseServiceClient\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Hosting">
+      <HintPath>..\XCaseServiceClient\packages\Microsoft.Owin.Hosting.3.0.1\lib\net45\Microsoft.Owin.Hosting.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Testing">
+      <HintPath>..\XCaseServiceClient\packages\Microsoft.Owin.Testing.3.0.1\lib\net45\Microsoft.Owin.Testing.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\XCaseServiceClient\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="IntegrateSwaggerProxy.cs" />
+    <Compile Include="NetDocsRESTProxy.cs" />
+    <Compile Include="PlatformCDSCMSwaggerProxy.cs" />
+    <Compile Include="PlatformCDSSwaggerProxy.cs" />
+    <Compile Include="PlatformDocumentSwaggerProxy.cs" />
+    <Compile Include="PlatformRefDataSwaggerProxy.cs" />
+    <Compile Include="PlatformSanctionListsSwaggerProxy.cs" />
+    <Compile Include="PlatformSwaggerProxy.cs" />
+    <Compile Include="PlatformTMSSwaggerProxy.cs" />
+    <Compile Include="RAMLProxy.cs" />
+    <Compile Include="Generator\RAMLCSharpProxyGenerator.cs" />
+    <Compile Include="Generator\RAMLJavaProxyGenerator.cs" />
+    <Compile Include="Generator\RESTProxyGenerator.cs" />
+    <Compile Include="Generator\SwaggerJavaProxyGenerator.cs" />
+    <Compile Include="IRESTProxy.cs" />
+    <Compile Include="RAML\BuilderSkeleton.cs" />
+    <Compile Include="RAML\DeserializerBuilder.cs" />
+    <Compile Include="RAML\ForwardAnchorNotSupportedException.cs" />
+    <Compile Include="RAML\Helpers\ExpressionExtensions.cs" />
+    <Compile Include="RAML\Helpers\GenericCollectionToNonGenericAdapter.cs" />
+    <Compile Include="RAML\Helpers\GenericDictionaryToNonGenericAdapter.cs" />
+    <Compile Include="RAML\Helpers\Portability.cs" />
+    <Compile Include="RAML\LazyComponentRegistrationList.cs" />
+    <Compile Include="RAML\LazyComponentRegistrationListExtensions.cs" />
+    <Compile Include="RAML\Nothing.cs" />
+    <Compile Include="RAML\ParserExtension.cs" />
+    <Compile Include="RAML\Serialization\AnchorNotFoundException.cs" />
+    <Compile Include="RAML\Serialization\Converters\DateTimeConverter.cs" />
+    <Compile Include="RAML\Serialization\Converters\GuidConverter.cs" />
+    <Compile Include="RAML\Serialization\EventInfo.cs" />
+    <Compile Include="RAML\Serialization\IAliasProvider.cs" />
+    <Compile Include="RAML\Serialization\IEventEmitter.cs" />
+    <Compile Include="RAML\Serialization\INamingConvention.cs" />
+    <Compile Include="RAML\Serialization\INodeDeserializer.cs" />
+    <Compile Include="RAML\Serialization\INodeTypeResolver.cs" />
+    <Compile Include="RAML\Serialization\IObjectDescriptor.cs" />
+    <Compile Include="RAML\Serialization\IObjectFactory.cs" />
+    <Compile Include="RAML\Serialization\IObjectGraphTraversalStrategy.cs" />
+    <Compile Include="RAML\Serialization\IObjectGraphVisitor.cs" />
+    <Compile Include="RAML\Serialization\IPropertyDescriptor.cs" />
+    <Compile Include="RAML\Serialization\IRegistrationLocationSelectionSyntax.cs" />
+    <Compile Include="RAML\Serialization\ITypeInspector.cs" />
+    <Compile Include="RAML\Serialization\ITypeResolver.cs" />
+    <Compile Include="RAML\Serialization\IValuePromise.cs" />
+    <Compile Include="RAML\Serialization\IYamlConvertible.cs" />
+    <Compile Include="RAML\Serialization\IYamlSerializable.cs" />
+    <Compile Include="RAML\Serialization\IYamlTypeConverter.cs" />
+    <Compile Include="RAML\Deserializer.cs" />
+    <Compile Include="RAML\IEmitter.cs" />
+    <Compile Include="RAML\IParser.cs" />
+    <Compile Include="RAML\IPostDeserializationCallback.cs" />
+    <Compile Include="RAML\Serialization\IValueDeserializer.cs" />
+    <Compile Include="RAML\Serialization\IValueSerializer.cs" />
+    <Compile Include="RAML\Serialization\NamingConventions\CamelCaseNamingConvention.cs" />
+    <Compile Include="RAML\Serialization\NamingConventions\HyphenatedNamingConvention.cs" />
+    <Compile Include="RAML\Serialization\NamingConventions\NullNamingConvention.cs" />
+    <Compile Include="RAML\Serialization\NamingConventions\PascalCaseNamingConvention.cs" />
+    <Compile Include="RAML\Serialization\NamingConventions\UnderscoredNamingConvention.cs" />
+    <Compile Include="RAML\Serialization\NodeDeserializers\ArrayNodeDeserializer.cs" />
+    <Compile Include="RAML\Serialization\NodeDeserializers\CollectionNodeDeserializer.cs" />
+    <Compile Include="RAML\Serialization\NodeDeserializers\DictionaryNodeDeserializer.cs" />
+    <Compile Include="RAML\Serialization\NodeDeserializers\EnumerableNodeDeserializer.cs" />
+    <Compile Include="RAML\Serialization\NodeDeserializers\NullNodeDeserializer.cs" />
+    <Compile Include="RAML\Serialization\NodeDeserializers\ObjectNodeDeserializer.cs" />
+    <Compile Include="RAML\Serialization\NodeDeserializers\ScalarNodeDeserializer.cs" />
+    <Compile Include="RAML\Serialization\NodeDeserializers\TypeConverterNodeDeserializer.cs" />
+    <Compile Include="RAML\Serialization\NodeDeserializers\YamlConvertibleNodeDeserializer.cs" />
+    <Compile Include="RAML\Serialization\NodeDeserializers\YamlSerializableNodeDeserializer.cs" />
+    <Compile Include="RAML\Serialization\NodeTypeResolvers\DefaultContainersNodeTypeResolver.cs" />
+    <Compile Include="RAML\Serialization\NodeTypeResolvers\TagNodeTypeResolver.cs" />
+    <Compile Include="RAML\Serialization\NodeTypeResolvers\TypeNameInTagNodeTypeResolver.cs" />
+    <Compile Include="RAML\Serialization\NodeTypeResolvers\YamlConvertibleTypeResolver.cs" />
+    <Compile Include="RAML\Serialization\NodeTypeResolvers\YamlSerializableTypeResolver.cs" />
+    <Compile Include="RAML\Serialization\ObjectDescriptor.cs" />
+    <Compile Include="RAML\Serialization\ObjectFactories\DefaultObjectFactory.cs" />
+    <Compile Include="RAML\Serialization\ObjectFactories\LambdaObjectFactory.cs" />
+    <Compile Include="RAML\Serialization\PropertyDescriptor.cs" />
+    <Compile Include="RAML\Serialization\TypeInspectors\CachedTypeInspector.cs" />
+    <Compile Include="RAML\Serialization\TypeInspectors\NamingConventionTypeInspector.cs" />
+    <Compile Include="RAML\Serialization\TypeInspectors\ReadableAndWritablePropertiesTypeInspector.cs" />
+    <Compile Include="RAML\Serialization\TypeInspectors\ReadablePropertiesTypeInspector.cs" />
+    <Compile Include="RAML\Serialization\TypeInspectors\TypeInspectorSkeleton.cs" />
+    <Compile Include="RAML\Serialization\TypeResolvers\DynamicTypeResolver.cs" />
+    <Compile Include="RAML\Serialization\TypeResolvers\StaticTypeResolver.cs" />
+    <Compile Include="RAML\Serialization\Utilities\IPostDeserializationCallback.cs" />
+    <Compile Include="RAML\Serialization\Utilities\ObjectAnchorCollection.cs" />
+    <Compile Include="RAML\Serialization\Utilities\ReflectionUtility.cs" />
+    <Compile Include="RAML\Serialization\Utilities\SerializerState.cs" />
+    <Compile Include="RAML\Serialization\Utilities\StringExtensions.cs" />
+    <Compile Include="RAML\Serialization\Utilities\TypeConverter.cs" />
+    <Compile Include="RAML\Serialization\ValueDeserializers\AliasValueDeserializer.cs" />
+    <Compile Include="RAML\Serialization\ValueDeserializers\NodeValueDeserializer.cs" />
+    <Compile Include="RAML\Serialization\YamlAttributeOverrides.cs" />
+    <Compile Include="RAML\Serialization\YamlAttributeOverridesInspector.cs" />
+    <Compile Include="RAML\Serialization\YamlAttributesTypeInspector.cs" />
+    <Compile Include="RAML\Serialization\YamlFormatter.cs" />
+    <Compile Include="RAML\Serialization\YamlIgnoreAttribute.cs" />
+    <Compile Include="RAML\Serialization\YamlMember.cs" />
+    <Compile Include="RAML\SerializerState.cs" />
+    <Compile Include="RAML\Tokens\Anchor.cs" />
+    <Compile Include="RAML\Tokens\AnchorAlias.cs" />
+    <Compile Include="RAML\Tokens\BlockEnd.cs" />
+    <Compile Include="RAML\Tokens\BlockEntry.cs" />
+    <Compile Include="RAML\Tokens\BlockMappingStart.cs" />
+    <Compile Include="RAML\Tokens\BlockSequenceStart.cs" />
+    <Compile Include="RAML\CharacterAnalyzer.cs" />
+    <Compile Include="RAML\Tokens\Comment.cs" />
+    <Compile Include="RAML\Constants.cs" />
+    <Compile Include="RAML\Tokens\DocumentEnd.cs" />
+    <Compile Include="RAML\Tokens\DocumentStart.cs" />
+    <Compile Include="RAML\Events\AnchorAlias.cs" />
+    <Compile Include="RAML\Events\Comment.cs" />
+    <Compile Include="RAML\Events\DocumentEnd.cs" />
+    <Compile Include="RAML\Events\DocumentStart.cs" />
+    <Compile Include="RAML\Events\IParsingEventVisitor.cs" />
+    <Compile Include="RAML\Events\MappingEnd.cs" />
+    <Compile Include="RAML\Events\MappingStart.cs" />
+    <Compile Include="RAML\Events\MappingStyle.cs" />
+    <Compile Include="RAML\Events\NodeEvent.cs" />
+    <Compile Include="RAML\Events\Scalar.cs" />
+    <Compile Include="RAML\Events\SequenceEnd.cs" />
+    <Compile Include="RAML\Events\SequenceStart.cs" />
+    <Compile Include="RAML\Events\SequenceStyle.cs" />
+    <Compile Include="RAML\Events\StreamEnd.cs" />
+    <Compile Include="RAML\Events\StreamStart.cs" />
+    <Compile Include="RAML\Events\EventType.cs" />
+    <Compile Include="RAML\Tokens\FlowMappingEnd.cs" />
+    <Compile Include="RAML\Tokens\FlowMappingStart.cs" />
+    <Compile Include="RAML\Tokens\FlowSequenceEnd.cs" />
+    <Compile Include="RAML\Tokens\FlowSequenceStart.cs" />
+    <Compile Include="RAML\ILookAheadBuffer.cs" />
+    <Compile Include="RAML\InsertionQueue.cs" />
+    <Compile Include="RAML\Tokens\Key.cs" />
+    <Compile Include="RAML\LookAheadBuffer.cs" />
+    <Compile Include="RAML\Parser.cs" />
+    <Compile Include="RAML\Events\ParsingEvent.cs" />
+    <Compile Include="RAML\Tokens\Scalar.cs" />
+    <Compile Include="RAML\ScalarStyle.cs" />
+    <Compile Include="RAML\SemanticErrorException.cs" />
+    <Compile Include="RAML\SimpleKey.cs" />
+    <Compile Include="RAML\Tokens\StreamEnd.cs" />
+    <Compile Include="RAML\Tokens\Tag.cs" />
+    <Compile Include="RAML\Tokens\Value.cs" />
+    <Compile Include="RAML\Tokens\VersionDirective.cs" />
+    <Compile Include="RAML\YamlException.cs" />
+    <Compile Include="ISwaggerProxy.cs" />
+    <Compile Include="OpenCloudSwaggerProxy.cs" />
+    <Compile Include="OpenSwaggerProxy.cs" />
+    <Compile Include="RESTProxy.cs" />
+    <Compile Include="SwaggerProxy.cs" />
+    <Compile Include="Generator\SwaggerProxyGenerator.cs" />
+    <Compile Include="RESTServiceDefinition.cs" />
+    <Compile Include="RAML\Cursor.cs" />
+    <Compile Include="RAML\Tokens\FlowEntry.cs" />
+    <Compile Include="RAML\HashCode.cs" />
+    <Compile Include="RAML\IScanner.cs" />
+    <Compile Include="RAML\Mark.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RAML\ParserState.cs" />
+    <Compile Include="Generator\SwaggerCSharpProxyGenerator.cs" />
+    <Compile Include="Generator\RESTApiProxySettings.cs" />
+    <Compile Include="Generator\RESTApiProxySettingsEndPoint.cs" />
+    <Compile Include="RAML\RAMLParser.cs" />
+    <Compile Include="RAML\Scanner.cs" />
+    <Compile Include="RAML\Tokens\StreamStart.cs" />
+    <Compile Include="Swagger\SwaggerParser.cs" />
+    <Compile Include="RAML\SyntaxErrorException.cs" />
+    <Compile Include="RAML\Tokens\TagDirective.cs" />
+    <Compile Include="RAML\TagDirectiveCollection.cs" />
+    <Compile Include="RAML\Tokens\Token.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\XCase.ProxyGenerator\XCase.ProxyGenerator.csproj">
+      <Project>{5ae0d373-01e5-43d4-a237-2b4e6e1b7129}</Project>
+      <Name>XCase.ProxyGenerator</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

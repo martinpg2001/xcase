@@ -1,0 +1,169 @@
+<style>
+  .body
+  {
+    background-color: #dddddd;
+  }
+  
+  .login
+  {
+    background-color: #dddddd;
+  }
+  
+  .action
+  {
+    background-color: #dddddd;
+    float: left;
+    width: 20%;
+  }
+  
+  .result
+  {
+    background-color: #dddddd;
+    float: right;
+    margin:0 auto; 
+    width: 80%;
+  }
+
+  .contextMenu
+  {
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  
+  .contextMenuBar
+  {
+    background-color: #dddddd;
+    border: 1px solid #9A9A9A;
+    list-style: none;
+    margin: 5px 0;
+    padding: 0;
+    text-decoration: none;
+    width: 100%;
+  }
+  
+  .contextMenuItem
+  {
+    float: left;
+    list-style: none;
+    position: relative;
+    text-decoration: none;
+    width: 10em;
+  }
+  
+  .contextMenuItem a
+  {
+    list-style: none;
+    text-decoration: none;
+  }
+  
+  .header
+  {
+    float: left;
+    margin:0 auto;
+    margin-top: 10px;
+    width: 100%;
+  }
+  
+  .menuBar
+  {
+    background-color: #dddddd;
+    border: 1px solid #9A9A9A;
+    border-bottom-width: 0;
+    list-style: none;
+    margin: 5px 0;
+    padding: 0;
+    text-decoration: none;
+    width: 100px;
+  }
+  
+  .menuBarHover
+  {
+  
+  }
+
+  .menuLabel
+  {
+    background-color: #dddddd;
+    border: 1px solid #9A9A9A;
+    border-bottom-width: 1px;
+    display: block;
+    list-style: none;
+    position: relative;
+    text-decoration: none;
+    width: 6em;
+  }
+
+  .menuLabelHover
+  {
+
+  }
+  
+  .menuContainer
+  {
+    background-color: #cccccc;
+    display: none;
+    left: 50px;
+    list-style: none;
+    position: absolute;
+    top: -2px;
+    text-decoration: none;
+  }
+  
+  .menuContainerHover
+  {
+
+  }
+
+  .menuItem
+  {
+    list-style: none;
+    text-decoration: none;
+    width: 7em;
+  }
+  
+  .menuItemHover
+  {
+
+  }
+  
+  .menuItem a
+  {
+    background-color: #eeeeee;
+    text-decoration: none;
+  }
+  
+  .menuItem a:hover
+  {
+    background-color: #eeeeee;
+    border: 1px solid #29497b;
+    text-decoration: none;
+  }     
+
+  ul li:hover
+  {
+    background-color: #eeeeee;
+  }
+
+  ul li:hover ul
+  {
+    background-color: #eeeeee;
+    display: block;
+  }
+
+  ul li.on ul
+  {
+    background-color: #cccccc;
+    display: block;
+  }
+
+  ul li ul li:hover
+  {
+    background-color: #eeeeee;
+  }
+  
+  ul li ul li a:hover
+  {
+    background-color: #eeeeee;
+    text-decoration: none;
+  }
+</style>

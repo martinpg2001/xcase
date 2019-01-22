@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Config xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <binding>Basic</binding>
+  <client>None</client>
+  <domain />
+  <endpoint>http://www.webservicex.net/globalweather.asmx?WSDL</endpoint>
+  <language>CSharp</language>
+  <message>None</message>
+  <password />
+  <security>None</security>
+  <timeout>30</timeout>
+  <type>SOAP</type>
+  <username />
+</Config>

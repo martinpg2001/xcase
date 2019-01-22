@@ -1,0 +1,268 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "classPaths": [
+                "target/xcase-1.0.0.jar",
+                "lib/commons-logging-1.1.2.jar",
+                "lib/gson-2.2.3.jar",
+                "lib/httpclient-4.4.jar",
+                "lib/httpcore-4.4.jar",
+                "lib/httpmime-4.4.jar",
+                "lib/jsoup-1.9.2.jar",
+                "lib/log4j.jar",
+                "lib/log4j-api-2.3.jar",
+                "lib/log4j-core-2.3.jar"
+            ],
+            "type": "java",
+            "name": "Debug (Launch)-BoxApplication<xcase>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "com.xcase.box.BoxApplication",
+            "projectName": "xcase",
+            "args": ""
+        },
+        {
+            "classPaths": [
+                "target/xcase-1.0.0.jar",
+                "lib/commons-logging-1.1.2.jar",
+                "lib/gson-2.2.3.jar",
+                "lib/httpclient-4.4.jar",
+                "lib/httpcore-4.4.jar",
+                "lib/httpmime-4.4.jar",
+                "lib/jsoup-1.9.2.jar",
+                "lib/log4j.jar",
+                "lib/log4j-api-2.3.jar",
+                "lib/log4j-core-2.3.jar"
+            ],
+            "type": "java",
+            "name": "Debug (Launch)-IntegrateApplication<xcase>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "com.xcase.integrate.IntegrateApplication",
+            "projectName": "xcase",
+            "args": ""
+        },
+        {
+            "classPaths": [
+                "target/xcase-1.0.0.jar",
+                "lib/commons-logging-1.1.2.jar",
+                "lib/gson-2.2.3.jar",
+                "lib/httpclient-4.4.jar",
+                "lib/httpcore-4.4.jar",
+                "lib/httpmime-4.4.jar",
+                "lib/jsoup-1.9.2.jar",
+                "lib/log4j.jar",
+                "lib/log4j-api-2.3.jar",
+                "lib/log4j-core-2.3.jar"
+            ],
+            "type": "java",
+            "name": "Debug (Launch)-MSGraphApplication<xcase>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "com.xcase.msgraph.MSGraphApplication",
+            "projectName": "xcase",
+            "args": ""
+        },
+        {
+            "classPaths": [
+                "target/xcase-1.0.0.jar",
+                "lib/commons-logging-1.1.2.jar",
+                "lib/gson-2.2.3.jar",
+                "lib/httpclient-4.4.jar",
+                "lib/httpcore-4.4.jar",
+                "lib/httpmime-4.4.jar",
+                "lib/jsoup-1.9.2.jar",
+                "lib/log4j.jar",
+                "lib/log4j-api-2.3.jar",
+                "lib/log4j-core-2.3.jar"
+            ],
+            "type": "java",
+            "name": "Debug (Launch)-OpenApplication<xcase>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "com.xcase.open.OpenApplication",
+            "projectName": "xcase",
+            "args": ""
+        },
+        {
+            "classPaths": [
+                "target/xcase-1.0.0.jar",
+                "lib/commons-logging-1.1.2.jar",
+                "lib/gson-2.2.3.jar",
+                "lib/httpclient-4.4.jar",
+                "lib/httpcore-4.4.jar",
+                "lib/httpmime-4.4.jar",
+                "lib/jsoup-1.9.2.jar",
+                "lib/log4j.jar",
+                "lib/log4j-api-2.3.jar",
+                "lib/log4j-core-2.3.jar"
+            ],
+            "type": "java",
+            "name": "Debug (Launch)-IntegrateRAMLApplication<xcase>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "com.xcase.rest.generator.raml.IntegrateRAMLApplication",
+            "projectName": "xcase",
+            "args": ""
+        },
+        {
+            "classPaths": [
+                "target/xcase-1.0.0.jar",
+                "lib/commons-logging-1.1.2.jar",
+                "lib/gson-2.2.3.jar",
+                "lib/httpclient-4.4.jar",
+                "lib/httpcore-4.4.jar",
+                "lib/httpmime-4.4.jar",
+                "lib/jsoup-1.9.2.jar",
+                "lib/log4j.jar",
+                "lib/log4j-api-2.3.jar",
+                "lib/log4j-core-2.3.jar"
+            ],
+            "type": "java",
+            "name": "Debug (Launch)-IntegrateSwaggerApplication<xcase>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "com.xcase.rest.generator.swagger.IntegrateSwaggerApplication",
+            "projectName": "xcase",
+            "args": ""
+        },
+        {
+            "classPaths": [
+                "target/xcase-1.0.0.jar",
+                "lib/commons-logging-1.1.2.jar",
+                "lib/gson-2.2.3.jar",
+                "lib/httpclient-4.4.jar",
+                "lib/httpcore-4.4.jar",
+                "lib/httpmime-4.4.jar",
+                "lib/jsoup-1.9.2.jar",
+                "lib/log4j.jar",
+                "lib/log4j-api-2.3.jar",
+                "lib/log4j-core-2.3.jar"
+            ],
+            "type": "java",
+            "name": "Debug (Launch)-OpenCloudSwaggerApplication<xcase>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "com.xcase.rest.generator.swagger.OpenCloudSwaggerApplication",
+            "projectName": "xcase",
+            "args": ""
+        },
+        {
+            "classPaths": [
+                "target/xcase-1.0.0.jar",
+                "lib/commons-logging-1.1.2.jar",
+                "lib/gson-2.2.3.jar",
+                "lib/httpclient-4.4.jar",
+                "lib/httpcore-4.4.jar",
+                "lib/httpmime-4.4.jar",
+                "lib/jsoup-1.9.2.jar",
+                "lib/log4j.jar",
+                "lib/log4j-api-2.3.jar",
+                "lib/log4j-core-2.3.jar"
+            ],
+            "type": "java",
+            "name": "Debug (Launch)-OpenOnpremiseSwaggerApplication<xcase>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "com.xcase.rest.generator.swagger.OpenOnpremiseSwaggerApplication",
+            "projectName": "xcase",
+            "args": ""
+        },
+        {
+            "classPaths": [
+                "target/xcase-1.0.0.jar",
+                "lib/commons-logging-1.1.2.jar",
+                "lib/gson-2.2.3.jar",
+                "lib/httpclient-4.4.jar",
+                "lib/httpcore-4.4.jar",
+                "lib/httpmime-4.4.jar",
+                "lib/jsoup-1.9.2.jar",
+                "lib/log4j.jar",
+                "lib/log4j-api-2.3.jar",
+                "lib/log4j-core-2.3.jar"
+            ],
+            "type": "java",
+            "name": "Debug (Launch)-SalesforceApplication<xcase>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "com.xcase.salesforce.SalesforceApplication",
+            "projectName": "xcase",
+            "args": ""
+        },
+        {
+            "classPaths": [
+                "target/xcase-1.0.0.jar",
+                "lib/commons-logging-1.1.2.jar",
+                "lib/gson-2.2.3.jar",
+                "lib/httpclient-4.4.jar",
+                "lib/httpcore-4.4.jar",
+                "lib/httpmime-4.4.jar",
+                "lib/jsoup-1.9.2.jar",
+                "lib/log4j.jar",
+                "lib/log4j-api-2.3.jar",
+                "lib/log4j-core-2.3.jar"
+            ],
+            "type": "java",
+            "name": "Debug (Launch)-SharePointApplication<xcase>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "com.xcase.sharepoint.SharePointApplication",
+            "projectName": "xcase",
+            "args": ""
+        },
+        {
+            "classPaths": [
+                "target/xcase-1.0.0.jar",
+                "lib/commons-logging-1.1.2.jar",
+                "lib/gson-2.2.3.jar",
+                "lib/httpclient-4.4.jar",
+                "lib/httpcore-4.4.jar",
+                "lib/httpmime-4.4.jar",
+                "lib/jsoup-1.9.2.jar",
+                "lib/log4j.jar",
+                "lib/log4j-api-2.3.jar",
+                "lib/log4j-core-2.3.jar"
+            ],
+            "type": "java",
+            "name": "Debug (Launch)-WebServiceClient<xcase>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "com.xcase.webservice.WebServiceClient",
+            "projectName": "xcase",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Debug (Attach)",
+            "request": "attach",
+            "hostName": "localhost",
+            "port": 0
+        }
+    ]
+}

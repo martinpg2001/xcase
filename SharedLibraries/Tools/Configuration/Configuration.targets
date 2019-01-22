@@ -1,0 +1,112 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <!-- This msbuild targets was implemented in context of the 
+        WB-5617 "Implement solution which helps to avoid problem with localy modified files (e.g., web.config, app.config) when performing updates, commits, or pushes/pulls.". -->
+
+    <PropertyGroup>
+        <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    </PropertyGroup>
+    
+    <!-- Using TransformXml task to perform web/app config transformation. -->
+    <UsingTask TaskName="TransformXml" AssemblyFile="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Web\Microsoft.Web.Publishing.Tasks.Dll"/>
+    
+    <!-- Register TransformConfig target to be called before build process starts. 
+        For web appliacations Web.Config file can be used to resolve reference and etc.-->
+    <PropertyGroup>
+        <BuildDependsOn>
+            TransformConfig;
+            $(BuildDependsOn);
+        </BuildDependsOn>
+    </PropertyGroup>
+
+    <!-- Name of the configuration file. The valid values are: Web, App. -->
+    <PropertyGroup Condition="'$(ConfigName)' == ''">
+        <ConfigName>Web</ConfigName>
+    </PropertyGroup>
+    
+    <ItemGroup Condition="('$(RunFromCommandLine)' != 'True' )">
+        <TemplateConfig Include="$(MSBuildProjectDirectory)\$(ConfigName).Template.Config" >
+            <ProjectName>$(MSBuildProjectName)</ProjectName>
+            <ConfigName>$(ConfigName)</ConfigName>
+        </TemplateConfig>
+    </ItemGroup>
+    
+    <!--
+	============================================================
+	TransformConfig
+    
+    This target will apply all transformaiton specified in TemplateConfig item group.
+    
+    For each item:
+    1) Check whether specified configuration file (e.g. Web.Template.Config) to transform exists. If not then throw exception. 
+    2) Ensure that temp directory to store config modifications exists. 
+        Currently temp output files are placed to obj\Configuration directory of the specified project.
+    3) Check whether file with XDT transormation (e.g. {ConfigurationName}.Config or {ProjectName}.{ConfigurationName}.Config) exists. 
+        If yes then apply modifications. At first apply {ConfigurationName}.Config file,
+		then specific project transformation in {ProjectName}.{ConfigurationName}.Config,
+		and finally specific project transformation in {ConfigName}.{ConfigurationName}.Config in the project folder.
+    4) Copy transformed config file to project directory.
+    ============================================================
+	-->
+    <Target Name="TransformConfig" Outputs="%(TemplateConfig.Identity)">
+
+        <!-- Path to directory which contains config transformation files. -->
+        <!-- Ensure that paths end with trailing slash. If not then add one to the end.  -->
+        <CreateProperty  Condition="!HasTrailingSlash('$(PathToDirectoryWithTransformationConfigs)')" Value="$(PathToDirectoryWithTransformationConfigs)\">
+            <Output TaskParameter="Value" PropertyName="PathToDirectoryWithTransformationConfigs" />
+        </CreateProperty>
+                
+        <PropertyGroup>
+            <CommonTemplateConfigFilePath>$(PathToDirectoryWithTransformationConfigs)$(ConfigurationName).Config</CommonTemplateConfigFilePath>
+            <ProjectTemplateConfigFilePath>$(PathToDirectoryWithTransformationConfigs)%(TemplateConfig.ProjectName).$(ConfigurationName).Config</ProjectTemplateConfigFilePath>
+			<LocalTemplateConfigFilePath>%(TemplateConfig.RootDir)%(TemplateConfig.Directory)%(TemplateConfig.ConfigName).$(ConfigurationName).Config</LocalTemplateConfigFilePath>
+            <ConfigSourceFilePath>%(TemplateConfig.Identity)</ConfigSourceFilePath>
+            <TransformationDirectoryPath>%(TemplateConfig.RootDir)%(TemplateConfig.Directory)obj\Configuration\</TransformationDirectoryPath>
+            <CommonTransformationOutputPath>$(TransformationDirectoryPath)$(ConfigurationName).Config</CommonTransformationOutputPath>
+            <ProjectTransformationOutputPath>$(TransformationDirectoryPath)%(TemplateConfig.ProjectName).$(ConfigurationName).Config</ProjectTransformationOutputPath>
+            <LocalTransformationOutputPath>$(TransformationDirectoryPath)%(TemplateConfig.ConfigName).$(ConfigurationName).Config</LocalTransformationOutputPath>
+        </PropertyGroup>
+
+        <!-- 1) Check whether configuration file to transform exists. If not then throw exception. -->
+        <Error Condition="!Exists('%(TemplateConfig.Identity)')" Text="File to apply transformation doesn't exist. Expected file path: '%(TemplateConfig.Identity)'." />
+
+        <!-- 2) Ensure that temp directory to store config modifications exists. -->
+        <RemoveDir Condition="Exists('$(TransformationDirectoryPath)')" Directories="$(TransformationDirectoryPath)" />
+        <MakeDir Directories="$(TransformationDirectoryPath)" />
+                        
+        <!-- 3) If file with common XDT transformation exists then apply transformation to template and save changes to output config file. -->
+        <TransformXml
+            Condition="Exists('$(CommonTemplateConfigFilePath)')" 
+            Source="$(ConfigSourceFilePath)" 
+            Transform="$(CommonTemplateConfigFilePath)" 
+            Destination="$(CommonTransformationOutputPath)" />    
+        
+        <PropertyGroup Condition="Exists('$(CommonTemplateConfigFilePath)')">
+            <ConfigSourceFilePath>$(CommonTransformationOutputPath)</ConfigSourceFilePath>
+        </PropertyGroup>
+        
+        <!-- If file with project specific XDT transormation exists then apply transformation to template and save changes to output config file. -->
+        <TransformXml 
+            Condition="Exists('$(ProjectTemplateConfigFilePath)')"  
+            Source="$(ConfigSourceFilePath)" 
+            Transform="$(ProjectTemplateConfigFilePath)" 
+            Destination="$(ProjectTransformationOutputPath)" />  
+        
+        <PropertyGroup Condition="Exists('$(ProjectTemplateConfigFilePath)')">
+            <ConfigSourceFilePath>$(ProjectTransformationOutputPath)</ConfigSourceFilePath>
+        </PropertyGroup>
+		
+        <!-- If file with project specific XDT transormation exists in the project folder then apply transformation to template and save changes to output config file. -->
+        <TransformXml 
+            Condition="Exists('$(LocalTemplateConfigFilePath)')"  
+            Source="$(ConfigSourceFilePath)" 
+            Transform="$(LocalTemplateConfigFilePath)" 
+            Destination="$(LocalTransformationOutputPath)" />
+			
+        <PropertyGroup Condition="Exists('$(LocalTemplateConfigFilePath)')">
+            <ConfigSourceFilePath>$(LocalTransformationOutputPath)</ConfigSourceFilePath>
+        </PropertyGroup>
+        
+        <!-- 4) Copy transformed config file to project directory. -->
+        <Copy SourceFiles="$(ConfigSourceFilePath)" DestinationFiles="%(TemplateConfig.RootDir)%(TemplateConfig.Directory)%(TemplateConfig.ConfigName).Config"></Copy>
+    </Target>
+</Project>

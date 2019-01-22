@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<symbols xmlns="urn:symbols-schema">
+  <symbol id="CREATE_NEW_REQUEST" method="id" identifier="ctl00_ctl00_A_B_btnCreateRequest" />
+  <symbol id="EDIT_NAME" method="id" identifier="ctl00_ctl00_A_B_ucRequestName_btnEditRequestName" />
+  <symbol id="FIRST_QUESTION_FIELD" method="xpath" identifier="//*[@id='efirstquestion']//input" />
+  <symbol id="SIGN_OUT" method="id" identifier="ctl00_ctl00_lnkLogout" />
+  <symbol id="NAME_FIELD" method="id" identifier="ctl00_ctl00_A_B_ucRequestName_txtNewRequestName" />
+  <symbol id="PROCEED" method="id" identifier="ctl00_ctl00_A_B_ucConfirmationsManager_ctl00_OKButton" />
+  <symbol id="REQUESTING_LAWYER_DROPDOWN" method="xpath" identifier="//*[@id='eusersquestion']//select" />
+  <symbol id="SAVE_NAME" method="id" identifier="ctl00_ctl00_A_B_ucRequestName_btnChangeRequestName" />
+  <symbol id="TOP_APPROVE_BUTTON" method="id" identifier="ctl00_ctl00_A_B_ucRequestPageLevelMessages_btnApprove" />
+  <symbol id="TOP_APPROVE_CONFLICTS_BUTTON" method="id" identifier="ctl00_ctl00_A_B_ucRequestPageLevelMessages_btnApproveConflicts" />
+  <symbol id="TOP_SUBMIT_BUTTON" method="id" identifier="ctl00_ctl00_A_B_ucRequestPageLevelMessages_pnlRequestActionsContainer_RequestActions_Approve" />
+</symbols>

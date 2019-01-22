@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<operation id="Upload file" class="XCaseGeneric.ActionFTPPut">
+    <ftp server="hippo" username="ftp" password="" sourcepath="C:/temp" file="main.xml" targetpath="test" binary="false" ssl="false" />
+</operation>
