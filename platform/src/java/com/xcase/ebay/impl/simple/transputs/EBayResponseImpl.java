@@ -1,5 +1,7 @@
 package com.xcase.ebay.impl.simple.transputs;
 
-public class EBayResponseImpl {
+import com.xcase.ebay.transputs.EBayResponse;
+
+public class EBayResponseImpl implements EBayResponse {
 
 }

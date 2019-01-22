@@ -1,6 +1,6 @@
 package com.xcase.ebay.transputs;
 
-public interface InvokeAdvancedActionResponse {
+public interface InvokeAdvancedActionResponse extends EBayResponse {
 
 	public int getResponseCode();
 	
