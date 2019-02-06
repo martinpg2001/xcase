@@ -32,7 +32,7 @@
         public override string GetSwaggerDocument()
         {
             Log.Debug("starting GetSwaggerDocument()");
-            return GetSwaggerDocument("admin/cds/v2/api-docs?group=tenant-dependent");
+            return GetSwaggerDocument("admin/cds/v2/api-docs?group=public-tenant-dependent");
         }
     }
 }
