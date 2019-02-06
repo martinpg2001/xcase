@@ -55,7 +55,7 @@ public class DeleteUserMethod extends BaseBoxMethod {
             LOGGER.debug("created xHTTPMethodHeader header");
             Header[] headers = {header, xHTTPMethodHeader};
             try {
-                String result = httpManager.doStringDelete(usersApiUrl, headers, null);
+                String result = httpManager.doStringDelete(usersApiUrl, headers, null, null, null);
                 LOGGER.info("done delete");
             } catch (Exception e) {
                 LOGGER.debug("failed to parse to a document");

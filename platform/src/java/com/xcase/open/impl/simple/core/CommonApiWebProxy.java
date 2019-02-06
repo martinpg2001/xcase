@@ -106,7 +106,7 @@ public class CommonApiWebProxy extends SwaggerProxy implements ICommonApiWebProx
             Header bearerHeader = new BasicHeader("Authorization", "Bearer " + accessToken);
             Header contentTypeHeader = new BasicHeader("Content-Type", "application/json");
             Header[] headers = new Header[]{acceptHeader, bearerHeader, contentTypeHeader};
-            JsonElement response = apiClient.doJsonDelete(url, headers, null);
+            JsonElement response = apiClient.doJsonDelete(url, headers, null, null);
         } catch (IOException ioe) {
             LOGGER.warn("ioexception invoking method: " + ioe.getMessage());
         } catch (Exception e) {
@@ -193,7 +193,7 @@ public class CommonApiWebProxy extends SwaggerProxy implements ICommonApiWebProx
             Header bearerHeader = new BasicHeader("Authorization", "Bearer " + accessToken);
             Header contentTypeHeader = new BasicHeader("Content-Type", "application/json");
             Header[] headers = new Header[]{acceptHeader, bearerHeader, contentTypeHeader};
-            JsonElement response = apiClient.doJsonDelete(url, headers, null);
+            JsonElement response = apiClient.doJsonDelete(url, headers, null, null);
         } catch (IOException ioe) {
             LOGGER.warn("ioexception invoking method: " + ioe.getMessage());
         } catch (Exception e) {
@@ -280,7 +280,7 @@ public class CommonApiWebProxy extends SwaggerProxy implements ICommonApiWebProx
             Header bearerHeader = new BasicHeader("Authorization", "Bearer " + accessToken);
             Header contentTypeHeader = new BasicHeader("Content-Type", "application/json");
             Header[] headers = new Header[]{acceptHeader, bearerHeader, contentTypeHeader};
-            JsonElement response = apiClient.doJsonDelete(url, headers, null);
+            JsonElement response = apiClient.doJsonDelete(url, headers, null, null);
         } catch (IOException ioe) {
             LOGGER.warn("ioexception invoking method: " + ioe.getMessage());
         } catch (Exception e) {
@@ -379,7 +379,7 @@ public class CommonApiWebProxy extends SwaggerProxy implements ICommonApiWebProx
             Header bearerHeader = new BasicHeader("Authorization", "Bearer " + accessToken);
             Header contentTypeHeader = new BasicHeader("Content-Type", "application/json");
             Header[] headers = new Header[]{acceptHeader, bearerHeader, contentTypeHeader};
-            JsonElement response = apiClient.doJsonDelete(url, headers, null);
+            JsonElement response = apiClient.doJsonDelete(url, headers, null, null);
         } catch (IOException ioe) {
             LOGGER.warn("ioexception invoking method: " + ioe.getMessage());
         } catch (Exception e) {
@@ -466,7 +466,7 @@ public class CommonApiWebProxy extends SwaggerProxy implements ICommonApiWebProx
             Header bearerHeader = new BasicHeader("Authorization", "Bearer " + accessToken);
             Header contentTypeHeader = new BasicHeader("Content-Type", "application/json");
             Header[] headers = new Header[]{acceptHeader, bearerHeader, contentTypeHeader};
-            JsonElement response = apiClient.doJsonDelete(url, headers, null);
+            JsonElement response = apiClient.doJsonDelete(url, headers, null, null);
         } catch (IOException ioe) {
             LOGGER.warn("ioexception invoking method: " + ioe.getMessage());
         } catch (Exception e) {
@@ -564,7 +564,7 @@ public class CommonApiWebProxy extends SwaggerProxy implements ICommonApiWebProx
             Header bearerHeader = new BasicHeader("Authorization", "Bearer " + accessToken);
             Header contentTypeHeader = new BasicHeader("Content-Type", "application/json");
             Header[] headers = new Header[]{acceptHeader, bearerHeader, contentTypeHeader};
-            JsonElement response = apiClient.doJsonDelete(url, headers, null);
+            JsonElement response = apiClient.doJsonDelete(url, headers, null, null);
         } catch (IOException ioe) {
             LOGGER.warn("ioexception invoking method: " + ioe.getMessage());
         } catch (Exception e) {
@@ -674,7 +674,7 @@ public class CommonApiWebProxy extends SwaggerProxy implements ICommonApiWebProx
             Header bearerHeader = new BasicHeader("Authorization", "Bearer " + accessToken);
             Header contentTypeHeader = new BasicHeader("Content-Type", "application/json");
             Header[] headers = new Header[]{acceptHeader, bearerHeader, contentTypeHeader};
-            JsonElement response = apiClient.doJsonDelete(url, headers, null);
+            JsonElement response = apiClient.doJsonDelete(url, headers, null, null);
         } catch (IOException ioe) {
             LOGGER.warn("ioexception invoking method: " + ioe.getMessage());
         } catch (Exception e) {
@@ -780,7 +780,7 @@ public class CommonApiWebProxy extends SwaggerProxy implements ICommonApiWebProx
             Header bearerHeader = new BasicHeader("Authorization", "Bearer " + accessToken);
             Header contentTypeHeader = new BasicHeader("Content-Type", "application/json");
             Header[] headers = new Header[]{acceptHeader, bearerHeader, contentTypeHeader};
-            JsonElement response = apiClient.doJsonDelete(url, headers, null);
+            JsonElement response = apiClient.doJsonDelete(url, headers, null, null);
         } catch (IOException ioe) {
             LOGGER.warn("ioexception invoking method: " + ioe.getMessage());
         } catch (Exception e) {
@@ -878,7 +878,7 @@ public class CommonApiWebProxy extends SwaggerProxy implements ICommonApiWebProx
             Header bearerHeader = new BasicHeader("Authorization", "Bearer " + accessToken);
             Header contentTypeHeader = new BasicHeader("Content-Type", "application/json");
             Header[] headers = new Header[]{acceptHeader, bearerHeader, contentTypeHeader};
-            JsonElement response = apiClient.doJsonDelete(url, headers, null);
+            JsonElement response = apiClient.doJsonDelete(url, headers, null, null);
         } catch (IOException ioe) {
             LOGGER.warn("ioexception invoking method: " + ioe.getMessage());
         } catch (Exception e) {
@@ -972,7 +972,7 @@ public class CommonApiWebProxy extends SwaggerProxy implements ICommonApiWebProx
             Header bearerHeader = new BasicHeader("Authorization", "Bearer " + accessToken);
             Header contentTypeHeader = new BasicHeader("Content-Type", "application/json");
             Header[] headers = new Header[]{acceptHeader, bearerHeader, contentTypeHeader};
-            JsonElement response = apiClient.doJsonDelete(url, headers, null);
+            JsonElement response = apiClient.doJsonDelete(url, headers, null, null);
         } catch (IOException ioe) {
             LOGGER.warn("ioexception invoking method: " + ioe.getMessage());
         } catch (Exception e) {
@@ -1297,7 +1297,7 @@ public class CommonApiWebProxy extends SwaggerProxy implements ICommonApiWebProx
             Header bearerHeader = new BasicHeader("Authorization", "Bearer " + accessToken);
             Header contentTypeHeader = new BasicHeader("Content-Type", "application/json");
             Header[] headers = new Header[]{acceptHeader, bearerHeader, contentTypeHeader};
-            JsonElement response = apiClient.doJsonDelete(url, headers, null);
+            JsonElement response = apiClient.doJsonDelete(url, headers, null, null);
         } catch (IOException ioe) {
             LOGGER.warn("ioexception invoking method: " + ioe.getMessage());
         } catch (Exception e) {
@@ -1399,7 +1399,7 @@ public class CommonApiWebProxy extends SwaggerProxy implements ICommonApiWebProx
             Header bearerHeader = new BasicHeader("Authorization", "Bearer " + accessToken);
             Header contentTypeHeader = new BasicHeader("Content-Type", "application/json");
             Header[] headers = new Header[]{acceptHeader, bearerHeader, contentTypeHeader};
-            JsonElement response = apiClient.doJsonDelete(url, headers, null);
+            JsonElement response = apiClient.doJsonDelete(url, headers, null, null);
         } catch (IOException ioe) {
             LOGGER.warn("ioexception invoking method: " + ioe.getMessage());
         } catch (Exception e) {
@@ -1498,7 +1498,7 @@ public class CommonApiWebProxy extends SwaggerProxy implements ICommonApiWebProx
             Header bearerHeader = new BasicHeader("Authorization", "Bearer " + accessToken);
             Header contentTypeHeader = new BasicHeader("Content-Type", "application/json");
             Header[] headers = new Header[]{acceptHeader, bearerHeader, contentTypeHeader};
-            JsonElement response = apiClient.doJsonDelete(url, headers, null);
+            JsonElement response = apiClient.doJsonDelete(url, headers, null, null);
         } catch (IOException ioe) {
             LOGGER.warn("ioexception invoking method: " + ioe.getMessage());
         } catch (Exception e) {
@@ -1815,7 +1815,7 @@ public class CommonApiWebProxy extends SwaggerProxy implements ICommonApiWebProx
             Header bearerHeader = new BasicHeader("Authorization", "Bearer " + accessToken);
             Header contentTypeHeader = new BasicHeader("Content-Type", "application/json");
             Header[] headers = new Header[]{acceptHeader, bearerHeader, contentTypeHeader};
-            JsonElement response = apiClient.doJsonDelete(url, headers, null);
+            JsonElement response = apiClient.doJsonDelete(url, headers, null, null);
         } catch (IOException ioe) {
             LOGGER.warn("ioexception invoking method: " + ioe.getMessage());
         } catch (Exception e) {
@@ -1880,7 +1880,7 @@ public class CommonApiWebProxy extends SwaggerProxy implements ICommonApiWebProx
             Header bearerHeader = new BasicHeader("Authorization", "Bearer " + accessToken);
             Header contentTypeHeader = new BasicHeader("Content-Type", "application/json");
             Header[] headers = new Header[]{acceptHeader, bearerHeader, contentTypeHeader};
-            JsonElement response = apiClient.doJsonDelete(url, headers, null);
+            JsonElement response = apiClient.doJsonDelete(url, headers, null, null);
         } catch (IOException ioe) {
             LOGGER.warn("ioexception invoking method: " + ioe.getMessage());
         } catch (Exception e) {
@@ -1969,7 +1969,7 @@ public class CommonApiWebProxy extends SwaggerProxy implements ICommonApiWebProx
             Header bearerHeader = new BasicHeader("Authorization", "Bearer " + accessToken);
             Header contentTypeHeader = new BasicHeader("Content-Type", "application/json");
             Header[] headers = new Header[]{acceptHeader, bearerHeader, contentTypeHeader};
-            JsonElement response = apiClient.doJsonDelete(url, headers, null);
+            JsonElement response = apiClient.doJsonDelete(url, headers, null, null);
         } catch (IOException ioe) {
             LOGGER.warn("ioexception invoking method: " + ioe.getMessage());
         } catch (Exception e) {
@@ -2070,7 +2070,7 @@ public class CommonApiWebProxy extends SwaggerProxy implements ICommonApiWebProx
             Header bearerHeader = new BasicHeader("Authorization", "Bearer " + accessToken);
             Header contentTypeHeader = new BasicHeader("Content-Type", "application/json");
             Header[] headers = new Header[]{acceptHeader, bearerHeader, contentTypeHeader};
-            JsonElement response = apiClient.doJsonDelete(url, headers, null);
+            JsonElement response = apiClient.doJsonDelete(url, headers, null, null);
         } catch (IOException ioe) {
             LOGGER.warn("ioexception invoking method: " + ioe.getMessage());
         } catch (Exception e) {
@@ -2715,7 +2715,7 @@ public class CommonApiWebProxy extends SwaggerProxy implements ICommonApiWebProx
             Header bearerHeader = new BasicHeader("Authorization", "Bearer " + accessToken);
             Header contentTypeHeader = new BasicHeader("Content-Type", "application/json");
             Header[] headers = new Header[]{acceptHeader, bearerHeader, contentTypeHeader};
-            JsonElement response = apiClient.doJsonDelete(url, headers, null);
+            JsonElement response = apiClient.doJsonDelete(url, headers, null, null);
         } catch (IOException ioe) {
             LOGGER.warn("ioexception invoking method: " + ioe.getMessage());
         } catch (Exception e) {

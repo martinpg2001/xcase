@@ -69,7 +69,7 @@ public class DeleteMembershipMethod extends BaseBoxMethod {
             Header[] headers = {header, xHTTPMethodHeader};
             LOGGER.debug("set headers");
             try {
-                String result = httpManager.doStringDelete(groupMembershipsApiUrl, headers, null);
+                String result = httpManager.doStringDelete(groupMembershipsApiUrl, headers, null, null, null);
                 LOGGER.info("done delete");
             } catch (Exception e) {
                 LOGGER.debug("failed to parse to a document");

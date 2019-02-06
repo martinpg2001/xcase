@@ -57,7 +57,7 @@ public class DeleteRecordMethod extends BaseSalesforceMethod {
         Header[] headers = {header};
         List<NameValuePair> parameters = new ArrayList<NameValuePair>();
         try {
-            JsonElement jsonElement = httpManager.doJsonDelete(accountApiUrl, headers, parameters);
+            JsonElement jsonElement = httpManager.doJsonDelete(accountApiUrl, headers, parameters, null);
             if (!jsonElement.isJsonNull()) {
                 LOGGER.debug("jsonElement is " + jsonElement.toString());
             } else {

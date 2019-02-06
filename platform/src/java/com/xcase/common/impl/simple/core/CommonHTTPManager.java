@@ -416,11 +416,6 @@ public class CommonHTTPManager implements AutoCloseable {
 	    return doCommonHttpResponseMethod("DELETE", url, headers, parameters, entityString, credentials);
 	}
 
-	public CommonHttpResponse doCommonHttpResponseDelete(String url, Header[] headers, List<NameValuePair> parameters) throws Exception, IOException {
-	    LOGGER.debug("starting doCommonHttpResponseDelete()");
-	    return doCommonHttpResponseDelete(url, headers, parameters, null);
-	}
-
 	public CommonHttpResponse doCommonHttpResponseDelete(String url, Header[] headers, List<NameValuePair> parameters, Credentials credentials) throws Exception, IOException {
 	    LOGGER.debug("starting doCommonHttpResponseDelete()");
 	    return doCommonHttpResponseMethod("DELETE", url, headers, parameters, null, credentials);
@@ -644,19 +639,6 @@ public class CommonHTTPManager implements AutoCloseable {
 	    return doHttpResponseMethod("DELETE", url, headers, parameters, null, null);
 	}
 
-	/**
-	 * http get method, returns the HttpResponse.
-	 *
-	 * @param url http URL
-	 * @return HttpResponse response
-	 * @throws IOException io exception
-	 * @throws DocumentException document exception
-	 */
-	public HttpResponse doHttpResponseGet(String url) throws Exception, IOException {
-	    LOGGER.debug("starting doHttpResponseGet()");
-	    return doHttpResponseMethod("GET", url, null, null, null, null);
-	}
-
 	public HttpResponse doHttpResponseGet(String url, Header[] headers, List<NameValuePair> parameters, Credentials credentials) throws Exception, IOException {
 	    LOGGER.debug("starting doHttpResponseGet()");
 	    return doHttpResponseMethod("GET", url, headers, parameters, null, credentials);
@@ -874,22 +856,6 @@ public class CommonHTTPManager implements AutoCloseable {
 	    return jsonElement;
 	}
 
-	public JsonElement doJsonDelete(String url, Header[] headers, List<NameValuePair> parameters) throws Exception, IOException {
-	    LOGGER.debug("starting doJsonDelete()");
-	    JsonElement jsonElement = null;
-	    try {
-	        String responseBodyString = doStringDelete(url, headers, parameters);
-	        jsonElement = ConverterUtils.parseStringToJson(responseBodyString);
-	    } catch (Exception e) {
-	        LOGGER.warn("exception doing DELETE: " + e.getMessage());
-	        throw e;
-	    } finally {
-	        LOGGER.debug("finally...");
-	    }
-	
-	    return jsonElement;
-	}
-
 	public JsonElement doJsonGet(String url, Header[] headers, List<NameValuePair> parameters) throws Exception, IOException {
 	    LOGGER.debug("starting doJsonGet()");
 	    try {
@@ -924,18 +890,6 @@ public class CommonHTTPManager implements AutoCloseable {
 	    LOGGER.debug("starting doJsonPatch()");
 	    try {
 	        return doJsonPatch(url, headers, parameters, entityString, null);
-	    } catch (Exception e) {
-	        LOGGER.warn("exception doing PATCH: " + e.getMessage());
-	        throw e;
-	    } finally {
-	        LOGGER.debug("finally...");
-	    }
-	}
-
-	public JsonElement doJsonPatch(String url, Header[] headers, List<NameValuePair> parameters) throws Exception, IOException {
-	    LOGGER.debug("starting doJsonPatch()");
-	    try {
-	        return doJsonPatch(url, headers, parameters, null, null);
 	    } catch (Exception e) {
 	        LOGGER.warn("exception doing PATCH: " + e.getMessage());
 	        throw e;
@@ -1244,29 +1198,6 @@ public class CommonHTTPManager implements AutoCloseable {
 	    LOGGER.debug("starting doStringDelete()");
 	    String responseEntityString = null;
 	    CommonHttpResponse commonHttpResponse = doCommonHttpResponseDelete(url, headers, parameters, entityString, credentials);
-	    if (commonHttpResponse != null) {
-	        LOGGER.debug("commonHttpResponse is not null");
-	        HttpEntity httpEntity = commonHttpResponse.getResponseEntity();
-	        LOGGER.debug("got httpEntity");
-	        if (httpEntity != null) {
-	            LOGGER.debug("httpEntity is not null");
-	            responseEntityString = commonHttpResponse.getResponseEntityString();
-	            LOGGER.debug("responseEntityString is " + responseEntityString);
-	            return responseEntityString;
-	        } else {
-	            LOGGER.debug("httpEntity is null");
-	        }
-	    } else {
-	        LOGGER.debug("commonHttpResponse is null");
-	    }
-	
-	    return responseEntityString;
-	}
-
-	public String doStringDelete(String url, Header[] headers, List<NameValuePair> parameters) throws Exception, IOException {
-	    LOGGER.debug("starting doStringDelete()");
-	    String responseEntityString = null;
-	    CommonHttpResponse commonHttpResponse = doCommonHttpResponseDelete(url, headers, parameters);
 	    if (commonHttpResponse != null) {
 	        LOGGER.debug("commonHttpResponse is not null");
 	        HttpEntity httpEntity = commonHttpResponse.getResponseEntity();

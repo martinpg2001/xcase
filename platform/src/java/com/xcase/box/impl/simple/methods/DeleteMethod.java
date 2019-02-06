@@ -85,7 +85,7 @@ public class DeleteMethod extends BaseBoxMethod {
             }
 
             try {
-                JsonElement jsonElement = httpManager.doJsonDelete(filesApiUrl, headers, parameters);
+                JsonElement jsonElement = httpManager.doJsonDelete(filesApiUrl, headers, parameters, null, null);
                 if (jsonElement.isJsonNull()) {
                     LOGGER.debug("jsonElement is JsonNull");
                 } else {

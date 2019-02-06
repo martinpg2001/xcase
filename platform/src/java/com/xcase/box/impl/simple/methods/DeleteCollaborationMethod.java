@@ -59,7 +59,7 @@ public class DeleteCollaborationMethod extends BaseBoxMethod {
             LOGGER.debug("created xHTTPMethodHeader header");
             Header[] headers = {header, xHTTPMethodHeader};
             try {
-                String result = httpManager.doStringDelete(collaborationUrl, headers, null);
+                String result = httpManager.doStringDelete(collaborationUrl, headers, null, null, null);
                 LOGGER.info("done delete");
             } catch (Exception e) {
                 LOGGER.debug("failed to parse to a document");
