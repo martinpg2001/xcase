@@ -157,7 +157,7 @@ public class RefreshAccessTokenMethod extends BaseBoxMethod {
             actionElm.setText(BoxConstant.ACTION_NAME_GET_ACCESS_TOKEN);
             apiKeyElm.setText(apiKey);
             try {
-                String result = httpManager.doStringPost(xmlApiUrl, document.asXML());
+                String result = httpManager.doStringPost(xmlApiUrl, null, null, document.asXML(), null);
                 LOGGER.debug("result is " + result);
                 Document doc = DocumentHelper.parseText(result);
                 Element responseElement = doc.getRootElement();

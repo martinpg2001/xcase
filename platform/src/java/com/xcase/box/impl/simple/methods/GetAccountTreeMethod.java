@@ -133,7 +133,7 @@ public class GetAccountTreeMethod extends BaseBoxMethod {
             }
 
             try {
-                String result = httpManager.doStringPost(xmlApiUrl, document.asXML());
+                String result = httpManager.doStringPost(xmlApiUrl, null, null, document.asXML(), null);
                 Document doc = DocumentHelper.parseText(result);
                 Element responseElm = doc.getRootElement();
                 Element statusElm = responseElm.element(BoxConstant.PARAM_NAME_STATUS);

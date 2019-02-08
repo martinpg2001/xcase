@@ -117,7 +117,7 @@ public class RenameMethod extends BaseSharepointMethod {
             targetIdElm.setText(targetId);
             newNameElm.setText(newName);
             try {
-                String result = httpManager.doStringPost(xmlApiUrl, document.asXML());
+                String result = httpManager.doStringPost(xmlApiUrl, null, null, document.asXML(), null);
                 Document doc = DocumentHelper.parseText(result);
                 Element responseElm = doc.getRootElement();
                 Element statusElm = responseElm.element(SharepointConstant.PARAM_NAME_STATUS);

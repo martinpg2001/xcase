@@ -122,7 +122,7 @@ public class GetAuthTokenMethod extends BaseSharepointMethod {
             apiKeyElm.setText(apiKey);
             ticketElm.setText(ticket);
             try {
-                String result = httpManager.doStringPost(xmlApiUrl, document.asXML());
+                String result = httpManager.doStringPost(xmlApiUrl, null, null, document.asXML(), null);
                 LOGGER.debug("result is " + result);
                 Document doc = DocumentHelper.parseText(result);
                 Element responseElement = doc.getRootElement();

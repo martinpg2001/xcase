@@ -120,7 +120,7 @@ public class DownloadMethod extends BaseSharepointMethod {
             actionElm.setText(SharepointConstant.ACTION_NAME_GET_FILE_INFO);
             fileIdElm.setText(fileId);
             try {
-                String result = httpManager.doStringPost(xmlApiUrl, document.asXML());
+                String result = httpManager.doStringPost(xmlApiUrl, null, null, document.asXML(), null);
                 Document doc = DocumentHelper.parseText(result);
                 Element responseElm = doc.getRootElement();
                 Element statusElm = responseElm.element(SharepointConstant.PARAM_NAME_STATUS);

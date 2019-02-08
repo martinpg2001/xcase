@@ -80,7 +80,7 @@ public class GetTicketMethod extends BaseSharepointMethod {
             apiKeyElm.setText(apiKey);
             LOGGER.debug("xmlApiUrl is " + xmlApiUrl);
             try {
-                String result = httpManager.doStringPost(xmlApiUrl, document.asXML());
+                String result = httpManager.doStringPost(xmlApiUrl, null, null, document.asXML(), null);
                 Document doc = DocumentHelper.parseText(result);
                 Element responseElm = doc.getRootElement();
                 Element statusElm = responseElm.element(SharepointConstant.PARAM_NAME_STATUS);
@@ -103,7 +103,7 @@ public class GetTicketMethod extends BaseSharepointMethod {
             actionElm.add(apiKeyElm);
             apiKeyElm.setText(apiKey);
             try {
-                String result = httpManager.doStringPost(soapApiUrl, document.asXML());
+                String result = httpManager.doStringPost(soapApiUrl, null, null, document.asXML(), null);
                 Document doc = DocumentHelper.parseText(result);
                 Element responseElm = doc.elementByID("ns4:" + SharepointConstant.ACTION_NAME_GET_TICKET + "Response");
                 Element statusElm = responseElm.element(SharepointConstant.PARAM_NAME_STATUS);

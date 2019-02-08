@@ -126,7 +126,7 @@ public class GetAuthorizationMethod extends BaseBoxMethod {
             requestElm.add(clientIDElm);
             LOGGER.debug("xmlOAuthApiUrl is " + xmlOAuthApiUrl);
             try {
-                String result = httpManager.doStringPost(xmlOAuthApiUrl, document.asXML());
+                String result = httpManager.doStringPost(xmlOAuthApiUrl, null, null, document.asXML(), null);
                 LOGGER.debug("result is " + result);
                 Document doc = DocumentHelper.parseText(result);
                 Element responseElement = doc.getRootElement();
