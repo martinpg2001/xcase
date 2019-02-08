@@ -161,7 +161,6 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
     /**
      * Auto generated method signature This is the login operation.
      *
-     * @see com.xcase.webservice.WebService#login
      * @param login
      */
     public com.xcase.webservice.WebServiceStub.LoginResponse login(
@@ -276,7 +275,6 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
     /**
      * Auto generated method signature This is the get status operation.
      *
-     * @see com.xcase.webservice.WebService#getStatus
      * @param getStatus
      */
     public com.xcase.webservice.WebServiceStub.GetStatusResponse getStatus(
@@ -392,7 +390,6 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
      * Auto generated method signature This is the asynchronous operation for
      * rule 'Web Service Rule'.
      *
-     * @see com.xcase.webservice.WebService#invokeAsyncWebService
      * @param invokeAsyncWebService
      */
     public com.xcase.webservice.WebServiceStub.InvokeAsyncWebServiceResponse invokeAsyncWebService(
@@ -510,7 +507,6 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
      * Auto generated method signature This is the get result operation for rule
      * 'Web Service Rule'.
      *
-     * @see com.xcase.webservice.WebService#getResultForWebService
      * @param getResultForWebService
      */
     public com.xcase.webservice.WebServiceStub.GetResultForWebServiceResponse getResultForWebService(
@@ -723,7 +719,6 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
      * Auto generated method signature This is the synchronous operation for
      * rule 'Web Service Rule'.
      *
-     * @see com.xcase.webservice.WebService#invokeSyncWebService
      * @param invokeSyncWebService
      */
     public com.xcase.webservice.WebServiceStub.InvokeSyncWebServiceResponse invokeSyncWebService(

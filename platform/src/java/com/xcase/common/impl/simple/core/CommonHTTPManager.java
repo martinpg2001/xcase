@@ -1316,19 +1316,6 @@ public class CommonHTTPManager implements AutoCloseable {
         return doStringPost(url, headers, parameters, entityString, null);
     }
 
-    /**
-     * post Json data to url.
-     *
-     * @param url http URL
-     * @param postData string of json
-     * @return string response
-     * @throws IOException IOException
-     */
-//    public String doStringPost(String url, String postData) throws Exception, IOException {
-//        LOGGER.debug("starting doStringPost()");
-//        return doStringPost(url, null, null, postData, null);
-//    }
-
     public String doStringPost(String url, Credentials credentials) throws Exception, IOException {
         LOGGER.debug("starting doStringPost()");
         return doStringPost(url, null, null, null, credentials);

@@ -29,8 +29,12 @@ public class ExportTagsMethod extends BaseSharepointMethod {
      * will be base64 encoded tags xml. After decoding tag_xml you will get xml
      * like this:
      *
+     * {@code
      * <?xml version="1.0"?> <tags> <tag id="37"> music </tag> <tag id="38"> mp3
-     * </tag> </tags> If the result wasn't successful, status field can be:
+     * </tag> </tags> 
+     * }
+     * 
+     * If the result wasn't successful, status field can be:
      * not_logged_id, application_restricted.
      *
      * @param exportTagsRequest request
