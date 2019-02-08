@@ -62,7 +62,7 @@ public class GetAuthorizationMethod extends BaseSharepointMethod {
             try {
                 String urlString = urlBuff.toString();
                 LOGGER.debug("urlString is " + urlString);
-                String entityString = httpManager.doStringGet(urlBuff.toString());
+                String entityString = httpManager.doStringGet(urlBuff.toString(), null, null, null);
                 Document doc = DocumentHelper.parseText(entityString);
                 LOGGER.debug("done Get");
                 Element responseElement = doc.getRootElement();

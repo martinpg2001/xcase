@@ -74,7 +74,7 @@ public class SetDescriptionMethod extends BaseSharepointMethod {
             urlBuff.append(CommonConstant.EQUALS_SIGN_STRING);
             urlBuff.append(description);
             try {
-                String entityString = httpManager.doStringGet(urlBuff.toString());
+                String entityString = httpManager.doStringGet(urlBuff.toString(), null, null, null);
                 Document doc = DocumentHelper.parseText(entityString);
                 Element responseElm = doc.getRootElement();
                 Element statusElm = responseElm.element(SharepointConstant.PARAM_NAME_STATUS);

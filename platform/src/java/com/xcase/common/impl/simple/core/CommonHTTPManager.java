@@ -793,12 +793,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	    return doHttpResponseMethod("PATCH", url, headers, parameters, entityString, credentials);
 	}
 
-	public HttpResponse doHttpResponsePost(String url, List<NameValuePair> nvpList, Credentials credentials) throws Exception, IOException {
-        LOGGER.debug("starting doHttpResponsePost()");
-        return doHttpResponsePost(url, null, nvpList, null, credentials);
-    }
-
-    /**
+	/**
      * This is the core method used to perform HTTP Posts.
      *
      * @param url
@@ -1215,19 +1210,6 @@ public class CommonHTTPManager implements AutoCloseable {
 	    }
 	
 	    return responseEntityString;
-	}
-
-	/**
-	 * http get method, get a XML result.
-	 *
-	 * @param url http URL
-	 * @return XML result
-	 * @throws IOException io exception
-	 * @throws DocumentException document exception
-	 */
-	public String doStringGet(String url) throws Exception, IOException {
-	    LOGGER.debug("starting doStringGet()");
-	    return doStringGet(url, null, null, null);
 	}
 
 	public String doStringGet(String url, Header[] headers, List<NameValuePair> parameters, Credentials credentials) throws Exception, IOException {

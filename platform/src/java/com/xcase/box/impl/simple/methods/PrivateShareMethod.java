@@ -103,7 +103,7 @@ public class PrivateShareMethod extends BaseBoxMethod {
             urlBuff.append(CommonConstant.EQUALS_SIGN_STRING);
             urlBuff.append(String.valueOf(notify));
             try {
-                String entityString = httpManager.doStringGet(urlBuff.toString());
+                String entityString = httpManager.doStringGet(urlBuff.toString(), null, null, null);
                 Document doc = DocumentHelper.parseText(entityString);
                 Element responseElm = doc.getRootElement();
                 Element statusElm = responseElm.element(BoxConstant.PARAM_NAME_STATUS);

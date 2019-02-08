@@ -573,7 +573,7 @@ public abstract class RESTProxyGenerator implements IProxyGenerator {
     public void getEndpointDoc(String requestUri, IAPIProxySettingsEndpoint endPoint) throws Exception {
 //        LOGGER.debug("starting getEndpointSwaggerDoc()");
         CommonHTTPManager commonHTTPManager = CommonHTTPManager.refreshCommonHTTPManager();
-        String swaggerString = commonHTTPManager.doStringGet(requestUri);
+        String swaggerString = commonHTTPManager.doStringGet(requestUri, null, null, null);
         if (swaggerString == null) {
             throw new Exception("Error downloading from: " + endPoint.getUrl());
         }
