@@ -10,7 +10,7 @@
             "args": [],
             "cwd": "${workspaceRoot}",
             "stopAtEntry": false,
-            "console": "internalConsole"
+            "console": "integratedTerminal"
         },
         {
             "name": ".NET Core Launch (console) XCaseFormsApplication",

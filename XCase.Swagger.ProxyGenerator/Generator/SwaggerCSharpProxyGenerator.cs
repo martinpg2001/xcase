@@ -412,15 +412,18 @@
             string httpRequestMessage = string.Format("HttpRequestMessage httpRequestMessage = new HttpRequestMessage() {{RequestUri = new Uri(requestURL), Method = {0}}};", httpMethod);
             Log.DebugFormat("httpRequestMessage is {0}", httpRequestMessage);
             WriteLine(proxyStringBuilder, httpRequestMessage);
-            WriteLine(proxyStringBuilder, "httpRequestMessage.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(\"application/json\"));");
+            //WriteLine(proxyStringBuilder, "httpRequestMessage.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(\"application/json\"));");
+            WriteLine(proxyStringBuilder, "httpRequestMessage.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(\"application/vnd.intapp+json\"));");
             WriteLine(proxyStringBuilder, "httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue(\"Bearer\", token);");
-            WriteLine(proxyStringBuilder, "httpRequestMessage.Headers.Add(\"IntegrateAuthenticationToken\", token);");
+            //WriteLine(proxyStringBuilder, "httpRequestMessage.Headers.Add(\"IntegrateAuthenticationToken\", token);");
             Parameter bodyParameter = operation.Parameters.FirstOrDefault(p => p.ParameterIn == ParameterIn.Body);
             if (bodyParameter != null && method != "GET")
             {
                 Log.DebugFormat("bodyParameter is not null and method is {0}", method);
+                WriteLine(proxyStringBuilder, "JsonSerializerSettings settings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };");
                 string bodyParameterTypeName = bodyParameter.Type.GetCleanTypeName();
                 WriteLine(proxyStringBuilder, string.Format("string bodyJson = JsonConvert.SerializeObject({0});", bodyParameterTypeName));
+                //WriteLine(proxyStringBuilder, string.Format("string bodyJson = JsonConvert.SerializeObject({0}, settings);", bodyParameterTypeName));
                 WriteLine(proxyStringBuilder, "Log.DebugFormat(\"bodyJson is {0}\", bodyJson);");
                 WriteLine(proxyStringBuilder, "httpRequestMessage.Content = new StringContent(bodyJson, Encoding.UTF8, \"application/json\");");
             }
