@@ -40,7 +40,7 @@ public class OpenConstant {
      */
     public static final String LOCAL_OAUTH2_AUTHORIZATION_CODE = "open.config.api.oauth2_authorization_code";
     
-        /**
+    /**
      * local config authorization code
      */
     public static final String LOCAL_OAUTH2_AUTHORIZATION_URL = "open.config.api.oauth2_authorization_url";

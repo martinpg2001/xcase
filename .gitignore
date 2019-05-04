@@ -236,3 +236,4 @@ platform/target/maven-status/maven-compiler-plugin/compile/default-compile/creat
 platform/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
 platform/settings.xml
 platform/ebay-local-config.properties
+platform/cds-users-local-config.properties
