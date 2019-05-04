@@ -31,4 +31,9 @@ public class CDSUsersConstant {
      * Token url
      */
     public static final String CONFIG_TOKEN_URL = "cds.users.token.url";
+
+    /**
+     * Base url
+     */
+    public static final String API_VERSION_URL = "cds.users.api.version.url";
 }

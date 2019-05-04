@@ -12,8 +12,14 @@ import com.xcase.common.utils.ConverterUtils;
 import com.xcase.intapp.cdsusers.CDSUsersExternalAPI;
 import com.xcase.intapp.cdsusers.SimpleCDSUsersImpl;
 import com.xcase.intapp.cdsusers.constant.CDSUsersConstant;
+import com.xcase.intapp.cdsusers.factories.CDSUsersRequestFactory;
 import com.xcase.intapp.cdsusers.impl.simple.core.CDSUsersConfigurationManager;
+import com.xcase.intapp.cdsusers.transputs.GetClientSecurityRequest;
+import com.xcase.intapp.cdsusers.transputs.GetClientSecurityResponse;
 import com.xcase.integrate.constant.IntegrateConstant;
+import com.xcase.integrate.factories.IntegrateRequestFactory;
+import com.xcase.integrate.transputs.GetAllDatasourcesRequest;
+import com.xcase.integrate.transputs.GetAllDatasourcesResponse;
 
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
@@ -38,6 +44,13 @@ public class CDSUsersApplication {
         LOGGER.debug("created cdsUsersExternalAPI");
         try {
             generateTokenPair();
+            LOGGER.debug("about to get client security");
+            String accessToken = CDSUsersConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(CDSUsersConstant.ACCESS_TOKEN);
+            GetClientSecurityRequest getClientSecurityRequest = CDSUsersRequestFactory.createGetClientSecurityRequest(accessToken);
+            LOGGER.debug("created getClientSecurityRequest");
+            getClientSecurityRequest.setClientId("10001");
+            GetClientSecurityResponse getClientSecurityResponse = cdsUsersExternalAPI.getClientSecurity(getClientSecurityRequest);
+            LOGGER.debug("got client security");
         } catch (Exception e) {
             LOGGER.warn("exception executing methods: " + e.getMessage());
         }
@@ -72,6 +85,13 @@ public class CDSUsersApplication {
         LOGGER.debug("got response status code " + swaggerHttpResponse.getResponseCode());
         String swaggerResponseEntityString = swaggerHttpResponse.getResponseEntityString();
         LOGGER.debug("swaggerResponseEntityString is " + swaggerResponseEntityString);
+        JsonObject swaggerEntityJsonObject = (JsonObject) ConverterUtils.parseStringToJson(swaggerResponseEntityString);
+        String host = swaggerEntityJsonObject.get("host").getAsString();
+        LOGGER.debug("host is " + host);
+        String basePath = swaggerEntityJsonObject.get("basePath").getAsString();
+        LOGGER.debug("basePath is " + basePath);
+        CDSUsersConfigurationManager.getConfigurationManager().getLocalConfig().setProperty(CDSUsersConstant.API_VERSION_URL, "https://" + host + "/" + basePath);
+        CDSUsersConfigurationManager.getConfigurationManager().storeLocalConfigProperties();
 	}
 	
     public static Header createAcceptHeader() {
