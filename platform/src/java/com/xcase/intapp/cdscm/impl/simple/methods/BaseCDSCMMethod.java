@@ -33,7 +33,7 @@ public class BaseCDSCMMethod {
     }
 
     public Header createAcceptHeader() {
-        String acceptHeader = "application/json";
+        String acceptHeader = "application/vnd.intapp+json";
         LOGGER.debug("acceptHeader is " + acceptHeader);
         return new BasicHeader("Accept", acceptHeader);
     }
@@ -45,7 +45,7 @@ public class BaseCDSCMMethod {
     }
 
     public Header createCDSCMAuthenticationTokenHeader(String accessToken) {
-        return new BasicHeader(CDSCMConfigurationManager.getConfigurationManager().getConfig().getProperty(CDSCMConstant.CONFIG_API_AUTHENTICATION_HEADER), accessToken);
+        return new BasicHeader(CDSCMConfigurationManager.getConfigurationManager().getConfig().getProperty(CDSCMConstant.CONFIG_API_AUTHENTICATION_HEADER), "Bearer " + accessToken);
     }
 
     public void handleUnexpectedResponseCode(CDSCMResponse response, CommonHttpResponse commonHttpResponse) {
