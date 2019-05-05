@@ -30,6 +30,8 @@ public class DeleteClientMethod extends BaseCDSCMMethod {
             LOGGER.debug("baseVersionUrl is " + baseVersionUrl);
             String clientId = request.getClientId();
             endPoint = baseVersionUrl + request.getOperationPath();
+            endPoint = endPoint.replace("{clientId}", clientId);
+            LOGGER.debug("endPoint is " + endPoint);
             String accessToken = request.getAccessToken();
             LOGGER.debug("accessToken is " + accessToken);
             Header authorizationHeader = createCDSCMAuthenticationTokenHeader(accessToken);
@@ -38,7 +40,7 @@ public class DeleteClientMethod extends BaseCDSCMMethod {
             Header contentTypeHeader = createContentTypeHeader();
             Header authenticationToken = new BasicHeader("IntegrateAuthenticationToken", accessToken);
             Header[] headers = {acceptHeader, authenticationToken, authorizationHeader, contentTypeHeader};
-            CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponseGet(endPoint, headers, null, null);
+            CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponseDelete(endPoint, headers, null, null);
             int responseCode = commonHttpResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
             response.setResponseCode(responseCode);

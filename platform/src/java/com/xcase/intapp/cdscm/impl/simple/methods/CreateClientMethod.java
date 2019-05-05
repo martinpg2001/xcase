@@ -37,7 +37,8 @@ public class CreateClientMethod extends BaseCDSCMMethod {
             Header contentTypeHeader = createContentTypeHeader();
             Header authenticationToken = new BasicHeader("IntegrateAuthenticationToken", accessToken);
             Header[] headers = {acceptHeader, authenticationToken, authorizationHeader, contentTypeHeader};
-            CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponseGet(endPoint, headers, null, null);
+            String entityString = "{\"clientId\":\"66666\",\"name\":\"Underture Science\",\"status\":\"ACTIVE\",\"description\":\"\",\"closedOn\":\"\",\"dunsNumber\":\"\",\"rounding\":null,\"timeNote\":\"\",\"billableStatus\":\"\",\"industry\":\"\",\"clientPersons\":[],\"externalIdentifiers\":[],\"lcidDictionary\":\"\",\"ebillinghubValidation\":\"\",\"timelinks\":{},\"openedOn\":\"\",\"_pricingAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"_experienceAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"_timeAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"security\":{\"defaultAccess\":255,\"users\":[]}}\r\n";
+            CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponsePost(endPoint, headers, null, entityString, null);
             int responseCode = commonHttpResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
             response.setResponseCode(responseCode);

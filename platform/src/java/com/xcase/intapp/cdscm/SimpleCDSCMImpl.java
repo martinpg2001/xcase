@@ -4,10 +4,8 @@ import java.lang.invoke.MethodHandles;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.xcase.intapp.cdscm.impl.simple.core.CDSCMConfigurationManager;
-import com.xcase.intapp.cdscm.impl.simple.methods.GetClientSecurityMethod;
-import com.xcase.intapp.cdscm.transputs.GetClientSecurityRequest;
-import com.xcase.intapp.cdscm.transputs.GetClientSecurityResponse;
-import com.xcase.integrate.impl.simple.methods.CreateAccessTokenMethod;
+import com.xcase.intapp.cdscm.impl.simple.methods.*;
+import com.xcase.intapp.cdscm.transputs.*;
 
 public class SimpleCDSCMImpl implements CDSCMExternalAPI {
     /**
@@ -20,13 +18,43 @@ public class SimpleCDSCMImpl implements CDSCMExternalAPI {
     public CDSCMConfigurationManager localConfigurationManager = CDSCMConfigurationManager.getConfigurationManager();
 
     /**
-     * integrate action implementation.
+     * method implementation.
+     */
+    private CreateClientMethod createClientMethod = new CreateClientMethod();
+
+    @Override
+    public CreateClientResponse createClient(CreateClientRequest createClientRequest) {
+        return this.createClientMethod.createClient(createClientRequest);
+    }
+    
+    /**
+     * method implementation.
+     */
+    private DeleteClientMethod deleteClientMethod = new DeleteClientMethod();
+
+    @Override
+    public DeleteClientResponse deleteClient(DeleteClientRequest deleteClientRequest) {
+        return this.deleteClientMethod.deleteClient(deleteClientRequest);
+    }
+    
+    /**
+     * method implementation.
      */
     private GetClientSecurityMethod getClientSecurityMethod = new GetClientSecurityMethod();
 
     @Override
     public GetClientSecurityResponse getClientSecurity(GetClientSecurityRequest getClientSecurityRequest) {
         return this.getClientSecurityMethod.getClientSecurity(getClientSecurityRequest);
+    }
+    
+    /**
+     * method implementation.
+     */
+    private PutClientSecurityMethod putClientSecurityMethod = new PutClientSecurityMethod();
+
+    @Override
+    public PutClientSecurityResponse putClientSecurity(PutClientSecurityRequest putClientSecurityRequest) {
+        return this.putClientSecurityMethod.putClientSecurity(putClientSecurityRequest);
     }
 
 }

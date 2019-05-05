@@ -4,7 +4,7 @@ import com.xcase.intapp.cdscm.transputs.GetClientSecurityRequest;
 
 public class GetClientSecurityRequestImpl extends CDSCMRequestImpl implements GetClientSecurityRequest {
     private String clientId;
-    private String operationPath = "api/v1/clients/10001/security";
+    private String operationPath = "api/v1/clients/{clientId}/security";
 
     @Override
     public String getClientId() {

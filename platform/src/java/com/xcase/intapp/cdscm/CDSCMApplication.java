@@ -9,12 +9,7 @@ import com.xcase.intapp.cdscm.SimpleCDSCMImpl;
 import com.xcase.intapp.cdscm.constant.CDSCMConstant;
 import com.xcase.intapp.cdscm.factories.CDSCMRequestFactory;
 import com.xcase.intapp.cdscm.impl.simple.core.CDSCMConfigurationManager;
-import com.xcase.intapp.cdscm.transputs.GetClientSecurityRequest;
-import com.xcase.intapp.cdscm.transputs.GetClientSecurityResponse;
-import com.xcase.integrate.constant.IntegrateConstant;
-import com.xcase.integrate.factories.IntegrateRequestFactory;
-import com.xcase.integrate.transputs.GetAllDatasourcesRequest;
-import com.xcase.integrate.transputs.GetAllDatasourcesResponse;
+import com.xcase.intapp.cdscm.transputs.*;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
@@ -38,17 +33,35 @@ public class CDSCMApplication {
      */
     public static void main(String[] args) {
         LOGGER.debug("starting main()");
-        CDSCMExternalAPI CDSCMExternalAPI = new SimpleCDSCMImpl();
+        CDSCMExternalAPI cdscmExternalAPI = new SimpleCDSCMImpl();
         LOGGER.debug("created CDSCMExternalAPI");
         try {
             generateTokenPair();
-            LOGGER.debug("about to get client security");
             String accessToken = CDSCMConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(CDSCMConstant.ACCESS_TOKEN);
+            LOGGER.debug("about to create client");
+            CreateClientRequest createClientRequest = CDSCMRequestFactory.createCreateClientRequest(accessToken);
+            LOGGER.debug("created createClientRequest");
+            createClientRequest.setClientId("66666");
+            CreateClientResponse createClientResponse = cdscmExternalAPI.createClient(createClientRequest);
+            LOGGER.debug("created client");
+            LOGGER.debug("about to put client security");
+            PutClientSecurityRequest putClientSecurityRequest = CDSCMRequestFactory.createPutClientSecurityRequest(accessToken);
+            LOGGER.debug("created getClientSecurityRequest");
+            putClientSecurityRequest.setClientId("66666");
+            PutClientSecurityResponse putClientSecurityResponse = cdscmExternalAPI.putClientSecurity(putClientSecurityRequest);
+            LOGGER.debug("got client security");
+            LOGGER.debug("about to get client security");
             GetClientSecurityRequest getClientSecurityRequest = CDSCMRequestFactory.createGetClientSecurityRequest(accessToken);
             LOGGER.debug("created getClientSecurityRequest");
-            getClientSecurityRequest.setClientId("10001");
-            GetClientSecurityResponse getClientSecurityResponse = CDSCMExternalAPI.getClientSecurity(getClientSecurityRequest);
+            getClientSecurityRequest.setClientId("66666");
+            GetClientSecurityResponse getClientSecurityResponse = cdscmExternalAPI.getClientSecurity(getClientSecurityRequest);
             LOGGER.debug("got client security");
+            LOGGER.debug("about to delete client");
+            DeleteClientRequest deleteClientRequest = CDSCMRequestFactory.createDeleteClientRequest(accessToken);
+            LOGGER.debug("created deleteClientRequest");
+            deleteClientRequest.setClientId("66666");
+            DeleteClientResponse deleteClientResponse = cdscmExternalAPI.deleteClient(deleteClientRequest);
+            LOGGER.debug("deleted client"); 
         } catch (Exception e) {
             LOGGER.warn("exception executing methods: " + e.getMessage());
         }

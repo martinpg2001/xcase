@@ -33,6 +33,8 @@ public class GetClientSecurityMethod extends BaseCDSCMMethod {
             LOGGER.debug("baseVersionUrl is " + baseVersionUrl);
             String clientId = request.getClientId();
             endPoint = baseVersionUrl + request.getOperationPath();
+            endPoint = endPoint.replace("{clientId}", clientId);
+            LOGGER.debug("endPoint is " + endPoint);
             String accessToken = request.getAccessToken();
             LOGGER.debug("accessToken is " + accessToken);
             Header authorizationHeader = createCDSCMAuthenticationTokenHeader(accessToken);
