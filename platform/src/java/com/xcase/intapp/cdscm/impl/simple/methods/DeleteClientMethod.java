@@ -3,30 +3,27 @@ package com.xcase.intapp.cdscm.impl.simple.methods;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.xcase.common.constant.CommonConstant;
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.common.utils.ConverterUtils;
 import com.xcase.intapp.cdscm.factories.CDSCMResponseFactory;
-import com.xcase.intapp.cdscm.transputs.GetClientSecurityRequest;
-import com.xcase.intapp.cdscm.transputs.GetClientSecurityResponse;
-import java.io.StringReader;
+import com.xcase.intapp.cdscm.transputs.DeleteClientRequest;
+import com.xcase.intapp.cdscm.transputs.DeleteClientResponse;
+
 import java.lang.invoke.MethodHandles;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class GetClientSecurityMethod extends BaseCDSCMMethod {
+public class DeleteClientMethod extends BaseCDSCMMethod {
     /**
      * log4j object.
      */
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
-    public GetClientSecurityResponse getClientSecurity(GetClientSecurityRequest request) {
-        LOGGER.debug("starting getClientSecurity()");
-        GetClientSecurityResponse response = CDSCMResponseFactory.createGetClientSecurityResponse();
+    public DeleteClientResponse deleteClient(DeleteClientRequest request) {
+        LOGGER.debug("starting deleteClient()");
+        DeleteClientResponse response = CDSCMResponseFactory.createDeleteClientResponse();
         LOGGER.debug("created response");
         try {
             String baseVersionUrl = getAPIVersionUrl();
@@ -49,7 +46,7 @@ public class GetClientSecurityMethod extends BaseCDSCMMethod {
                 String responseEntityString = commonHttpResponse.getResponseEntityString();
                 LOGGER.debug("responseEntityString is " + responseEntityString);
                 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd' 'HH:mm:ss").create();
-                JsonObject jsonObject = (JsonObject) ConverterUtils.parseStringToJson(responseEntityString);
+                JsonObject clientSecurityJsonObject = (JsonObject) ConverterUtils.parseStringToJson(responseEntityString);
             } else {
                 handleUnexpectedResponseCode(response, commonHttpResponse);
             }
@@ -59,5 +56,4 @@ public class GetClientSecurityMethod extends BaseCDSCMMethod {
 
         return response;
     }
-
 }

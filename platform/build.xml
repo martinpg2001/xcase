@@ -8,6 +8,7 @@
     <property name="src" value="src/java"/>
     <property name="src-xcase-box" value="src/java/com/xcase/box"/>
     <property name="src-xcase-common" value="src/java/com/xcase/common"/>
+	<property name="src-xcase-intapp" value="src/java/com/xcase/intapp"/>
     <property name="src-xcase-integrate" value="src/java/com/xcase/integrate"/>
     <property name="src-xcase-msgraph" value="src/java/com/xcase/msgraph"/>
     <property name="src-xcase-open" value="src/java/com/xcase/open"/>
@@ -172,7 +173,7 @@
             <compilerarg value="-Xlint:unchecked"/>
         </javac>
     </target>
-    <target name="compile-xcase" depends="compile-xcase-common,compile-xcase-box,compile-xcase-integrate,compile-xcase-msgraph,compile-xcase-open,compile-xcase-salesforce,compile-xcase-sharepoint,compile-xcase-webservice" />
+    <target name="compile-xcase" depends="compile-xcase-common,compile-xcase-box,compile-xcase-intapp,compile-xcase-integrate,compile-xcase-msgraph,compile-xcase-open,compile-xcase-salesforce,compile-xcase-sharepoint,compile-xcase-webservice" />
     <target name="compile-xcase-box">
         <javac srcdir="${src-xcase-box}" destdir="${build}" debug="on">
             <classpath refid="classpath.base" />
@@ -181,6 +182,12 @@
     </target>
     <target name="compile-xcase-common">
         <javac srcdir="${src-xcase-common}" destdir="${build}" debug="on">
+            <classpath refid="classpath.base" />
+            <compilerarg value="-Xlint:-unchecked"/>
+        </javac>
+    </target>
+    <target name="compile-xcase-intapp">
+        <javac srcdir="${src-xcase-intapp}" destdir="${build}" debug="on">
             <classpath refid="classpath.base" />
             <compilerarg value="-Xlint:-unchecked"/>
         </javac>
