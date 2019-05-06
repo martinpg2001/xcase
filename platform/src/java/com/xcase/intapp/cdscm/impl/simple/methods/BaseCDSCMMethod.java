@@ -51,6 +51,7 @@ public class BaseCDSCMMethod {
     public void handleUnexpectedResponseCode(CDSCMResponse response, CommonHttpResponse commonHttpResponse) {
         LOGGER.warn("unexpected response code: " + commonHttpResponse.getResponseCode());
         response.setMessage("Unexpected response code: " + commonHttpResponse.getResponseCode());
+        LOGGER.warn("response entity string is " + commonHttpResponse.getResponseEntityString());
         response.setResponseCode(commonHttpResponse.getResponseCode());
         response.setStatusLine(commonHttpResponse.getStatusLine());
         response.setStatus(commonHttpResponse.getStatusLine().getReasonPhrase());

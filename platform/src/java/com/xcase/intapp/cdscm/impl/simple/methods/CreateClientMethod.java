@@ -37,16 +37,21 @@ public class CreateClientMethod extends BaseCDSCMMethod {
             Header contentTypeHeader = createContentTypeHeader();
             Header authenticationToken = new BasicHeader("IntegrateAuthenticationToken", accessToken);
             Header[] headers = {acceptHeader, authenticationToken, authorizationHeader, contentTypeHeader};
-            String entityString = "{\"clientId\":\"66666\",\"name\":\"Underture Science\",\"status\":\"ACTIVE\",\"description\":\"\",\"closedOn\":\"\",\"dunsNumber\":\"\",\"rounding\":null,\"timeNote\":\"\",\"billableStatus\":\"\",\"industry\":\"\",\"clientPersons\":[],\"externalIdentifiers\":[],\"lcidDictionary\":\"\",\"ebillinghubValidation\":\"\",\"timelinks\":{},\"openedOn\":\"\",\"_pricingAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"_experienceAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"_timeAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"security\":{\"defaultAccess\":255,\"users\":[]}}\r\n";
+            String unreplacedEntityString = "{\"clientId\":\"{clientId}\",\"name\":\"Underture Science\",\"status\":\"ACTIVE\",\"description\":\"\",\"closedOn\":\"\",\"dunsNumber\":\"\",\"rounding\":null,\"timeNote\":\"\",\"billableStatus\":\"\",\"industry\":\"\",\"clientPersons\":[],\"externalIdentifiers\":[],\"lcidDictionary\":\"\",\"ebillinghubValidation\":\"\",\"timelinks\":{},\"openedOn\":\"\",\"_pricingAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"_experienceAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"_timeAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"security\":{\"defaultAccess\":255,\"users\":[]}}";
+            String entityString = unreplacedEntityString.replace("{clientId}", clientId);
             CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponsePost(endPoint, headers, null, entityString, null);
             int responseCode = commonHttpResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
             response.setResponseCode(responseCode);
-            if (responseCode == 200) {
+            if (responseCode == 201) {
                 String responseEntityString = commonHttpResponse.getResponseEntityString();
                 LOGGER.debug("responseEntityString is " + responseEntityString);
-                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd' 'HH:mm:ss").create();
-                JsonObject clientSecurityJsonObject = (JsonObject) ConverterUtils.parseStringToJson(responseEntityString);
+                if (responseEntityString != null && !responseEntityString.isEmpty()) {
+                	Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd' 'HH:mm:ss").create();
+                	JsonObject jsonObject = (JsonObject) ConverterUtils.parseStringToJson(responseEntityString);
+                } else {
+                	LOGGER.debug("responseEntityString is null or empty");
+                }
             } else {
                 handleUnexpectedResponseCode(response, commonHttpResponse);
             }

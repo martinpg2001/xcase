@@ -50,8 +50,12 @@ public class GetClientSecurityMethod extends BaseCDSCMMethod {
             if (responseCode == 200) {
                 String responseEntityString = commonHttpResponse.getResponseEntityString();
                 LOGGER.debug("responseEntityString is " + responseEntityString);
-                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd' 'HH:mm:ss").create();
-                JsonObject jsonObject = (JsonObject) ConverterUtils.parseStringToJson(responseEntityString);
+                if (responseEntityString != null && !responseEntityString.isEmpty()) {
+                	Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd' 'HH:mm:ss").create();
+                	JsonObject jsonObject = (JsonObject) ConverterUtils.parseStringToJson(responseEntityString);
+                } else {
+                	LOGGER.debug("responseEntityString is null or empty");
+                }
             } else {
                 handleUnexpectedResponseCode(response, commonHttpResponse);
             }

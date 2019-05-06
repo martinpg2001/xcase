@@ -37,29 +37,31 @@ public class CDSCMApplication {
         LOGGER.debug("created CDSCMExternalAPI");
         try {
             generateTokenPair();
+            String clientId = "66666";
+            LOGGER.debug("clientId is " + clientId);
             String accessToken = CDSCMConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(CDSCMConstant.ACCESS_TOKEN);
             LOGGER.debug("about to create client");
             CreateClientRequest createClientRequest = CDSCMRequestFactory.createCreateClientRequest(accessToken);
             LOGGER.debug("created createClientRequest");
-            createClientRequest.setClientId("66666");
+            createClientRequest.setClientId(clientId);
             CreateClientResponse createClientResponse = cdscmExternalAPI.createClient(createClientRequest);
             LOGGER.debug("created client");
             LOGGER.debug("about to put client security");
             PutClientSecurityRequest putClientSecurityRequest = CDSCMRequestFactory.createPutClientSecurityRequest(accessToken);
             LOGGER.debug("created getClientSecurityRequest");
-            putClientSecurityRequest.setClientId("66666");
+            putClientSecurityRequest.setClientId(clientId);
             PutClientSecurityResponse putClientSecurityResponse = cdscmExternalAPI.putClientSecurity(putClientSecurityRequest);
             LOGGER.debug("got client security");
             LOGGER.debug("about to get client security");
             GetClientSecurityRequest getClientSecurityRequest = CDSCMRequestFactory.createGetClientSecurityRequest(accessToken);
             LOGGER.debug("created getClientSecurityRequest");
-            getClientSecurityRequest.setClientId("66666");
+            getClientSecurityRequest.setClientId(clientId);
             GetClientSecurityResponse getClientSecurityResponse = cdscmExternalAPI.getClientSecurity(getClientSecurityRequest);
             LOGGER.debug("got client security");
             LOGGER.debug("about to delete client");
             DeleteClientRequest deleteClientRequest = CDSCMRequestFactory.createDeleteClientRequest(accessToken);
             LOGGER.debug("created deleteClientRequest");
-            deleteClientRequest.setClientId("66666");
+            deleteClientRequest.setClientId(clientId);
             DeleteClientResponse deleteClientResponse = cdscmExternalAPI.deleteClient(deleteClientRequest);
             LOGGER.debug("deleted client"); 
         } catch (Exception e) {

@@ -43,7 +43,7 @@ public class PutClientSecurityMethod extends BaseCDSCMMethod {
             Header contentTypeHeader = createContentTypeHeader();
             Header authenticationToken = new BasicHeader("IntegrateAuthenticationToken", accessToken);
             Header[] headers = {acceptHeader, authenticationToken, authorizationHeader, contentTypeHeader};
-            String entityString = "{\"clientId\":\"66666\",\"name\":\"Underture Science\",\"status\":\"Active\",\"description\":\"\",\"closedOn\":\"\",\"dunsNumber\":\"\",\"rounding\":{\"increment\":null,\"type\":\"\"},\"timeNote\":\"\",\"billableStatus\":\"\",\"industry\":\"\",\"clientPersons\":[],\"externalIdentifiers\":[],\"lcidDictionary\":\"\",\"ebillinghubValidation\":\"\",\"timelinks\":{},\"openedOn\":\"\",\"_pricingAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"_experienceAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"_timeAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"security\":{\"defaultAccess\":255,\"users\":[]}}\r\n" + "";
+            String entityString = "{\"defaultAccess\":255,\"users\":[{\"userId\":\"ADMIN\",\"access\":255}]}";
             CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponsePut(endPoint, headers, null, entityString);
             int responseCode = commonHttpResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
@@ -51,8 +51,12 @@ public class PutClientSecurityMethod extends BaseCDSCMMethod {
             if (responseCode == 200) {
                 String responseEntityString = commonHttpResponse.getResponseEntityString();
                 LOGGER.debug("responseEntityString is " + responseEntityString);
-                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd' 'HH:mm:ss").create();
-                JsonObject jsonObject = (JsonObject) ConverterUtils.parseStringToJson(responseEntityString);
+                if (responseEntityString != null && !responseEntityString.isEmpty()) {
+                	Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd' 'HH:mm:ss").create();
+                	JsonObject jsonObject = (JsonObject) ConverterUtils.parseStringToJson(responseEntityString);
+                } else {
+                	LOGGER.debug("responseEntityString is null or empty");
+                }
             } else {
                 handleUnexpectedResponseCode(response, commonHttpResponse);
             }
