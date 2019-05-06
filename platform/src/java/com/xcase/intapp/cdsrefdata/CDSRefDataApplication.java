@@ -51,7 +51,7 @@ public class CDSRefDataApplication {
             GetMatterStatusesRequest getMatterStatusesRequest = CDSRefDataRequestFactory.createGetMatterStatusesRequest(accessToken);
             LOGGER.debug("created getMatterStatusesRequest");
             GetMatterStatusesResponse getMatterStatusesResponse = cdsRefDataExternalAPI.getMatterStatuses(getMatterStatusesRequest);
-            LOGGER.debug("got client statuses");
+            LOGGER.debug("got matter statuses");
         } catch (Exception e) {
             LOGGER.warn("exception executing methods: " + e.getMessage());
         }

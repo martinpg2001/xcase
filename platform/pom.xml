@@ -35,7 +35,7 @@
     <url>https://github.com/martinpg2001/</url>
   </scm>
   <url>https://github.com/martinpg2001/</url>
-  <version>1.0.12</version>
+  <version>1.0.13</version>
   <build>
     <outputDirectory>build</outputDirectory>
     <plugins>
