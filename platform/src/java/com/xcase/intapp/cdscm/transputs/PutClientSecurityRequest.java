@@ -4,9 +4,13 @@ public interface PutClientSecurityRequest extends CDSCMRequest {
 
     String getClientId();
 
-    void setClientId(String string);
+    void setClientId(String clientId);
 
     public String getOperationPath();
 
     public void setOperationPath(String operationPath);
+
+    String getClientSecurity();
+
+    void setClientSecurity(String clientSecurity);
 }

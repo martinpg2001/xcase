@@ -3,10 +3,14 @@ package com.xcase.intapp.cdscm.transputs;
 public interface CreateClientRequest extends CDSCMRequest {
 
     String getClientId();
-
-    void setClientId(String string);
+    
+    String getClientString();
     
     public String getOperationPath();
 
+    void setClientId(String string);
+
     public void setOperationPath(String operationPath);
+
+    void setClientString(String string);
 }

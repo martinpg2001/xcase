@@ -32,6 +32,7 @@ public class PutClientSecurityMethod extends BaseCDSCMMethod {
             String baseVersionUrl = getAPIVersionUrl();
             LOGGER.debug("baseVersionUrl is " + baseVersionUrl);
             String clientId = request.getClientId();
+            String clientSecurity = request.getClientSecurity();
             endPoint = baseVersionUrl + request.getOperationPath();
             endPoint = endPoint.replace("{clientId}", clientId);
             LOGGER.debug("endPoint is " + endPoint);
@@ -44,7 +45,7 @@ public class PutClientSecurityMethod extends BaseCDSCMMethod {
             Header authenticationToken = new BasicHeader("IntegrateAuthenticationToken", accessToken);
             Header[] headers = {acceptHeader, authenticationToken, authorizationHeader, contentTypeHeader};
             String entityString = "{\"defaultAccess\":255,\"users\":[{\"userId\":\"ADMIN\",\"access\":255}]}";
-            CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponsePut(endPoint, headers, null, entityString);
+            CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponsePut(endPoint, headers, null, clientSecurity);
             int responseCode = commonHttpResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
             response.setResponseCode(responseCode);

@@ -238,3 +238,4 @@ platform/settings.xml
 platform/ebay-local-config.properties
 platform/cds-users-local-config.properties
 platform/cds-cm-local-config.properties
+platform/cds-refdata-local-config.properties

@@ -5,6 +5,7 @@ import com.xcase.intapp.cdscm.impl.simple.transputs.CDSCMRequestImpl;
 
 public class CreateClientRequestImpl extends CDSCMRequestImpl implements CreateClientRequest {
     private String clientId;
+    private String clientString;
     private String operationPath = "api/v1/clients";
 
     @Override
@@ -25,6 +26,16 @@ public class CreateClientRequestImpl extends CDSCMRequestImpl implements CreateC
     @Override
     public void setOperationPath(String operationPath) {
         this.operationPath = operationPath;
+    }
+
+    @Override
+    public String getClientString() {
+        return clientString;
+    }
+
+    @Override
+    public void setClientString(String clientString) {
+        this.clientString = clientString;
     }
 
 }
