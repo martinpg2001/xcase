@@ -1,12 +1,8 @@
 package com.xcase.intapp.cdsrefdata;
 
-import com.xcase.intapp.cdscm.impl.simple.methods.PutClientSecurityMethod;
-import com.xcase.intapp.cdscm.transputs.CreateClientRequest;
-import com.xcase.intapp.cdscm.transputs.CreateClientResponse;
 import com.xcase.intapp.cdsrefdata.impl.simple.core.CDSRefDataConfigurationManager;
-import com.xcase.intapp.cdsrefdata.impl.simple.methods.GetClientStatusesMethod;
-import com.xcase.intapp.cdsrefdata.transputs.GetClientStatusesRequest;
-import com.xcase.intapp.cdsrefdata.transputs.GetClientStatusesResponse;
+import com.xcase.intapp.cdsrefdata.impl.simple.methods.*;
+import com.xcase.intapp.cdsrefdata.transputs.*;
 import java.lang.invoke.MethodHandles;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,10 +21,20 @@ public class SimpleCDSRefDataImpl implements CDSRefDataExternalAPI {
      * method implementation.
      */
     private GetClientStatusesMethod getClientStatusesMethod = new GetClientStatusesMethod();
+    
+    /**
+     * method implementation.
+     */
+    private GetMatterStatusesMethod getMatterStatusesMethod = new GetMatterStatusesMethod();
 
     @Override
     public GetClientStatusesResponse getClientStatuses(GetClientStatusesRequest getClientStatusesRequest) {
         return this.getClientStatusesMethod.getClientStatuses(getClientStatusesRequest);
+    }
+    
+    @Override
+    public GetMatterStatusesResponse getMatterStatuses(GetMatterStatusesRequest getMatterStatusesRequest) {
+        return this.getMatterStatusesMethod.getMatterStatuses(getMatterStatusesRequest);
     }
 
 }

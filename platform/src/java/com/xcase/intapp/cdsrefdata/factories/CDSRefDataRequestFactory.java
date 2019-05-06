@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.xcase.intapp.cdscm.transputs.CreateClientRequest;
 import com.xcase.intapp.cdsrefdata.transputs.GetClientStatusesRequest;
+import com.xcase.intapp.cdsrefdata.transputs.GetMatterStatusesRequest;
 
 public class CDSRefDataRequestFactory extends BaseCDSRefDataFactory {
 
@@ -25,5 +26,16 @@ public class CDSRefDataRequestFactory extends BaseCDSRefDataFactory {
         request.setAccessToken(accessToken);
         return request;
     }
+    
+	public static GetMatterStatusesRequest createGetMatterStatusesRequest() {
+        Object obj = newInstanceOf("cdsrefdata.config.requestfactory.GetMatterStatusesRequest");
+        return (GetMatterStatusesRequest) obj;
+	}
+
+	public static GetMatterStatusesRequest createGetMatterStatusesRequest(String accessToken) {
+		GetMatterStatusesRequest request = createGetMatterStatusesRequest();
+        request.setAccessToken(accessToken);
+        return request;
+	}
 
 }

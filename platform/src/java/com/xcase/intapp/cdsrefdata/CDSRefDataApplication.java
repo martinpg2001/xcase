@@ -11,6 +11,9 @@ import com.xcase.intapp.cdsrefdata.factories.CDSRefDataRequestFactory;
 import com.xcase.intapp.cdsrefdata.impl.simple.core.CDSRefDataConfigurationManager;
 import com.xcase.intapp.cdsrefdata.transputs.GetClientStatusesRequest;
 import com.xcase.intapp.cdsrefdata.transputs.GetClientStatusesResponse;
+import com.xcase.intapp.cdsrefdata.transputs.GetMatterStatusesRequest;
+import com.xcase.intapp.cdsrefdata.transputs.GetMatterStatusesResponse;
+
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
@@ -43,6 +46,11 @@ public class CDSRefDataApplication {
             GetClientStatusesRequest getClientStatusesRequest = CDSRefDataRequestFactory.createGetClientStatusesRequest(accessToken);
             LOGGER.debug("created getClientStatusesRequest");
             GetClientStatusesResponse getClientStatusesResponse = cdsRefDataExternalAPI.getClientStatuses(getClientStatusesRequest);
+            LOGGER.debug("got client statuses");
+            LOGGER.debug("about to get matter statuses");
+            GetMatterStatusesRequest getMatterStatusesRequest = CDSRefDataRequestFactory.createGetMatterStatusesRequest(accessToken);
+            LOGGER.debug("created getMatterStatusesRequest");
+            GetMatterStatusesResponse getMatterStatusesResponse = cdsRefDataExternalAPI.getMatterStatuses(getMatterStatusesRequest);
             LOGGER.debug("got client statuses");
         } catch (Exception e) {
             LOGGER.warn("exception executing methods: " + e.getMessage());
