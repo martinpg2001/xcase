@@ -6,7 +6,6 @@ import com.xcase.intapp.cdsusers.constant.CDSUsersConstant;
 import com.xcase.intapp.cdsusers.impl.simple.core.CDSUsersConfigurationManager;
 import com.xcase.intapp.cdsusers.transputs.CDSUsersResponse;
 import com.xcase.integrate.transputs.IntegrateResponse;
-
 import java.lang.invoke.MethodHandles;
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
@@ -24,8 +23,6 @@ public class BaseCDSUsersMethod {
      */
     protected CommonHTTPManager httpManager = CommonHTTPManager.refreshCommonHTTPManager();
 
-    public String apiVersionUrl = CDSUsersConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(CDSUsersConstant.API_VERSION_URL);
-    
     public String endPoint;
     
     public String getAPIVersionUrl() {
@@ -33,7 +30,7 @@ public class BaseCDSUsersMethod {
     }
     
     public Header createAcceptHeader() {
-        String acceptHeader = "application/json";
+        String acceptHeader = "application/vnd.intapp+json";
         LOGGER.debug("acceptHeader is " + acceptHeader);
         return new BasicHeader("Accept", acceptHeader);
     }
@@ -45,7 +42,7 @@ public class BaseCDSUsersMethod {
     }
 
     public Header createCDSUsersAuthenticationTokenHeader(String accessToken) {
-        return new BasicHeader(CDSUsersConfigurationManager.getConfigurationManager().getConfig().getProperty(CDSUsersConstant.CONFIG_API_AUTHENTICATION_HEADER), accessToken);
+        return new BasicHeader(CDSUsersConfigurationManager.getConfigurationManager().getConfig().getProperty(CDSUsersConstant.CONFIG_API_AUTHENTICATION_HEADER), "Bearer " + accessToken);
     }
     
     public void handleUnexpectedResponseCode(CDSUsersResponse response, CommonHttpResponse commonHttpResponse) {

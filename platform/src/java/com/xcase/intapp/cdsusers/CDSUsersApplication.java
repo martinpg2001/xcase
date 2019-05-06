@@ -79,7 +79,7 @@ public class CDSUsersApplication {
         LOGGER.debug("host is " + host);
         String basePath = swaggerEntityJsonObject.get("basePath").getAsString();
         LOGGER.debug("basePath is " + basePath);
-        CDSUsersConfigurationManager.getConfigurationManager().getLocalConfig().setProperty(CDSUsersConstant.API_VERSION_URL, "https://" + host + "/" + basePath);
+        CDSUsersConfigurationManager.getConfigurationManager().getLocalConfig().setProperty(CDSUsersConstant.API_VERSION_URL, "https://" + host + basePath);
         CDSUsersConfigurationManager.getConfigurationManager().storeLocalConfigProperties();
 	}
 	

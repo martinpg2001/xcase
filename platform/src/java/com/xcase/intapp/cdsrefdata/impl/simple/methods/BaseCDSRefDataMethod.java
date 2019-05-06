@@ -2,6 +2,8 @@ package com.xcase.intapp.cdsrefdata.impl.simple.methods;
 
 import com.xcase.common.impl.simple.core.CommonHTTPManager;
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
+import com.xcase.intapp.cdscm.constant.CDSCMConstant;
+import com.xcase.intapp.cdscm.impl.simple.core.CDSCMConfigurationManager;
 import com.xcase.intapp.cdsrefdata.constant.CDSRefDataConstant;
 import com.xcase.intapp.cdsrefdata.impl.simple.core.CDSRefDataConfigurationManager;
 import com.xcase.intapp.cdsrefdata.transputs.CDSRefDataResponse;
@@ -24,8 +26,6 @@ public class BaseCDSRefDataMethod {
      */
     protected CommonHTTPManager httpManager = CommonHTTPManager.refreshCommonHTTPManager();
 
-    public String apiVersionUrl = CDSRefDataConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(CDSRefDataConstant.API_VERSION_URL);
-
     public String endPoint;
 
     public String getAPIVersionUrl() {
@@ -45,7 +45,7 @@ public class BaseCDSRefDataMethod {
     }
 
     public Header createCDSRefDataAuthenticationTokenHeader(String accessToken) {
-        return new BasicHeader(CDSRefDataConfigurationManager.getConfigurationManager().getConfig().getProperty(CDSRefDataConstant.CONFIG_API_AUTHENTICATION_HEADER), accessToken);
+        return new BasicHeader(CDSRefDataConfigurationManager.getConfigurationManager().getConfig().getProperty(CDSRefDataConstant.CONFIG_API_AUTHENTICATION_HEADER), "Bearer " + accessToken);
     }
 
     public void handleUnexpectedResponseCode(CDSRefDataResponse response, CommonHttpResponse commonHttpResponse) {

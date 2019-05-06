@@ -21,36 +21,36 @@ public class SimpleCDSCMImpl implements CDSCMExternalAPI {
      * method implementation.
      */
     private CreateClientMethod createClientMethod = new CreateClientMethod();
-
-    @Override
-    public CreateClientResponse createClient(CreateClientRequest createClientRequest) {
-        return this.createClientMethod.createClient(createClientRequest);
-    }
     
     /**
      * method implementation.
      */
     private DeleteClientMethod deleteClientMethod = new DeleteClientMethod();
-
-    @Override
-    public DeleteClientResponse deleteClient(DeleteClientRequest deleteClientRequest) {
-        return this.deleteClientMethod.deleteClient(deleteClientRequest);
-    }
     
     /**
      * method implementation.
      */
     private GetClientSecurityMethod getClientSecurityMethod = new GetClientSecurityMethod();
-
-    @Override
-    public GetClientSecurityResponse getClientSecurity(GetClientSecurityRequest getClientSecurityRequest) {
-        return this.getClientSecurityMethod.getClientSecurity(getClientSecurityRequest);
-    }
     
     /**
      * method implementation.
      */
     private PutClientSecurityMethod putClientSecurityMethod = new PutClientSecurityMethod();
+
+    @Override
+    public CreateClientResponse createClient(CreateClientRequest createClientRequest) {
+        return this.createClientMethod.createClient(createClientRequest);
+    }
+
+    @Override
+    public DeleteClientResponse deleteClient(DeleteClientRequest deleteClientRequest) {
+        return this.deleteClientMethod.deleteClient(deleteClientRequest);
+    }
+
+    @Override
+    public GetClientSecurityResponse getClientSecurity(GetClientSecurityRequest getClientSecurityRequest) {
+        return this.getClientSecurityMethod.getClientSecurity(getClientSecurityRequest);
+    }
 
     @Override
     public PutClientSecurityResponse putClientSecurity(PutClientSecurityRequest putClientSecurityRequest) {

@@ -9,10 +9,8 @@ import com.xcase.intapp.cdsrefdata.SimpleCDSRefDataImpl;
 import com.xcase.intapp.cdsrefdata.constant.CDSRefDataConstant;
 import com.xcase.intapp.cdsrefdata.factories.CDSRefDataRequestFactory;
 import com.xcase.intapp.cdsrefdata.impl.simple.core.CDSRefDataConfigurationManager;
-import com.xcase.integrate.constant.IntegrateConstant;
-import com.xcase.integrate.factories.IntegrateRequestFactory;
-import com.xcase.integrate.transputs.GetAllDatasourcesRequest;
-import com.xcase.integrate.transputs.GetAllDatasourcesResponse;
+import com.xcase.intapp.cdsrefdata.transputs.GetClientStatusesRequest;
+import com.xcase.intapp.cdsrefdata.transputs.GetClientStatusesResponse;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
@@ -36,10 +34,16 @@ public class CDSRefDataApplication {
      */
     public static void main(String[] args) {
         LOGGER.debug("starting main()");
-        CDSRefDataExternalAPI cdsUsersExternalAPI = new SimpleCDSRefDataImpl();
-        LOGGER.debug("created cdsUsersExternalAPI");
+        CDSRefDataExternalAPI cdsRefDataExternalAPI = new SimpleCDSRefDataImpl();
+        LOGGER.debug("created cdsRefDataExternalAPI");
         try {
             generateTokenPair();
+            String accessToken = CDSRefDataConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(CDSRefDataConstant.ACCESS_TOKEN);
+            LOGGER.debug("about to get client statuses");
+            GetClientStatusesRequest getClientStatusesRequest = CDSRefDataRequestFactory.createGetClientStatusesRequest(accessToken);
+            LOGGER.debug("created getClientStatusesRequest");
+            GetClientStatusesResponse getClientStatusesResponse = cdsRefDataExternalAPI.getClientStatuses(getClientStatusesRequest);
+            LOGGER.debug("got client statuses");
         } catch (Exception e) {
             LOGGER.warn("exception executing methods: " + e.getMessage());
         }
@@ -79,7 +83,7 @@ public class CDSRefDataApplication {
         LOGGER.debug("host is " + host);
         String basePath = swaggerEntityJsonObject.get("basePath").getAsString();
         LOGGER.debug("basePath is " + basePath);
-        CDSRefDataConfigurationManager.getConfigurationManager().getLocalConfig().setProperty(CDSRefDataConstant.API_VERSION_URL, "https://" + host + "/" + basePath);
+        CDSRefDataConfigurationManager.getConfigurationManager().getLocalConfig().setProperty(CDSRefDataConstant.API_VERSION_URL, "https://" + host + basePath);
         CDSRefDataConfigurationManager.getConfigurationManager().storeLocalConfigProperties();
     }
 
