@@ -23,5 +23,17 @@ public class TimeRequestFactory extends BaseTimeFactory {
         request.setRefreshToken(refreshToken);
         return request;
     }
+    
+    public static GetClientsRequest createGetClientsRequest() {
+        Object obj = newInstanceOf("time.config.requestfactory.GetClientsRequest");
+        return (GetClientsRequest) obj;
+    }
+
+	public static GetClientsRequest createGetClientsRequest(String accessToken, String refreshToken) {
+		GetClientsRequest request = createGetClientsRequest();
+        request.setAccessToken(accessToken);
+        request.setRefreshToken(refreshToken);
+        return request;
+	}
 
 }

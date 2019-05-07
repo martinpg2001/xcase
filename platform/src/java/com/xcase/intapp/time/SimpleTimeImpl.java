@@ -1,9 +1,8 @@
 package com.xcase.intapp.time;
 
 import com.xcase.intapp.time.impl.simple.core.TimeConfigurationManager;
-import com.xcase.intapp.time.impl.simple.methods.GetRestrictedTextsMethod;
-import com.xcase.intapp.time.transputs.GetRestrictedTextsRequest;
-import com.xcase.intapp.time.transputs.GetRestrictedTextsResponse;
+import com.xcase.intapp.time.impl.simple.methods.*;
+import com.xcase.intapp.time.transputs.*;
 import java.lang.invoke.MethodHandles;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,11 +20,20 @@ public class SimpleTimeImpl implements TimeExternalAPI {
     /**
      * method implementation.
      */
+    private GetClientsMethod getClientsMethod = new GetClientsMethod();
+    
+    /**
+     * method implementation.
+     */
     private GetRestrictedTextsMethod getRestrictedTextsMethod = new GetRestrictedTextsMethod();
     
+    @Override
+	public GetClientsResponse getClients(GetClientsRequest getClientsRequest) {
+    	return this.getClientsMethod.getClients(getClientsRequest);
+	}
+
     @Override
 	public GetRestrictedTextsResponse getRestrictedTexts(GetRestrictedTextsRequest getRestrictedTextsRequest) {
     	return this.getRestrictedTextsMethod.getRestrictedTexts(getRestrictedTextsRequest);
 	}
-
 }

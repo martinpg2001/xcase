@@ -6,8 +6,8 @@ import com.google.gson.JsonArray;
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.common.utils.ConverterUtils;
 import com.xcase.intapp.time.factories.TimeResponseFactory;
-import com.xcase.intapp.time.transputs.GetRestrictedTextsRequest;
-import com.xcase.intapp.time.transputs.GetRestrictedTextsResponse;
+import com.xcase.intapp.time.transputs.GetClientsRequest;
+import com.xcase.intapp.time.transputs.GetClientsResponse;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +18,16 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class GetRestrictedTextsMethod extends BaseTimeMethod {
+
+public class GetClientsMethod extends BaseTimeMethod {
     /**
      * log4j object.
      */
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
-	public GetRestrictedTextsResponse getRestrictedTexts(GetRestrictedTextsRequest request) {
-        LOGGER.debug("starting getRestrictedTexts()");
-        GetRestrictedTextsResponse response = TimeResponseFactory.createGetRestrictedTextsResponse();
+	public GetClientsResponse getClients(GetClientsRequest request) {
+        LOGGER.debug("starting getClients()");
+        GetClientsResponse response = TimeResponseFactory.createGetClientsResponse();
         LOGGER.debug("created response");
         try {
             String baseVersionUrl = getAPIVersionUrl();
@@ -69,5 +70,4 @@ public class GetRestrictedTextsMethod extends BaseTimeMethod {
 
         return response;
     }
-
 }
