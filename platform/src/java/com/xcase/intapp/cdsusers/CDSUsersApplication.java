@@ -9,10 +9,6 @@ import com.xcase.intapp.cdsusers.SimpleCDSUsersImpl;
 import com.xcase.intapp.cdsusers.constant.CDSUsersConstant;
 import com.xcase.intapp.cdsusers.factories.CDSUsersRequestFactory;
 import com.xcase.intapp.cdsusers.impl.simple.core.CDSUsersConfigurationManager;
-import com.xcase.integrate.constant.IntegrateConstant;
-import com.xcase.integrate.factories.IntegrateRequestFactory;
-import com.xcase.integrate.transputs.GetAllDatasourcesRequest;
-import com.xcase.integrate.transputs.GetAllDatasourcesResponse;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
@@ -45,7 +41,7 @@ public class CDSUsersApplication {
         }
     }
 
-	private static void generateTokenPair() throws Exception, IOException {
+    private static void generateTokenPair() throws Exception, IOException {
         String cdsUsersClientID = CDSUsersConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(CDSUsersConstant.CONFIG_CLIENT_ID);
         String cdsUsersClientSecret = CDSUsersConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(CDSUsersConstant.CONFIG_CLIENT_SECRET);
         String cdsUsersSwaggerAPIURL = CDSUsersConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(CDSUsersConstant.CONFIG_SWAGGER_API_URL);
@@ -55,7 +51,7 @@ public class CDSUsersApplication {
         parameters.add(new BasicNameValuePair("grant_type", "client_credentials"));
         parameters.add(new BasicNameValuePair("client_id", cdsUsersClientID));
         parameters.add(new BasicNameValuePair("client_secret", cdsUsersClientSecret));
-        parameters.add(new BasicNameValuePair("scope", "openid offline_access"));          
+        parameters.add(new BasicNameValuePair("scope", "openid offline_access"));
         CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponseMethod("POST", cdsUsersTokenURL, null, parameters, null, null);
         LOGGER.debug("got response status code " + commonHttpResponse.getResponseCode());
         String responseEntityString = commonHttpResponse.getResponseEntityString();
@@ -81,8 +77,8 @@ public class CDSUsersApplication {
         LOGGER.debug("basePath is " + basePath);
         CDSUsersConfigurationManager.getConfigurationManager().getLocalConfig().setProperty(CDSUsersConstant.API_VERSION_URL, "https://" + host + basePath);
         CDSUsersConfigurationManager.getConfigurationManager().storeLocalConfigProperties();
-	}
-	
+    }
+
     public static Header createAcceptHeader() {
         String acceptHeader = "application/json";
         LOGGER.debug("acceptHeader is " + acceptHeader);

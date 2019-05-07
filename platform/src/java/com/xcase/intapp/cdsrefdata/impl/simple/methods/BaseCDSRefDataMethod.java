@@ -7,8 +7,6 @@ import com.xcase.intapp.cdscm.impl.simple.core.CDSCMConfigurationManager;
 import com.xcase.intapp.cdsrefdata.constant.CDSRefDataConstant;
 import com.xcase.intapp.cdsrefdata.impl.simple.core.CDSRefDataConfigurationManager;
 import com.xcase.intapp.cdsrefdata.transputs.CDSRefDataResponse;
-import com.xcase.integrate.transputs.IntegrateResponse;
-
 import java.lang.invoke.MethodHandles;
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;

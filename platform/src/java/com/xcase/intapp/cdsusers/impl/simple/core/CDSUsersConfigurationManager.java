@@ -1,15 +1,11 @@
 package com.xcase.intapp.cdsusers.impl.simple.core;
 
-import java.lang.invoke.MethodHandles;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.xcase.common.IConfigurationManager;
 import com.xcase.common.impl.simple.core.AbstractConfigurationManager;
 import com.xcase.intapp.cdsusers.constant.CDSUsersConstant;
-import com.xcase.integrate.constant.IntegrateConstant;
-import com.xcase.integrate.impl.simple.core.IntegrateConfigurationManager;
+import java.lang.invoke.MethodHandles;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class CDSUsersConfigurationManager extends AbstractConfigurationManager implements IConfigurationManager{
 
@@ -41,7 +37,7 @@ public class CDSUsersConfigurationManager extends AbstractConfigurationManager i
 
         return instance;
     }
-    
+
     /**
      * private constructor, singleton.
      */

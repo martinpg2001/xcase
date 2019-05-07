@@ -5,7 +5,6 @@ import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.intapp.time.constant.TimeConstant;
 import com.xcase.intapp.time.impl.simple.core.TimeConfigurationManager;
 import com.xcase.intapp.time.transputs.TimeResponse;
-import com.xcase.integrate.transputs.IntegrateResponse;
 import java.lang.invoke.MethodHandles;
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
@@ -40,7 +39,7 @@ public class BaseTimeMethod {
         LOGGER.debug("contentTypeHeader is " + contentTypeHeader);
         return new BasicHeader("Content-Type", contentTypeHeader);
     }
-    
+
     public static Header createCookieHeader(String accessToken) {
         String cookieHeader = "Authorization=" + accessToken + "; Refresh-Token=";
         LOGGER.debug("cookieHeader is " + cookieHeader);

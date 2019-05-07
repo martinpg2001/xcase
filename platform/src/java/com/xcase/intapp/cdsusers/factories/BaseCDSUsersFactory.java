@@ -16,7 +16,7 @@ public class BaseCDSUsersFactory {
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
     /**
-     * integrate config.
+     * CDSUsers config.
      */
     private static final Properties CONFIG = CDSUsersConfigurationManager.getConfigurationManager().getConfig();
 

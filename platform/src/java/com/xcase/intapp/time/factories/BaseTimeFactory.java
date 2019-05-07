@@ -16,7 +16,7 @@ public class BaseTimeFactory {
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
     /**
-     * integrate config.
+     * Time config.
      */
     private static final Properties CONFIG = TimeConfigurationManager.getConfigurationManager().getConfig();
 
