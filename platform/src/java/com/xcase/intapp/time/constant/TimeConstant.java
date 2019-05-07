@@ -36,4 +36,7 @@ public class TimeConstant {
      * Base url
      */
     public static final String API_VERSION_URL = "time.api.version.url";
+
+
+    public static final String REFRESH_TOKEN = "time.refresh.token";
 }

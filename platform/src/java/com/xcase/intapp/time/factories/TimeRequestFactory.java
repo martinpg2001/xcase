@@ -17,9 +17,10 @@ public class TimeRequestFactory extends BaseTimeFactory {
         return (GetRestrictedTextsRequest) obj;
     }
 
-    public static GetRestrictedTextsRequest createGetRestrictedTextsRequest(String accessToken) {
+    public static GetRestrictedTextsRequest createGetRestrictedTextsRequest(String accessToken, String refreshToken) {
     	GetRestrictedTextsRequest request = createGetRestrictedTextsRequest();
         request.setAccessToken(accessToken);
+        request.setRefreshToken(refreshToken);
         return request;
     }
 

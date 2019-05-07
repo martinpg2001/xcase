@@ -5,18 +5,12 @@ import com.xcase.common.impl.simple.core.CommonHTTPManager;
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.common.utils.ConverterUtils;
 import com.xcase.intapp.time.TimeExternalAPI;
-import com.xcase.intapp.cdsrefdata.constant.CDSRefDataConstant;
-import com.xcase.intapp.cdsrefdata.factories.CDSRefDataRequestFactory;
-import com.xcase.intapp.cdsrefdata.impl.simple.core.CDSRefDataConfigurationManager;
-import com.xcase.intapp.cdsrefdata.transputs.GetClientStatusesRequest;
-import com.xcase.intapp.cdsrefdata.transputs.GetClientStatusesResponse;
 import com.xcase.intapp.time.SimpleTimeImpl;
 import com.xcase.intapp.time.constant.TimeConstant;
 import com.xcase.intapp.time.factories.TimeRequestFactory;
 import com.xcase.intapp.time.impl.simple.core.TimeConfigurationManager;
 import com.xcase.intapp.time.transputs.GetRestrictedTextsRequest;
 import com.xcase.intapp.time.transputs.GetRestrictedTextsResponse;
-
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
@@ -44,9 +38,12 @@ public class TimeApplication {
         LOGGER.debug("created timeExternalAPI");
         try {
             generateTokenPair();
-            String accessToken = CDSRefDataConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(CDSRefDataConstant.ACCESS_TOKEN);
+            String accessToken = TimeConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(TimeConstant.ACCESS_TOKEN);
+            LOGGER.debug("accessToken is " + accessToken);
+            String refreshToken = TimeConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(TimeConstant.REFRESH_TOKEN);            
+            LOGGER.debug("refreshToken is " + refreshToken);
             LOGGER.debug("about to get restricted texts");
-            GetRestrictedTextsRequest getRestrictedTextsRequest = TimeRequestFactory.createGetRestrictedTextsRequest(accessToken);
+            GetRestrictedTextsRequest getRestrictedTextsRequest = TimeRequestFactory.createGetRestrictedTextsRequest(accessToken, refreshToken);
             LOGGER.debug("created getRestrictedTextsRequest");
             GetRestrictedTextsResponse getRestrictedTextsResponse = timeExternalAPI.getRestrictedTexts(getRestrictedTextsRequest);
             LOGGER.debug("got restricted texts");
@@ -74,6 +71,9 @@ public class TimeApplication {
         String accessToken = responseEntityJsonObject.get("access_token").getAsString();
         LOGGER.debug("accessToken is " + accessToken);
         TimeConfigurationManager.getConfigurationManager().getLocalConfig().setProperty(TimeConstant.ACCESS_TOKEN, accessToken);
+        String refreshToken = responseEntityJsonObject.get("refresh_token").getAsString();
+        LOGGER.debug("refreshToken is " + refreshToken);
+        TimeConfigurationManager.getConfigurationManager().getLocalConfig().setProperty(TimeConstant.REFRESH_TOKEN, refreshToken);
         TimeConfigurationManager.getConfigurationManager().storeLocalConfigProperties();
         Header authorizationHeader = createTimeAuthenticationTokenHeader(accessToken);
         LOGGER.debug("created authorizationHeader header");

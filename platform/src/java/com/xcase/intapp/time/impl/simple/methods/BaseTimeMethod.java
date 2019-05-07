@@ -40,13 +40,13 @@ public class BaseTimeMethod {
         return new BasicHeader("Content-Type", contentTypeHeader);
     }
 
-    public static Header createCookieHeader(String accessToken) {
-        String cookieHeader = "Authorization=" + accessToken + "; Refresh-Token=";
+    public static Header createCookieHeader(String accessToken, String refreshToken) {
+        String cookieHeader = "Authorization=" + accessToken + "; Refresh-Token=" + refreshToken;
         LOGGER.debug("cookieHeader is " + cookieHeader);
         return new BasicHeader("Cookie", cookieHeader);
     }
 
-    public Header createTimeAuthenticationTokenHeader(String accessToken) {
+    public Header createTimeAuthorizationHeader(String accessToken) {
         return new BasicHeader(TimeConfigurationManager.getConfigurationManager().getConfig().getProperty(TimeConstant.CONFIG_API_AUTHENTICATION_HEADER), "Bearer " + accessToken);
     }
 
