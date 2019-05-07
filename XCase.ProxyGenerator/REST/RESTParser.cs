@@ -47,6 +47,7 @@
                 .Replace(":", "_Colon_")
                 .Replace(",", "_Comma_")
                 .Replace("-", "_Dash_")
+                .Replace("$", "_Dollar_")
                 .Replace(".", "_Dot_")
                 .Replace("(", "_Left_")
                 .Replace("%", "_Percent_")
@@ -106,6 +107,7 @@
             string fixedMethodName = methodName
                 .Replace(":", "_Colon_")
                 .Replace("-", "_Dash_")
+                .Replace("$", "_Dollar_")
                 .Replace(".", "_Dot_")
                 .Replace("(", "_Left_")
                 .Replace("%", "_Percent_")

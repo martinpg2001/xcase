@@ -30,7 +30,7 @@ public class BaseTimeMethod {
     }
 
     public Header createAcceptHeader() {
-        String acceptHeader = "application/vnd.intapp+json";
+        String acceptHeader = "application/json";
         LOGGER.debug("acceptHeader is " + acceptHeader);
         return new BasicHeader("Accept", acceptHeader);
     }
@@ -39,6 +39,12 @@ public class BaseTimeMethod {
         String contentTypeHeader = "application/json";
         LOGGER.debug("contentTypeHeader is " + contentTypeHeader);
         return new BasicHeader("Content-Type", contentTypeHeader);
+    }
+    
+    public static Header createCookieHeader(String accessToken) {
+        String cookieHeader = "Authorization=" + accessToken + "; Refresh-Token=";
+        LOGGER.debug("cookieHeader is " + cookieHeader);
+        return new BasicHeader("Cookie", cookieHeader);
     }
 
     public Header createTimeAuthenticationTokenHeader(String accessToken) {

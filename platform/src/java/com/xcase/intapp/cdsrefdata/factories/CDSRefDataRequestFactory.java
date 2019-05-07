@@ -1,13 +1,9 @@
 package com.xcase.intapp.cdsrefdata.factories;
 
+import com.xcase.intapp.cdsrefdata.transputs.*;
 import java.lang.invoke.MethodHandles;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.xcase.intapp.cdscm.transputs.CreateClientRequest;
-import com.xcase.intapp.cdsrefdata.transputs.GetClientStatusesRequest;
-import com.xcase.intapp.cdsrefdata.transputs.GetMatterStatusesRequest;
 
 public class CDSRefDataRequestFactory extends BaseCDSRefDataFactory {
 

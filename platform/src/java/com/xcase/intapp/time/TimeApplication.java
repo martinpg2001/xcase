@@ -5,14 +5,18 @@ import com.xcase.common.impl.simple.core.CommonHTTPManager;
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.common.utils.ConverterUtils;
 import com.xcase.intapp.time.TimeExternalAPI;
+import com.xcase.intapp.cdsrefdata.constant.CDSRefDataConstant;
+import com.xcase.intapp.cdsrefdata.factories.CDSRefDataRequestFactory;
+import com.xcase.intapp.cdsrefdata.impl.simple.core.CDSRefDataConfigurationManager;
+import com.xcase.intapp.cdsrefdata.transputs.GetClientStatusesRequest;
+import com.xcase.intapp.cdsrefdata.transputs.GetClientStatusesResponse;
 import com.xcase.intapp.time.SimpleTimeImpl;
 import com.xcase.intapp.time.constant.TimeConstant;
 import com.xcase.intapp.time.factories.TimeRequestFactory;
 import com.xcase.intapp.time.impl.simple.core.TimeConfigurationManager;
-import com.xcase.integrate.constant.IntegrateConstant;
-import com.xcase.integrate.factories.IntegrateRequestFactory;
-import com.xcase.integrate.transputs.GetAllDatasourcesRequest;
-import com.xcase.integrate.transputs.GetAllDatasourcesResponse;
+import com.xcase.intapp.time.transputs.GetRestrictedTextsRequest;
+import com.xcase.intapp.time.transputs.GetRestrictedTextsResponse;
+
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
@@ -40,6 +44,12 @@ public class TimeApplication {
         LOGGER.debug("created timeExternalAPI");
         try {
             generateTokenPair();
+            String accessToken = CDSRefDataConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(CDSRefDataConstant.ACCESS_TOKEN);
+            LOGGER.debug("about to get restricted texts");
+            GetRestrictedTextsRequest getRestrictedTextsRequest = TimeRequestFactory.createGetRestrictedTextsRequest(accessToken);
+            LOGGER.debug("created getRestrictedTextsRequest");
+            GetRestrictedTextsResponse getRestrictedTextsResponse = timeExternalAPI.getRestrictedTexts(getRestrictedTextsRequest);
+            LOGGER.debug("got restricted texts");
         } catch (Exception e) {
             LOGGER.warn("exception executing methods: " + e.getMessage());
         }
