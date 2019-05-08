@@ -33,11 +33,15 @@ public class AdvancedApplication {
      */
     public static void main(String[] args) {
         LOGGER.debug("starting main()");
-        AdvancedExternalAPI advancedExternalAPI = new SimpleAdvancedImpl();
+        String clientID = AdvancedConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(AdvancedConstant.CONFIG_CLIENT_ID);
+        String clientSecret = AdvancedConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(AdvancedConstant.CONFIG_CLIENT_SECRET);
+        String swaggerAPIURL = AdvancedConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(AdvancedConstant.CONFIG_SWAGGER_API_URL);
+        String tokenURL = AdvancedConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(AdvancedConstant.CONFIG_TOKEN_URL);
+        AdvancedExternalAPI advancedExternalAPI = new SimpleAdvancedImpl(clientID, clientSecret, swaggerAPIURL, tokenURL);
         LOGGER.debug("created advancedExternalAPI");
         try {
-            generateTokenPair();
-            String accessToken = AdvancedConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(AdvancedConstant.ACCESS_TOKEN);
+        	advancedExternalAPI.generateTokenPair();
+            String accessToken = advancedExternalAPI.getAccessToken();
             LOGGER.debug("about to invoke operation");
             InvokeOperationRequest invokeOperationRequest = AdvancedRequestFactory.createInvokeOperationRequest();
             LOGGER.debug("created invokeOperationRequest");
@@ -54,17 +58,17 @@ public class AdvancedApplication {
     }
 
     private static void generateTokenPair() throws Exception, IOException {
-        String cdsUsersClientID = AdvancedConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(AdvancedConstant.CONFIG_CLIENT_ID);
-        String cdsUsersClientSecret = AdvancedConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(AdvancedConstant.CONFIG_CLIENT_SECRET);
-        String cdsUsersSwaggerAPIURL = AdvancedConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(AdvancedConstant.CONFIG_SWAGGER_API_URL);
-        String cdsUsersTokenURL = AdvancedConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(AdvancedConstant.CONFIG_TOKEN_URL);
+        String clientID = AdvancedConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(AdvancedConstant.CONFIG_CLIENT_ID);
+        String clientSecret = AdvancedConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(AdvancedConstant.CONFIG_CLIENT_SECRET);
+        String swaggerAPIURL = AdvancedConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(AdvancedConstant.CONFIG_SWAGGER_API_URL);
+        String tokenURL = AdvancedConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(AdvancedConstant.CONFIG_TOKEN_URL);
         CommonHTTPManager httpManager = CommonHTTPManager.refreshCommonHTTPManager();
         List<NameValuePair> parameters = new ArrayList<NameValuePair>();
         parameters.add(new BasicNameValuePair("grant_type", "client_credentials"));
-        parameters.add(new BasicNameValuePair("client_id", cdsUsersClientID));
-        parameters.add(new BasicNameValuePair("client_secret", cdsUsersClientSecret));
+        parameters.add(new BasicNameValuePair("client_id", clientID));
+        parameters.add(new BasicNameValuePair("client_secret", clientSecret));
         parameters.add(new BasicNameValuePair("scope", "openid offline_access"));
-        CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponseMethod("POST", cdsUsersTokenURL, null, parameters, null, null);
+        CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponseMethod("POST", tokenURL, null, parameters, null, null);
         LOGGER.debug("got response status code " + commonHttpResponse.getResponseCode());
         String responseEntityString = commonHttpResponse.getResponseEntityString();
         LOGGER.debug("responseEntityString is " + responseEntityString);
@@ -78,7 +82,7 @@ public class AdvancedApplication {
         Header acceptHeader = createAcceptHeader();
         Header contentTypeHeader = createContentTypeHeader();
         Header[] headers = {acceptHeader, authorizationHeader, contentTypeHeader};
-        CommonHttpResponse swaggerHttpResponse = httpManager.doCommonHttpResponseMethod("GET", cdsUsersSwaggerAPIURL, null, parameters, null, null);
+        CommonHttpResponse swaggerHttpResponse = httpManager.doCommonHttpResponseMethod("GET", swaggerAPIURL, null, parameters, null, null);
         LOGGER.debug("got response status code " + swaggerHttpResponse.getResponseCode());
         String swaggerResponseEntityString = swaggerHttpResponse.getResponseEntityString();
         LOGGER.debug("swaggerResponseEntityString is " + swaggerResponseEntityString);
