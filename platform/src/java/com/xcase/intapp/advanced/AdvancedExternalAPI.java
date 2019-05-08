@@ -13,4 +13,8 @@ public interface AdvancedExternalAPI {
     public GenerateTokensResponse generateTokens(GenerateTokensRequest generateTokensRequest);
 
     public GetSwaggerDocumentResponse getSwaggerDocument(GetSwaggerDocumentRequest getSwaggerDocumentRequest);
+    
+	public String getApiURL();
+
+	public void setApiURL(String apiURL);
 }

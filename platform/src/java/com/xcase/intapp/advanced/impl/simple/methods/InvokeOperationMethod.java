@@ -30,7 +30,7 @@ public class InvokeOperationMethod extends BaseAdvancedMethod {
         InvokeOperationResponse response = AdvancedResponseFactory.createInvokeOperationResponse();
         LOGGER.debug("created response");
         try {
-            String baseVersionUrl = getAPIVersionUrl();
+            String baseVersionUrl = request.getAPIURL();
             LOGGER.debug("baseVersionUrl is " + baseVersionUrl);
             String method = request.getMethod();
             LOGGER.debug("method is " + method);

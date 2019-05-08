@@ -46,6 +46,7 @@ public class AdvancedApplication {
             InvokeOperationRequest invokeOperationRequest = AdvancedRequestFactory.createInvokeOperationRequest();
             LOGGER.debug("created invokeOperationRequest");
             invokeOperationRequest.setAccessToken(accessToken);
+            invokeOperationRequest.setAPIURL(advancedExternalAPI.getApiURL());
             invokeOperationRequest.setMethod("POST");
             invokeOperationRequest.setOperationPath("api/v1/clients/");
             String clientId = "55555";
@@ -83,6 +84,15 @@ public class AdvancedApplication {
             getSwaggerDocumentRequest.setSwaggerAPIURL(swaggerAPIURL);
             GetSwaggerDocumentResponse getSwaggerDocumentResponse = advancedExternalAPI.getSwaggerDocument(getSwaggerDocumentRequest);
             LOGGER.debug("got Swagger document");
+            if (getSwaggerDocumentResponse.getSwaggerDocument() != null) {
+            	JsonObject swaggerEntityJsonObject = (JsonObject) ConverterUtils.parseStringToJson(getSwaggerDocumentResponse.getSwaggerDocument());
+                String host = swaggerEntityJsonObject.get("host").getAsString();
+                LOGGER.debug("host is " + host);
+                String basePath = swaggerEntityJsonObject.get("basePath").getAsString();
+                LOGGER.debug("basePath is " + basePath);
+                String apiURL = "https://" + host + basePath;
+                LOGGER.debug("apiURL is " + apiURL);
+            }
         } catch (Exception e) {
             LOGGER.warn("exception executing methods: " + e.getMessage());
         }

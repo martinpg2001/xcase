@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 
 public class InvokeOperationRequestImpl extends AdvancedRequestImpl implements InvokeOperationRequest {
+    private String apiURL;
     private String entityString;
     private String method;
     private List<NameValuePair> parameters;
@@ -37,6 +38,16 @@ public class InvokeOperationRequestImpl extends AdvancedRequestImpl implements I
 	@Override
 	public void setParameters(List<NameValuePair> parameters) {
 		this.parameters = parameters;
+	}
+
+	@Override
+	public String getAPIURL() {
+		return apiURL;
+	}
+
+	@Override
+	public void setAPIURL(String apiURL) {
+		this.apiURL = apiURL;
 	}
 
 }

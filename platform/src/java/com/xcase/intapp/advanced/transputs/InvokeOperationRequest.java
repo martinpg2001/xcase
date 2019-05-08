@@ -5,6 +5,8 @@ import org.apache.http.NameValuePair;
 
 public interface InvokeOperationRequest extends AdvancedRequest {
 
+	String getAPIURL();
+	
 	String getEntityString();
 	
 	String getMethod();
@@ -12,6 +14,8 @@ public interface InvokeOperationRequest extends AdvancedRequest {
 	String getOperationPath();
 	
 	List<NameValuePair> getParameters();
+	
+	void setAPIURL(String apiURL);
 	
 	void setEntityString(String entityString);
 	
