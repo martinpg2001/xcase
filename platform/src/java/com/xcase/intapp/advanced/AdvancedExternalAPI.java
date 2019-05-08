@@ -9,4 +9,8 @@ public interface AdvancedExternalAPI {
 	public void generateTokenPair() throws Exception;
 	
 	public String getAccessToken();
+
+    public GenerateTokensResponse generateTokens(GenerateTokensRequest generateTokensRequest);
+
+    public GetSwaggerDocumentResponse getSwaggerDocument(GetSwaggerDocumentRequest getSwaggerDocumentRequest);
 }

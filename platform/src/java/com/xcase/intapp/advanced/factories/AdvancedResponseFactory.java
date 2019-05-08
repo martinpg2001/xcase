@@ -9,4 +9,14 @@ public class AdvancedResponseFactory extends BaseAdvancedFactory {
         return (InvokeOperationResponse) obj;
 	}
 
+    public static GenerateTokensResponse createGenerateTokensResponse() {
+        Object obj = newInstanceOf("advanced.config.responsefactory.GenerateTokensResponse");
+        return (GenerateTokensResponse) obj;
+    }
+
+    public static GetSwaggerDocumentResponse createGetSwaggerDocumentResponse() {
+        Object obj = newInstanceOf("advanced.config.responsefactory.GetSwaggerDocumentResponse");
+        return (GetSwaggerDocumentResponse) obj;
+    }
+
 }

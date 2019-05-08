@@ -17,4 +17,14 @@ public class AdvancedRequestFactory extends BaseAdvancedFactory {
         return (InvokeOperationRequest) obj;
 	}
 
+    public static GenerateTokensRequest createGenerateTokensRequest() {
+        Object obj = newInstanceOf("advanced.config.requestfactory.GenerateTokensRequest");
+        return (GenerateTokensRequest) obj;
+    }
+
+    public static GetSwaggerDocumentRequest createGetSwaggerDocumentRequest() {
+        Object obj = newInstanceOf("advanced.config.requestfactory.GetSwaggerDocumentRequest");
+        return (GetSwaggerDocumentRequest) obj;
+    }
+
 }

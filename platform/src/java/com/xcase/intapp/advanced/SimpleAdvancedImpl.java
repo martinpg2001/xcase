@@ -20,6 +20,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class SimpleAdvancedImpl implements AdvancedExternalAPI {
+    /**
+     * log4j logger.
+     */
+    protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
+    
 	private String accessToken;
 	
 	private String apiURL;
@@ -83,18 +88,34 @@ public class SimpleAdvancedImpl implements AdvancedExternalAPI {
 	}
 	
     /**
-     * log4j logger.
-     */
-    protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
-    /**
      * configuration manager
      */
     public AdvancedConfigurationManager localConfigurationManager = AdvancedConfigurationManager.getConfigurationManager();
-
+    
+    /**
+     * method implementation.
+     */
+    private GenerateTokensMethod generateTokensMethod = new GenerateTokensMethod();
+    
+    /**
+     * method implementation.
+     */
+    private GetSwaggerDocumentMethod getSwaggerDocumentMethod = new GetSwaggerDocumentMethod();
+    
     /**
      * method implementation.
      */
     private InvokeOperationMethod invokeOperationMethod = new InvokeOperationMethod();
+    
+    @Override
+    public GenerateTokensResponse generateTokens(GenerateTokensRequest generateTokensRequest) {
+        return this.generateTokensMethod.generateTokens(generateTokensRequest);
+    }
+    
+    @Override
+    public GetSwaggerDocumentResponse getSwaggerDocument(GetSwaggerDocumentRequest getSwaggerDocumentRequest) {
+        return this.getSwaggerDocumentMethod.getSwaggerDocument(getSwaggerDocumentRequest);
+    }
 
     @Override
     public InvokeOperationResponse invokeOperation(InvokeOperationRequest invokeOperationRequest) {

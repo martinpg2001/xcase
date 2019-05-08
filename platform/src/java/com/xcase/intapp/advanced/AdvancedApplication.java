@@ -67,6 +67,22 @@ public class AdvancedApplication {
             invokeOperationRequest.setEntityString(null);
             invokeOperationResponse = advancedExternalAPI.invokeOperation(invokeOperationRequest);            
             LOGGER.debug("invoked operation");
+            /* Use parameters to get tokens and document through methods */
+            LOGGER.debug("about to generate tokens");
+            GenerateTokensRequest generateTokensRequest = AdvancedRequestFactory.createGenerateTokensRequest();
+            LOGGER.debug("created generateTokensRequest");
+            generateTokensRequest.setClientId(clientID);
+            generateTokensRequest.setClientSecret(clientSecret);
+            generateTokensRequest.setTokenURL(tokenURL);
+            GenerateTokensResponse generateTokensResponse = advancedExternalAPI.generateTokens(generateTokensRequest);
+            LOGGER.debug("generated tokens");
+            LOGGER.debug("about to get Swagger document");
+            GetSwaggerDocumentRequest getSwaggerDocumentRequest = AdvancedRequestFactory.createGetSwaggerDocumentRequest();
+            LOGGER.debug("created getSwaggerDocument");
+            getSwaggerDocumentRequest.setAccessToken(generateTokensResponse.getAccessToken());
+            getSwaggerDocumentRequest.setSwaggerAPIURL(swaggerAPIURL);
+            GetSwaggerDocumentResponse getSwaggerDocumentResponse = advancedExternalAPI.getSwaggerDocument(getSwaggerDocumentRequest);
+            LOGGER.debug("got Swagger document");
         } catch (Exception e) {
             LOGGER.warn("exception executing methods: " + e.getMessage());
         }
