@@ -50,8 +50,10 @@
                 .Replace("$", "_Dollar_")
                 .Replace(".", "_Dot_")
                 .Replace("(", "_Left_")
+                .Replace("{", "_LeftBrace_")
                 .Replace("%", "_Percent_")
                 .Replace(")", "_Right_")
+                .Replace("}", "_RightBrace_")
                 .Replace("/", "_Slash_")
                 .Replace(" ", "_Space_");
             fixedTypeName = RESTParser.FixGenericName(fixedTypeName);
@@ -110,8 +112,10 @@
                 .Replace("$", "_Dollar_")
                 .Replace(".", "_Dot_")
                 .Replace("(", "_Left_")
+                .Replace("{", "_LeftBrace_")
                 .Replace("%", "_Percent_")
                 .Replace(")", "_Right_")
+                .Replace("}", "_RightBrace_")
                 .Replace(" ", "_Space_");
             fixedMethodName = RESTParser.FixGenericName(fixedMethodName);
             if ((char.IsLetter(fixedMethodName[0]) == false) && (fixedMethodName[0] != '_'))
