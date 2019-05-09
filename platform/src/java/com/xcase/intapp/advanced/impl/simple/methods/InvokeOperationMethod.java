@@ -41,6 +41,10 @@ public class InvokeOperationMethod extends BaseAdvancedMethod {
             Header authorizationHeader = createAdvancedAuthenticationTokenHeader(accessToken);
             LOGGER.debug("created Authorization header");
             Header acceptHeader = createAcceptHeader();
+            if (request.getAccept() != null && !request.getAccept().isEmpty()) {
+                acceptHeader = createAcceptHeader(request.getAccept());
+            }
+            
             Header contentTypeHeader = createContentTypeHeader();
             Header[] headers = {acceptHeader, authorizationHeader, contentTypeHeader};
             List<NameValuePair> parameters = request.getParameters();

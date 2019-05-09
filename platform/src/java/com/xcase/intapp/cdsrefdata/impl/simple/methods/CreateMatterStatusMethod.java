@@ -37,7 +37,7 @@ public class CreateMatterStatusMethod extends BaseCDSRefDataMethod {
             Header acceptHeader = createAcceptHeader();
             Header contentTypeHeader = createContentTypeHeader();
             Header[] headers = {acceptHeader, authorizationHeader, contentTypeHeader};
-            String entityString = "[{\"key\":\"ACT\",\"name\":\"Active\",\"active\":true,\"system\":false}]";
+            String entityString = request.getEntityString();
             CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponsePost(endPoint, headers, null, entityString, null);
             int responseCode = commonHttpResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);

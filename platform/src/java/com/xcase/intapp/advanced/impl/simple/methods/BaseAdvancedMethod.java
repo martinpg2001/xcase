@@ -33,6 +33,11 @@ public class BaseAdvancedMethod {
         LOGGER.debug("acceptHeader is " + acceptHeader);
         return new BasicHeader("Accept", acceptHeader);
     }
+    
+    public Header createAcceptHeader(String accept) {
+        LOGGER.debug("accept is " + accept);
+        return new BasicHeader("Accept", accept);
+    }
 
     public Header createContentTypeHeader() {
         String contentTypeHeader = "application/json";

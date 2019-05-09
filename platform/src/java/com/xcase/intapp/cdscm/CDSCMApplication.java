@@ -44,14 +44,14 @@ public class CDSCMApplication {
             CreateClientRequest createClientRequest = CDSCMRequestFactory.createCreateClientRequest(accessToken);
             LOGGER.debug("created createClientRequest");
             createClientRequest.setClientId(clientId);
-            createClientRequest.setClientString("{\"clientId\":\"{clientId}\",\"name\":\"Underture Science\",\"status\":\"ACTIVE\",\"description\":\"\",\"closedOn\":\"\",\"dunsNumber\":\"\",\"rounding\":null,\"timeNote\":\"\",\"billableStatus\":\"\",\"industry\":\"\",\"clientPersons\":[],\"externalIdentifiers\":[],\"lcidDictionary\":\"\",\"ebillinghubValidation\":\"\",\"timelinks\":{},\"openedOn\":\"\",\"_pricingAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"_experienceAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"_timeAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"security\":{\"defaultAccess\":255,\"users\":[]}}".replace("{clientId}", clientId));
+            createClientRequest.setClientString("{\"clientId\":\"{clientId}\",\"name\":\"Underture Science\",\"status\":\"ACT\",\"description\":\"This is a test description.\",\"closedOn\":\"\",\"dunsNumber\":\"\",\"rounding\":null,\"timeNote\":\"\",\"billableStatus\":\"\",\"industry\":\"\",\"clientPersons\":[],\"externalIdentifiers\":[],\"lcidDictionary\":\"\",\"ebillinghubValidation\":\"\",\"timelinks\":{},\"openedOn\":\"\",\"_pricingAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"_experienceAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"_timeAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"security\":{\"defaultAccess\":255,\"users\":[]}}".replace("{clientId}", clientId));
             CreateClientResponse createClientResponse = cdscmExternalAPI.createClient(createClientRequest);
             LOGGER.debug("created client");
             LOGGER.debug("about to put client security");
             PutClientSecurityRequest putClientSecurityRequest = CDSCMRequestFactory.createPutClientSecurityRequest(accessToken);
             LOGGER.debug("created getClientSecurityRequest");
             putClientSecurityRequest.setClientId(clientId);
-            putClientSecurityRequest.setClientSecurity("{\"defaultAccess\":255,\"users\":[{\"userId\":\"ADMIN\",\"access\":255}]}");
+            putClientSecurityRequest.setClientSecurity("{\"defaultAccess\":255,\"users\":[{\"userId\":\"ADMIN\",\"access\":255},{\"userId\":\"martin.gilchrist@intapp.com\",\"access\":254}]}");
             PutClientSecurityResponse putClientSecurityResponse = cdscmExternalAPI.putClientSecurity(putClientSecurityRequest);
             LOGGER.debug("got client security");
             LOGGER.debug("about to get client security");

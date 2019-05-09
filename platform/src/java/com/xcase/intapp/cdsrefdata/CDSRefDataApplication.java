@@ -52,6 +52,7 @@ public class CDSRefDataApplication {
             LOGGER.debug("about to create matter status");
             CreateMatterStatusRequest createMatterStatusRequest = CDSRefDataRequestFactory.createCreateMatterStatusRequest(accessToken);
             LOGGER.debug("created createMatterStatusRequest");
+            createMatterStatusRequest.setEntityString("[{\"key\":\"ACT\",\"name\":\"Active\",\"active\":true,\"system\":false},{\"key\":\"INA\",\"name\":\"Inactive\",\"active\":true,\"system\":false}]");
             CreateMatterStatusResponse CreateMatterStatusResponse = cdsRefDataExternalAPI.createMatterStatus(createMatterStatusRequest);
             LOGGER.debug("created matter statuses");            
             LOGGER.debug("about to get matter statuses");
