@@ -4,7 +4,9 @@ import java.lang.invoke.MethodHandles;
 
 import com.xcase.intapp.cdscm.transputs.CreateClientRequest;
 import com.xcase.intapp.cdscm.transputs.DeleteClientRequest;
+import com.xcase.intapp.cdscm.transputs.GetClientRequest;
 import com.xcase.intapp.cdscm.transputs.GetClientSecurityRequest;
+import com.xcase.intapp.cdscm.transputs.GetClientsModifiedSinceDateRequest;
 import com.xcase.intapp.cdscm.transputs.PutClientSecurityRequest;
 
 import org.apache.logging.log4j.LogManager;
@@ -57,6 +59,28 @@ public class CDSCMRequestFactory extends BaseCDSCMFactory {
 
     public static PutClientSecurityRequest createPutClientSecurityRequest(String accessToken) {
         PutClientSecurityRequest request = createPutClientSecurityRequest();
+        request.setAccessToken(accessToken);
+        return request;
+    }
+    
+    public static GetClientRequest createGetClientRequest() {
+        Object obj = newInstanceOf("cdscm.config.requestfactory.GetClientRequest");
+        return (GetClientRequest) obj;
+    }
+
+    public static GetClientRequest createGetClientRequest(String accessToken) {
+        GetClientRequest request = createGetClientRequest();
+        request.setAccessToken(accessToken);
+        return request;
+    }
+    
+    public static GetClientsModifiedSinceDateRequest createGetClientsModifiedSinceDateRequest() {
+        Object obj = newInstanceOf("cdscm.config.requestfactory.GetClientsModifiedSinceDateRequest");
+        return (GetClientsModifiedSinceDateRequest) obj;
+    }
+
+    public static GetClientsModifiedSinceDateRequest createGetClientsModifiedSinceDateRequest(String accessToken) {
+        GetClientsModifiedSinceDateRequest request = createGetClientsModifiedSinceDateRequest();
         request.setAccessToken(accessToken);
         return request;
     }

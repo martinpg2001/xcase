@@ -12,7 +12,9 @@ import com.xcase.intapp.cdscm.impl.simple.core.CDSCMConfigurationManager;
 import com.xcase.intapp.cdscm.transputs.*;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
@@ -40,6 +42,7 @@ public class CDSCMApplication {
             String accessToken = CDSCMConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(CDSCMConstant.ACCESS_TOKEN);
             String clientId = "66666";
             LOGGER.debug("clientId is " + clientId);
+            /* Create client */
             LOGGER.debug("about to create client");
             CreateClientRequest createClientRequest = CDSCMRequestFactory.createCreateClientRequest(accessToken);
             LOGGER.debug("created createClientRequest");
@@ -47,6 +50,14 @@ public class CDSCMApplication {
             createClientRequest.setClientString("{\"clientId\":\"{clientId}\",\"name\":\"Underture Science\",\"status\":\"ACT\",\"description\":\"This is a test description.\",\"closedOn\":\"\",\"dunsNumber\":\"\",\"rounding\":null,\"timeNote\":\"\",\"billableStatus\":\"\",\"industry\":\"\",\"clientPersons\":[],\"externalIdentifiers\":[],\"lcidDictionary\":\"\",\"ebillinghubValidation\":\"\",\"timelinks\":{},\"openedOn\":\"\",\"_pricingAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"_experienceAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"_timeAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"security\":{\"defaultAccess\":255,\"users\":[]}}".replace("{clientId}", clientId));
             CreateClientResponse createClientResponse = cdscmExternalAPI.createClient(createClientRequest);
             LOGGER.debug("created client");
+            /* Get client */
+            LOGGER.debug("about to get client");
+            GetClientRequest getClientRequest = CDSCMRequestFactory.createGetClientRequest(accessToken);
+            LOGGER.debug("created getClientRequest");
+            getClientRequest.setClientId(clientId);
+            GetClientResponse getClientResponse = cdscmExternalAPI.getClient(getClientRequest);
+            LOGGER.debug("got client security");
+            /* Create client security */
             LOGGER.debug("about to put client security");
             PutClientSecurityRequest putClientSecurityRequest = CDSCMRequestFactory.createPutClientSecurityRequest(accessToken);
             LOGGER.debug("created getClientSecurityRequest");
@@ -54,12 +65,25 @@ public class CDSCMApplication {
             putClientSecurityRequest.setClientSecurity("{\"defaultAccess\":255,\"users\":[{\"userId\":\"ADMIN\",\"access\":255},{\"userId\":\"martin.gilchrist@intapp.com\",\"access\":254}]}");
             PutClientSecurityResponse putClientSecurityResponse = cdscmExternalAPI.putClientSecurity(putClientSecurityRequest);
             LOGGER.debug("got client security");
+            /* Get client security */
             LOGGER.debug("about to get client security");
             GetClientSecurityRequest getClientSecurityRequest = CDSCMRequestFactory.createGetClientSecurityRequest(accessToken);
             LOGGER.debug("created getClientSecurityRequest");
             getClientSecurityRequest.setClientId(clientId);
             GetClientSecurityResponse getClientSecurityResponse = cdscmExternalAPI.getClientSecurity(getClientSecurityRequest);
             LOGGER.debug("got client security");
+            /* Get clients modified since yesterday */
+            LOGGER.debug("about to get clients modified since yesterday");
+            GetClientsModifiedSinceDateRequest getClientsModifiedSinceDateRequest = CDSCMRequestFactory.createGetClientsModifiedSinceDateRequest(accessToken);
+            LOGGER.debug("created getClientsModifiedSinceDateRequest");
+            Date date = new Date();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-MM'T'HH:mm:ss'Z'");
+            String since = formatter.format(date);
+            LOGGER.debug("since is " + since); 
+            getClientsModifiedSinceDateRequest.setSince(since);
+            GetClientsModifiedSinceDateResponse getClientsModifiedSinceDate = cdscmExternalAPI.getClientsModifiedSinceDate(getClientsModifiedSinceDateRequest);
+            LOGGER.debug("got clients modified since yesterday");            
+            /* Delete client */
             LOGGER.debug("about to delete client");
             DeleteClientRequest deleteClientRequest = CDSCMRequestFactory.createDeleteClientRequest(accessToken);
             LOGGER.debug("created deleteClientRequest");

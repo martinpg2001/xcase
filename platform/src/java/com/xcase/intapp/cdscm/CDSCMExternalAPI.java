@@ -12,4 +12,8 @@ public interface CDSCMExternalAPI {
 
     PutClientSecurityResponse putClientSecurity(PutClientSecurityRequest putClientSecurityRequest);
 
+    GetClientResponse getClient(GetClientRequest getClientRequest);
+
+    GetClientsModifiedSinceDateResponse getClientsModifiedSinceDate(GetClientsModifiedSinceDateRequest getClientsModifiedSinceDateRequest);
+
 }
