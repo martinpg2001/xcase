@@ -16,6 +16,11 @@ public class SimpleCDSRefDataImpl implements CDSRefDataExternalAPI {
      * configuration manager
      */
     public CDSRefDataConfigurationManager localConfigurationManager = CDSRefDataConfigurationManager.getConfigurationManager();
+ 
+    /**
+     * method implementation.
+     */
+    private CreateMatterStatusMethod createMatterStatusMethod = new CreateMatterStatusMethod();
     
     /**
      * method implementation.
@@ -26,6 +31,11 @@ public class SimpleCDSRefDataImpl implements CDSRefDataExternalAPI {
      * method implementation.
      */
     private GetMatterStatusesMethod getMatterStatusesMethod = new GetMatterStatusesMethod();
+    
+    @Override
+    public CreateMatterStatusResponse createMatterStatus(CreateMatterStatusRequest createMatterStatusRequest) {
+        return this.createMatterStatusMethod.createMatterStatus(createMatterStatusRequest);
+    }
 
     @Override
     public GetClientStatusesResponse getClientStatuses(GetClientStatusesRequest getClientStatusesRequest) {

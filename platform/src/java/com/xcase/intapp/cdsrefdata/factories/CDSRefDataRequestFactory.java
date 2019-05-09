@@ -34,4 +34,15 @@ public class CDSRefDataRequestFactory extends BaseCDSRefDataFactory {
         return request;
 	}
 
+	public static CreateMatterStatusRequest createCreateMatterStatusRequest() {
+        Object obj = newInstanceOf("cdsrefdata.config.requestfactory.CreateMatterStatusRequest");
+        return (CreateMatterStatusRequest) obj;
+	}
+
+	public static CreateMatterStatusRequest createCreateMatterStatusRequest(String accessToken) {
+		CreateMatterStatusRequest request = createCreateMatterStatusRequest();
+        request.setAccessToken(accessToken);
+        return request;
+	}
+
 }

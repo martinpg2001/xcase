@@ -52,7 +52,7 @@ public class InvokeOperationMethod extends BaseAdvancedMethod {
             int responseCode = commonHttpResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
             response.setResponseCode(responseCode);
-            if (responseCode == 200) {
+            if (responseCode == 200 | responseCode == 201) {
                 String responseEntityString = commonHttpResponse.getResponseEntityString();
                 LOGGER.debug("responseEntityString is " + responseEntityString);
                 if (responseEntityString != null && !responseEntityString.isEmpty()) {
