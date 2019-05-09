@@ -76,8 +76,8 @@ public class CDSCMApplication {
             LOGGER.debug("about to get clients modified since yesterday");
             GetClientsModifiedSinceDateRequest getClientsModifiedSinceDateRequest = CDSCMRequestFactory.createGetClientsModifiedSinceDateRequest(accessToken);
             LOGGER.debug("created getClientsModifiedSinceDateRequest");
-            Date date = new Date();
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-MM'T'HH:mm:ss'Z'");
+            Date date = new Date(new Date().getTime() - 24*3600*1000);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
             String since = formatter.format(date);
             LOGGER.debug("since is " + since); 
             getClientsModifiedSinceDateRequest.setSince(since);
