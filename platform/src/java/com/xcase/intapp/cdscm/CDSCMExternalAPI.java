@@ -16,4 +16,17 @@ public interface CDSCMExternalAPI {
 
     GetClientsModifiedSinceDateResponse getClientsModifiedSinceDate(GetClientsModifiedSinceDateRequest getClientsModifiedSinceDateRequest);
 
+	CreateMatterResponse createMatter(CreateMatterRequest createMatterRequest);
+
+	GetMatterResponse getMatter(GetMatterRequest getMatterRequest);
+
+	PutMatterSecurityResponse putMatterSecurity(PutMatterSecurityRequest putMatterSecurityRequest);
+
+	GetMatterSecurityResponse getMatterSecurity(GetMatterSecurityRequest getMatterSecurityRequest);
+
+	GetMattersModifiedSinceDateResponse getMattersModifiedSinceDate(
+			GetMattersModifiedSinceDateRequest getMattersModifiedSinceDateRequest);
+
+	DeleteMatterResponse deleteMatter(DeleteMatterRequest deleteMatterRequest);
+
 }

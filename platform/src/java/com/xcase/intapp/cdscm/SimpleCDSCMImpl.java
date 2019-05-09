@@ -47,6 +47,36 @@ public class SimpleCDSCMImpl implements CDSCMExternalAPI {
      * method implementation.
      */
     private PutClientSecurityMethod putClientSecurityMethod = new PutClientSecurityMethod();
+    
+    /**
+     * method implementation.
+     */
+    private CreateMatterMethod createMatterMethod = new CreateMatterMethod();
+    
+    /**
+     * method implementation.
+     */
+    private DeleteMatterMethod deleteMatterMethod = new DeleteMatterMethod();
+    
+    /**
+     * method implementation.
+     */
+    private GetMatterMethod getMatterMethod = new GetMatterMethod();
+    
+    /**
+     * method implementation.
+     */
+    private GetMatterSecurityMethod getMatterSecurityMethod = new GetMatterSecurityMethod();
+    
+    /**
+     * method implementation.
+     */
+    private GetMattersModifiedSinceDateMethod getMattersModifiedSinceDateMethod = new GetMattersModifiedSinceDateMethod();
+    
+    /**
+     * method implementation.
+     */
+    private PutMatterSecurityMethod putMatterSecurityMethod = new PutMatterSecurityMethod();
 
     @Override
     public CreateClientResponse createClient(CreateClientRequest createClientRequest) {
@@ -77,5 +107,36 @@ public class SimpleCDSCMImpl implements CDSCMExternalAPI {
     public PutClientSecurityResponse putClientSecurity(PutClientSecurityRequest putClientSecurityRequest) {
         return this.putClientSecurityMethod.putClientSecurity(putClientSecurityRequest);
     }
+
+	@Override
+	public CreateMatterResponse createMatter(CreateMatterRequest createMatterRequest) {
+		return this.createMatterMethod.createMatter(createMatterRequest);
+	}
+
+	@Override
+	public GetMatterResponse getMatter(GetMatterRequest getMatterRequest) {
+		return this.getMatterMethod.getMatter(getMatterRequest);
+	}
+
+	@Override
+	public PutMatterSecurityResponse putMatterSecurity(PutMatterSecurityRequest putMatterSecurityRequest) {
+		return this.putMatterSecurityMethod.putMatterSecurity(putMatterSecurityRequest);
+	}
+
+	@Override
+	public GetMatterSecurityResponse getMatterSecurity(GetMatterSecurityRequest getMatterSecurityRequest) {
+		return this.getMatterSecurityMethod.getMatterSecurity(getMatterSecurityRequest);
+	}
+
+	@Override
+	public GetMattersModifiedSinceDateResponse getMattersModifiedSinceDate(
+			GetMattersModifiedSinceDateRequest getMattersModifiedSinceDateRequest) {
+		return this.getMattersModifiedSinceDateMethod.getMattersModifiedSinceDate(getMattersModifiedSinceDateRequest);
+	}
+
+	@Override
+	public DeleteMatterResponse deleteMatter(DeleteMatterRequest deleteMatterRequest) {
+		return this.deleteMatterMethod.deleteMatter(deleteMatterRequest);
+	}
 
 }

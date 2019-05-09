@@ -56,15 +56,15 @@ public class CDSCMApplication {
             LOGGER.debug("created getClientRequest");
             getClientRequest.setClientId(clientId);
             GetClientResponse getClientResponse = cdscmExternalAPI.getClient(getClientRequest);
-            LOGGER.debug("got client security");
+            LOGGER.debug("got client");
             /* Create client security */
             LOGGER.debug("about to put client security");
             PutClientSecurityRequest putClientSecurityRequest = CDSCMRequestFactory.createPutClientSecurityRequest(accessToken);
-            LOGGER.debug("created getClientSecurityRequest");
+            LOGGER.debug("created putClientSecurityRequest");
             putClientSecurityRequest.setClientId(clientId);
             putClientSecurityRequest.setClientSecurity("{\"defaultAccess\":255,\"users\":[{\"userId\":\"ADMIN\",\"access\":255},{\"userId\":\"martin.gilchrist@intapp.com\",\"access\":254}]}");
             PutClientSecurityResponse putClientSecurityResponse = cdscmExternalAPI.putClientSecurity(putClientSecurityRequest);
-            LOGGER.debug("got client security");
+            LOGGER.debug("put client security");
             /* Get client security */
             LOGGER.debug("about to get client security");
             GetClientSecurityRequest getClientSecurityRequest = CDSCMRequestFactory.createGetClientSecurityRequest(accessToken);
@@ -82,7 +82,57 @@ public class CDSCMApplication {
             LOGGER.debug("since is " + since); 
             getClientsModifiedSinceDateRequest.setSince(since);
             GetClientsModifiedSinceDateResponse getClientsModifiedSinceDate = cdscmExternalAPI.getClientsModifiedSinceDate(getClientsModifiedSinceDateRequest);
-            LOGGER.debug("got clients modified since yesterday");            
+            LOGGER.debug("got clients modified since yesterday");
+            /* Create client */
+            String matterId = "0001";
+            LOGGER.debug("about to create matter");
+            CreateMatterRequest createMatterRequest = CDSCMRequestFactory.createCreateMatterRequest(accessToken);
+            LOGGER.debug("created createMatterRequest");
+            createMatterRequest.setClientId(clientId);
+            createMatterRequest.setMatterId(matterId);
+            createMatterRequest.setEntityString("{\"clientId\":\"{clientId}\",\"name\":\"Underture Science\",\"status\":\"ACT\",\"description\":\"This is a test description.\",\"closedOn\":\"\",\"dunsNumber\":\"\",\"rounding\":null,\"timeNote\":\"\",\"billableStatus\":\"\",\"industry\":\"\",\"clientPersons\":[],\"externalIdentifiers\":[],\"lcidDictionary\":\"\",\"ebillinghubValidation\":\"\",\"timelinks\":{},\"openedOn\":\"\",\"_pricingAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"_experienceAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"_timeAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"security\":{\"defaultAccess\":255,\"users\":[]}}".replace("{clientId}", clientId));
+            CreateMatterResponse createMatterResponse = cdscmExternalAPI.createMatter(createMatterRequest);
+            LOGGER.debug("created matter");
+            /* Get matter */
+            LOGGER.debug("about to get matter");
+            GetMatterRequest getMatterRequest = CDSCMRequestFactory.createGetMatterRequest(accessToken);
+            LOGGER.debug("created getMatterRequest");
+            getMatterRequest.setClientId(clientId);
+            getMatterRequest.setMatterId(matterId);
+            GetMatterResponse getMatterResponse = cdscmExternalAPI.getMatter(getMatterRequest);
+            LOGGER.debug("got matter");
+            /* Create matter security */
+            LOGGER.debug("about to put matter security");
+            PutMatterSecurityRequest putMatterSecurityRequest = CDSCMRequestFactory.createPutMatterSecurityRequest(accessToken);
+            LOGGER.debug("created getClientSecurityRequest");
+            putMatterSecurityRequest.setClientId(clientId);
+            putMatterSecurityRequest.setMatterId(matterId);
+            putMatterSecurityRequest.setMatterSecurity("{\"defaultAccess\":255,\"users\":[{\"userId\":\"ADMIN\",\"access\":255},{\"userId\":\"martin.gilchrist@intapp.com\",\"access\":254}]}");
+            PutMatterSecurityResponse putMatterSecurityResponse = cdscmExternalAPI.putMatterSecurity(putMatterSecurityRequest);
+            LOGGER.debug("put matter security");
+            /* Get matter security */
+            LOGGER.debug("about to get matter security");
+            GetMatterSecurityRequest getMatterSecurityRequest = CDSCMRequestFactory.createGetMatterSecurityRequest(accessToken);
+            LOGGER.debug("created getMatterSecurityRequest");
+            getMatterSecurityRequest.setClientId(clientId);
+            getMatterSecurityRequest.setMatterId(matterId);
+            GetMatterSecurityResponse getMatterSecurityResponse = cdscmExternalAPI.getMatterSecurity(getMatterSecurityRequest);
+            LOGGER.debug("got matter security");
+            /* Get matters modified since yesterday */
+            LOGGER.debug("about to get matters modified since yesterday");
+            GetMattersModifiedSinceDateRequest getMattersModifiedSinceDateRequest = CDSCMRequestFactory.createGetMattersModifiedSinceDateRequest(accessToken);
+            LOGGER.debug("created getMattersModifiedSinceDateRequest"); 
+            getMattersModifiedSinceDateRequest.setSince(since);
+            GetMattersModifiedSinceDateResponse getMattersModifiedSinceDateResponse = cdscmExternalAPI.getMattersModifiedSinceDate(getMattersModifiedSinceDateRequest);
+            LOGGER.debug("got matters modified since yesterday"); 
+            /* Delete matter */
+            LOGGER.debug("about to delete matter");
+            DeleteMatterRequest deleteMatterRequest = CDSCMRequestFactory.createDeleteMatterRequest(accessToken);
+            LOGGER.debug("created deleteMatterRequest");
+            deleteMatterRequest.setClientId(clientId);
+            deleteMatterRequest.setMatterId(matterId);
+            DeleteMatterResponse deleteMatterResponse = cdscmExternalAPI.deleteMatter(deleteMatterRequest);
+            LOGGER.debug("deleted matter");
             /* Delete client */
             LOGGER.debug("about to delete client");
             DeleteClientRequest deleteClientRequest = CDSCMRequestFactory.createDeleteClientRequest(accessToken);
