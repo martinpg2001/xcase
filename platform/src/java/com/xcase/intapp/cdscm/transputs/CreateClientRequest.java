@@ -7,10 +7,12 @@ public interface CreateClientRequest extends CDSCMRequest {
     String getClientString();
     
     public String getOperationPath();
+    
+    int getSuccessResponseCode();
 
     void setClientId(String string);
 
-    public void setOperationPath(String operationPath);
+    void setOperationPath(String operationPath);
 
     void setClientString(String string);
 }

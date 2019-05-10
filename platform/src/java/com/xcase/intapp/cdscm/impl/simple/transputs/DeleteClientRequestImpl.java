@@ -5,7 +5,16 @@ import com.xcase.intapp.cdscm.transputs.DeleteClientRequest;
 public class DeleteClientRequestImpl extends CDSCMRequestImpl implements DeleteClientRequest {
     private String clientId;
     private String operationPath = "api/v1/clients/{clientId}";
+    private int successResponseCode = 200;
+    
+    public int getSuccessResponseCode() {
+        return this.successResponseCode;
+    }
 
+    public void setSuccessResponseCode(int successResponseCode) {
+        this.successResponseCode = successResponseCode;
+    }
+    
     @Override
     public String getClientId() {
         return clientId;

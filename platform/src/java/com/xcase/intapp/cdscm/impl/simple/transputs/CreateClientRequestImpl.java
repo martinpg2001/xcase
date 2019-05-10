@@ -7,6 +7,15 @@ public class CreateClientRequestImpl extends CDSCMRequestImpl implements CreateC
     private String clientId;
     private String clientString;
     private String operationPath = "api/v1/clients";
+    private int successResponseCode = 201;
+    
+    public int getSuccessResponseCode() {
+        return this.successResponseCode;
+    }
+
+    public void setSuccessResponseCode(int successResponseCode) {
+        this.successResponseCode = successResponseCode;
+    }
 
     @Override
     public String getClientId() {

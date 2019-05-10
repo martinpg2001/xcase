@@ -7,7 +7,16 @@ public class GetMatterRequestImpl extends CDSCMRequestImpl implements GetMatterR
     private String matterId;
     private String matterKey;
     private String operationPath = "api/v1/clients/{clientId}/matters/{matterId}";
+    private int successResponseCode = 200;
+    
+    public int getSuccessResponseCode() {
+        return this.successResponseCode;
+    }
 
+    public void setSuccessResponseCode(int successResponseCode) {
+        this.successResponseCode = successResponseCode;
+    }
+    
 	@Override
 	public String getOperationPath() {
 		return operationPath;

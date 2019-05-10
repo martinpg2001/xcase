@@ -7,6 +7,15 @@ public class CreateMatterRequestImpl extends CDSCMRequestImpl implements CreateM
     private String matterId;
     private String entityString;
     private String operationPath = "api/v1/clients/{clientId}/matters";
+    private int successResponseCode = 201;
+    
+    public int getSuccessResponseCode() {
+        return this.successResponseCode;
+    }
+
+    public void setSuccessResponseCode(int successResponseCode) {
+        this.successResponseCode = successResponseCode;
+    }
     
 	@Override
 	public void setClientId(String clientId) {

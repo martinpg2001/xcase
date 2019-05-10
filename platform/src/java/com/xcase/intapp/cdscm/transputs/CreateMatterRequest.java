@@ -15,5 +15,7 @@ public interface CreateMatterRequest extends CDSCMRequest {
 	String getClientId();
 
 	String getEntityString();
+	
+	int getSuccessResponseCode();
 
 }

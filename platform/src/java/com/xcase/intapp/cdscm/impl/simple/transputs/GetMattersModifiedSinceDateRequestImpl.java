@@ -8,6 +8,15 @@ public class GetMattersModifiedSinceDateRequestImpl extends CDSCMRequestImpl
     private String matterId;
     private String operationPath = "api/v1/matters";
     private String since;
+    private int successResponseCode = 200;
+    
+    public int getSuccessResponseCode() {
+        return this.successResponseCode;
+    }
+
+    public void setSuccessResponseCode(int successResponseCode) {
+        this.successResponseCode = successResponseCode;
+    }
     
 	@Override
 	public void setSince(String since) {

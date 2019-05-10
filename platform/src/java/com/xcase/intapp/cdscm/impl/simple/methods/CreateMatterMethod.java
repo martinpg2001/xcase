@@ -50,21 +50,8 @@ public class CreateMatterMethod extends BaseCDSCMMethod {
             CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponsePost(endPoint, headers, null, entityString, null);
             int responseCode = commonHttpResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
-            response.setResponseCode(responseCode);
-            if (responseCode == 201) {
-                String responseEntityString = commonHttpResponse.getResponseEntityString();
-                LOGGER.debug("responseEntityString is " + responseEntityString);
-                if (responseEntityString != null && !responseEntityString.isEmpty()) {
-                	Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd' 'HH:mm:ss").create();
-                    JsonElement jsonElement = (JsonElement) ConverterUtils.parseStringToJson(responseEntityString);
-                    if (jsonElement.isJsonArray()) {
-                        JsonArray jsonArray = (JsonArray) jsonElement;
-                    } else {
-                        JsonObject jsonObject = (JsonObject) jsonElement;
-                    }
-                } else {
-                	LOGGER.debug("responseEntityString is null or empty");
-                }
+            if (responseCode == request.getSuccessResponseCode()) {
+                handleExpectedResponseCode(response, commonHttpResponse);
             } else {
                 handleUnexpectedResponseCode(response, commonHttpResponse);
             }

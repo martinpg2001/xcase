@@ -12,4 +12,5 @@ public interface DeleteMatterSecurityRequest extends CDSCMRequest {
 
 	String getOperationPath();
 
+	int getSuccessResponseCode();
 }

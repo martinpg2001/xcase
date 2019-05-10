@@ -8,4 +8,5 @@ public interface GetClientRequest extends CDSCMRequest {
 
     String getOperationPath();
 
+    int getSuccessResponseCode();
 }

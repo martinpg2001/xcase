@@ -4,4 +4,5 @@ public interface CDSCMRequest {
     public String getAccessToken();
 
     public void setAccessToken(String accessToken);
+    
 }

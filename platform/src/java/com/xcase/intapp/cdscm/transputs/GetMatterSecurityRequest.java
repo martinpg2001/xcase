@@ -12,4 +12,5 @@ public interface GetMatterSecurityRequest extends CDSCMRequest {
 
 	String getOperationPath();
 
+	int getSuccessResponseCode();
 }

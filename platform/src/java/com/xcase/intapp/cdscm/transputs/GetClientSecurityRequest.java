@@ -7,6 +7,8 @@ public interface GetClientSecurityRequest extends CDSCMRequest {
     String getClientId();
     
     public String getOperationPath();
+    
+    int getSuccessResponseCode();
 
     public void setOperationPath(String operationPath);
 }

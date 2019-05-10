@@ -1,7 +1,13 @@
 package com.xcase.intapp.cdscm.impl.simple.methods;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.xcase.common.impl.simple.core.CommonHTTPManager;
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
+import com.xcase.common.utils.ConverterUtils;
 import com.xcase.intapp.cdscm.constant.CDSCMConstant;
 import com.xcase.intapp.cdscm.impl.simple.core.CDSCMConfigurationManager;
 import com.xcase.intapp.cdscm.transputs.CDSCMResponse;
@@ -44,6 +50,26 @@ public class BaseCDSCMMethod {
 
     public Header createCDSCMAuthenticationTokenHeader(String accessToken) {
         return new BasicHeader(CDSCMConfigurationManager.getConfigurationManager().getConfig().getProperty(CDSCMConstant.CONFIG_API_AUTHENTICATION_HEADER), "Bearer " + accessToken);
+    }
+    
+    public void handleExpectedResponseCode(CDSCMResponse response, CommonHttpResponse commonHttpResponse) {
+        String responseEntityString = commonHttpResponse.getResponseEntityString();
+        LOGGER.debug("responseEntityString is " + responseEntityString);
+        response.setEntityString(responseEntityString);
+        response.setResponseCode(commonHttpResponse.getResponseCode());
+        response.setStatus(commonHttpResponse.getStatusLine().getReasonPhrase());
+        response.setStatusLine(commonHttpResponse.getStatusLine());
+        if (responseEntityString != null && !responseEntityString.isEmpty()) {
+        	Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd' 'HH:mm:ss").create();
+            JsonElement jsonElement = (JsonElement) ConverterUtils.parseStringToJson(responseEntityString);
+            if (jsonElement.isJsonArray()) {
+                JsonArray jsonArray = (JsonArray) jsonElement;
+            } else {
+                JsonObject jsonObject = (JsonObject) jsonElement;
+            }
+        } else {
+        	LOGGER.debug("responseEntityString is null or empty");
+        }    	
     }
 
     public void handleUnexpectedResponseCode(CDSCMResponse response, CommonHttpResponse commonHttpResponse) {

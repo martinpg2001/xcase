@@ -7,6 +7,8 @@ public interface DeleteMatterRequest extends CDSCMRequest {
 
 	String getClientId();
 	
+	int getSuccessResponseCode();
+	
 	void setClientId(String clientId);
 
 	void setMatterId(String matterId);
