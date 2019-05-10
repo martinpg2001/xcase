@@ -61,7 +61,7 @@
 
         public override HttpClient BuildHttpClient(string username, string password, string tenant)
         {
-            HttpClientHandler httpClientHandler = new HttpClientHandler { Credentials = ClientCredentials, Proxy = Proxy };
+            HttpClientHandler httpClientHandler = new HttpClientHandler { Credentials = ClientCredentials, Proxy = Proxy, UseCookies = false };
             HttpClient httpClient = new HttpClient(httpClientHandler);
             Log.DebugFormat("created httpClient");
             httpClient.BaseAddress = _baseUrl;

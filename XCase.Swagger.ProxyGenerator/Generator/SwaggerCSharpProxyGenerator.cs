@@ -420,7 +420,7 @@
             if (bodyParameter != null && method != "GET")
             {
                 Log.DebugFormat("bodyParameter is not null and method is {0}", method);
-                WriteLine(proxyStringBuilder, "JsonSerializerSettings settings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };");
+                WriteLine(proxyStringBuilder, "JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };");
                 string bodyParameterTypeName = bodyParameter.Type.GetCleanTypeName();
                 WriteLine(proxyStringBuilder, string.Format("string bodyJson = JsonConvert.SerializeObject({0});", bodyParameterTypeName));
                 //WriteLine(proxyStringBuilder, string.Format("string bodyJson = JsonConvert.SerializeObject({0}, settings);", bodyParameterTypeName));

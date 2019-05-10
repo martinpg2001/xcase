@@ -242,6 +242,7 @@
     <Compile Include="RAML\Tokens\TagDirective.cs" />
     <Compile Include="RAML\TagDirectiveCollection.cs" />
     <Compile Include="RAML\Tokens\Token.cs" />
+    <Compile Include="TimeSwaggerProxy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

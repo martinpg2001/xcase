@@ -259,7 +259,7 @@ namespace XCaseServiceClient
 
             m_TopTableLayoutPanel.Controls.Add(m_TypeComboBox, 0, 0);
             Log.Debug("added m_TypeComboBox");
-            m_TypeComboBox.DataSource = new string[] {"Integrate", "NetDocs", "Open", "PlatformCDS", "PlatformCDSCM", "PlatformDocument", "PlatformRefData", "PlatformSanctionLists", "PlatformTMS", "RAML", "REST", "SOAP", "Source", "View" };
+            m_TypeComboBox.DataSource = new string[] {"Integrate", "NetDocs", "Open", "PlatformCDS", "PlatformCDSCM", "PlatformDocument", "PlatformRefData", "PlatformSanctionLists", "PlatformTMS", "RAML", "REST", "SOAP", "Source", "Time", "View" };
             ComboBox.ObjectCollection typeObjectCollection = m_TypeComboBox.Items;
             if (typeObjectCollection.Contains(m_Type))
             {
@@ -2184,6 +2184,147 @@ namespace XCaseServiceClient
             }
         }
 
+        private void ProcessTimeType(bool refresh)
+        {
+            Log.Debug("starting ProcessTimeType()");
+            ProcessTimeType();
+        }
+
+        private void ProcessTimeType()
+        {
+            Log.Debug("starting ProcessTimeType()");
+            this.Controls.Remove(m_ViewRichTextBox);
+            Log.DebugFormat("m_Language is {0}", m_Language);
+            Log.DebugFormat("m_Type is {0}", m_Type);
+            m_ClientCredentialDomain = m_DomainTextBox.Text;
+            Log.DebugFormat("m_ClientCredentialDomain is {0}", m_ClientCredentialDomain);
+            m_ClientCredentialUserName = m_UsernameTextBox.Text;
+            Log.DebugFormat("m_ClientCredentialUserName is {0}", m_ClientCredentialUserName);
+            m_ClientCredentialPassword = m_PasswordTextBox.Text;
+            Log.DebugFormat("m_ClientCredentialPassword is {0}", m_ClientCredentialPassword);
+            m_ServiceDescriptionURL = m_ServiceDescriptionURLTextBox.Text;
+            Log.DebugFormat("m_ServiceDescriptionURL is {0}", m_ServiceDescriptionURL);
+            this.Text = m_WindowTitle + " - retrieving REST description from " + m_ServiceDescriptionURL;
+            try
+            {
+                ISwaggerProxy swaggerProxy = new TimeSwaggerProxy(new Uri(m_ServiceDescriptionURL), m_ClientCredentialUserName, m_ClientCredentialPassword, m_ClientCredentialDomain);
+                string swaggerDocument = swaggerProxy.GetSwaggerDocument();
+                Log.DebugFormat("swaggerDocument is {0}", swaggerDocument);
+                if (!string.IsNullOrEmpty(m_Language) && m_Language == "Java")
+                {
+                    m_SwaggerProxyGenerator = new SwaggerJavaProxyGenerator();
+                    m_SwaggerApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("Java", swaggerProxy.GetType().Name);
+                }
+                else
+                {
+                    m_SwaggerProxyGenerator = new SwaggerCSharpProxyGenerator();
+                    m_SwaggerApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("CSharp", swaggerProxy.GetType().Name);
+                    m_SwaggerApiProxySettingsEndPoint.Url = m_ServiceDescriptionURL;
+                }
+
+                m_SwaggerApiProxySettingsEndPoint.Url = m_ServiceDescriptionURL;
+                RESTApiProxySettingsEndPoint[] endpoints = new RESTApiProxySettingsEndPoint[] { m_SwaggerApiProxySettingsEndPoint };
+                m_SwaggerServiceDefinition = m_SwaggerProxyGenerator.GenerateSourceString(m_SwaggerApiProxySettingsEndPoint, swaggerDocument, m_ClientCredentialUserName, m_ClientCredentialPassword, m_ClientCredentialDomain);
+                Log.DebugFormat("swaggerServiceDefinition EndPoint is {0}", m_SwaggerServiceDefinition.GetEndPoint());
+                this.Text = m_WindowTitle + " - got REST service definition";
+                m_SourceStringArray = m_SwaggerServiceDefinition.GetSourceStrings();
+                if (m_SourceStringArray != null)
+                {
+                    if (true)
+                    {
+                        foreach (string sourceString in m_SourceStringArray)
+                        {
+                            Log.DebugFormat("sourceString is \n{0}", sourceString);
+                        }
+                    }
+                    else
+                    {
+                        /* This code to be enabled if you need to dump source to file */
+                        //using (System.IO.StreamWriter classDefinitionFile = new System.IO.StreamWriter(@"C:\temp\ClassDefinitions.cs"))
+                        //{
+                        //    {
+                        //        foreach (string sourceString in m_SourceStringArray)
+                        //        {
+                        //            classDefinitionFile.Write(sourceString);
+                        //        }
+                        //    }
+                        //}
+                    }
+                }
+
+                Log.DebugFormat("{0}", m_SwaggerServiceDefinition.GetEndPoint());
+                string selectedService = (string)m_ServicesComboBox.SelectedItem;
+                Log.DebugFormat("selectedService is {0}", selectedService);
+                if (m_SwaggerServiceDefinition.GetProxyClasses().Contains<string>(selectedService))
+                {
+                    Log.DebugFormat("SwaggerCSharpProxyGenerator service definition proxy classes contains {0}", selectedService);
+                    m_ServicesComboBox.SelectedItem = m_SwaggerServiceDefinition.GetProxyClasses().First<string>(pc => pc == ((string)m_ServicesComboBox.SelectedItem));
+                }
+                else
+                {
+                    Log.DebugFormat("SwaggerCSharpProxyGenerator service definition proxy classes does not contain {0}", selectedService);
+                    selectedService = m_SwaggerServiceDefinition.GetProxyClasses().First<string>();
+                    Log.DebugFormat("selectedService is {0}", selectedService);
+                    m_ServicesComboBox.SelectedItem = selectedService;
+                }
+
+                Log.DebugFormat("selectedService is {0}", selectedService);
+                m_ServicesComboBox.Refresh();
+                if (string.IsNullOrEmpty(m_Language) || m_Language == "CSharp")
+                {
+                    CSharpCodeProvider codeProvider = new CSharpCodeProvider();
+                    CompilerParameters compilerParameters = CreateCompilerParameters(m_References);
+                    m_CompilerResults = codeProvider.CompileAssemblyFromSource(compilerParameters, m_SourceStringArray);
+                    if (!m_CompilerResults.Errors.HasErrors)
+                    {
+                        m_ServicesComboBox.DataSource = m_SwaggerServiceDefinition.GetProxyClasses();
+                        m_ServicesComboBox.SelectedItem = selectedService;
+                        m_ServicesComboBox.Refresh();
+                    }
+                    else
+                    {
+                        foreach (CompilerError error in m_CompilerResults.Errors)
+                        {
+                            Log.DebugFormat("compiler error {0}", error.ErrorText);
+                        }
+                    }
+
+                    object[] args = new object[] { new Uri(m_SwaggerServiceDefinition.GetEndPoint()) };
+                    string proxyClass = string.Format("{0}.{1}", m_SwaggerApiProxySettingsEndPoint.Namespace, selectedService);
+                    m_RESTServiceClient = m_CompilerResults.CompiledAssembly.CreateInstance(proxyClass, false, BindingFlags.CreateInstance, null, args, null, null);
+                    if (m_RESTServiceClient != null)
+                    {
+                        NetworkCredential networkCredential = new NetworkCredential(m_ClientCredentialUserName, m_ClientCredentialPassword, m_ClientCredentialDomain);
+                        ((SwaggerProxy)m_RESTServiceClient).ClientCredentials = networkCredential;
+                        if (m_ProxyEnable)
+                        {
+                            ((SwaggerProxy)m_RESTServiceClient).Proxy = new WebProxy(m_ProxyAddress, m_ProxyPort);
+                        }
+
+                        Log.Debug("set client credentials");
+                    }
+                    else
+                    {
+                        Log.Debug("m_RESTServiceClient is null");
+                    }
+
+                    Log.Debug("about to re-render service control");
+                    RerenderServiceControl(m_RESTServiceClient);
+                }
+                else if (m_Language == "Java")
+                {
+                    MessageBox.Show("Finished generating classes.");
+                }
+
+                Log.DebugFormat("{0}", m_SwaggerServiceDefinition.GetEndPoint());
+            }
+            catch (Exception e)
+            {
+                Log.WarnFormat("exception getting Time Swagger document: " + e.Message);
+                MessageBox.Show("Exception thrown: " + e.Message);
+            }
+        }
+
         private static CompilerParameters CreateCompilerParameters(string[] references)
         {
             Log.Debug("starting CreateCompilerParameters()");
@@ -2262,6 +2403,10 @@ namespace XCaseServiceClient
                     case "Source":
                         m_TypeComboBox.Text = "Source";
                         ProcessSourceType();
+                        break;
+                    case "Time":
+                        m_TypeComboBox.Text = "Time";
+                        ProcessTimeType();
                         break;
                     case "View":
                         m_TypeComboBox.Text = "View";
@@ -2720,6 +2865,12 @@ namespace XCaseServiceClient
                 m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
                 Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
                 ProcessSwaggerType(false);
+            }
+            else if (m_Type == "Time")
+            {
+                m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
+                Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
+                ProcessTimeType(false);
             }
         }
 

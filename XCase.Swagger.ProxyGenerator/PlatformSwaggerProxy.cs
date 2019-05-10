@@ -30,6 +30,8 @@
             HttpRequestMessage request = new HttpRequestMessage() { RequestUri = new Uri(requestURL), Method = HttpMethod.Get };
             request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            /* Add cookie for Time swagger proxy */
+            request.Headers.Add("Cookie", "Authorization=" + token + "; Refresh-Token=");
             return request;
         }
 
