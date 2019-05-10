@@ -83,14 +83,14 @@ public class CDSCMApplication {
             getClientsModifiedSinceDateRequest.setSince(since);
             GetClientsModifiedSinceDateResponse getClientsModifiedSinceDate = cdscmExternalAPI.getClientsModifiedSinceDate(getClientsModifiedSinceDateRequest);
             LOGGER.debug("got clients modified since yesterday");
-            /* Create client */
+            /* Create matter */
             String matterId = "0001";
             LOGGER.debug("about to create matter");
             CreateMatterRequest createMatterRequest = CDSCMRequestFactory.createCreateMatterRequest(accessToken);
             LOGGER.debug("created createMatterRequest");
             createMatterRequest.setClientId(clientId);
             createMatterRequest.setMatterId(matterId);
-            createMatterRequest.setEntityString("{\"clientId\":\"{clientId}\",\"name\":\"Underture Science\",\"status\":\"ACT\",\"description\":\"This is a test description.\",\"closedOn\":\"\",\"dunsNumber\":\"\",\"rounding\":null,\"timeNote\":\"\",\"billableStatus\":\"\",\"industry\":\"\",\"clientPersons\":[],\"externalIdentifiers\":[],\"lcidDictionary\":\"\",\"ebillinghubValidation\":\"\",\"timelinks\":{},\"openedOn\":\"\",\"_pricingAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"_experienceAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"_timeAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"security\":{\"defaultAccess\":255,\"users\":[]}}".replace("{clientId}", clientId));
+            createMatterRequest.setEntityString("{\"matterId\": \"{matterId}\",\"name\": \"Asbestos Litigation\",\"status\": \"ACT\",\"shortDescription\": \"This is short matter description.\",\"description\": \"This is a test description.\",\"lastBillOn\": null,\"lastTimeEntryOn\": null,\"openedOn\": null,\"closedOn\": null,\"organizationUnitId\": null,\"practiceArea\": null,\"currencyIsoCode\": null,\"office\": null,\"department\": null,\"matterPersons\": null,\"externalIdentifiers\": null,\"rounding\": null,\"timeNote\": null,\"billableStatus\": null,\"lcidDictionary\": null,\"ebillinghubValidation\": null,\"clientId\": \"{clientId}\",\"timelinks\": null,\"_pricingAppData\": null,\"_experienceAppData\": null,\"_timeAppData\": null}".replace("{clientId}", clientId).replace("{matterId}", matterId));
             CreateMatterResponse createMatterResponse = cdscmExternalAPI.createMatter(createMatterRequest);
             LOGGER.debug("created matter");
             /* Get matter */

@@ -3,17 +3,33 @@ package com.xcase.intapp.cdscm.impl.simple.transputs;
 import com.xcase.intapp.cdscm.transputs.DeleteMatterRequest;
 
 public class DeleteMatterRequestImpl extends CDSCMRequestImpl implements DeleteMatterRequest {
-
+    private String clientId;
+    private String matterId;
+    private String operationPath = "api/v1/clients/{clientId}/matters/{matterId}";
+    
+	@Override
+	public String getClientId() {
+		return clientId;
+	}
+    
 	@Override
 	public void setClientId(String clientId) {
-		// TODO Auto-generated method stub
-
+		this.clientId = clientId;
 	}
 
 	@Override
 	public void setMatterId(String matterId) {
-		// TODO Auto-generated method stub
+		this.matterId = matterId;
+	}
 
+	@Override
+	public String getMatterId() {
+		return matterId;
+	}
+
+	@Override
+	public String getOperationPath() {
+		return operationPath;
 	}
 
 }

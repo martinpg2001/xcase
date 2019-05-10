@@ -6,4 +6,10 @@ public interface GetMatterRequest extends CDSCMRequest {
 
 	void setMatterId(String matterId);
 
+	String getOperationPath();
+
+	String getClientId();
+
+	String getMatterId();
+
 }

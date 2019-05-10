@@ -8,4 +8,12 @@ public interface CreateMatterRequest extends CDSCMRequest {
 
 	void setEntityString(String replace);
 
+	String getMatterId();
+
+	String getOperationPath();
+
+	String getClientId();
+
+	String getEntityString();
+
 }

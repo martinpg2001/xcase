@@ -2,6 +2,8 @@ package com.xcase.intapp.cdscm.impl.simple.methods;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.xcase.common.constant.CommonConstant;
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
@@ -52,7 +54,12 @@ public class GetClientSecurityMethod extends BaseCDSCMMethod {
                 LOGGER.debug("responseEntityString is " + responseEntityString);
                 if (responseEntityString != null && !responseEntityString.isEmpty()) {
                 	Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd' 'HH:mm:ss").create();
-                	JsonObject jsonObject = (JsonObject) ConverterUtils.parseStringToJson(responseEntityString);
+                    JsonElement jsonElement = (JsonElement) ConverterUtils.parseStringToJson(responseEntityString);
+                    if (jsonElement.isJsonArray()) {
+                        JsonArray jsonArray = (JsonArray) jsonElement;
+                    } else {
+                        JsonObject jsonObject = (JsonObject) jsonElement;
+                    }
                 } else {
                 	LOGGER.debug("responseEntityString is null or empty");
                 }

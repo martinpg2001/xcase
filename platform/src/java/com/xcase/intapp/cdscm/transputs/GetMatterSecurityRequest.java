@@ -6,4 +6,10 @@ public interface GetMatterSecurityRequest extends CDSCMRequest {
 
 	void setMatterId(String matterId);
 
+	String getClientId();
+
+	String getMatterId();
+
+	String getOperationPath();
+
 }

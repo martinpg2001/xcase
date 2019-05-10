@@ -8,4 +8,12 @@ public interface PutMatterSecurityRequest extends CDSCMRequest {
 
 	void setMatterSecurity(String string);
 
+	String getClientId();
+
+	String getMatterId();
+
+	String getOperationPath();
+
+	String getMatterSecurity();
+
 }
