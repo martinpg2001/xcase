@@ -5,17 +5,8 @@ import com.xcase.intapp.cdscm.transputs.GetMatterRequest;
 public class GetMatterRequestImpl extends CDSCMRequestImpl implements GetMatterRequest {
     private String clientId;
     private String matterId;
+    private String matterKey;
     private String operationPath = "api/v1/clients/{clientId}/matters/{matterId}";
-    
-	@Override
-	public void setClientId(String clientId) {
-		this.clientId = clientId;
-	}
-
-	@Override
-	public void setMatterId(String matterId) {
-		this.matterId = matterId;
-    }
 
 	@Override
 	public String getOperationPath() {
@@ -31,5 +22,24 @@ public class GetMatterRequestImpl extends CDSCMRequestImpl implements GetMatterR
 	public String getMatterId() {
 		return matterId;
 	}
+	
+    @Override
+    public String getMatterKey() {
+        return matterKey;
+    }
 
+    @Override
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    @Override
+    public void setMatterId(String matterId) {
+        this.matterId = matterId;
+    }
+    
+    @Override
+    public void setMatterKey(String matterKey) {
+        this.matterKey = matterKey;
+    }
 }

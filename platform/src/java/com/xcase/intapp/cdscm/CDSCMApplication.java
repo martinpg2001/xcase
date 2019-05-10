@@ -1,5 +1,8 @@
 package com.xcase.intapp.cdscm;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.xcase.common.impl.simple.core.CommonHTTPManager;
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
@@ -109,13 +112,25 @@ public class CDSCMApplication {
             getMatterRequest.setMatterId(matterId);
             GetMatterResponse getMatterResponse = cdscmExternalAPI.getMatter(getMatterRequest);
             LOGGER.debug("got matter");
+            LOGGER.debug("about to get matter by key");
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd' 'HH:mm:ss").create();
+            JsonObject matterJsonObject = (JsonObject) ConverterUtils.parseStringToJson(getMatterResponse.getEntityString());
+            String matterKey = matterJsonObject.getAsJsonPrimitive("key").getAsString();
+            LOGGER.debug("matterKey is " + matterKey);
+            getMatterRequest = CDSCMRequestFactory.createGetMatterRequest(accessToken);
+            LOGGER.debug("created getMatterRequest");
+            getMatterRequest.setClientId(null);
+            getMatterRequest.setMatterId(null);
+            getMatterRequest.setMatterKey(matterKey);
+            getMatterResponse = cdscmExternalAPI.getMatter(getMatterRequest);
+            LOGGER.debug("got matter by key");
             /* Create matter security */
             LOGGER.debug("about to put matter security");
             PutMatterSecurityRequest putMatterSecurityRequest = CDSCMRequestFactory.createPutMatterSecurityRequest(accessToken);
             LOGGER.debug("created getClientSecurityRequest");
             putMatterSecurityRequest.setClientId(clientId);
             putMatterSecurityRequest.setMatterId(matterId);
-            putMatterSecurityRequest.setMatterSecurity("{\"defaultAccess\":255,\"users\":[{\"userId\":\"ADMIN\",\"access\":255},{\"userId\":\"martin.gilchrist@intapp.com\",\"access\":254}]}");
+            putMatterSecurityRequest.setMatterSecurity("{\"defaultAccess\":255,\"users\":[{\"userId\":\"ADMIN\",\"access\":255},{\"userId\":\"xmartin.gilchrist@intapp.com\",\"access\":254}]}");
             PutMatterSecurityResponse putMatterSecurityResponse = cdscmExternalAPI.putMatterSecurity(putMatterSecurityRequest);
             LOGGER.debug("put matter security");
             /* Get matter security */

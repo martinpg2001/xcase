@@ -36,9 +36,16 @@ public class GetMatterMethod extends BaseCDSCMMethod {
             LOGGER.debug("clientId is " + clientId);
             String matterId = request.getMatterId();
             LOGGER.debug("matterId is " + matterId);
-            endPoint = baseVersionUrl + request.getOperationPath();
-            endPoint = endPoint.replace("{clientId}", clientId);
-            endPoint = endPoint.replace("{matterId}", matterId);
+            String matterKey = request.getMatterKey();
+            LOGGER.debug("matterKey is " + matterKey);
+            if (matterKey == null || matterKey.isEmpty()) {
+                endPoint = baseVersionUrl + request.getOperationPath();
+                endPoint = endPoint.replace("{clientId}", clientId);
+                endPoint = endPoint.replace("{matterId}", matterId);
+            } else {
+                endPoint = baseVersionUrl + "api/v1/matters/{key}".replace("{key}", matterKey);
+            }
+            
             LOGGER.debug("endPoint is " + endPoint);
             String accessToken = request.getAccessToken();
             LOGGER.debug("accessToken is " + accessToken);
@@ -66,6 +73,8 @@ public class GetMatterMethod extends BaseCDSCMMethod {
                 } else {
                     LOGGER.debug("responseEntityString is null or empty");
                 }
+                
+                response.setEntityString(responseEntityString);
             } else {
                 handleUnexpectedResponseCode(response, commonHttpResponse);
             }
