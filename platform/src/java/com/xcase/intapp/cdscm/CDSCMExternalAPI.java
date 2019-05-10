@@ -29,4 +29,8 @@ public interface CDSCMExternalAPI {
 
 	DeleteMatterResponse deleteMatter(DeleteMatterRequest deleteMatterRequest);
 
+	DeleteMatterSecurityResponse deleteMatterSecurity(DeleteMatterSecurityRequest deleteMatterSecurityRequest);
+
+	DeleteClientSecurityResponse deleteClientSecurity(DeleteClientSecurityRequest deleteClientSecurityRequest);
+
 }

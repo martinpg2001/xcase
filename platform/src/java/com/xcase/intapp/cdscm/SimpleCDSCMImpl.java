@@ -31,6 +31,16 @@ public class SimpleCDSCMImpl implements CDSCMExternalAPI {
     /**
      * method implementation.
      */
+    private DeleteClientSecurityMethod deleteClientSecurityMethod = new DeleteClientSecurityMethod();
+    
+    /**
+     * method implementation.
+     */
+    private DeleteMatterSecurityMethod deleteMatterSecurityMethod = new DeleteMatterSecurityMethod();
+    
+    /**
+     * method implementation.
+     */
     private GetClientMethod getClientMethod = new GetClientMethod();
     
     /**
@@ -137,6 +147,16 @@ public class SimpleCDSCMImpl implements CDSCMExternalAPI {
 	@Override
 	public DeleteMatterResponse deleteMatter(DeleteMatterRequest deleteMatterRequest) {
 		return this.deleteMatterMethod.deleteMatter(deleteMatterRequest);
+	}
+
+	@Override
+	public DeleteMatterSecurityResponse deleteMatterSecurity(DeleteMatterSecurityRequest deleteMatterSecurityRequest) {
+		return this.deleteMatterSecurityMethod.deleteMatterSecurity(deleteMatterSecurityRequest);
+	}
+
+	@Override
+	public DeleteClientSecurityResponse deleteClientSecurity(DeleteClientSecurityRequest deleteClientSecurityRequest) {
+		return this.deleteClientSecurityMethod.deleteClientSecurity(deleteClientSecurityRequest);
 	}
 
 }

@@ -143,5 +143,27 @@ public class CDSCMRequestFactory extends BaseCDSCMFactory {
         request.setAccessToken(accessToken);
         return request;
 	}
+	
+	public static DeleteMatterSecurityRequest createDeleteMatterSecurityRequest() {
+        Object obj = newInstanceOf("cdscm.config.requestfactory.DeleteMatterSecurityRequest");
+        return (DeleteMatterSecurityRequest) obj;
+	}
+
+	public static DeleteMatterSecurityRequest createDeleteMatterSecurityRequest(String accessToken) {
+		DeleteMatterSecurityRequest request = createDeleteMatterSecurityRequest();
+        request.setAccessToken(accessToken);
+        return request;
+	}
+	
+	public static DeleteClientSecurityRequest createDeleteClientSecurityRequest() {
+        Object obj = newInstanceOf("cdscm.config.requestfactory.DeleteClientSecurityRequest");
+        return (DeleteClientSecurityRequest) obj;
+	}
+
+	public static DeleteClientSecurityRequest createDeleteClientSecurityRequest(String accessToken) {
+		DeleteClientSecurityRequest request = createDeleteClientSecurityRequest();
+        request.setAccessToken(accessToken);
+        return request;
+	}
 
 }

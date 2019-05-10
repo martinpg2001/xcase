@@ -72,6 +72,14 @@ public class CDSCMApplication {
             getClientSecurityRequest.setClientId(clientId);
             GetClientSecurityResponse getClientSecurityResponse = cdscmExternalAPI.getClientSecurity(getClientSecurityRequest);
             LOGGER.debug("got client security");
+            LOGGER.debug("about to delete client security");
+            DeleteClientSecurityRequest deleteClientSecurityRequest = CDSCMRequestFactory.createDeleteClientSecurityRequest(accessToken);
+            LOGGER.debug("created deleteClientSecurityRequest");
+            deleteClientSecurityRequest.setClientId(clientId);
+            DeleteClientSecurityResponse deleteClientSecurityResponse = cdscmExternalAPI.deleteClientSecurity(deleteClientSecurityRequest);
+            LOGGER.debug("deleted client security");
+            getClientSecurityResponse = cdscmExternalAPI.getClientSecurity(getClientSecurityRequest);
+            LOGGER.debug("got client security");            
             /* Get clients modified since yesterday */
             LOGGER.debug("about to get clients modified since yesterday");
             GetClientsModifiedSinceDateRequest getClientsModifiedSinceDateRequest = CDSCMRequestFactory.createGetClientsModifiedSinceDateRequest(accessToken);
@@ -117,6 +125,17 @@ public class CDSCMApplication {
             getMatterSecurityRequest.setClientId(clientId);
             getMatterSecurityRequest.setMatterId(matterId);
             GetMatterSecurityResponse getMatterSecurityResponse = cdscmExternalAPI.getMatterSecurity(getMatterSecurityRequest);
+            LOGGER.debug("got matter security");
+            LOGGER.debug("about to delete matter security");
+            DeleteMatterSecurityRequest deleteMatterSecurityRequest = CDSCMRequestFactory.createDeleteMatterSecurityRequest(accessToken);
+            LOGGER.debug("created deleteMatterSecurityRequest");
+            deleteMatterSecurityRequest.setClientId(clientId);
+            deleteMatterSecurityRequest.setMatterId(matterId);
+            DeleteMatterSecurityResponse deleteMatterSecurityResponse = cdscmExternalAPI.deleteMatterSecurity(deleteMatterSecurityRequest);
+            LOGGER.debug("deleted matter security");
+            /* Get matter security */
+            LOGGER.debug("about to get matter security");
+            getMatterSecurityResponse = cdscmExternalAPI.getMatterSecurity(getMatterSecurityRequest);
             LOGGER.debug("got matter security");
             /* Get matters modified since yesterday */
             LOGGER.debug("about to get matters modified since yesterday");

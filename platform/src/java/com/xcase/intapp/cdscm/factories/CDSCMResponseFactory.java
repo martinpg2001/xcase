@@ -3,7 +3,9 @@ package com.xcase.intapp.cdscm.factories;
 import com.xcase.intapp.cdscm.transputs.CreateClientResponse;
 import com.xcase.intapp.cdscm.transputs.CreateMatterResponse;
 import com.xcase.intapp.cdscm.transputs.DeleteClientResponse;
+import com.xcase.intapp.cdscm.transputs.DeleteClientSecurityResponse;
 import com.xcase.intapp.cdscm.transputs.DeleteMatterResponse;
+import com.xcase.intapp.cdscm.transputs.DeleteMatterSecurityResponse;
 import com.xcase.intapp.cdscm.transputs.GetClientResponse;
 import com.xcase.intapp.cdscm.transputs.GetClientSecurityResponse;
 import com.xcase.intapp.cdscm.transputs.GetClientsModifiedSinceDateResponse;
@@ -73,6 +75,16 @@ public class CDSCMResponseFactory extends BaseCDSCMFactory {
 	public static PutMatterSecurityResponse createPutMatterSecurityResponse() {
         Object obj = newInstanceOf("cdscm.config.responsefactory.PutMatterSecurityResponse");
         return (PutMatterSecurityResponse) obj;
+	}
+
+	public static DeleteClientSecurityResponse createDeleteClientSecurityResponse() {
+        Object obj = newInstanceOf("cdscm.config.responsefactory.DeleteClientSecurityResponse");
+        return (DeleteClientSecurityResponse) obj;
+	}
+
+	public static DeleteMatterSecurityResponse createDeleteMatterSecurityResponse() {
+        Object obj = newInstanceOf("cdscm.config.responsefactory.DeleteMatterSecurityResponse");
+        return (DeleteMatterSecurityResponse) obj;
 	}
 
 }
