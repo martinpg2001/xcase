@@ -10,4 +10,8 @@ public interface CDSUsersExternalAPI {
 
     CreateUserResponse createUser(CreateUserRequest createUserRequest);
 
+    FindUsersResponse findUsers(FindUsersRequest findUsersRequest);
+
+    PartiallyUpdateUserResponse partiallyUpdateUser(PartiallyUpdateUserRequest partiallyUpdateUserRequest);
+
 }

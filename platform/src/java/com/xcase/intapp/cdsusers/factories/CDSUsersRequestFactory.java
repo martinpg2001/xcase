@@ -1,15 +1,9 @@
 package com.xcase.intapp.cdsusers.factories;
 
+import com.xcase.intapp.cdsusers.transputs.*;
 import java.lang.invoke.MethodHandles;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.xcase.intapp.advanced.transputs.InvokeOperationRequest;
-import com.xcase.intapp.cdscm.transputs.CreateClientRequest;
-import com.xcase.intapp.cdsusers.transputs.CreatePersonRequest;
-import com.xcase.intapp.cdsusers.transputs.CreateUserRequest;
-import com.xcase.intapp.cdsusers.transputs.GetPersonsRequest;
 
 public class CDSUsersRequestFactory extends BaseCDSUsersFactory {
 
@@ -47,6 +41,28 @@ public class CDSUsersRequestFactory extends BaseCDSUsersFactory {
 
     public static CreateUserRequest createCreateUserRequest(String accessToken) {
         CreateUserRequest request = createCreateUserRequest();
+        request.setAccessToken(accessToken);
+        return request;
+    }
+    
+    public static FindUsersRequest createFindUsersRequest() {
+        Object obj = newInstanceOf("cdsusers.config.requestfactory.FindUsersRequest");
+        return (FindUsersRequest) obj;
+    }
+
+    public static FindUsersRequest createFindUsersRequest(String accessToken) {
+        FindUsersRequest request = createFindUsersRequest();
+        request.setAccessToken(accessToken);
+        return request;
+    }
+    
+    public static PartiallyUpdateUserRequest createPartiallyUpdateUserRequest() {
+        Object obj = newInstanceOf("cdsusers.config.requestfactory.PartiallyUpdateUserRequest");
+        return (PartiallyUpdateUserRequest) obj;
+    }
+
+    public static PartiallyUpdateUserRequest createPartiallyUpdateUserRequest(String accessToken) {
+        PartiallyUpdateUserRequest request = createPartiallyUpdateUserRequest();
         request.setAccessToken(accessToken);
         return request;
     }

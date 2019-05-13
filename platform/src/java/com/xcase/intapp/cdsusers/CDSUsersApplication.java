@@ -60,6 +60,20 @@ public class CDSUsersApplication {
             createUserRequest.setUserString("{\"userId\":\"dennis.gilchrist@intapp.com\",\"email\":\"dennis.gilchrist@intapp.com\",\"enabled\":true,\"name\":\"Dennis Gilchrist\",\"personKey\":\"-vGpeSugaRv20cCo\",\"timeZoneId\":null,\"locale\":null,\"roles\":[],\"enableOtp\":null,\"timekeeper\":true,\"exchangeUsername\":\"\",\"exchangeHost\":\"\",\"emailAliases\":[],\"timeLinks\":{}}");
             CreateUserResponse createUserResponse = cdsUsersExternalAPI.createUser(createUserRequest);
             LOGGER.debug("created user");
+            /* Find users */
+            LOGGER.debug("about to find users");
+            FindUsersRequest findUsersRequest = CDSUsersRequestFactory.createFindUsersRequest(accessToken);
+            LOGGER.debug("created findUsersRequest");
+            FindUsersResponse findUsersResponse = cdsUsersExternalAPI.findUsers(findUsersRequest);
+            LOGGER.debug("found users");
+            /* Partially update user */
+            LOGGER.debug("about to partially update user");
+            PartiallyUpdateUserRequest partiallyUpdateUserRequest = CDSUsersRequestFactory.createPartiallyUpdateUserRequest(accessToken);
+            LOGGER.debug("created partiallyUpdateUserRequest");
+            partiallyUpdateUserRequest.setKey("j_GC6SvZOxsM9sC2");
+            partiallyUpdateUserRequest.setUserString("{\"timekeeper\":false}");
+            PartiallyUpdateUserResponse partiallyUpdateUserResponse = cdsUsersExternalAPI.partiallyUpdateUser(partiallyUpdateUserRequest);
+            LOGGER.debug("partially updated user");
         } catch (Exception e) {
             LOGGER.warn("exception executing methods: " + e.getMessage());
         }
