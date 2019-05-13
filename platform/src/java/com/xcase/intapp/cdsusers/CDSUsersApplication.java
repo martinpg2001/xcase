@@ -47,6 +47,19 @@ public class CDSUsersApplication {
             createPersonRequest.setPersonString("{\"personId\":null,\"firstName\":\"Dennis\",\"middleName\":\"Philip\",\"lastName\":\"Gilchrist\",\"name\":\"Dennis Gilchrist\",\"titles\":[],\"email\":\"dennis.gilchrist@intapp.com\",\"costPoolId\":null,\"addresses\":[],\"communications\":[],\"employee\":true,\"department\":null,\"office\":null,\"practiceAreas\":[],\"externalIds\":[]}");
             CreatePersonResponse createPersonResponse = cdsUsersExternalAPI.createPerson(createPersonRequest);
             LOGGER.debug("created person");
+            /* Get persons */
+            LOGGER.debug("about to get persons");
+            GetPersonsRequest getPersonsRequest = CDSUsersRequestFactory.createGetPersonsRequest(accessToken);
+            LOGGER.debug("created getPersonsRequest");
+            GetPersonsResponse getPersonsResponse = cdsUsersExternalAPI.getPersons(getPersonsRequest);
+            LOGGER.debug("got persons");
+            /* Create user */
+            LOGGER.debug("about to create user");
+            CreateUserRequest createUserRequest = CDSUsersRequestFactory.createCreateUserRequest(accessToken);
+            LOGGER.debug("created createUserRequest");
+            createUserRequest.setUserString("{\"userId\":\"dennis.gilchrist@intapp.com\",\"email\":\"dennis.gilchrist@intapp.com\",\"enabled\":true,\"name\":\"Dennis Gilchrist\",\"personKey\":\"-vGpeSugaRv20cCo\",\"timeZoneId\":null,\"locale\":null,\"roles\":[],\"enableOtp\":null,\"timekeeper\":true,\"exchangeUsername\":\"\",\"exchangeHost\":\"\",\"emailAliases\":[],\"timeLinks\":{}}");
+            CreateUserResponse createUserResponse = cdsUsersExternalAPI.createUser(createUserRequest);
+            LOGGER.debug("created user");
         } catch (Exception e) {
             LOGGER.warn("exception executing methods: " + e.getMessage());
         }
