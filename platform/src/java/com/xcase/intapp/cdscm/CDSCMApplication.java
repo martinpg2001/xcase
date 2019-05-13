@@ -104,6 +104,12 @@ public class CDSCMApplication {
             createMatterRequest.setEntityString("{\"matterId\": \"{matterId}\",\"name\": \"Asbestos Litigation\",\"status\": \"ACT\",\"shortDescription\": \"This is short matter description.\",\"description\": \"This is a test description.\",\"lastBillOn\": null,\"lastTimeEntryOn\": null,\"openedOn\": null,\"closedOn\": null,\"organizationUnitId\": null,\"practiceArea\": null,\"currencyIsoCode\": null,\"office\": null,\"department\": null,\"matterPersons\": null,\"externalIdentifiers\": null,\"rounding\": null,\"timeNote\": null,\"billableStatus\": null,\"lcidDictionary\": null,\"ebillinghubValidation\": null,\"clientId\": \"{clientId}\",\"timelinks\": null,\"_pricingAppData\": null,\"_experienceAppData\": null,\"_timeAppData\": null}".replace("{clientId}", clientId).replace("{matterId}", matterId));
             CreateMatterResponse createMatterResponse = cdscmExternalAPI.createMatter(createMatterRequest);
             LOGGER.debug("created matter");
+            LOGGER.debug("about to get matters");
+            GetMattersRequest getMattersRequest = CDSCMRequestFactory.createGetMattersRequest(accessToken);
+            LOGGER.debug("created getMattersRequest");
+            getMattersRequest.setClientId(clientId);
+            GetMattersResponse getMattersResponse = cdscmExternalAPI.getMatters(getMattersRequest);
+            LOGGER.debug("got matters");      
             /* Get matter */
             LOGGER.debug("about to get matter");
             GetMatterRequest getMatterRequest = CDSCMRequestFactory.createGetMatterRequest(accessToken);

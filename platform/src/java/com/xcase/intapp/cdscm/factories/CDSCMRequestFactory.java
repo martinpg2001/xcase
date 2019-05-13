@@ -165,5 +165,16 @@ public class CDSCMRequestFactory extends BaseCDSCMFactory {
         request.setAccessToken(accessToken);
         return request;
 	}
+	
+	public static GetMattersRequest createGetMattersRequest() {
+        Object obj = newInstanceOf("cdscm.config.requestfactory.GetMattersRequest");
+        return (GetMattersRequest) obj;
+	}
+
+	public static GetMattersRequest createGetMattersRequest(String accessToken) {
+		GetMattersRequest request = createGetMattersRequest();
+        request.setAccessToken(accessToken);
+        return request;
+	}
 
 }

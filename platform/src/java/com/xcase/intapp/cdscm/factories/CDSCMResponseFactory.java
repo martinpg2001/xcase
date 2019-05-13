@@ -12,6 +12,7 @@ import com.xcase.intapp.cdscm.transputs.GetClientsModifiedSinceDateResponse;
 import com.xcase.intapp.cdscm.transputs.GetMatterResponse;
 import com.xcase.intapp.cdscm.transputs.GetMatterSecurityResponse;
 import com.xcase.intapp.cdscm.transputs.GetMattersModifiedSinceDateResponse;
+import com.xcase.intapp.cdscm.transputs.GetMattersResponse;
 import com.xcase.intapp.cdscm.transputs.PutClientSecurityResponse;
 import com.xcase.intapp.cdscm.transputs.PutMatterSecurityResponse;
 
@@ -85,6 +86,11 @@ public class CDSCMResponseFactory extends BaseCDSCMFactory {
 	public static DeleteMatterSecurityResponse createDeleteMatterSecurityResponse() {
         Object obj = newInstanceOf("cdscm.config.responsefactory.DeleteMatterSecurityResponse");
         return (DeleteMatterSecurityResponse) obj;
+	}
+
+	public static GetMattersResponse createGetMattersResponse() {
+        Object obj = newInstanceOf("cdscm.config.responsefactory.GetMattersResponse");
+        return (GetMattersResponse) obj;
 	}
 
 }

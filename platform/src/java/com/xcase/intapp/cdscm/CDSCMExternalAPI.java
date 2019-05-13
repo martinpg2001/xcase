@@ -6,19 +6,25 @@ public interface CDSCMExternalAPI {
 
     CreateClientResponse createClient(CreateClientRequest createClientRequest);
     
+	CreateMatterResponse createMatter(CreateMatterRequest createMatterRequest);
+    
     DeleteClientResponse deleteClient(DeleteClientRequest deleteClientRequest);
     
-    GetClientSecurityResponse getClientSecurity(GetClientSecurityRequest getClientSecurityRequest);
+	DeleteClientSecurityResponse deleteClientSecurity(DeleteClientSecurityRequest deleteClientSecurityRequest);
+    
+	DeleteMatterResponse deleteMatter(DeleteMatterRequest deleteMatterRequest);
 
-    PutClientSecurityResponse putClientSecurity(PutClientSecurityRequest putClientSecurityRequest);
+	DeleteMatterSecurityResponse deleteMatterSecurity(DeleteMatterSecurityRequest deleteMatterSecurityRequest);
+    
+    GetClientSecurityResponse getClientSecurity(GetClientSecurityRequest getClientSecurityRequest);
 
     GetClientResponse getClient(GetClientRequest getClientRequest);
 
     GetClientsModifiedSinceDateResponse getClientsModifiedSinceDate(GetClientsModifiedSinceDateRequest getClientsModifiedSinceDateRequest);
 
-	CreateMatterResponse createMatter(CreateMatterRequest createMatterRequest);
-
 	GetMatterResponse getMatter(GetMatterRequest getMatterRequest);
+	
+    PutClientSecurityResponse putClientSecurity(PutClientSecurityRequest putClientSecurityRequest);
 
 	PutMatterSecurityResponse putMatterSecurity(PutMatterSecurityRequest putMatterSecurityRequest);
 
@@ -27,10 +33,6 @@ public interface CDSCMExternalAPI {
 	GetMattersModifiedSinceDateResponse getMattersModifiedSinceDate(
 			GetMattersModifiedSinceDateRequest getMattersModifiedSinceDateRequest);
 
-	DeleteMatterResponse deleteMatter(DeleteMatterRequest deleteMatterRequest);
-
-	DeleteMatterSecurityResponse deleteMatterSecurity(DeleteMatterSecurityRequest deleteMatterSecurityRequest);
-
-	DeleteClientSecurityResponse deleteClientSecurity(DeleteClientSecurityRequest deleteClientSecurityRequest);
+	GetMattersResponse getMatters(GetMattersRequest getMattersRequest);
 
 }
