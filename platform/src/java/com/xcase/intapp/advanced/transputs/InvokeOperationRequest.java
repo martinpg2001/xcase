@@ -15,6 +15,8 @@ public interface InvokeOperationRequest extends AdvancedRequest {
 	
 	List<NameValuePair> getParameters();
 	
+	int getSuccessResponseCode();
+	
 	void setAPIURL(String apiURL);
 	
 	void setEntityString(String entityString);

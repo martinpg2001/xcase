@@ -44,14 +44,7 @@ public class GetMatterStatusesMethod extends BaseCDSRefDataMethod {
             LOGGER.debug("responseCode is " + responseCode);
             response.setResponseCode(responseCode);
             if (responseCode == 200) {
-                String responseEntityString = commonHttpResponse.getResponseEntityString();
-                LOGGER.debug("responseEntityString is " + responseEntityString);
-                if (responseEntityString != null && !responseEntityString.isEmpty()) {
-                    Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd' 'HH:mm:ss").create();
-                    JsonArray jsonArray = (JsonArray) ConverterUtils.parseStringToJson(responseEntityString);
-                } else {
-                    LOGGER.debug("responseEntityString is null or empty");
-                }
+            	handleExpectedResponseCode(response, commonHttpResponse);
             } else {
                 handleUnexpectedResponseCode(response, commonHttpResponse);
             }

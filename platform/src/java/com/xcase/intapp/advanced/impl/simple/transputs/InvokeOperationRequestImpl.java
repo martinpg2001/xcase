@@ -9,6 +9,7 @@ public class InvokeOperationRequestImpl extends AdvancedRequestImpl implements I
     private String entityString;
     private String method;
     private List<NameValuePair> parameters;
+    private int successResponseCode = 200;
     
 	@Override
 	public String getEntityString() {
@@ -28,6 +29,11 @@ public class InvokeOperationRequestImpl extends AdvancedRequestImpl implements I
 	@Override
 	public void setEntityString(String entityString) {
         this.entityString = entityString;
+	}
+	
+	@Override
+	public int getSuccessResponseCode() {
+		return successResponseCode;
 	}
 
 	@Override
@@ -50,4 +56,7 @@ public class InvokeOperationRequestImpl extends AdvancedRequestImpl implements I
 		this.apiURL = apiURL;
 	}
 
+	public void setSuccessResponseCode(int successResponseCode) {
+		this.successResponseCode = successResponseCode;
+	}
 }

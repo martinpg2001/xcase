@@ -9,6 +9,7 @@ import com.xcase.intapp.cdsusers.SimpleCDSUsersImpl;
 import com.xcase.intapp.cdsusers.constant.CDSUsersConstant;
 import com.xcase.intapp.cdsusers.factories.CDSUsersRequestFactory;
 import com.xcase.intapp.cdsusers.impl.simple.core.CDSUsersConfigurationManager;
+import com.xcase.intapp.cdsusers.transputs.*;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
@@ -36,6 +37,16 @@ public class CDSUsersApplication {
         LOGGER.debug("created cdsUsersExternalAPI");
         try {
             generateTokenPair();
+            String accessToken = CDSUsersConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(CDSUsersConstant.ACCESS_TOKEN);
+            String personId = "martin.gilchrist@intapp.com";
+            LOGGER.debug("personId is " + personId);
+            /* Create person */
+            LOGGER.debug("about to create person");
+            CreatePersonRequest createPersonRequest = CDSUsersRequestFactory.createCreatePersonRequest(accessToken);
+            LOGGER.debug("created createPersonRequest");
+            createPersonRequest.setPersonString("{\"personId\":null,\"firstName\":\"Dennis\",\"middleName\":\"Philip\",\"lastName\":\"Gilchrist\",\"name\":\"Dennis Gilchrist\",\"titles\":[],\"email\":\"dennis.gilchrist@intapp.com\",\"costPoolId\":null,\"addresses\":[],\"communications\":[],\"employee\":true,\"department\":null,\"office\":null,\"practiceAreas\":[],\"externalIds\":[]}");
+            CreatePersonResponse createPersonResponse = cdsUsersExternalAPI.createPerson(createPersonRequest);
+            LOGGER.debug("created person");
         } catch (Exception e) {
             LOGGER.warn("exception executing methods: " + e.getMessage());
         }

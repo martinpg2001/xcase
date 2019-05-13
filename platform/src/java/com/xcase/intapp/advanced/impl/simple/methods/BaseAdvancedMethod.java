@@ -1,7 +1,13 @@
 package com.xcase.intapp.advanced.impl.simple.methods;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.xcase.common.impl.simple.core.CommonHTTPManager;
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
+import com.xcase.common.utils.ConverterUtils;
 import com.xcase.intapp.advanced.constant.AdvancedConstant;
 import com.xcase.intapp.advanced.impl.simple.core.AdvancedConfigurationManager;
 import com.xcase.intapp.advanced.transputs.AdvancedResponse;
@@ -47,6 +53,26 @@ public class BaseAdvancedMethod {
 
     public Header createAdvancedAuthenticationTokenHeader(String accessToken) {
         return new BasicHeader(AdvancedConfigurationManager.getConfigurationManager().getConfig().getProperty(AdvancedConstant.CONFIG_API_AUTHENTICATION_HEADER), "Bearer " + accessToken);
+    }
+    
+    public void handleExpectedResponseCode(AdvancedResponse response, CommonHttpResponse commonHttpResponse) {
+        String responseEntityString = commonHttpResponse.getResponseEntityString();
+        LOGGER.debug("responseEntityString is " + responseEntityString);
+        response.setEntityString(responseEntityString);
+        response.setResponseCode(commonHttpResponse.getResponseCode());
+        response.setStatus(commonHttpResponse.getStatusLine().getReasonPhrase());
+        response.setStatusLine(commonHttpResponse.getStatusLine());
+        if (responseEntityString != null && !responseEntityString.isEmpty()) {
+        	Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd' 'HH:mm:ss").create();
+            JsonElement jsonElement = (JsonElement) ConverterUtils.parseStringToJson(responseEntityString);
+            if (jsonElement.isJsonArray()) {
+                JsonArray jsonArray = (JsonArray) jsonElement;
+            } else {
+                JsonObject jsonObject = (JsonObject) jsonElement;
+            }
+        } else {
+        	LOGGER.debug("responseEntityString is null or empty");
+        }    	
     }
 
     public void handleUnexpectedResponseCode(AdvancedResponse response, CommonHttpResponse commonHttpResponse) {

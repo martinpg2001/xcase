@@ -37,4 +37,5 @@ public class AdvancedRequestImpl implements AdvancedRequest {
     public void setOperationPath(String operationPath) {
         this.operationPath = operationPath;
     }
+
 }

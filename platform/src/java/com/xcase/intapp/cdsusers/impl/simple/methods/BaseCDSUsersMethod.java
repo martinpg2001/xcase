@@ -1,7 +1,14 @@
 package com.xcase.intapp.cdsusers.impl.simple.methods;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.xcase.common.impl.simple.core.CommonHTTPManager;
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
+import com.xcase.common.utils.ConverterUtils;
+import com.xcase.intapp.cdsrefdata.transputs.CDSRefDataResponse;
 import com.xcase.intapp.cdsusers.constant.CDSUsersConstant;
 import com.xcase.intapp.cdsusers.impl.simple.core.CDSUsersConfigurationManager;
 import com.xcase.intapp.cdsusers.transputs.CDSUsersResponse;
@@ -42,6 +49,26 @@ public class BaseCDSUsersMethod {
 
     public Header createCDSUsersAuthenticationTokenHeader(String accessToken) {
         return new BasicHeader(CDSUsersConfigurationManager.getConfigurationManager().getConfig().getProperty(CDSUsersConstant.CONFIG_API_AUTHENTICATION_HEADER), "Bearer " + accessToken);
+    }
+    
+    public void handleExpectedResponseCode(CDSUsersResponse response, CommonHttpResponse commonHttpResponse) {
+        String responseEntityString = commonHttpResponse.getResponseEntityString();
+        LOGGER.debug("responseEntityString is " + responseEntityString);
+        response.setEntityString(responseEntityString);
+        response.setResponseCode(commonHttpResponse.getResponseCode());
+        response.setStatus(commonHttpResponse.getStatusLine().getReasonPhrase());
+        response.setStatusLine(commonHttpResponse.getStatusLine());
+        if (responseEntityString != null && !responseEntityString.isEmpty()) {
+        	Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd' 'HH:mm:ss").create();
+            JsonElement jsonElement = (JsonElement) ConverterUtils.parseStringToJson(responseEntityString);
+            if (jsonElement.isJsonArray()) {
+                JsonArray jsonArray = (JsonArray) jsonElement;
+            } else {
+                JsonObject jsonObject = (JsonObject) jsonElement;
+            }
+        } else {
+        	LOGGER.debug("responseEntityString is null or empty");
+        }    	
     }
 
     public void handleUnexpectedResponseCode(CDSUsersResponse response, CommonHttpResponse commonHttpResponse) {
