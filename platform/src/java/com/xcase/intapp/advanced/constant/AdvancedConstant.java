@@ -3,7 +3,6 @@ package com.xcase.intapp.advanced.constant;
 public class AdvancedConstant {
     public static final String ACCESS_TOKEN = "advanced.access.token";
 
-
     public static final String CONFIG_API_AUTHENTICATION_HEADER = "advanced.authentication.header";
 
     /**
