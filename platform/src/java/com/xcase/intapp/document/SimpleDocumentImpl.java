@@ -50,6 +50,16 @@ public class SimpleDocumentImpl implements DocumentExternalAPI {
      * method implementation.
      */
     private GetCategoriesMethod getCategoriesMethod = new GetCategoriesMethod();
+    
+    /**
+     * method implementation.
+     */
+    private GetTemplatesMethod getTemplatesMethod = new GetTemplatesMethod();
+    
+    /**
+     * method implementation.
+     */
+    private HeadTemplatesMethod headTemplatesMethod = new HeadTemplatesMethod();
 	
 	public void generateTokenPair() throws Exception {
         CommonHTTPManager httpManager = CommonHTTPManager.refreshCommonHTTPManager();
@@ -173,4 +183,14 @@ public class SimpleDocumentImpl implements DocumentExternalAPI {
 	public GetCategoriesResponse getCategories(GetCategoriesRequest getCategoriesRequest) {
 		return this.getCategoriesMethod.getCategories(getCategoriesRequest);
 	}
+	
+    @Override
+    public GetTemplatesResponse getTemplates(GetTemplatesRequest getTemplatesRequest) {
+        return this.getTemplatesMethod.getTemplates(getTemplatesRequest);
+    }
+
+    @Override
+    public HeadTemplatesResponse headTemplates(HeadTemplatesRequest headTemplatesRequest) {
+        return this.headTemplatesMethod.headTemplates(headTemplatesRequest);
+    }
 }

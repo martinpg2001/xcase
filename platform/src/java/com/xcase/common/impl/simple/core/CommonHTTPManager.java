@@ -48,6 +48,7 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpHead;
 import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -425,6 +426,11 @@ public class CommonHTTPManager implements AutoCloseable {
 	    LOGGER.debug("starting doCommonHttpResponseGet()");
 	    return doCommonHttpResponseMethod("GET", url, headers, parameters, null, credentials);
 	}
+	
+    public CommonHttpResponse doCommonHttpResponseHead(String url, Header[] headers, List<NameValuePair> parameters, Credentials credentials) throws Exception, IOException {
+        LOGGER.debug("starting doCommonHttpResponseHead()");
+        return doCommonHttpResponseMethod("HEAD", url, headers, parameters, null, credentials);
+    }
 
 	public CommonHttpResponse doCommonHttpResponseMethod(String method, String url, Header[] headers, List<NameValuePair> parameters, String entityString, Credentials credentials, boolean redirect) throws Exception, IOException {
 	    LOGGER.debug("starting doCommonHttpResponseMethod()");
@@ -664,6 +670,8 @@ public class CommonHTTPManager implements AutoCloseable {
 	                httpRequestBase = new HttpDelete(url);
 	            } else if (method.equalsIgnoreCase("GET")) {
 	                httpRequestBase = new HttpGet(url);
+                } else if (method.equalsIgnoreCase("HEAD")) {
+                    httpRequestBase = new HttpHead(url);
 	            } else if (method.equalsIgnoreCase("PATCH")) {
 	                httpRequestBase = new HttpPatch(url);
 	            } else if (method.equalsIgnoreCase("POST")) {

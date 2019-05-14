@@ -10,4 +10,8 @@ public interface DocumentExternalAPI {
 
 	GetCategoriesResponse getCategories(GetCategoriesRequest getCategoriesRequest);
 
+    GetTemplatesResponse getTemplates(GetTemplatesRequest getTemplatesRequest);
+
+    HeadTemplatesResponse headTemplates(HeadTemplatesRequest headTemplatesRequest);
+
 }

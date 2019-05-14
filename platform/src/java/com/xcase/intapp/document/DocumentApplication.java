@@ -41,7 +41,7 @@ public class DocumentApplication {
         String swaggerAPIURL = DocumentConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(DocumentConstant.CONFIG_SWAGGER_API_URL);
         String tokenURL = DocumentConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(DocumentConstant.CONFIG_TOKEN_URL);
         DocumentExternalAPI documentExternalAPI = new SimpleDocumentImpl(clientID, clientSecret, swaggerAPIURL, tokenURL);
-        LOGGER.debug("created advancedExternalAPI");
+        LOGGER.debug("created documentExternalAPI");
         try {
         	documentExternalAPI.generateTokenPair();
             String accessToken = documentExternalAPI.getAccessToken();
@@ -50,6 +50,16 @@ public class DocumentApplication {
             LOGGER.debug("created getCategoriesRequest");
             GetCategoriesResponse getCategoriesResponse = documentExternalAPI.getCategories(getCategoriesRequest);            
             LOGGER.debug("got categories");
+            LOGGER.debug("about to get templates");
+            GetTemplatesRequest getTemplatesRequest = DocumentRequestFactory.createGetTemplatesRequest(accessToken);
+            LOGGER.debug("created getTemplatesRequest");
+            GetTemplatesResponse getTemplatesResponse = documentExternalAPI.getTemplates(getTemplatesRequest);            
+            LOGGER.debug("got templates");
+            LOGGER.debug("about to head templates");
+            HeadTemplatesRequest headTemplatesRequest = DocumentRequestFactory.createHeadTemplatesRequest(accessToken);
+            LOGGER.debug("created headTemplatesRequest");
+            HeadTemplatesResponse headTemplatesResponse = documentExternalAPI.headTemplates(headTemplatesRequest);            
+            LOGGER.debug("got templates");
         } catch (Exception e) {
             LOGGER.warn("exception executing methods: " + e.getMessage());
         }

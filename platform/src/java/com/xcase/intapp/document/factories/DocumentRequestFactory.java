@@ -13,5 +13,27 @@ public class DocumentRequestFactory extends BaseDocumentFactory {
         request.setAccessToken(accessToken);
         return request;
 	}
+	
+    public static GetTemplatesRequest createGetTemplatesRequest() {
+        Object obj = newInstanceOf("document.config.requestfactory.GetTemplatesRequest");
+        return (GetTemplatesRequest) obj;
+    }
+
+    public static GetTemplatesRequest createGetTemplatesRequest(String accessToken) {
+        GetTemplatesRequest request = createGetTemplatesRequest();
+        request.setAccessToken(accessToken);
+        return request;
+    }
+    
+    public static HeadTemplatesRequest createHeadTemplatesRequest() {
+        Object obj = newInstanceOf("document.config.requestfactory.HeadTemplatesRequest");
+        return (HeadTemplatesRequest) obj;
+    }
+
+    public static HeadTemplatesRequest createHeadTemplatesRequest(String accessToken) {
+        HeadTemplatesRequest request = createHeadTemplatesRequest();
+        request.setAccessToken(accessToken);
+        return request;
+    }
 
 }
