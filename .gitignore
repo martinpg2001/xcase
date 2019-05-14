@@ -241,3 +241,4 @@ platform/cds-cm-local-config.properties
 platform/cds-refdata-local-config.properties
 platform/time-local-config.properties
 platform/advanced-local-config.properties
+platform/document-local-config.properties
