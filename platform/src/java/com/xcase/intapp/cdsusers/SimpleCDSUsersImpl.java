@@ -2,13 +2,7 @@ package com.xcase.intapp.cdsusers;
 
 import com.xcase.intapp.cdscm.impl.simple.methods.CreateClientMethod;
 import com.xcase.intapp.cdsusers.impl.simple.core.CDSUsersConfigurationManager;
-import com.xcase.intapp.cdsusers.impl.simple.methods.CreatePersonMethod;
-import com.xcase.intapp.cdsusers.impl.simple.methods.CreateUserMethod;
-import com.xcase.intapp.cdsusers.impl.simple.methods.FindUsersMethod;
-import com.xcase.intapp.cdsusers.impl.simple.methods.GetPersonsMethod;
-import com.xcase.intapp.cdsusers.impl.simple.methods.GetUserMethod;
-import com.xcase.intapp.cdsusers.impl.simple.methods.PartiallyUpdateUserMethod;
-import com.xcase.intapp.cdsusers.impl.simple.methods.PutUserMethod;
+import com.xcase.intapp.cdsusers.impl.simple.methods.*;
 import com.xcase.intapp.cdsusers.transputs.*;
 import java.lang.invoke.MethodHandles;
 import org.apache.logging.log4j.LogManager;
@@ -37,7 +31,22 @@ public class SimpleCDSUsersImpl implements CDSUsersExternalAPI {
     /**
      * method implementation.
      */
+    private FindCapabilitiesMethod findCapabilitiesMethod = new FindCapabilitiesMethod();
+    
+    /**
+     * method implementation.
+     */
+    private FindRolesMethod findRolesMethod = new FindRolesMethod();
+    
+    /**
+     * method implementation.
+     */
     private FindUsersMethod findUsersMethod = new FindUsersMethod();
+    
+    /**
+     * method implementation.
+     */
+    private GetCapabilityMethod getCapabilityMethod = new GetCapabilityMethod();
     
     /**
      * method implementation.
@@ -93,4 +102,19 @@ public class SimpleCDSUsersImpl implements CDSUsersExternalAPI {
 	public GetUserResponse getUser(GetUserRequest getUserRequest) {
         return this.getUserMethod.getUser(getUserRequest);
 	}
+
+    @Override
+    public FindRolesResponse findRoles(FindRolesRequest findRolesRequest) {
+        return this.findRolesMethod.findRoles(findRolesRequest);
+    }
+
+    @Override
+    public FindCapabilitiesResponse findCapabilities(FindCapabilitiesRequest findCapabilitiesRequest) {
+        return this.findCapabilitiesMethod.findCapabilities(findCapabilitiesRequest);
+    }
+
+    @Override
+    public GetCapabilityResponse getCapability(GetCapabilityRequest getCapabilityRequest) {
+        return this.getCapabilityMethod.getCapability(getCapabilityRequest);
+    }
 }

@@ -24,19 +24,33 @@ public class CDSUsersResponseFactory extends BaseCDSUsersFactory {
         return (FindUsersResponse) obj;
     }
 
-    public static PartiallyUpdateUserResponse createPartiallyUpdateUserResponse() {
-        Object obj = newInstanceOf("cdsusers.config.responsefactory.PartiallyUpdateUserResponse");
-        return (PartiallyUpdateUserResponse) obj;
-    }
-
-	public static PutUserResponse createPutUserResponse() {
-        Object obj = newInstanceOf("cdsusers.config.responsefactory.PutUserResponse");
-        return (PutUserResponse) obj;
-	}
-
 	public static GetUserResponse createGetUserResponse() {
         Object obj = newInstanceOf("cdsusers.config.responsefactory.GetUserResponse");
         return (GetUserResponse) obj;
 	}
 
+    public static FindRolesResponse createFindRolesResponse() {
+        Object obj = newInstanceOf("cdsusers.config.responsefactory.FindRolesResponse");
+        return (FindRolesResponse) obj;
+    }
+
+    public static FindCapabilitiesResponse createFindCapabilitiesResponse() {
+        Object obj = newInstanceOf("cdsusers.config.responsefactory.FindCapabilitiesResponse");
+        return (FindCapabilitiesResponse) obj;
+    }
+
+    public static GetCapabilityResponse createGetCapabilityResponse() {
+        Object obj = newInstanceOf("cdsusers.config.responsefactory.GetCapabilityResponse");
+        return (GetCapabilityResponse) obj;
+    }
+
+    public static PartiallyUpdateUserResponse createPartiallyUpdateUserResponse() {
+        Object obj = newInstanceOf("cdsusers.config.responsefactory.PartiallyUpdateUserResponse");
+        return (PartiallyUpdateUserResponse) obj;
+    }
+
+    public static PutUserResponse createPutUserResponse() {
+        Object obj = newInstanceOf("cdsusers.config.responsefactory.PutUserResponse");
+        return (PutUserResponse) obj;
+    }
 }

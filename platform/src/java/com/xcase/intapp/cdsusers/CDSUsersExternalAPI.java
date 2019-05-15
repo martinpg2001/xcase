@@ -6,16 +6,22 @@ public interface CDSUsersExternalAPI {
 
 	CreatePersonResponse createPerson(CreatePersonRequest createPersonRequest);
 
-    GetPersonsResponse getPersons(GetPersonsRequest getPersonsRequest);
-
     CreateUserResponse createUser(CreateUserRequest createUserRequest);
 
     FindUsersResponse findUsers(FindUsersRequest findUsersRequest);
 
+    FindRolesResponse findRoles(FindRolesRequest findRolesRequest);
+
+    FindCapabilitiesResponse findCapabilities(FindCapabilitiesRequest findCapabilitiesRequest);
+    
+    GetCapabilityResponse getCapability(GetCapabilityRequest getCapabilityRequest);
+    
+    GetPersonsResponse getPersons(GetPersonsRequest getPersonsRequest);
+    
+    GetUserResponse getUser(GetUserRequest getUserRequest);
+    
     PartiallyUpdateUserResponse partiallyUpdateUser(PartiallyUpdateUserRequest partiallyUpdateUserRequest);
 
-	PutUserResponse putUser(PutUserRequest putUserRequest);
-
-	GetUserResponse getUser(GetUserRequest getUserRequest);
+    PutUserResponse putUser(PutUserRequest putUserRequest);
 
 }

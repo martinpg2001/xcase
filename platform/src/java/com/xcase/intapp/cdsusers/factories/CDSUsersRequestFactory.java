@@ -88,5 +88,38 @@ public class CDSUsersRequestFactory extends BaseCDSUsersFactory {
         request.setAccessToken(accessToken);
         return request;
 	}
+	
+    public static FindRolesRequest createFindRolesRequest() {
+        Object obj = newInstanceOf("cdsusers.config.requestfactory.FindRolesRequest");
+        return (FindRolesRequest) obj;
+    }
+
+    public static FindRolesRequest createFindRolesRequest(String accessToken) {
+        FindRolesRequest request = createFindRolesRequest();
+        request.setAccessToken(accessToken);
+        return request;
+    }
+    
+    public static FindCapabilitiesRequest createFindCapabilitiesRequest() {
+        Object obj = newInstanceOf("cdsusers.config.requestfactory.FindCapabilitiesRequest");
+        return (FindCapabilitiesRequest) obj;
+    }
+
+    public static FindCapabilitiesRequest createFindCapabilitiesRequest(String accessToken) {
+        FindCapabilitiesRequest request = createFindCapabilitiesRequest();
+        request.setAccessToken(accessToken);
+        return request;
+    }
+    
+    public static GetCapabilityRequest createGetCapabilityRequest() {
+        Object obj = newInstanceOf("cdsusers.config.requestfactory.GetCapabilityRequest");
+        return (GetCapabilityRequest) obj;
+    }
+
+    public static GetCapabilityRequest createGetCapabilityRequest(String accessToken) {
+        GetCapabilityRequest request = createGetCapabilityRequest();
+        request.setAccessToken(accessToken);
+        return request;
+    }
 
 }

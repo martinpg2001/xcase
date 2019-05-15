@@ -87,6 +87,24 @@ public class CDSUsersApplication {
             getUserRequest.setKey("j_GC6SvZOxsM9sC2");
             GetUserResponse getUserResponse = cdsUsersExternalAPI.getUser(getUserRequest);
             LOGGER.debug("get user");
+            LOGGER.debug("about to find roles");
+            FindRolesRequest findRolesRequest = CDSUsersRequestFactory.createFindRolesRequest(accessToken);
+            LOGGER.debug("created findRolesRequest");
+            findRolesRequest.setName("System Admin");
+            FindRolesResponse findRolesResponse = cdsUsersExternalAPI.findRoles(findRolesRequest);
+            LOGGER.debug("found roles");
+            LOGGER.debug("about to find capabilities");
+            FindCapabilitiesRequest findCapabilitiesRequest = CDSUsersRequestFactory.createFindCapabilitiesRequest(accessToken);
+            LOGGER.debug("created findCapabilitiesRequest");
+            findCapabilitiesRequest.setRole("System Admin");
+            FindCapabilitiesResponse findCapabilitiesResponse = cdsUsersExternalAPI.findCapabilities(findCapabilitiesRequest);
+            LOGGER.debug("found capabilities");
+            LOGGER.debug("about to get capability");
+            GetCapabilityRequest getCapabilityRequest = CDSUsersRequestFactory.createGetCapabilityRequest(accessToken);
+            LOGGER.debug("created getCapabilityRequest");
+            getCapabilityRequest.setKey("SfEDIyu2DxvB08OR");
+            GetCapabilityResponse getCapabilityResponse = cdsUsersExternalAPI.getCapability(getCapabilityRequest);
+            LOGGER.debug("got capability");
         } catch (Exception e) {
             LOGGER.warn("exception executing methods: " + e.getMessage());
         }
