@@ -35,4 +35,6 @@ public interface CDSCMExternalAPI {
 
 	GetMattersResponse getMatters(GetMattersRequest getMattersRequest);
 
+	PublishClientsResponse publishClients(PublishClientsRequest publishClientsRequest);
+
 }

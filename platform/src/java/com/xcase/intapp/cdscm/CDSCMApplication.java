@@ -179,7 +179,17 @@ public class CDSCMApplication {
             LOGGER.debug("created deleteClientRequest");
             deleteClientRequest.setClientId(clientId);
             DeleteClientResponse deleteClientResponse = cdscmExternalAPI.deleteClient(deleteClientRequest);
-            LOGGER.debug("deleted client"); 
+            LOGGER.debug("deleted client");
+            /* Publish entities */
+            LOGGER.debug("about to publish clients");
+            PublishClientsRequest publishClientsRequest = CDSCMRequestFactory.createPublishClientsRequest(accessToken);
+            LOGGER.debug("created publishClientsRequest");
+            String[] clientsArray = {"10001", "10002"};
+            String topicName = "MartinTopic";
+            publishClientsRequest.setClientsArray(clientsArray);
+            publishClientsRequest.setTopicName(topicName);
+            PublishClientsResponse publishEntitiesResponse = cdscmExternalAPI.publishClients(publishClientsRequest);
+            LOGGER.debug("published entities"); 
         } catch (Exception e) {
             LOGGER.warn("exception executing methods: " + e.getMessage());
         }

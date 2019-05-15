@@ -1,12 +1,11 @@
 package com.xcase.intapp.cdscm;
 
-import java.lang.invoke.MethodHandles;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.xcase.intapp.cdscm.impl.simple.core.CDSCMConfigurationManager;
 import com.xcase.intapp.cdscm.impl.simple.methods.*;
 import com.xcase.intapp.cdscm.transputs.*;
+import java.lang.invoke.MethodHandles;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class SimpleCDSCMImpl implements CDSCMExternalAPI {
     /**
@@ -87,6 +86,11 @@ public class SimpleCDSCMImpl implements CDSCMExternalAPI {
      * method implementation.
      */
     private GetMattersModifiedSinceDateMethod getMattersModifiedSinceDateMethod = new GetMattersModifiedSinceDateMethod();
+
+    /**
+     * method implementation.
+     */
+    private PublishClientsMethod publishClientsMethod = new PublishClientsMethod();
     
     /**
      * method implementation.
@@ -167,6 +171,11 @@ public class SimpleCDSCMImpl implements CDSCMExternalAPI {
 	@Override
 	public GetMattersResponse getMatters(GetMattersRequest getMattersRequest) {
 		return this.getMattersMethod.getMatters(getMattersRequest);
+	}
+
+	@Override
+	public PublishClientsResponse publishClients(PublishClientsRequest publishClientsRequest) {
+		return publishClientsMethod.publishClients(publishClientsRequest);
 	}
 
 }

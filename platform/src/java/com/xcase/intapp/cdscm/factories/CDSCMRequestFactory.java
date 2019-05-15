@@ -176,5 +176,16 @@ public class CDSCMRequestFactory extends BaseCDSCMFactory {
         request.setAccessToken(accessToken);
         return request;
 	}
+	
+	public static PublishClientsRequest createPublishClientsRequest() {
+        Object obj = newInstanceOf("cdscm.config.requestfactory.PublishClientsRequest");
+        return (PublishClientsRequest) obj;
+	}
+
+	public static PublishClientsRequest createPublishClientsRequest(String accessToken) {
+		PublishClientsRequest request = createPublishClientsRequest();
+        request.setAccessToken(accessToken);
+        return request;
+	}
 
 }

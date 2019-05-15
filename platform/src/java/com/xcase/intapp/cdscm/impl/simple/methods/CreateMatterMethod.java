@@ -1,8 +1,11 @@
 package com.xcase.intapp.cdscm.impl.simple.methods;
 
 import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.Header;
+import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicHeader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,8 +49,9 @@ public class CreateMatterMethod extends BaseCDSCMMethod {
             Header contentTypeHeader = createContentTypeHeader();
             Header authenticationToken = new BasicHeader("IntegrateAuthenticationToken", accessToken);
             Header[] headers = {acceptHeader, authenticationToken, authorizationHeader, contentTypeHeader};
+            List<NameValuePair> parameters = new ArrayList<NameValuePair>();
             entityString = entityString.replace("{matterId}", matterId);
-            CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponsePost(endPoint, headers, null, entityString, null);
+            CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponsePost(endPoint, headers, parameters, entityString, null);
             int responseCode = commonHttpResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
             if (responseCode == request.getSuccessResponseCode()) {

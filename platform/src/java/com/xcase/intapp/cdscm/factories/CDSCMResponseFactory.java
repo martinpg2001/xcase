@@ -1,20 +1,6 @@
 package com.xcase.intapp.cdscm.factories;
 
-import com.xcase.intapp.cdscm.transputs.CreateClientResponse;
-import com.xcase.intapp.cdscm.transputs.CreateMatterResponse;
-import com.xcase.intapp.cdscm.transputs.DeleteClientResponse;
-import com.xcase.intapp.cdscm.transputs.DeleteClientSecurityResponse;
-import com.xcase.intapp.cdscm.transputs.DeleteMatterResponse;
-import com.xcase.intapp.cdscm.transputs.DeleteMatterSecurityResponse;
-import com.xcase.intapp.cdscm.transputs.GetClientResponse;
-import com.xcase.intapp.cdscm.transputs.GetClientSecurityResponse;
-import com.xcase.intapp.cdscm.transputs.GetClientsModifiedSinceDateResponse;
-import com.xcase.intapp.cdscm.transputs.GetMatterResponse;
-import com.xcase.intapp.cdscm.transputs.GetMatterSecurityResponse;
-import com.xcase.intapp.cdscm.transputs.GetMattersModifiedSinceDateResponse;
-import com.xcase.intapp.cdscm.transputs.GetMattersResponse;
-import com.xcase.intapp.cdscm.transputs.PutClientSecurityResponse;
-import com.xcase.intapp.cdscm.transputs.PutMatterSecurityResponse;
+import com.xcase.intapp.cdscm.transputs.*;
 
 public class CDSCMResponseFactory extends BaseCDSCMFactory {
 
@@ -22,11 +8,31 @@ public class CDSCMResponseFactory extends BaseCDSCMFactory {
         Object obj = newInstanceOf("cdscm.config.responsefactory.CreateClientResponse");
         return (CreateClientResponse) obj;
     }
+    
+	public static CreateMatterResponse createCreateMatterResponse() {
+        Object obj = newInstanceOf("cdscm.config.responsefactory.CreateMatterResponse");
+        return (CreateMatterResponse) obj;
+	}
+
+	public static DeleteMatterResponse createDeleteMatterResponse() {
+        Object obj = newInstanceOf("cdscm.config.responsefactory.DeleteMatterResponse");
+        return (DeleteMatterResponse) obj;
+	}
 
     public static DeleteClientResponse createDeleteClientResponse() {
         Object obj = newInstanceOf("cdscm.config.responsefactory.DeleteClientResponse");
         return (DeleteClientResponse) obj;
     }
+    
+	public static DeleteClientSecurityResponse createDeleteClientSecurityResponse() {
+        Object obj = newInstanceOf("cdscm.config.responsefactory.DeleteClientSecurityResponse");
+        return (DeleteClientSecurityResponse) obj;
+	}
+
+	public static DeleteMatterSecurityResponse createDeleteMatterSecurityResponse() {
+        Object obj = newInstanceOf("cdscm.config.responsefactory.DeleteMatterSecurityResponse");
+        return (DeleteMatterSecurityResponse) obj;
+	}
     
     public static GetClientResponse createGetClientResponse() {
         Object obj = newInstanceOf("cdscm.config.responsefactory.GetClientResponse");
@@ -48,16 +54,6 @@ public class CDSCMResponseFactory extends BaseCDSCMFactory {
         return (GetClientsModifiedSinceDateResponse) obj;
     }
 
-	public static CreateMatterResponse createCreateMatterResponse() {
-        Object obj = newInstanceOf("cdscm.config.responsefactory.CreateMatterResponse");
-        return (CreateMatterResponse) obj;
-	}
-
-	public static DeleteMatterResponse createDeleteMatterResponse() {
-        Object obj = newInstanceOf("cdscm.config.responsefactory.DeleteMatterResponse");
-        return (DeleteMatterResponse) obj;
-	}
-
 	public static GetMatterResponse createGetMatterResponse() {
         Object obj = newInstanceOf("cdscm.config.responsefactory.GetMatterResponse");
         return (GetMatterResponse) obj;
@@ -78,19 +74,14 @@ public class CDSCMResponseFactory extends BaseCDSCMFactory {
         return (PutMatterSecurityResponse) obj;
 	}
 
-	public static DeleteClientSecurityResponse createDeleteClientSecurityResponse() {
-        Object obj = newInstanceOf("cdscm.config.responsefactory.DeleteClientSecurityResponse");
-        return (DeleteClientSecurityResponse) obj;
-	}
-
-	public static DeleteMatterSecurityResponse createDeleteMatterSecurityResponse() {
-        Object obj = newInstanceOf("cdscm.config.responsefactory.DeleteMatterSecurityResponse");
-        return (DeleteMatterSecurityResponse) obj;
-	}
-
 	public static GetMattersResponse createGetMattersResponse() {
         Object obj = newInstanceOf("cdscm.config.responsefactory.GetMattersResponse");
         return (GetMattersResponse) obj;
+	}
+
+	public static PublishClientsResponse createPublishClientsResponse() {
+        Object obj = newInstanceOf("cdscm.config.responsefactory.PublishClientsResponse");
+        return (PublishClientsResponse) obj;
 	}
 
 }

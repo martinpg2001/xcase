@@ -5,7 +5,11 @@ import com.xcase.intapp.cdscm.factories.CDSCMResponseFactory;
 import com.xcase.intapp.cdscm.transputs.GetMattersRequest;
 import com.xcase.intapp.cdscm.transputs.GetMattersResponse;
 import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.http.Header;
+import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicHeader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,7 +39,8 @@ public class GetMattersMethod extends BaseCDSCMMethod {
 			Header contentTypeHeader = createContentTypeHeader();
 			Header authenticationToken = new BasicHeader("IntegrateAuthenticationToken", accessToken);
 			Header[] headers = { acceptHeader, authenticationToken, authorizationHeader, contentTypeHeader };
-			CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponseGet(endPoint, headers, null, null);
+			List<NameValuePair> parameters = new ArrayList<NameValuePair>();
+			CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponseGet(endPoint, headers, parameters, null);
 			int responseCode = commonHttpResponse.getResponseCode();
 			LOGGER.debug("responseCode is " + responseCode);
 			if (responseCode == request.getSuccessResponseCode()) {

@@ -1,8 +1,11 @@
 package com.xcase.intapp.cdscm.impl.simple.methods;
 
 import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.Header;
+import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicHeader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -49,7 +52,8 @@ public class PutMatterSecurityMethod extends BaseCDSCMMethod {
             Header contentTypeHeader = createContentTypeHeader();
             Header authenticationToken = new BasicHeader("IntegrateAuthenticationToken", accessToken);
             Header[] headers = {acceptHeader, authenticationToken, authorizationHeader, contentTypeHeader};
-            CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponsePut(endPoint, headers, null, matterSecurity);
+            List<NameValuePair> parameters = new ArrayList<NameValuePair>();
+            CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponsePut(endPoint, headers, parameters, matterSecurity);
             int responseCode = commonHttpResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
             if (responseCode == request.getSuccessResponseCode()) {
