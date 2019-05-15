@@ -4,7 +4,7 @@ import com.xcase.intapp.cdsusers.transputs.PartiallyUpdateUserRequest;
 
 public class PartiallyUpdateUserRequestImpl extends CDSUsersRequestImpl implements PartiallyUpdateUserRequest {
    private String key;
-   private String operationPath =  "api/v1/cds/users/{key}";
+   private String operationPath = "api/v1/cds/users/{key}";
    private String userString;
    
     @Override

@@ -6,7 +6,9 @@ import com.xcase.intapp.cdsusers.impl.simple.methods.CreatePersonMethod;
 import com.xcase.intapp.cdsusers.impl.simple.methods.CreateUserMethod;
 import com.xcase.intapp.cdsusers.impl.simple.methods.FindUsersMethod;
 import com.xcase.intapp.cdsusers.impl.simple.methods.GetPersonsMethod;
+import com.xcase.intapp.cdsusers.impl.simple.methods.GetUserMethod;
 import com.xcase.intapp.cdsusers.impl.simple.methods.PartiallyUpdateUserMethod;
+import com.xcase.intapp.cdsusers.impl.simple.methods.PutUserMethod;
 import com.xcase.intapp.cdsusers.transputs.*;
 import java.lang.invoke.MethodHandles;
 import org.apache.logging.log4j.LogManager;
@@ -45,7 +47,17 @@ public class SimpleCDSUsersImpl implements CDSUsersExternalAPI {
     /**
      * method implementation.
      */
+    private GetUserMethod getUserMethod = new GetUserMethod();
+    
+    /**
+     * method implementation.
+     */
     private PartiallyUpdateUserMethod partiallyUpdateUserMethod = new PartiallyUpdateUserMethod();
+    
+    /**
+     * method implementation.
+     */
+    private PutUserMethod putUserMethod = new PutUserMethod();
     
     @Override
 	public CreatePersonResponse createPerson(CreatePersonRequest createPersonRequest) {
@@ -71,4 +83,14 @@ public class SimpleCDSUsersImpl implements CDSUsersExternalAPI {
     public PartiallyUpdateUserResponse partiallyUpdateUser(PartiallyUpdateUserRequest partiallyUpdateUserRequest) {
         return this.partiallyUpdateUserMethod.partiallyUpdateUser(partiallyUpdateUserRequest);
     }
+    
+    @Override
+    public PutUserResponse putUser(PutUserRequest putUserRequest) {
+        return this.putUserMethod.putUser(putUserRequest);
+    }
+
+	@Override
+	public GetUserResponse getUser(GetUserRequest getUserRequest) {
+        return this.getUserMethod.getUser(getUserRequest);
+	}
 }

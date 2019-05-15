@@ -13,19 +13,20 @@ import org.apache.logging.log4j.Logger;
 
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.intapp.cdsusers.factories.CDSUsersResponseFactory;
-import com.xcase.intapp.cdsusers.transputs.CreateUserResponse;
 import com.xcase.intapp.cdsusers.transputs.PartiallyUpdateUserRequest;
 import com.xcase.intapp.cdsusers.transputs.PartiallyUpdateUserResponse;
+import com.xcase.intapp.cdsusers.transputs.PutUserRequest;
+import com.xcase.intapp.cdsusers.transputs.PutUserResponse;
 
-public class PartiallyUpdateUserMethod extends BaseCDSUsersMethod{
+public class PutUserMethod extends BaseCDSUsersMethod {
     /**
      * log4j object.
      */
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
     
-    public PartiallyUpdateUserResponse partiallyUpdateUser(PartiallyUpdateUserRequest request) {
-        LOGGER.debug("starting partiallyUpdateUser()");
-        PartiallyUpdateUserResponse response = CDSUsersResponseFactory.createPartiallyUpdateUserResponse();
+    public PutUserResponse putUser(PutUserRequest request) {
+        LOGGER.debug("starting putUser()");
+        PutUserResponse response = CDSUsersResponseFactory.createPutUserResponse();
         LOGGER.debug("created response");
         try {
             String baseVersionUrl = getAPIVersionUrl();
@@ -46,7 +47,7 @@ public class PartiallyUpdateUserMethod extends BaseCDSUsersMethod{
             parameters.add(new BasicNameValuePair("Authorization", "Bearer " + accessToken));
             String userString = request.getUserString();
             LOGGER.debug("userString is " + userString);
-            CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponsePatch(endPoint, headers, parameters, userString, null);
+            CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponsePut(endPoint, headers, parameters, userString);
             int responseCode = commonHttpResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
             response.setResponseCode(responseCode);

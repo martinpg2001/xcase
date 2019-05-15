@@ -14,4 +14,8 @@ public interface CDSUsersExternalAPI {
 
     PartiallyUpdateUserResponse partiallyUpdateUser(PartiallyUpdateUserRequest partiallyUpdateUserRequest);
 
+	PutUserResponse putUser(PutUserRequest putUserRequest);
+
+	GetUserResponse getUser(GetUserRequest getUserRequest);
+
 }

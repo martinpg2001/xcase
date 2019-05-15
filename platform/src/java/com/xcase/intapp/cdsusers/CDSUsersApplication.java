@@ -74,6 +74,19 @@ public class CDSUsersApplication {
             partiallyUpdateUserRequest.setUserString("{\"timekeeper\":false}");
             PartiallyUpdateUserResponse partiallyUpdateUserResponse = cdsUsersExternalAPI.partiallyUpdateUser(partiallyUpdateUserRequest);
             LOGGER.debug("partially updated user");
+            LOGGER.debug("about to put user");
+            PutUserRequest putUserRequest = CDSUsersRequestFactory.createPutUserRequest(accessToken);
+            LOGGER.debug("created putUserRequest");
+            putUserRequest.setKey("j_GC6SvZOxsM9sC2");
+            putUserRequest.setUserString("{\"userId\" : \"dennis.gilchrist@intapp.com\",\"email\" : \"dennis.gilchrist@intapp.com\",\"enabled\" : true,\"name\" : \"Dennis Gilchrist\",\"firstName\" : \"Dennis\",\"lastName\" : \"Gilchrist\",\"personKey\" : \"-vGpeSugaRv20cCo\",\"external\" : true,\"userOrigin\" : \"REGULAR\",\"providerAlias\" : \"saml\",\"enableOtp\" : false,\"timekeeper\" : false,\"exchangeUsername\" : \"\",\"exchangeHost\" : \"\",\"readonly\" : false}");
+            PutUserResponse putUserResponse = cdsUsersExternalAPI.putUser(putUserRequest);
+            LOGGER.debug("put user");
+            LOGGER.debug("about to get user");
+            GetUserRequest getUserRequest = CDSUsersRequestFactory.createGetUserRequest(accessToken);
+            LOGGER.debug("created getUserRequest");
+            getUserRequest.setKey("j_GC6SvZOxsM9sC2");
+            GetUserResponse getUserResponse = cdsUsersExternalAPI.getUser(getUserRequest);
+            LOGGER.debug("get user");
         } catch (Exception e) {
             LOGGER.warn("exception executing methods: " + e.getMessage());
         }

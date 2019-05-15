@@ -66,5 +66,27 @@ public class CDSUsersRequestFactory extends BaseCDSUsersFactory {
         request.setAccessToken(accessToken);
         return request;
     }
+    
+    public static PutUserRequest createPutUserRequest() {
+        Object obj = newInstanceOf("cdsusers.config.requestfactory.PutUserRequest");
+        return (PutUserRequest) obj;
+    }
+
+	public static PutUserRequest createPutUserRequest(String accessToken) {
+		PutUserRequest request = createPutUserRequest();
+        request.setAccessToken(accessToken);
+        return request;
+	}
+	
+    public static GetUserRequest createGetUserRequest() {
+        Object obj = newInstanceOf("cdsusers.config.requestfactory.GetUserRequest");
+        return (GetUserRequest) obj;
+    }
+
+	public static GetUserRequest createGetUserRequest(String accessToken) {
+		GetUserRequest request = createGetUserRequest();
+        request.setAccessToken(accessToken);
+        return request;
+	}
 
 }

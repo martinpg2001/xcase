@@ -29,4 +29,14 @@ public class CDSUsersResponseFactory extends BaseCDSUsersFactory {
         return (PartiallyUpdateUserResponse) obj;
     }
 
+	public static PutUserResponse createPutUserResponse() {
+        Object obj = newInstanceOf("cdsusers.config.responsefactory.PutUserResponse");
+        return (PutUserResponse) obj;
+	}
+
+	public static GetUserResponse createGetUserResponse() {
+        Object obj = newInstanceOf("cdsusers.config.responsefactory.GetUserResponse");
+        return (GetUserResponse) obj;
+	}
+
 }
