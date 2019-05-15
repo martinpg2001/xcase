@@ -22,6 +22,8 @@ public interface CDSUsersExternalAPI {
     
     PartiallyUpdateUserResponse partiallyUpdateUser(PartiallyUpdateUserRequest partiallyUpdateUserRequest);
 
+	PublishEntitiesResponse publishEntities(PublishEntitiesRequest publishEntitiesRequest);
+	
     PutUserResponse putUser(PutUserRequest putUserRequest);
 
 }

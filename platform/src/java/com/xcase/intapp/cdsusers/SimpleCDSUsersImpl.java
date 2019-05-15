@@ -66,6 +66,11 @@ public class SimpleCDSUsersImpl implements CDSUsersExternalAPI {
     /**
      * method implementation.
      */
+    private PublishEntitiesMethod publishEntitiesMethod = new PublishEntitiesMethod();
+    
+    /**
+     * method implementation.
+     */
     private PutUserMethod putUserMethod = new PutUserMethod();
     
     @Override
@@ -117,4 +122,9 @@ public class SimpleCDSUsersImpl implements CDSUsersExternalAPI {
     public GetCapabilityResponse getCapability(GetCapabilityRequest getCapabilityRequest) {
         return this.getCapabilityMethod.getCapability(getCapabilityRequest);
     }
+
+	@Override
+	public PublishEntitiesResponse publishEntities(PublishEntitiesRequest publishEntitiesRequest) {
+		return this.publishEntitiesMethod.publishEntities(publishEntitiesRequest);
+	}
 }

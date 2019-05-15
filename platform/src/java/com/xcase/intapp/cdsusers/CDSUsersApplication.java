@@ -105,6 +105,13 @@ public class CDSUsersApplication {
             getCapabilityRequest.setKey("SfEDIyu2DxvB08OR");
             GetCapabilityResponse getCapabilityResponse = cdsUsersExternalAPI.getCapability(getCapabilityRequest);
             LOGGER.debug("got capability");
+            LOGGER.debug("about to publish entities");
+            PublishEntitiesRequest publishEntitiesRequest = CDSUsersRequestFactory.createPublishEntitiesRequest(accessToken);
+            LOGGER.debug("created publishEntitiesRequest");
+            publishEntitiesRequest.setTopic("MartinTopic");
+            publishEntitiesRequest.setEntity("User");
+            PublishEntitiesResponse publishEntitiesResponse = cdsUsersExternalAPI.publishEntities(publishEntitiesRequest);
+            LOGGER.debug("published entities");
         } catch (Exception e) {
             LOGGER.warn("exception executing methods: " + e.getMessage());
         }

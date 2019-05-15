@@ -121,5 +121,16 @@ public class CDSUsersRequestFactory extends BaseCDSUsersFactory {
         request.setAccessToken(accessToken);
         return request;
     }
+    
+    public static PublishEntitiesRequest createPublishEntitiesRequest() {
+        Object obj = newInstanceOf("cdsusers.config.requestfactory.PublishEntitiesRequest");
+        return (PublishEntitiesRequest) obj;
+    }
+
+	public static PublishEntitiesRequest createPublishEntitiesRequest(String accessToken) {
+		PublishEntitiesRequest request = createPublishEntitiesRequest();
+        request.setAccessToken(accessToken);
+        return request;
+	}
 
 }
