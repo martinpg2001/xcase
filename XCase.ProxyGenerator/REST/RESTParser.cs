@@ -40,6 +40,7 @@
 
             if (typeName.Equals("IterableOfstring"))
             {
+                /* This block used to return List<string> but am not sure what is best way to handle this type name */
                 return "List<string>";
             }
 

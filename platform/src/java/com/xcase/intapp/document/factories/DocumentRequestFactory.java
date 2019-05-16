@@ -35,5 +35,16 @@ public class DocumentRequestFactory extends BaseDocumentFactory {
         request.setAccessToken(accessToken);
         return request;
     }
+    
+    public static SaveTemplateRequest createSaveTemplateRequest() {
+        Object obj = newInstanceOf("document.config.requestfactory.SaveTemplateRequest");
+        return (SaveTemplateRequest) obj;
+    }
+
+	public static SaveTemplateRequest createSaveTemplateRequest(String accessToken) {
+		SaveTemplateRequest request = createSaveTemplateRequest();
+        request.setAccessToken(accessToken);
+        return request;
+	}
 
 }

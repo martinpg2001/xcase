@@ -360,8 +360,12 @@ namespace XCase.REST.ProxyGenerator.Swagger
                 }
 
                 classDefinition.Name = FixGenericName(classDefinition.Name);
-                if (classDefinition.Name.Equals("Void", StringComparison.InvariantCulture))
+                Log.Debug("classDefinition Name is " + classDefinition.Name);
+                /* Some classes should not be added if they exist in .Net */
+                if (classDefinition.Name.Equals("Void", StringComparison.InvariantCulture) || 
+                    classDefinition.Name.Equals("IterableOfstring", StringComparison.InvariantCulture))
                 {
+                    Log.Debug("set addIt to false");
                     addIt = false;
                 }
 

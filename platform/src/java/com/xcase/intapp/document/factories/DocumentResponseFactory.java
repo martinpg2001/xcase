@@ -4,6 +4,7 @@ import com.xcase.intapp.cdsusers.transputs.CreatePersonResponse;
 import com.xcase.intapp.document.transputs.GetCategoriesResponse;
 import com.xcase.intapp.document.transputs.GetTemplatesResponse;
 import com.xcase.intapp.document.transputs.HeadTemplatesResponse;
+import com.xcase.intapp.document.transputs.SaveTemplateResponse;
 
 public class DocumentResponseFactory extends BaseDocumentFactory {
 
@@ -21,5 +22,10 @@ public class DocumentResponseFactory extends BaseDocumentFactory {
         Object obj = newInstanceOf("document.config.responsefactory.HeadTemplatesResponse");
         return (HeadTemplatesResponse) obj;
     }
+
+	public static SaveTemplateResponse createSaveTemplateResponse() {
+        Object obj = newInstanceOf("document.config.responsefactory.SaveTemplateResponse");
+        return (SaveTemplateResponse) obj;
+	}
 
 }

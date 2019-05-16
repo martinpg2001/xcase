@@ -60,6 +60,11 @@ public class SimpleDocumentImpl implements DocumentExternalAPI {
      * method implementation.
      */
     private HeadTemplatesMethod headTemplatesMethod = new HeadTemplatesMethod();
+    
+    /**
+     * method implementation.
+     */
+    private SaveTemplateMethod saveTemplateMethod = new SaveTemplateMethod();
 	
 	public void generateTokenPair() throws Exception {
         CommonHTTPManager httpManager = CommonHTTPManager.refreshCommonHTTPManager();
@@ -193,4 +198,9 @@ public class SimpleDocumentImpl implements DocumentExternalAPI {
     public HeadTemplatesResponse headTemplates(HeadTemplatesRequest headTemplatesRequest) {
         return this.headTemplatesMethod.headTemplates(headTemplatesRequest);
     }
+
+	@Override
+	public SaveTemplateResponse saveTemplate(SaveTemplateRequest saveTemplateRequest) {
+		return this.saveTemplateMethod.saveTemplate(saveTemplateRequest);
+	}
 }

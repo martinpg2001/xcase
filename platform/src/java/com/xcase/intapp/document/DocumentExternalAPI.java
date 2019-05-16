@@ -14,4 +14,6 @@ public interface DocumentExternalAPI {
 
     HeadTemplatesResponse headTemplates(HeadTemplatesRequest headTemplatesRequest);
 
+	SaveTemplateResponse saveTemplate(SaveTemplateRequest saveTemplateRequest);
+
 }

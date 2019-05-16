@@ -451,6 +451,89 @@ public class CommonHTTPManager implements AutoCloseable {
 	    return doCommonHttpResponseMethod(method, url, headers, parameters, entityString, credentials, true);
 	}
 
+	/**
+	 * upload multiple files.
+	 *
+	 * @param url http URL
+	 * @param byteArrayHashMap hashmap, key is string(file name), value is byte array.
+	 * @param headers headers array
+	 * @param parameters parameters list
+	 * @param credentials credentials
+	 * @return response
+	 * @throws IOException exception
+	 */
+	public CommonHttpResponse doCommonHttpResponseMultipartByteArrayPost(String url, HashMap<String, byte[]> byteArrayHashMap, Header[] headers, List<NameValuePair> parameters, Credentials credentials) throws Exception, IOException {
+	    LOGGER.debug("starting doCommonHttpResponseMultipartByteArrayPost()");
+	    try {
+	        /* Local context is going to be used to pass credentials in to request */
+	        HttpClientContext localContext = HttpClientContext.create();
+	        if (credentials != null) {
+	            LOGGER.debug("credentials is not null");
+	            CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+	            credentialsProvider.setCredentials(AuthScope.ANY, credentials);
+	            LOGGER.debug("set AuthScope.ANY");
+	            localContext.setCredentialsProvider(credentialsProvider);
+	            LOGGER.debug("set CredentialsProvider");
+	        } else {
+	            LOGGER.debug("credentials is null");
+	        }
+	
+	        HttpPost postMethod = new HttpPost(url);
+	        for (Header header : headers) {
+	            postMethod.addHeader(header);
+	        }
+	
+	        MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create();
+	        multipartEntityBuilder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+	        if (parameters != null) {
+	            LOGGER.debug("parameters is not null");
+	            for (NameValuePair parameter : parameters) {
+	                String parameterName = parameter.getName();
+	                LOGGER.debug("parameter name is " + parameterName);
+	                String parameterValue = parameter.getValue();
+	                LOGGER.debug("parameter value is " + parameterValue);
+	                StringBody valueBody = new StringBody(parameterValue, ContentType.MULTIPART_FORM_DATA);
+	                multipartEntityBuilder.addPart(parameterName, valueBody);
+	                LOGGER.debug("added parameter " + parameterName + ":" + parameterValue);
+	            }
+	
+	            LOGGER.debug("added parameters");
+	        } else {
+	            LOGGER.debug("parameters is null");
+	        }
+	
+	        if (byteArrayHashMap != null) {
+	            LOGGER.debug("byteArrayHashMap is not null");            
+	            Iterator iterator = byteArrayHashMap.keySet().iterator();
+	            while (iterator.hasNext()) {
+	                String key = (String) iterator.next();
+	                LOGGER.debug("next key " + key);
+	                byte[] byteArray = byteArrayHashMap.get(key);
+	                multipartEntityBuilder.addBinaryBody(key, byteArray, ContentType.DEFAULT_BINARY, key);
+	            }
+	
+	            LOGGER.debug("added byteArrayHashMap");
+	        } else {
+	            LOGGER.debug("byteArrayHashMap is null");
+	        }
+	
+	        HttpEntity httpEntity = multipartEntityBuilder.build();
+	        postMethod.setEntity(httpEntity);
+	        LOGGER.debug("about to post multi-part message");
+	        HttpResponse httpResponse = this.httpClient.execute(postMethod, localContext);
+	        LOGGER.debug("httpResponse status code is " + httpResponse.getStatusLine().getStatusCode());
+	        LOGGER.debug("httpResponse reason phrase is " + httpResponse.getStatusLine().getReasonPhrase());
+	        CommonHttpResponse commonHttpResponse = new CommonHttpResponse(httpResponse);
+	        LOGGER.debug("created commonHttpResponse");
+	        return commonHttpResponse;
+	    } catch (Exception e) {
+	        LOGGER.warn("exception doing multi-part POST: " + e.getMessage());
+	        throw e;
+	    } finally {
+	        LOGGER.debug("finally...");
+	    }
+	}
+
 	public CommonHttpResponse doCommonHttpResponsePatch(String url, Header[] headers, List<NameValuePair> parameters, String entityString, Credentials credentials) throws Exception, IOException {
         LOGGER.debug("starting doCommonHttpResponsePatch()");
         return doCommonHttpResponseMethod("PATCH", url, headers, parameters, entityString, credentials);
@@ -953,7 +1036,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	        LOGGER.debug("finally...");
 	    }
 	}
-
+	
 	/**
 	 * upload multiple files.
 	 *

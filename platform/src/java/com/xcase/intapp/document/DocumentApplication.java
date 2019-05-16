@@ -50,6 +50,15 @@ public class DocumentApplication {
             LOGGER.debug("created getCategoriesRequest");
             GetCategoriesResponse getCategoriesResponse = documentExternalAPI.getCategories(getCategoriesRequest);            
             LOGGER.debug("got categories");
+            LOGGER.debug("about to save template");
+            SaveTemplateRequest saveTemplateRequest = DocumentRequestFactory.createSaveTemplateRequest(accessToken);
+            LOGGER.debug("created saveTemplateRequest");
+            saveTemplateRequest.setCategory("MartinCategory");
+            saveTemplateRequest.setName("MartinTemplate");
+            saveTemplateRequest.setItem1("MartinTemplate");
+            saveTemplateRequest.setItem2("MartinTemplate".getBytes());            
+            SaveTemplateResponse saveTemplateResponse = documentExternalAPI.saveTemplate(saveTemplateRequest);            
+            LOGGER.debug("save template");            
             LOGGER.debug("about to get templates");
             GetTemplatesRequest getTemplatesRequest = DocumentRequestFactory.createGetTemplatesRequest(accessToken);
             LOGGER.debug("created getTemplatesRequest");
