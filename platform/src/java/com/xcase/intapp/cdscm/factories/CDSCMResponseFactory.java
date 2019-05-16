@@ -84,4 +84,9 @@ public class CDSCMResponseFactory extends BaseCDSCMFactory {
         return (PublishClientsResponse) obj;
 	}
 
+	public static PublishMattersResponse createPublishMattersResponse() {
+        Object obj = newInstanceOf("cdscm.config.responsefactory.PublishMattersResponse");
+        return (PublishMattersResponse) obj;
+	}
+
 }

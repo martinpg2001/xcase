@@ -4,7 +4,7 @@ public interface PublishClientsRequest extends CDSCMRequest {
 
 	String getOperationPath();
 
-	String[] getClientsArray();
+	String[] getKeysArray();
 
 	int getSuccessResponseCode();
 	

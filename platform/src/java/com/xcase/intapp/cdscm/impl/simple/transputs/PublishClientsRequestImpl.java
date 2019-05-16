@@ -6,7 +6,7 @@ import com.xcase.intapp.cdsusers.impl.simple.transputs.CDSUsersRequestImpl;
 public class PublishClientsRequestImpl extends CDSUsersRequestImpl implements PublishClientsRequest {
     private String operationPath = "api/v1/clients/sync?topicName={topicName}";
     private String topicName;
-    private String[] clientsArray;
+    private String[] keysArray;
     private int successResponseCode = 200;
     
 	@Override
@@ -15,8 +15,8 @@ public class PublishClientsRequestImpl extends CDSUsersRequestImpl implements Pu
 	}
 
 	@Override
-	public String[] getClientsArray() {
-		return clientsArray;
+	public String[] getKeysArray() {
+		return keysArray;
 	}
 
 	@Override
@@ -25,8 +25,8 @@ public class PublishClientsRequestImpl extends CDSUsersRequestImpl implements Pu
 	}
 
 	@Override
-	public void setClientsArray(String[] clientsArray) {
-        this.clientsArray = clientsArray;
+	public void setClientsArray(String[] keysArray) {
+        this.keysArray = keysArray;
 	}
 
 	@Override

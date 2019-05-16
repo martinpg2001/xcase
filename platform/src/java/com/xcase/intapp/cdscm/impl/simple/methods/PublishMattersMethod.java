@@ -2,28 +2,26 @@ package com.xcase.intapp.cdscm.impl.simple.methods;
 
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.intapp.cdscm.factories.CDSCMResponseFactory;
-import com.xcase.intapp.cdscm.transputs.PublishClientsRequest;
-import com.xcase.intapp.cdscm.transputs.PublishClientsResponse;
+import com.xcase.intapp.cdscm.transputs.PublishMattersRequest;
+import com.xcase.intapp.cdscm.transputs.PublishMattersResponse;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicHeader;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class PublishClientsMethod extends BaseCDSCMMethod {
+public class PublishMattersMethod extends BaseCDSCMMethod {
     /**
      * log4j object.
      */
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
-    public PublishClientsResponse publishClients(PublishClientsRequest request) {
-        LOGGER.debug("starting publishClients()");
-        PublishClientsResponse response = CDSCMResponseFactory.createPublishClientsResponse();
+    public PublishMattersResponse publishMatters(PublishMattersRequest request) {
+        LOGGER.debug("starting publishMatters()");
+        PublishMattersResponse response = CDSCMResponseFactory.createPublishMattersResponse();
         LOGGER.debug("created response");
         try {
             String baseVersionUrl = getAPIVersionUrl();
@@ -65,5 +63,4 @@ public class PublishClientsMethod extends BaseCDSCMMethod {
 
         return response;
     }
-
 }

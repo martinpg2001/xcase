@@ -23,10 +23,6 @@ public interface CDSCMExternalAPI {
     GetClientsModifiedSinceDateResponse getClientsModifiedSinceDate(GetClientsModifiedSinceDateRequest getClientsModifiedSinceDateRequest);
 
 	GetMatterResponse getMatter(GetMatterRequest getMatterRequest);
-	
-    PutClientSecurityResponse putClientSecurity(PutClientSecurityRequest putClientSecurityRequest);
-
-	PutMatterSecurityResponse putMatterSecurity(PutMatterSecurityRequest putMatterSecurityRequest);
 
 	GetMatterSecurityResponse getMatterSecurity(GetMatterSecurityRequest getMatterSecurityRequest);
 
@@ -37,4 +33,9 @@ public interface CDSCMExternalAPI {
 
 	PublishClientsResponse publishClients(PublishClientsRequest publishClientsRequest);
 
+	PublishMattersResponse publishMatters(PublishMattersRequest publishMattersRequest);
+
+    PutClientSecurityResponse putClientSecurity(PutClientSecurityRequest putClientSecurityRequest);
+
+	PutMatterSecurityResponse putMatterSecurity(PutMatterSecurityRequest putMatterSecurityRequest);
 }
