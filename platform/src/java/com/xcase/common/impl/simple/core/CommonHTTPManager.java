@@ -75,6 +75,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.BasicCredentialsProvider;
@@ -353,7 +354,10 @@ public class CommonHTTPManager implements AutoCloseable {
             this.httpClientBuilder.setUserAgent(userAgent);
             /* Proxy server */
             if (commonHttpManagerConfig.getProxy() != null) {
+                LOGGER.debug("proxy configuration is not null");
                 httpClientBuilder.setProxy(commonHttpManagerConfig.getProxy());
+            } else {
+                LOGGER.debug("proxy configuration is null");
             }
             
             this.httpClient = this.httpClientBuilder.build();

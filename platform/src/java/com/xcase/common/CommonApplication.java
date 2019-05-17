@@ -133,6 +133,7 @@ public class CommonApplication {
             String proxy = "";
             if (commandLine.getOptionValue("x") != null) {
                 LOGGER.debug("proxy is specified");
+                properties.setProperty("proxy", "yes");
                 proxy = commandLine.getOptionValue("x");
                 if (!proxy.contains(":")) {
                     properties.setProperty("proxyserver", proxy);
@@ -169,7 +170,8 @@ public class CommonApplication {
                 commonHTTPResponse = httpManager.doCommonHttpResponseMethod(method, url, headers, parameters, entityString, credentials, redirect);
             } else {
                 HashMap<String, byte[]> byteArrayHashMap = new HashMap<String, byte[]>();
-                commonHTTPResponse = httpManager.doCommonHttpResponseMultipartByteArrayPost(method, byteArrayHashMap, headers, parameters, credentials);
+                byteArrayHashMap.put("file", "Test text".getBytes());
+                commonHTTPResponse = httpManager.doCommonHttpResponseMultipartByteArrayPost(url, byteArrayHashMap, headers, parameters, credentials);
             }
             
             if (commandLine.getOptionValue("o") != null) {
