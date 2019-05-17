@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import org.apache.commons.cli.*;
@@ -89,6 +90,7 @@ public class CommonApplication {
             LOGGER.debug("referer is " + referer);
             List<NameValuePair> parameters = new ArrayList<NameValuePair>();
             if (commandLine.getOptionValue("F") != null) {
+                headerList.add(new BasicHeader("Content-Type", "multipart/form-data"));
                 String[] formsStringArray = commandLine.getOptionValues("F");
                 for (String formString : formsStringArray) {
                     LOGGER.debug("formString is " + formString);
@@ -162,20 +164,31 @@ public class CommonApplication {
             LOGGER.debug("url is " + url);
             CommonHttpManagerConfig commonHttpManagerConfig = new CommonHttpManagerConfig(properties);
             CommonHTTPManager httpManager = CommonHTTPManager.getCommonHTTPManager(commonHttpManagerConfig);
-            CommonHttpResponse commonHTTPResponse = httpManager.doCommonHttpResponseMethod(method, url, headers, parameters, entityString, credentials, redirect);
+            CommonHttpResponse commonHTTPResponse = null;
+            if (true) {
+                commonHTTPResponse = httpManager.doCommonHttpResponseMethod(method, url, headers, parameters, entityString, credentials, redirect);
+            } else {
+                HashMap<String, byte[]> byteArrayHashMap = new HashMap<String, byte[]>();
+                commonHTTPResponse = httpManager.doCommonHttpResponseMultipartByteArrayPost(method, byteArrayHashMap, headers, parameters, credentials);
+            }
+            
             if (commandLine.getOptionValue("o") != null) {
                 String output = commandLine.getOptionValue("o");
+                FileWriter fileWriter = null;
                 if (commandLine.hasOption("a")) {
-                    FileWriter fw = new FileWriter(output, true);
-                    BufferedWriter bw = new BufferedWriter(fw);
-                    PrintWriter out = new PrintWriter(bw);
-                    out.println(commonHTTPResponse.getResponseEntityString());                    
+                    /* Append to existing file */
+                    fileWriter = new FileWriter(output, true);                    
                 } else {
-                    FileWriter fw = new FileWriter(output, false);
-                    BufferedWriter bw = new BufferedWriter(fw);
-                    PrintWriter out = new PrintWriter(bw);
-                    out.println(commonHTTPResponse.getResponseEntityString());                     
+                    /* Overwrite existing file */
+                    fileWriter = new FileWriter(output, false);                   
                 }
+                
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                PrintWriter printWriter = new PrintWriter(bufferedWriter);
+                printWriter.println(commonHTTPResponse.getResponseEntityString());  
+                printWriter.close();
+                bufferedWriter.close();
+                fileWriter.close();
             }
             
             if (commandLine.getOptionValue("D") != null) {
