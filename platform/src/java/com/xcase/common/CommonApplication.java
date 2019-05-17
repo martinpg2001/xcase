@@ -4,9 +4,11 @@ import com.xcase.common.impl.simple.core.CommonHTTPManager;
 import com.xcase.common.impl.simple.core.CommonHttpManagerConfig;
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.lang.invoke.MethodHandles;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -64,6 +66,7 @@ public class CommonApplication {
             Properties properties = new Properties();
             Credentials credentials = new NTCredentials("dummy","dummy", null, null);
             String userAgent = "";
+            boolean fileUpload = false;
             boolean redirect = false;
             if (commandLine.getOptionValue("A") != null) {
                 LOGGER.debug("entity data is specified");
@@ -88,6 +91,10 @@ public class CommonApplication {
             }
             
             LOGGER.debug("referer is " + referer);
+            /* Now add the form parameters. If any of the form parameters starts with @, then
+             * assume that we're uploading files.
+             */
+            HashMap<String, byte[]> byteArrayHashMap = new HashMap<String, byte[]>();
             List<NameValuePair> parameters = new ArrayList<NameValuePair>();
             if (commandLine.getOptionValue("F") != null) {
                 headerList.add(new BasicHeader("Content-Type", "multipart/form-data"));
@@ -95,8 +102,21 @@ public class CommonApplication {
                 for (String formString : formsStringArray) {
                     LOGGER.debug("formString is " + formString);
                     String[] formStringArray = formString.split("=");
-                    BasicNameValuePair parameter = new BasicNameValuePair(formStringArray[0], formStringArray[1]);
-                    parameters.add(parameter);
+                    if (!formStringArray[1].startsWith("@")) {
+                    	LOGGER.debug("formString value does not start with @");
+                        BasicNameValuePair parameter = new BasicNameValuePair(formStringArray[0], formStringArray[1]);
+                        parameters.add(parameter);
+                    } else {
+                    	LOGGER.debug("formString value does start with @");
+                    	fileUpload = true;
+                    	String filePath = formStringArray[1];
+                    	LOGGER.debug("filePath is " + filePath);
+                    	File file = new File(filePath.substring(1));
+                    	LOGGER.debug("created file");
+                    	byte[] fileContent = Files.readAllBytes(file.toPath());
+                    	LOGGER.debug("created fileContent");
+                        byteArrayHashMap.put(formStringArray[0], fileContent);
+                    }
                 }
             }
             
@@ -166,11 +186,11 @@ public class CommonApplication {
             CommonHttpManagerConfig commonHttpManagerConfig = new CommonHttpManagerConfig(properties);
             CommonHTTPManager httpManager = CommonHTTPManager.getCommonHTTPManager(commonHttpManagerConfig);
             CommonHttpResponse commonHTTPResponse = null;
-            if (true) {
+            if (!fileUpload) {
+            	LOGGER.debug("fileUpload is false");
                 commonHTTPResponse = httpManager.doCommonHttpResponseMethod(method, url, headers, parameters, entityString, credentials, redirect);
             } else {
-                HashMap<String, byte[]> byteArrayHashMap = new HashMap<String, byte[]>();
-                byteArrayHashMap.put("file", "Test text".getBytes());
+            	LOGGER.debug("fileUpload is true");
                 commonHTTPResponse = httpManager.doCommonHttpResponseMultipartByteArrayPost(url, byteArrayHashMap, headers, parameters, credentials);
             }
             
