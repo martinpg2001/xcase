@@ -57,5 +57,16 @@ public class DocumentRequestFactory extends BaseDocumentFactory {
         request.setAccessToken(accessToken);
         return request;
 	}
+	
+    public static GetTemplateFileRequest createGetTemplateFileRequest() {
+        Object obj = newInstanceOf("document.config.requestfactory.GetTemplateFileRequest");
+        return (GetTemplateFileRequest) obj;
+    }
+
+    public static GetTemplateFileRequest createGetTemplateFileRequest(String accessToken) {
+        GetTemplateFileRequest request = createGetTemplateFileRequest();
+        request.setAccessToken(accessToken);
+        return request;
+    }
 
 }

@@ -62,13 +62,21 @@ public class DocumentApplication {
             saveTemplateRequest.setItem1("file");
             Path path = (new File("BlankTemplate.docx")).toPath();
             saveTemplateRequest.setItem2(Files.readAllBytes(path));         
-            //SaveTemplateResponse saveTemplateResponse = documentExternalAPI.saveTemplate(saveTemplateRequest);            
+            SaveTemplateResponse saveTemplateResponse = documentExternalAPI.saveTemplate(saveTemplateRequest);            
             LOGGER.debug("saved template");            
             LOGGER.debug("about to get templates");
             GetTemplatesRequest getTemplatesRequest = DocumentRequestFactory.createGetTemplatesRequest(accessToken);
             LOGGER.debug("created getTemplatesRequest");
             GetTemplatesResponse getTemplatesResponse = documentExternalAPI.getTemplates(getTemplatesRequest);            
             LOGGER.debug("got templates");
+            LOGGER.debug("about to get template file");
+            GetTemplateFileRequest getTemplateFileRequest = DocumentRequestFactory.createGetTemplateFileRequest(accessToken);
+            LOGGER.debug("created getTemplateFileRequest");
+            getTemplateFileRequest.setId("7ba257c3-eaee-4ac2-b77c-12705a0b6854");
+            GetTemplateFileResponse getTemplateFileResponse = documentExternalAPI.getTemplateFile(getTemplateFileRequest);
+            Path tempTemplatePath = (new File("TempTemplate.docx")).toPath();
+            byte[] tempTemplateByteArray = getTemplateFileResponse.getBytes();
+            LOGGER.debug("got template file");             
             LOGGER.debug("about to head templates");
             HeadTemplatesRequest headTemplatesRequest = DocumentRequestFactory.createHeadTemplatesRequest(accessToken);
             LOGGER.debug("created headTemplatesRequest");
@@ -77,7 +85,7 @@ public class DocumentApplication {
             LOGGER.debug("about to delete template");
             DeleteTemplateRequest deleteTemplateRequest = DocumentRequestFactory.createDeleteTemplateRequest(accessToken);
             LOGGER.debug("created deleteTemplateRequest");
-            deleteTemplateRequest.setId("42693c51-7f72-4f4c-956f-16b6743afa14");
+            deleteTemplateRequest.setId("7ba257c3-eaee-4ac2-b77c-12705a0b6854");
             DeleteTemplateResponse deleteTemplateResponse = documentExternalAPI.deleteTemplate(deleteTemplateRequest);            
             LOGGER.debug("headed templates");
         } catch (Exception e) {

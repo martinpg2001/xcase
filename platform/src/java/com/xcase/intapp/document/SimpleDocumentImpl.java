@@ -59,6 +59,11 @@ public class SimpleDocumentImpl implements DocumentExternalAPI {
     /**
      * method implementation.
      */
+    private GetTemplateFileMethod getTemplateFileMethod = new GetTemplateFileMethod();
+    
+    /**
+     * method implementation.
+     */
     private GetTemplatesMethod getTemplatesMethod = new GetTemplatesMethod();
     
     /**
@@ -213,4 +218,9 @@ public class SimpleDocumentImpl implements DocumentExternalAPI {
 	public DeleteTemplateResponse deleteTemplate(DeleteTemplateRequest deleteTemplateRequest) {
 		return this.deleteTemplateMethod.deleteTemplate(deleteTemplateRequest);
 	}
+
+    @Override
+    public GetTemplateFileResponse getTemplateFile(GetTemplateFileRequest getTemplateFileRequest) {
+        return this.getTemplateFileMethod.getTemplateFile(getTemplateFileRequest);
+    }
 }

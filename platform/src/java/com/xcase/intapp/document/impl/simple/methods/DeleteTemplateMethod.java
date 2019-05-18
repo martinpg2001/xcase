@@ -1,5 +1,6 @@
 package com.xcase.intapp.document.impl.simple.methods;
 
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +9,8 @@ import org.apache.http.Header;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.intapp.document.factories.DocumentResponseFactory;
@@ -16,7 +19,11 @@ import com.xcase.intapp.document.transputs.DeleteTemplateResponse;
 import com.xcase.intapp.document.transputs.SaveTemplateResponse;
 
 public class DeleteTemplateMethod extends BaseDocumentMethod {
-
+    /**
+     * log4j object.
+     */
+    protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
+    
 	public DeleteTemplateResponse deleteTemplate(DeleteTemplateRequest request) {
         LOGGER.debug("starting deleteTemplate()");
         DeleteTemplateResponse response = DocumentResponseFactory.createDeleteTemplateResponse();

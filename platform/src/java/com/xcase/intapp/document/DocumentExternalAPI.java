@@ -18,4 +18,6 @@ public interface DocumentExternalAPI {
 
 	DeleteTemplateResponse deleteTemplate(DeleteTemplateRequest deleteTemplateRequest);
 
+    GetTemplateFileResponse getTemplateFile(GetTemplateFileRequest getTemplateFileRequest);
+
 }
