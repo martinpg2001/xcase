@@ -198,5 +198,16 @@ public class CDSCMRequestFactory extends BaseCDSCMFactory {
         request.setAccessToken(accessToken);
         return request;
 	}
+	
+	public static CheckClientSecurityRequest createCheckClientSecurityRequest() {
+        Object obj = newInstanceOf("cdscm.config.requestfactory.CheckClientSecurityRequest");
+        return (CheckClientSecurityRequest) obj;
+	}
+
+	public static CheckClientSecurityRequest createCheckClientSecurityRequest(String accessToken) {
+		CheckClientSecurityRequest request = createCheckClientSecurityRequest();
+        request.setAccessToken(accessToken);
+        return request;
+	}
 
 }

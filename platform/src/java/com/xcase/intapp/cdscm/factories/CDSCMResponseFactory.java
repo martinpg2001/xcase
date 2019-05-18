@@ -89,4 +89,9 @@ public class CDSCMResponseFactory extends BaseCDSCMFactory {
         return (PublishMattersResponse) obj;
 	}
 
+	public static CheckClientSecurityResponse createCheckClientSecurityResponse() {
+        Object obj = newInstanceOf("cdscm.config.responsefactory.CheckClientSecurityResponse");
+        return (CheckClientSecurityResponse) obj;
+	}
+
 }

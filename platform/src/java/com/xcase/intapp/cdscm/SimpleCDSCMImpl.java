@@ -20,6 +20,11 @@ public class SimpleCDSCMImpl implements CDSCMExternalAPI {
     /**
      * method implementation.
      */
+    private CheckClientSecurityMethod checkClientSecurityMethod = new CheckClientSecurityMethod();
+    
+    /**
+     * method implementation.
+     */
     private CreateClientMethod createClientMethod = new CreateClientMethod();
     
     /**
@@ -186,6 +191,11 @@ public class SimpleCDSCMImpl implements CDSCMExternalAPI {
 	@Override
 	public PublishMattersResponse publishMatters(PublishMattersRequest publishMattersRequest) {
 		return this.publishMattersMethod.publishMatters(publishMattersRequest);
+	}
+
+	@Override
+	public CheckClientSecurityResponse checkClientSecurity(CheckClientSecurityRequest checkClientSecurityRequest) {
+		return this.checkClientSecurityMethod.checkClientSecurity(checkClientSecurityRequest);
 	}
 
 }

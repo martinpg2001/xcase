@@ -7,7 +7,7 @@ public class PublishMattersRequestImpl extends CDSUsersRequestImpl implements Pu
     private String operationPath = "api/v1/matters/sync?topicName={topicName}";
     private String topicName;
     private String[] keysArray;
-    private int successResponseCode = 200;
+    private int successResponseCode = 207;
     
 	@Override
 	public void setKeysArray(String[] keysArray) {

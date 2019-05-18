@@ -75,6 +75,14 @@ public class CDSCMApplication {
             getClientSecurityRequest.setClientId(clientId);
             GetClientSecurityResponse getClientSecurityResponse = cdscmExternalAPI.getClientSecurity(getClientSecurityRequest);
             LOGGER.debug("got client security");
+            /* Check client security */
+            LOGGER.debug("about to check client security");
+            CheckClientSecurityRequest checkClientSecurityRequest = CDSCMRequestFactory.createCheckClientSecurityRequest(accessToken);
+            LOGGER.debug("created checkClientSecurityRequest");
+            String[] idsArray = {"66666"};
+            checkClientSecurityRequest.setIdsArray(idsArray);
+            CheckClientSecurityResponse checkClientSecurityResponse = cdscmExternalAPI.checkClientSecurity(checkClientSecurityRequest);
+            LOGGER.debug("checked client security");
             LOGGER.debug("about to delete client security");
             DeleteClientSecurityRequest deleteClientSecurityRequest = CDSCMRequestFactory.createDeleteClientSecurityRequest(accessToken);
             LOGGER.debug("created deleteClientSecurityRequest");

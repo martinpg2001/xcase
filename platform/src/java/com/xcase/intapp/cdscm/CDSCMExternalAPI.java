@@ -38,4 +38,6 @@ public interface CDSCMExternalAPI {
     PutClientSecurityResponse putClientSecurity(PutClientSecurityRequest putClientSecurityRequest);
 
 	PutMatterSecurityResponse putMatterSecurity(PutMatterSecurityRequest putMatterSecurityRequest);
+
+	CheckClientSecurityResponse checkClientSecurity(CheckClientSecurityRequest checkClientSecurityRequest);
 }
