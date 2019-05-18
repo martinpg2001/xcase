@@ -31,7 +31,7 @@ public class DocumentResponseImpl implements DocumentResponse {
 	}
 
 	@Override
-	public void setMessage(String string) {
+	public void setMessage(String message) {
 		// TODO Auto-generated method stub
 
 	}

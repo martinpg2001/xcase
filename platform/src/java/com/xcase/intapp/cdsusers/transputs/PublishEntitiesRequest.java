@@ -2,9 +2,9 @@ package com.xcase.intapp.cdsusers.transputs;
 
 public interface PublishEntitiesRequest extends CDSUsersRequest {
 
-	void setTopic(String string);
+	void setTopic(String topic);
 
-	void setEntity(String string);
+	void setEntity(String entity);
 
 	String getOperationPath();
 

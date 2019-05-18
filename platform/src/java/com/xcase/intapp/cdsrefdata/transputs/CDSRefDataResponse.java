@@ -4,7 +4,7 @@ import org.apache.http.StatusLine;
 
 public interface CDSRefDataResponse {
     String getEntityString();
-    
+
     String getMessage();
 
     int getResponseCode();
@@ -12,8 +12,8 @@ public interface CDSRefDataResponse {
     StatusLine getStatusLine();
 
     String getStatus();
-    
-    void setMessage(String string);
+
+    void setMessage(String message);
 
     void setResponseCode(int responseCode);
 

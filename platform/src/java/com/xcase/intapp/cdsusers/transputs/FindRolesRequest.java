@@ -6,6 +6,6 @@ public interface FindRolesRequest extends CDSUsersRequest {
 
     String getName();
 
-    void setName(String string);
+    void setName(String name);
 
 }

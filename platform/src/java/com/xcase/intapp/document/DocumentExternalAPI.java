@@ -16,4 +16,6 @@ public interface DocumentExternalAPI {
 
 	SaveTemplateResponse saveTemplate(SaveTemplateRequest saveTemplateRequest);
 
+	DeleteTemplateResponse deleteTemplate(DeleteTemplateRequest deleteTemplateRequest);
+
 }

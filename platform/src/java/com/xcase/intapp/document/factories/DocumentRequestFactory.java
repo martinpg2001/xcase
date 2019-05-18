@@ -46,5 +46,16 @@ public class DocumentRequestFactory extends BaseDocumentFactory {
         request.setAccessToken(accessToken);
         return request;
 	}
+	
+    public static DeleteTemplateRequest createDeleteTemplateRequest() {
+        Object obj = newInstanceOf("document.config.requestfactory.DeleteTemplateRequest");
+        return (DeleteTemplateRequest) obj;
+    }
+
+	public static DeleteTemplateRequest createDeleteTemplateRequest(String accessToken) {
+		DeleteTemplateRequest request = createDeleteTemplateRequest();
+        request.setAccessToken(accessToken);
+        return request;
+	}
 
 }

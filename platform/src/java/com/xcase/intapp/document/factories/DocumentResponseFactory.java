@@ -1,6 +1,7 @@
 package com.xcase.intapp.document.factories;
 
 import com.xcase.intapp.cdsusers.transputs.CreatePersonResponse;
+import com.xcase.intapp.document.transputs.DeleteTemplateResponse;
 import com.xcase.intapp.document.transputs.GetCategoriesResponse;
 import com.xcase.intapp.document.transputs.GetTemplatesResponse;
 import com.xcase.intapp.document.transputs.HeadTemplatesResponse;
@@ -26,6 +27,11 @@ public class DocumentResponseFactory extends BaseDocumentFactory {
 	public static SaveTemplateResponse createSaveTemplateResponse() {
         Object obj = newInstanceOf("document.config.responsefactory.SaveTemplateResponse");
         return (SaveTemplateResponse) obj;
+	}
+
+	public static DeleteTemplateResponse createDeleteTemplateResponse() {
+        Object obj = newInstanceOf("document.config.responsefactory.DeleteTemplateResponse");
+        return (DeleteTemplateResponse) obj;
 	}
 
 }

@@ -3,10 +3,10 @@ package com.xcase.intapp.cdscm.transputs;
 public interface DeleteClientRequest extends CDSCMRequest {
 
     String getClientId();
-    
+
     int getSuccessResponseCode();
 
-    void setClientId(String string);
+    void setClientId(String clientId);
 
     public String getOperationPath();
 

@@ -35,7 +35,8 @@ public class GetTemplatesMethod extends BaseDocumentMethod {
             LOGGER.debug("accessToken is " + accessToken);
             Header authorizationHeader = createDocumentAuthenticationTokenHeader(accessToken);
             LOGGER.debug("created Authorization header");
-            Header acceptHeader = createAcceptHeader();
+            /* Have to override Accept header because of bug in API */
+            Header acceptHeader = new BasicHeader("Accept", "application/json");
             Header acceptLanguageHeader = new BasicHeader("Accept-Language", "en-US");
             Header contentTypeHeader = createContentTypeHeader();
             Header[] headers = {acceptHeader, acceptLanguageHeader, authorizationHeader};
