@@ -53,7 +53,22 @@ public class CDSCMApplication {
             createClientRequest.setClientString("{\"clientId\":\"{clientId}\",\"name\":\"Underture Science\",\"status\":\"ACT\",\"description\":\"This is a test description.\",\"closedOn\":\"\",\"dunsNumber\":\"\",\"rounding\":null,\"timeNote\":\"\",\"billableStatus\":\"\",\"industry\":\"\",\"clientPersons\":[],\"externalIdentifiers\":[],\"lcidDictionary\":\"\",\"ebillinghubValidation\":\"\",\"timelinks\":{},\"openedOn\":\"\",\"_pricingAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"_experienceAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"_timeAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"security\":{\"defaultAccess\":255,\"users\":[]}}".replace("{clientId}", clientId));
             CreateClientResponse createClientResponse = cdscmExternalAPI.createClient(createClientRequest);
             LOGGER.debug("created client");
+            LOGGER.debug("about to create clients using patch");
+            CreateClientsUsingPatchRequest createClientsUsingPatchRequest = CDSCMRequestFactory.createCreateClientsUsingPatchRequest(accessToken);
+            LOGGER.debug("created createMattersUsingPatchRequest");
+            List<String> clientsList = new ArrayList<String>();
+            clientId = "66667";
+            String client66667 = "{\"clientId\":\"{clientId}\",\"name\":\"Underture Science\",\"status\":\"ACT\",\"description\":\"This is a test description.\",\"closedOn\":\"\",\"dunsNumber\":\"\",\"rounding\":null,\"timeNote\":\"\",\"billableStatus\":\"\",\"industry\":\"\",\"clientPersons\":[],\"externalIdentifiers\":[],\"lcidDictionary\":\"\",\"ebillinghubValidation\":\"\",\"timelinks\":{},\"openedOn\":\"\",\"_pricingAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"_experienceAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"_timeAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"security\":{\"defaultAccess\":255,\"users\":[]}}".replace("{clientId}", clientId);
+            clientsList.add(client66667);
+            clientId = "66668";
+            String client66668 = "{\"clientId\":\"{clientId}\",\"name\":\"Underture Science\",\"status\":\"ACT\",\"description\":\"This is a test description.\",\"closedOn\":\"\",\"dunsNumber\":\"\",\"rounding\":null,\"timeNote\":\"\",\"billableStatus\":\"\",\"industry\":\"\",\"clientPersons\":[],\"externalIdentifiers\":[],\"lcidDictionary\":\"\",\"ebillinghubValidation\":\"\",\"timelinks\":{},\"openedOn\":\"\",\"_pricingAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"_experienceAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"_timeAppData\":{\"isBillableExampleField\":null,\"shortDescriptionExampleField\":\"\"},\"security\":{\"defaultAccess\":255,\"users\":[]}}".replace("{clientId}", clientId);
+            clientsList.add(client66668);
+            String[] clientsArray = clientsList.toArray(new String[0]);
+            createClientsUsingPatchRequest.setClients(clientsArray);
+            CreateClientsUsingPatchResponse createClientsUsingPatchResponse = cdscmExternalAPI.createClientsUsingPatch(createClientsUsingPatchRequest);
+            LOGGER.debug("created clients using patch"); 
             /* Get client */
+            clientId = "66666";
             LOGGER.debug("about to get client");
             GetClientRequest getClientRequest = CDSCMRequestFactory.createGetClientRequest(accessToken);
             LOGGER.debug("created getClientRequest");
@@ -106,9 +121,9 @@ public class CDSCMApplication {
             LOGGER.debug("about to publish clients");
             PublishClientsRequest publishClientsRequest = CDSCMRequestFactory.createPublishClientsRequest(accessToken);
             LOGGER.debug("created publishClientsRequest");
-            String[] clientsArray = {"66666"};
+            String[] publishClientsArray = {"66666","66667","66668"};
             String topicName = "MartinTopic";
-            publishClientsRequest.setClientsArray(clientsArray);
+            publishClientsRequest.setClientsArray(publishClientsArray);
             publishClientsRequest.setTopicName(topicName);
             PublishClientsResponse publishClientsResponse = cdscmExternalAPI.publishClients(publishClientsRequest);
             LOGGER.debug("published clients"); 
@@ -235,12 +250,18 @@ public class CDSCMApplication {
             deleteMatterResponse = cdscmExternalAPI.deleteMatter(deleteMatterRequest);
             LOGGER.debug("deleted matters");
             /* Delete client */
-            LOGGER.debug("about to delete client");
+            LOGGER.debug("about to delete clients");
             DeleteClientRequest deleteClientRequest = CDSCMRequestFactory.createDeleteClientRequest(accessToken);
             LOGGER.debug("created deleteClientRequest");
             deleteClientRequest.setClientId(clientId);
             DeleteClientResponse deleteClientResponse = cdscmExternalAPI.deleteClient(deleteClientRequest);
-            LOGGER.debug("deleted client");
+            clientId = "66667";
+            deleteClientRequest.setClientId(clientId);
+            deleteClientResponse = cdscmExternalAPI.deleteClient(deleteClientRequest);
+            clientId = "66668";
+            deleteClientRequest.setClientId(clientId);
+            deleteClientResponse = cdscmExternalAPI.deleteClient(deleteClientRequest);
+            LOGGER.debug("deleted clients");
         } catch (Exception e) {
             LOGGER.warn("exception executing methods: " + e.getMessage());
         }

@@ -32,8 +32,8 @@ public class CreateMattersUsingPatchMethod extends BaseCDSCMMethod {
             String[] mattersArray = request.getMatters();
             StringBuilder entityStringBuilder = new StringBuilder();
             entityStringBuilder.append("[");
-            for (String key : mattersArray) {
-            	entityStringBuilder.append(key + ",");
+            for (String matter : mattersArray) {
+            	entityStringBuilder.append(matter + ",");
             }
             
             entityStringBuilder.append("]");

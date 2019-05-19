@@ -220,5 +220,16 @@ public class CDSCMRequestFactory extends BaseCDSCMFactory {
         request.setAccessToken(accessToken);
         return request;
 	}
+	
+    public static CreateClientsUsingPatchRequest createCreateClientsUsingPatchRequest() {
+        Object obj = newInstanceOf("cdscm.config.requestfactory.CreateClientsUsingPatchRequest");
+        return (CreateClientsUsingPatchRequest) obj;
+    }
+
+    public static CreateClientsUsingPatchRequest createCreateClientsUsingPatchRequest(String accessToken) {
+        CreateClientsUsingPatchRequest request = createCreateClientsUsingPatchRequest();
+        request.setAccessToken(accessToken);
+        return request;
+    }
 
 }

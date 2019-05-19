@@ -43,4 +43,6 @@ public interface CDSCMExternalAPI {
 
 	CreateMattersUsingPatchResponse createMattersUsingPatch(
 			CreateMattersUsingPatchRequest createMattersUsingPatchRequest);
+
+    CreateClientsUsingPatchResponse createClientsUsingPatch(CreateClientsUsingPatchRequest createClientsUsingPatchRequest);
 }

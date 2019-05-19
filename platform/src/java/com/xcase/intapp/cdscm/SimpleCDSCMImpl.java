@@ -30,6 +30,11 @@ public class SimpleCDSCMImpl implements CDSCMExternalAPI {
     /**
      * method implementation.
      */
+    private CreateClientsUsingPatchMethod createClientsUsingPatchMethod = new CreateClientsUsingPatchMethod();
+    
+    /**
+     * method implementation.
+     */
     private CreateMatterMethod createMatterMethod = new CreateMatterMethod();
     
     /**
@@ -208,5 +213,10 @@ public class SimpleCDSCMImpl implements CDSCMExternalAPI {
 			CreateMattersUsingPatchRequest createMattersUsingPatchRequest) {
 		return this.createMattersUsingPatchMethod.createMattersUsingPatch(createMattersUsingPatchRequest);
 	}
+
+    @Override
+    public CreateClientsUsingPatchResponse createClientsUsingPatch(CreateClientsUsingPatchRequest createClientsUsingPatchRequest) {
+        return this.createClientsUsingPatchMethod.createClientsUsingPatch(createClientsUsingPatchRequest);
+    }
 
 }
