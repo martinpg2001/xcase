@@ -35,6 +35,11 @@ public class SimpleCDSCMImpl implements CDSCMExternalAPI {
     /**
      * method implementation.
      */
+    private CreateMattersUsingPatchMethod createMattersUsingPatchMethod = new CreateMattersUsingPatchMethod();
+    
+    /**
+     * method implementation.
+     */
     private DeleteClientMethod deleteClientMethod = new DeleteClientMethod();
     
     /**
@@ -196,6 +201,12 @@ public class SimpleCDSCMImpl implements CDSCMExternalAPI {
 	@Override
 	public CheckClientSecurityResponse checkClientSecurity(CheckClientSecurityRequest checkClientSecurityRequest) {
 		return this.checkClientSecurityMethod.checkClientSecurity(checkClientSecurityRequest);
+	}
+
+	@Override
+	public CreateMattersUsingPatchResponse createMattersUsingPatch(
+			CreateMattersUsingPatchRequest createMattersUsingPatchRequest) {
+		return this.createMattersUsingPatchMethod.createMattersUsingPatch(createMattersUsingPatchRequest);
 	}
 
 }

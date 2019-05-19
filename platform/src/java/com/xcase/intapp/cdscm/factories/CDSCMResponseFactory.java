@@ -94,4 +94,9 @@ public class CDSCMResponseFactory extends BaseCDSCMFactory {
         return (CheckClientSecurityResponse) obj;
 	}
 
+	public static CreateMattersUsingPatchResponse createCreateMattersUsingPatchResponse() {
+        Object obj = newInstanceOf("cdscm.config.responsefactory.CreateMattersUsingPatchResponse");
+        return (CreateMattersUsingPatchResponse) obj;
+	}
+
 }

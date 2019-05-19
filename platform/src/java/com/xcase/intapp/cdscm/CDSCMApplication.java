@@ -132,6 +132,21 @@ public class CDSCMApplication {
             createMatterRequest.setEntityString("{\"matterId\": \"{matterId}\",\"name\": \"Domestos Litigation\",\"status\": \"ACT\",\"shortDescription\": \"This is short matter description.\",\"description\": \"This is a test description.\",\"lastBillOn\": null,\"lastTimeEntryOn\": null,\"openedOn\": null,\"closedOn\": null,\"organizationUnitId\": null,\"practiceArea\": null,\"currencyIsoCode\": null,\"office\": null,\"department\": null,\"matterPersons\": null,\"externalIdentifiers\": null,\"rounding\": null,\"timeNote\": null,\"billableStatus\": null,\"lcidDictionary\": null,\"ebillinghubValidation\": null,\"clientId\": \"{clientId}\",\"timelinks\": null,\"_pricingAppData\": null,\"_experienceAppData\": null,\"_timeAppData\": null}".replace("{clientId}", clientId).replace("{matterId}", matterId));
             createMatterResponse = cdscmExternalAPI.createMatter(createMatterRequest);
             LOGGER.debug("created matter");
+            LOGGER.debug("about to create matters using patch");
+            CreateMattersUsingPatchRequest createMattersUsingPatchRequest = CDSCMRequestFactory.createCreateMattersUsingPatchRequest(accessToken);
+            LOGGER.debug("created createMattersUsingPatchRequest");
+            createMattersUsingPatchRequest.setClientId(clientId);
+            List<String> mattersList = new ArrayList<String>();
+            matterId = "0003";
+            String matter0003 = "{\"matterId\":\"{matterId}\",\"name\":\"Domestos Litigation\",\"status\":\"ACT\",\"shortDescription\":\"This is short matter description.\",\"description\":\"This is a test description.\",\"lastBillOn\":null,\"lastTimeEntryOn\":null,\"openedOn\":null,\"closedOn\":null,\"organizationUnitId\":null,\"practiceArea\":null,\"currencyIsoCode\":null,\"office\":null,\"department\":null,\"matterPersons\":null,\"externalIdentifiers\":null,\"rounding\":null,\"timeNote\":null,\"billableStatus\":null,\"lcidDictionary\": null,\"ebillinghubValidation\":null,\"clientId\":\"{clientId}\",\"timelinks\":null,\"_pricingAppData\": null,\"_experienceAppData\":null,\"_timeAppData\":null}".replace("{clientId}", clientId).replace("{matterId}", matterId);
+            mattersList.add(matter0003);
+            matterId = "0004";
+            String matter0004 = "{\"matterId\":\"{matterId}\",\"name\":\"Domestos Litigation\",\"status\":\"ACT\",\"shortDescription\":\"This is short matter description.\",\"description\":\"This is a test description.\",\"lastBillOn\":null,\"lastTimeEntryOn\":null,\"openedOn\":null,\"closedOn\":null,\"organizationUnitId\":null,\"practiceArea\":null,\"currencyIsoCode\":null,\"office\":null,\"department\":null,\"matterPersons\":null,\"externalIdentifiers\":null,\"rounding\":null,\"timeNote\":null,\"billableStatus\":null,\"lcidDictionary\": null,\"ebillinghubValidation\":null,\"clientId\":\"{clientId}\",\"timelinks\":null,\"_pricingAppData\": null,\"_experienceAppData\":null,\"_timeAppData\":null}".replace("{clientId}", clientId).replace("{matterId}", matterId);
+            mattersList.add(matter0004);
+            String[] mattersArray = mattersList.toArray(new String[0]);
+            createMattersUsingPatchRequest.setMatters(mattersArray);
+            CreateMattersUsingPatchResponse createMattersUsingPatchResponse = cdscmExternalAPI.createMattersUsingPatch(createMattersUsingPatchRequest);
+            LOGGER.debug("created matters using patch");            
             /* Get matters */
             LOGGER.debug("about to get matters");
             GetMattersRequest getMattersRequest = CDSCMRequestFactory.createGetMattersRequest(accessToken);
@@ -213,6 +228,10 @@ public class CDSCMApplication {
             deleteMatterRequest.setMatterId(matterId);
             DeleteMatterResponse deleteMatterResponse = cdscmExternalAPI.deleteMatter(deleteMatterRequest);
             deleteMatterRequest.setMatterId("0002");
+            deleteMatterResponse = cdscmExternalAPI.deleteMatter(deleteMatterRequest);
+            deleteMatterRequest.setMatterId("0003");
+            deleteMatterResponse = cdscmExternalAPI.deleteMatter(deleteMatterRequest);
+            deleteMatterRequest.setMatterId("0004");
             deleteMatterResponse = cdscmExternalAPI.deleteMatter(deleteMatterRequest);
             LOGGER.debug("deleted matters");
             /* Delete client */
