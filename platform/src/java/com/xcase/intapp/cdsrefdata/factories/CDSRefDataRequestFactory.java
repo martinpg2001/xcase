@@ -44,5 +44,16 @@ public class CDSRefDataRequestFactory extends BaseCDSRefDataFactory {
         request.setAccessToken(accessToken);
         return request;
 	}
+	
+	public static FindDepartmentsRequest createFindDepartmentsRequest() {
+        Object obj = newInstanceOf("cdsrefdata.config.requestfactory.FindDepartmentsRequest");
+        return (FindDepartmentsRequest) obj;
+	}
+
+	public static FindDepartmentsRequest createFindDepartmentsRequest(String accessToken) {
+		FindDepartmentsRequest request = createFindDepartmentsRequest();
+        request.setAccessToken(accessToken);
+        return request;
+	}
 
 }

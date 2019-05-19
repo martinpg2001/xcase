@@ -25,6 +25,11 @@ public class SimpleCDSRefDataImpl implements CDSRefDataExternalAPI {
     /**
      * method implementation.
      */
+    private FindDepartmentsMethod findDepartmentsMethod = new FindDepartmentsMethod();
+    
+    /**
+     * method implementation.
+     */
     private GetClientStatusesMethod getClientStatusesMethod = new GetClientStatusesMethod();
     
     /**
@@ -46,5 +51,10 @@ public class SimpleCDSRefDataImpl implements CDSRefDataExternalAPI {
     public GetMatterStatusesResponse getMatterStatuses(GetMatterStatusesRequest getMatterStatusesRequest) {
         return this.getMatterStatusesMethod.getMatterStatuses(getMatterStatusesRequest);
     }
+
+	@Override
+	public FindDepartmentsResponse findDepartments(FindDepartmentsRequest findDepartmentsRequest) {
+		return this.findDepartmentsMethod.findDepartments(findDepartmentsRequest);
+	}
 
 }

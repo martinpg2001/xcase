@@ -11,6 +11,8 @@ import com.xcase.intapp.cdsrefdata.factories.CDSRefDataRequestFactory;
 import com.xcase.intapp.cdsrefdata.impl.simple.core.CDSRefDataConfigurationManager;
 import com.xcase.intapp.cdsrefdata.transputs.CreateMatterStatusRequest;
 import com.xcase.intapp.cdsrefdata.transputs.CreateMatterStatusResponse;
+import com.xcase.intapp.cdsrefdata.transputs.FindDepartmentsRequest;
+import com.xcase.intapp.cdsrefdata.transputs.FindDepartmentsResponse;
 import com.xcase.intapp.cdsrefdata.transputs.GetClientStatusesRequest;
 import com.xcase.intapp.cdsrefdata.transputs.GetClientStatusesResponse;
 import com.xcase.intapp.cdsrefdata.transputs.GetMatterStatusesRequest;
@@ -60,6 +62,13 @@ public class CDSRefDataApplication {
             LOGGER.debug("created getMatterStatusesRequest");
             GetMatterStatusesResponse getMatterStatusesResponse = cdsRefDataExternalAPI.getMatterStatuses(getMatterStatusesRequest);
             LOGGER.debug("got matter statuses");
+            LOGGER.debug("about to get find departments by key or name");
+            FindDepartmentsRequest findDepartmentsRequest = CDSRefDataRequestFactory.createFindDepartmentsRequest(accessToken);
+            LOGGER.debug("created findDepartmentsRequest");
+            findDepartmentsRequest.setKey(null);
+            findDepartmentsRequest.setName(null);
+            FindDepartmentsResponse findDepartmentsResponse = cdsRefDataExternalAPI.findDepartments(findDepartmentsRequest);
+            LOGGER.debug("found departments by key or name");
         } catch (Exception e) {
             LOGGER.warn("exception executing methods: " + e.getMessage());
         }
