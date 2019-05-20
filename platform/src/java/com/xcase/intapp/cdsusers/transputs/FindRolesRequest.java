@@ -1,6 +1,6 @@
 package com.xcase.intapp.cdsusers.transputs;
 
-public interface FindRolesRequest extends CDSUsersRequest {
+public interface FindRolesRequest extends ListableCDSUsersRequest {
 
     String getOperationPath();
 

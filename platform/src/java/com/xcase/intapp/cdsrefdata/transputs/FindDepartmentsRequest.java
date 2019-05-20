@@ -1,6 +1,6 @@
 package com.xcase.intapp.cdsrefdata.transputs;
 
-public interface FindDepartmentsRequest extends CDSRefDataRequest {
+public interface FindDepartmentsRequest extends ListableRefDataRequest {
 
 	void setKey(String key);
 

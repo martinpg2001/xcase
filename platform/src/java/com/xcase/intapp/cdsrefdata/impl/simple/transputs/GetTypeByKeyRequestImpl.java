@@ -2,7 +2,7 @@ package com.xcase.intapp.cdsrefdata.impl.simple.transputs;
 
 import com.xcase.intapp.cdsrefdata.transputs.GetTypeByKeyRequest;
 
-public class GetTypeByKeyRequestImpl extends CDSRefDataRequestImpl implements GetTypeByKeyRequest {
+public class GetTypeByKeyRequestImpl extends ListableRefDataRequestImpl implements GetTypeByKeyRequest {
     private String key;	
     private String type;
     private String operationPath = "api/v1/rdcds/";

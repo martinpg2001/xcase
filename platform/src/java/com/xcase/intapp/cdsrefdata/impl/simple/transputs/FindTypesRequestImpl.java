@@ -2,7 +2,7 @@ package com.xcase.intapp.cdsrefdata.impl.simple.transputs;
 
 import com.xcase.intapp.cdsrefdata.transputs.FindTypesRequest;
 
-public class FindTypesRequestImpl extends CDSRefDataRequestImpl implements FindTypesRequest {
+public class FindTypesRequestImpl extends ListableRefDataRequestImpl implements FindTypesRequest {
     private String key;
     private String name;	
     private String type;

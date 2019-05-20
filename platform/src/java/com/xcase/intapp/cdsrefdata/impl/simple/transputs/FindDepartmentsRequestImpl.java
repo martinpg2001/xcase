@@ -2,7 +2,7 @@ package com.xcase.intapp.cdsrefdata.impl.simple.transputs;
 
 import com.xcase.intapp.cdsrefdata.transputs.FindDepartmentsRequest;
 
-public class FindDepartmentsRequestImpl extends CDSRefDataRequestImpl implements FindDepartmentsRequest {
+public class FindDepartmentsRequestImpl extends ListableRefDataRequestImpl implements FindDepartmentsRequest {
     private String key;
     private String name;
     private String operationPath = "api/v1/rdcds/departments?";

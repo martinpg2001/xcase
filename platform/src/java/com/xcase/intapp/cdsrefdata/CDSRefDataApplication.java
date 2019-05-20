@@ -100,7 +100,7 @@ public class CDSRefDataApplication {
             PatchTypesResponse patchTypesResponse = null;
             String patchEntityString = null;
             patchTypesRequest.setType("BillableStatus");
-            patchTypesRequest.setEntityString("[]");
+            patchTypesRequest.setEntityString("[{\"key\":\"OPN\",\"name\":\"Opened\",\"active\":true,\"system\":false}]");
             patchTypesResponse = cdsRefDataExternalAPI.patchTypes(patchTypesRequest);
             patchTypesRequest.setType("ClientExternalId");
             patchTypesRequest.setEntityString("[]");
@@ -148,7 +148,7 @@ public class CDSRefDataApplication {
             PostTypesResponse postTypesResponse = null;
             String postEntityString = null;
             postTypesRequest.setType("BillableStatus");
-            postTypesRequest.setEntityString("[]");
+            postTypesRequest.setEntityString("[{\"key\":\"OPN\",\"name\":\"Opened\",\"active\":true,\"system\":false}]");
             postTypesResponse = cdsRefDataExternalAPI.postTypes(postTypesRequest);
             postTypesRequest.setType("ClientExternalId");
             postTypesRequest.setEntityString("[]");

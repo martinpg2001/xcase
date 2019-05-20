@@ -2,7 +2,7 @@ package com.xcase.intapp.cdsusers.impl.simple.transputs;
 
 import com.xcase.intapp.cdsusers.transputs.FindCapabilitiesRequest;
 
-public class FindCapabilitiesRequestImpl extends CDSUsersRequestImpl implements FindCapabilitiesRequest {
+public class FindCapabilitiesRequestImpl extends ListableCDSUsersRequestImpl implements FindCapabilitiesRequest {
     private String role;
     private String operationPath = "api/v1/cds/capabilities";
     

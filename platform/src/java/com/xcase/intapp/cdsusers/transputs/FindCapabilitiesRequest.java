@@ -1,6 +1,6 @@
 package com.xcase.intapp.cdsusers.transputs;
 
-public interface FindCapabilitiesRequest extends CDSUsersRequest {
+public interface FindCapabilitiesRequest extends ListableCDSUsersRequest {
 
     void setRole(String role);
 

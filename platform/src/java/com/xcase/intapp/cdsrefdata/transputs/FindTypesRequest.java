@@ -1,6 +1,6 @@
 package com.xcase.intapp.cdsrefdata.transputs;
 
-public interface FindTypesRequest extends CDSRefDataRequest {
+public interface FindTypesRequest extends ListableRefDataRequest {
 
 	void setType(String string);
 
