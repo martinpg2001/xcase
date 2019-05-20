@@ -66,5 +66,16 @@ public class CDSRefDataRequestFactory extends BaseCDSRefDataFactory {
         request.setAccessToken(accessToken);
         return request;
 	}
+	
+	public static GetTypeByKeyRequest createGetTypeByKeyRequest() {
+        Object obj = newInstanceOf("cdsrefdata.config.requestfactory.GetTypeByKeyRequest");
+        return (GetTypeByKeyRequest) obj;
+	}
+
+	public static GetTypeByKeyRequest createGetTypeByKeyRequest(String accessToken) {
+		GetTypeByKeyRequest request = createGetTypeByKeyRequest();
+        request.setAccessToken(accessToken);
+        return request;
+	}
 
 }

@@ -1080,7 +1080,11 @@ public class CommonHTTPManager implements AutoCloseable {
 	
 	        HttpPost postMethod = new HttpPost(url);
 	        for (Header header : headers) {
-	            postMethod.addHeader(header);
+	        	/* Exclude setting Content-Type from headers parameter */
+	        	if (!header.getName().equals("Content-Type")) {
+	                postMethod.addHeader(header);
+	                LOGGER.debug("added header " + header.getName());
+	        	}
 	        }
 	
 	        MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create();
@@ -1197,7 +1201,11 @@ public class CommonHTTPManager implements AutoCloseable {
 	
 	        HttpPost postMethod = new HttpPost(url);
 	        for (Header header : headers) {
-	            postMethod.addHeader(header);
+	        	/* Exclude setting Content-Type from headers parameter */
+	        	if (!header.getName().equals("Content-Type")) {
+	                postMethod.addHeader(header);
+	                LOGGER.debug("added header " + header.getName());
+	        	}
 	        }
 	
 	        MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create();

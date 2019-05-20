@@ -42,6 +42,11 @@ public class SimpleCDSRefDataImpl implements CDSRefDataExternalAPI {
      */
     private GetMatterStatusesMethod getMatterStatusesMethod = new GetMatterStatusesMethod();
     
+    /**
+     * method implementation.
+     */
+    private GetTypeByKeyMethod getTypeByKeyMethod = new GetTypeByKeyMethod();
+    
     @Override
     public CreateMatterStatusResponse createMatterStatus(CreateMatterStatusRequest createMatterStatusRequest) {
         return this.createMatterStatusMethod.createMatterStatus(createMatterStatusRequest);
@@ -65,6 +70,11 @@ public class SimpleCDSRefDataImpl implements CDSRefDataExternalAPI {
 	@Override
 	public FindTypesResponse findTypes(FindTypesRequest findTypesRequest) {
 		return this.findTypesMethod.findTypes(findTypesRequest);
+	}
+
+	@Override
+	public GetTypeByKeyResponse getTypeByKey(GetTypeByKeyRequest getTypeByKeyRequest) {
+		return this.getTypeByKeyMethod.getTypeByKey(getTypeByKeyRequest);
 	}
 
 }

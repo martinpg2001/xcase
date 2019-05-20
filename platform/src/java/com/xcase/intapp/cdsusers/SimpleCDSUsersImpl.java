@@ -1,6 +1,5 @@
 package com.xcase.intapp.cdsusers;
 
-import com.xcase.intapp.cdscm.impl.simple.methods.CreateClientMethod;
 import com.xcase.intapp.cdsusers.impl.simple.core.CDSUsersConfigurationManager;
 import com.xcase.intapp.cdsusers.impl.simple.methods.*;
 import com.xcase.intapp.cdsusers.transputs.*;
