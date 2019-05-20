@@ -77,5 +77,27 @@ public class CDSRefDataRequestFactory extends BaseCDSRefDataFactory {
         request.setAccessToken(accessToken);
         return request;
 	}
+	
+	public static PatchTypesRequest createPatchTypesRequest() {
+        Object obj = newInstanceOf("cdsrefdata.config.requestfactory.PatchTypesRequest");
+        return (PatchTypesRequest) obj;
+	}
+
+	public static PatchTypesRequest createPatchTypesRequest(String accessToken) {
+		PatchTypesRequest request = createPatchTypesRequest();
+        request.setAccessToken(accessToken);
+        return request;
+	}
+	
+	public static PostTypesRequest createPostTypesRequest() {
+        Object obj = newInstanceOf("cdsrefdata.config.requestfactory.PostTypesRequest");
+        return (PostTypesRequest) obj;
+	}
+
+	public static PostTypesRequest createPostTypesRequest(String accessToken) {
+		PostTypesRequest request = createPostTypesRequest();
+        request.setAccessToken(accessToken);
+        return request;
+	}
 
 }

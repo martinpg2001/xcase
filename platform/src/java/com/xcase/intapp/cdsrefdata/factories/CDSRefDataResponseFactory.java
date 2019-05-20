@@ -34,4 +34,13 @@ public class CDSRefDataResponseFactory extends BaseCDSRefDataFactory {
         return (GetTypeByKeyResponse) obj;
 	}
 
+	public static PatchTypesResponse createPatchTypesResponse() {
+        Object obj = newInstanceOf("cdsrefdata.config.responsefactory.PatchTypesResponse");
+        return (PatchTypesResponse) obj;
+	}
+
+	public static PostTypesResponse createPostTypesResponse() {
+        Object obj = newInstanceOf("cdsrefdata.config.responsefactory.PostTypesResponse");
+        return (PostTypesResponse) obj;
+	}
 }

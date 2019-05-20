@@ -2,17 +2,15 @@ package com.xcase.intapp.cdsrefdata.impl.simple.methods;
 
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.intapp.cdsrefdata.factories.CDSRefDataResponseFactory;
-import com.xcase.intapp.cdsrefdata.transputs.FindTypesRequest;
-import com.xcase.intapp.cdsrefdata.transputs.FindTypesResponse;
-import com.xcase.intapp.cdsrefdata.transputs.GetTypeByKeyRequest;
-import com.xcase.intapp.cdsrefdata.transputs.GetTypeByKeyResponse;
+import com.xcase.intapp.cdsrefdata.transputs.PatchTypesRequest;
+import com.xcase.intapp.cdsrefdata.transputs.PatchTypesResponse;
 import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
 import org.apache.http.Header;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class GetTypeByKeyMethod extends BaseCDSRefDataMethod {
+public class PatchTypesMethod extends BaseCDSRefDataMethod {
 	private HashMap<String, String> typeHashMap = new HashMap<String, String>();
 	
     /**
@@ -20,9 +18,9 @@ public class GetTypeByKeyMethod extends BaseCDSRefDataMethod {
      */
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
     
-	public GetTypeByKeyResponse getTypeByKey(GetTypeByKeyRequest request) {
-        LOGGER.debug("starting getTypeByKey()");
-        GetTypeByKeyResponse response = CDSRefDataResponseFactory.createGetTypeByKeyResponse();
+	public PatchTypesResponse patchTypes(PatchTypesRequest request) {
+        LOGGER.debug("starting patchTypes()");
+        PatchTypesResponse response = CDSRefDataResponseFactory.createPatchTypesResponse();
         LOGGER.debug("created response");
         try {
         	typeHashMap.put("BillableStatus", "billablestatuses");
@@ -46,12 +44,8 @@ public class GetTypeByKeyMethod extends BaseCDSRefDataMethod {
             endPoint = baseVersionUrl + operationPath;
             String type = request.getType();
             endPoint = endPoint + typeHashMap.get(type);
-            String key = request.getKey();
-            if (key != null && !key.isEmpty()) {
-                endPoint = endPoint + "?key=" + key;
-            }
-            
             LOGGER.debug("endPoint is " + endPoint);
+            String entityString = request.getEntityString();
             String accessToken = request.getAccessToken();
             LOGGER.debug("accessToken is " + accessToken);
             Header authorizationHeader = createCDSRefDataAuthenticationTokenHeader(accessToken);
@@ -59,11 +53,11 @@ public class GetTypeByKeyMethod extends BaseCDSRefDataMethod {
             Header acceptHeader = createAcceptHeader();
             Header contentTypeHeader = createContentTypeHeader();
             Header[] headers = {acceptHeader, authorizationHeader, contentTypeHeader};
-            CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponseGet(endPoint, headers, null, null);
+            CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponsePatch(endPoint, headers, null, entityString, null);
             int responseCode = commonHttpResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
             response.setResponseCode(responseCode);
-            if (responseCode == 200) {
+            if (responseCode == 207) {
             	handleExpectedResponseCode(response, commonHttpResponse);
             } else {
                 handleUnexpectedResponseCode(response, commonHttpResponse);
@@ -74,5 +68,6 @@ public class GetTypeByKeyMethod extends BaseCDSRefDataMethod {
 
         return response;
 	}
+
 
 }

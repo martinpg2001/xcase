@@ -47,6 +47,16 @@ public class SimpleCDSRefDataImpl implements CDSRefDataExternalAPI {
      */
     private GetTypeByKeyMethod getTypeByKeyMethod = new GetTypeByKeyMethod();
     
+    /**
+     * method implementation.
+     */
+    private PatchTypesMethod patchTypesMethod = new PatchTypesMethod();
+    
+    /**
+     * method implementation.
+     */
+    private PostTypesMethod postTypesMethod = new PostTypesMethod();
+    
     @Override
     public CreateMatterStatusResponse createMatterStatus(CreateMatterStatusRequest createMatterStatusRequest) {
         return this.createMatterStatusMethod.createMatterStatus(createMatterStatusRequest);
@@ -75,6 +85,16 @@ public class SimpleCDSRefDataImpl implements CDSRefDataExternalAPI {
 	@Override
 	public GetTypeByKeyResponse getTypeByKey(GetTypeByKeyRequest getTypeByKeyRequest) {
 		return this.getTypeByKeyMethod.getTypeByKey(getTypeByKeyRequest);
+	}
+
+	@Override
+	public PatchTypesResponse patchTypes(PatchTypesRequest patchTypesRequest) {
+		return this.patchTypesMethod.patchTypes(patchTypesRequest);
+	}
+
+	@Override
+	public PostTypesResponse postTypes(PostTypesRequest postTypesRequest) {
+		return this.postTypesMethod.postTypes(postTypesRequest);
 	}
 
 }

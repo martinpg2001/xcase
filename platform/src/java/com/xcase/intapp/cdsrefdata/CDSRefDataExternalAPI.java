@@ -16,4 +16,8 @@ public interface CDSRefDataExternalAPI {
 
 	GetTypeByKeyResponse getTypeByKey(GetTypeByKeyRequest getTypeByKeyRequest);
 
+	PatchTypesResponse patchTypes(PatchTypesRequest patchTypesRequest);
+
+	PostTypesResponse postTypes(PostTypesRequest postTypesRequest);
+
 }
