@@ -55,5 +55,16 @@ public class CDSRefDataRequestFactory extends BaseCDSRefDataFactory {
         request.setAccessToken(accessToken);
         return request;
 	}
+	
+	public static FindTypesRequest createFindTypesRequest() {
+        Object obj = newInstanceOf("cdsrefdata.config.requestfactory.FindTypesRequest");
+        return (FindTypesRequest) obj;
+	}
+
+	public static FindTypesRequest createFindTypesRequest(String accessToken) {
+		FindTypesRequest request = createFindTypesRequest();
+        request.setAccessToken(accessToken);
+        return request;
+	}
 
 }

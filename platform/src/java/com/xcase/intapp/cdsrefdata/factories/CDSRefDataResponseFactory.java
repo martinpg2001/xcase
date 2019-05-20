@@ -2,6 +2,7 @@ package com.xcase.intapp.cdsrefdata.factories;
 
 import com.xcase.intapp.cdsrefdata.transputs.CreateMatterStatusResponse;
 import com.xcase.intapp.cdsrefdata.transputs.FindDepartmentsResponse;
+import com.xcase.intapp.cdsrefdata.transputs.FindTypesResponse;
 import com.xcase.intapp.cdsrefdata.transputs.GetClientStatusesResponse;
 import com.xcase.intapp.cdsrefdata.transputs.GetMatterStatusesResponse;
 
@@ -25,6 +26,11 @@ public class CDSRefDataResponseFactory extends BaseCDSRefDataFactory {
 	public static FindDepartmentsResponse createFindDepartmentsResponse() {
         Object obj = newInstanceOf("cdsrefdata.config.responsefactory.FindDepartmentsResponse");
         return (FindDepartmentsResponse) obj;
+	}
+
+	public static FindTypesResponse createFindTypesResponse() {
+        Object obj = newInstanceOf("cdsrefdata.config.responsefactory.FindTypesResponse");
+        return (FindTypesResponse) obj;
 	}
 
 }

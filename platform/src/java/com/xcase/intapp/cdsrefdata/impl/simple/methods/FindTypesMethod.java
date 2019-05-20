@@ -1,43 +1,62 @@
 package com.xcase.intapp.cdsrefdata.impl.simple.methods;
 
+import com.xcase.common.impl.simple.core.CommonHttpResponse;
+import com.xcase.intapp.cdsrefdata.factories.CDSRefDataResponseFactory;
+import com.xcase.intapp.cdsrefdata.transputs.FindDepartmentsResponse;
+import com.xcase.intapp.cdsrefdata.transputs.FindTypesRequest;
+import com.xcase.intapp.cdsrefdata.transputs.FindTypesResponse;
 import java.lang.invoke.MethodHandles;
+import java.util.HashMap;
 
 import org.apache.http.Header;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.xcase.common.impl.simple.core.CommonHttpResponse;
-import com.xcase.intapp.cdsrefdata.factories.CDSRefDataResponseFactory;
-import com.xcase.intapp.cdsrefdata.transputs.FindDepartmentsRequest;
-import com.xcase.intapp.cdsrefdata.transputs.FindDepartmentsResponse;
-import com.xcase.intapp.cdsrefdata.transputs.GetClientStatusesResponse;
-
-public class FindDepartmentsMethod extends BaseCDSRefDataMethod {
+public class FindTypesMethod extends BaseCDSRefDataMethod {
+	private HashMap<String, String> typeHashMap = new HashMap<String, String>();
+	
     /**
      * log4j object.
      */
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
-
-	public FindDepartmentsResponse findDepartments(FindDepartmentsRequest request) {
-        LOGGER.debug("starting findDepartments()");
-        FindDepartmentsResponse response = CDSRefDataResponseFactory.createFindDepartmentsResponse();
+    
+	public FindTypesResponse findTypes(FindTypesRequest request) {
+        LOGGER.debug("starting findTypes()");
+        FindTypesResponse response = CDSRefDataResponseFactory.createFindTypesResponse();
         LOGGER.debug("created response");
         try {
+        	typeHashMap.put("BillableStatus", "billablestatuses");
+        	typeHashMap.put("ClientExternalId", "clientexternalidtypes");
+        	typeHashMap.put("ClientPerson", "clientpersontypes");
+        	typeHashMap.put("ClientStatus", "clientstatuses");
+        	typeHashMap.put("CostPool", "costpools");
+        	typeHashMap.put("Department", "departments");
+        	typeHashMap.put("EBillingHubValidation", "ebillinghubvalidationtypes");
+        	typeHashMap.put("MatterExternalId", "matterexternalidtypes");
+        	typeHashMap.put("MatterPerson", "matterpersontypes");
+        	typeHashMap.put("Office", "offices");
+        	typeHashMap.put("PersonExternalId", "personexternalidtypes");
+        	typeHashMap.put("Practice", "practices");
+        	typeHashMap.put("Rounding", "roundingtypes");
+        	typeHashMap.put("Title", "titles");
             String baseVersionUrl = getAPIVersionUrl();
             LOGGER.debug("baseVersionUrl is " + baseVersionUrl);
             String operationPath = request.getOperationPath();
             LOGGER.debug("operationPath is " + operationPath);
             endPoint = baseVersionUrl + operationPath;
+            String type = request.getType();
+            endPoint = endPoint + typeHashMap.get(type);
+            LOGGER.debug("endPoint is " + endPoint);
             String key = request.getKey();
             if (key != null && !key.isEmpty()) {
             	endPoint = endPoint + "key=" + key;
             }
-
+            
             String name = request.getName();
             if (name != null && !name.isEmpty()) {
             	endPoint = endPoint + "name=" + name;
             }
-
+            
             LOGGER.debug("endPoint is " + endPoint);
             String accessToken = request.getAccessToken();
             LOGGER.debug("accessToken is " + accessToken);
@@ -60,6 +79,6 @@ public class FindDepartmentsMethod extends BaseCDSRefDataMethod {
         }
 
         return response;
-    }
+	}
 
 }
