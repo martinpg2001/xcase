@@ -1,7 +1,8 @@
 package com.xcase.intapp.document.transputs;
 
 public interface RenderDocumentRequest extends DocumentRequest {
-
+	String getData();
+	
 	String getOperationPath();
 
 	String getDataItem1();
@@ -15,6 +16,12 @@ public interface RenderDocumentRequest extends DocumentRequest {
 	byte[] getFileItem2();
 	
     String getFileItem3();
+    
+    String getDataItem4();
+
+    String getFileItem4();
+
+	String getTemplateId();
 	
 	void setDataItem1(String dataItem1);
 
@@ -32,8 +39,8 @@ public interface RenderDocumentRequest extends DocumentRequest {
 
     void setFileItem4(String fileFileName);
 
-    String getDataItem4();
+	void setTemplateId(String templateId);
 
-    String getFileItem4();
+	void setData(String data);
 
 }

@@ -3,6 +3,7 @@ package com.xcase.intapp.document.impl.simple.transputs;
 import com.xcase.intapp.document.transputs.RenderDocumentRequest;
 
 public class RenderDocumentRequestImpl extends DocumentRequestImpl implements RenderDocumentRequest {
+    private String data;
     private String dataItem1;
     private byte[] dataItem2;
     private String dataItem3;
@@ -12,6 +13,12 @@ public class RenderDocumentRequestImpl extends DocumentRequestImpl implements Re
     private String fileItem3;
     private String fileItem4;
     private String operationPath = "api/v3/render";
+    private String templateId;
+    
+	@Override
+	public String getData() {
+		return data;
+	}
     
 	@Override
 	public String getOperationPath() {
@@ -47,6 +54,11 @@ public class RenderDocumentRequestImpl extends DocumentRequestImpl implements Re
     public String getFileItem3() {
         return fileItem3;
     }
+    
+	@Override
+	public void setData(String data) {
+		this.data = data;
+	}
 
 	@Override
 	public void setDataItem1(String dataItem1) {
@@ -97,5 +109,15 @@ public class RenderDocumentRequestImpl extends DocumentRequestImpl implements Re
     public String getFileItem4() {
         return fileItem4;
     }
+
+	@Override
+	public String getTemplateId() {
+		return templateId;
+	}
+
+	@Override
+	public void setTemplateId(String templateId) {
+		this.templateId = templateId;
+	}
 
 }
