@@ -14,7 +14,7 @@ public interface RenderDocumentRequest extends DocumentRequest {
 
 	byte[] getFileItem2();
 	
-    String getfileItem3();
+    String getFileItem3();
 	
 	void setDataItem1(String dataItem1);
 
@@ -27,5 +27,13 @@ public interface RenderDocumentRequest extends DocumentRequest {
 	void setFileItem2(byte[] fileItem2);
 
     void setFileItem3(String fileContentType);
+
+    void setDataItem4(String dataFileName);
+
+    void setFileItem4(String fileFileName);
+
+    String getDataItem4();
+
+    String getFileItem4();
 
 }

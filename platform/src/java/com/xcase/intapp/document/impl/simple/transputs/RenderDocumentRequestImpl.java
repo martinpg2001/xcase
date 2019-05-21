@@ -6,9 +6,11 @@ public class RenderDocumentRequestImpl extends DocumentRequestImpl implements Re
     private String dataItem1;
     private byte[] dataItem2;
     private String dataItem3;
+    private String dataItem4;
     private String fileItem1;
     private byte[] fileItem2;
     private String fileItem3;
+    private String fileItem4;
     private String operationPath = "api/v3/render";
     
 	@Override
@@ -42,7 +44,7 @@ public class RenderDocumentRequestImpl extends DocumentRequestImpl implements Re
 	}
 	
     @Override
-    public String getfileItem3() {
+    public String getFileItem3() {
         return fileItem3;
     }
 
@@ -74,6 +76,26 @@ public class RenderDocumentRequestImpl extends DocumentRequestImpl implements Re
     @Override
     public void setFileItem3(String fileItem3) {
         this.fileItem3 = fileItem3;        
+    }
+
+    @Override
+    public void setDataItem4(String dataFileName) {
+        this.dataItem4 = dataFileName; 
+    }
+
+    @Override
+    public void setFileItem4(String fileFileName) {
+        this.fileItem4 = fileFileName;        
+    }
+
+    @Override
+    public String getDataItem4() {
+        return dataItem4;
+    }
+
+    @Override
+    public String getFileItem4() {
+        return fileItem4;
     }
 
 }

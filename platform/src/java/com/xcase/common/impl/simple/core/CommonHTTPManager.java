@@ -607,9 +607,11 @@ public class CommonHTTPManager implements AutoCloseable {
                     MultiPartContent multiPartContent = multiPartContentHashMap.get(key);
                     LOGGER.debug("next content type is " + multiPartContent.getContentType());
                     if (multiPartContent.isText()) {
-                        multipartEntityBuilder.addTextBody(key, new String(multiPartContent.getContent()), ContentType.getByMimeType(multiPartContent.getContentType()));
+                        LOGGER.debug("content is text");
+                        multipartEntityBuilder.addBinaryBody(key, multiPartContent.getContent(), ContentType.create(multiPartContent.getContentType()), multiPartContent.getFileName());
                     } else {
-                        multipartEntityBuilder.addBinaryBody(key, multiPartContent.getContent(), ContentType.create(multiPartContent.getContentType()), key);
+                        LOGGER.debug("content is binary");
+                        multipartEntityBuilder.addBinaryBody(key, multiPartContent.getContent(), ContentType.create(multiPartContent.getContentType()), multiPartContent.getFileName());
                     }
                 }
     
