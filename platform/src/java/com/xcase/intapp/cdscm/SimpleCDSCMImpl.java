@@ -70,6 +70,11 @@ public class SimpleCDSCMImpl implements CDSCMExternalAPI {
     /**
      * method implementation.
      */
+    private GetClientsMethod getClientsMethod = new GetClientsMethod();
+    
+    /**
+     * method implementation.
+     */
     private GetClientSecurityMethod getClientSecurityMethod = new GetClientSecurityMethod();
     
     /**
@@ -218,5 +223,10 @@ public class SimpleCDSCMImpl implements CDSCMExternalAPI {
     public CreateClientsUsingPatchResponse createClientsUsingPatch(CreateClientsUsingPatchRequest createClientsUsingPatchRequest) {
         return this.createClientsUsingPatchMethod.createClientsUsingPatch(createClientsUsingPatchRequest);
     }
+
+	@Override
+	public GetClientsResponse getClients(GetClientsRequest getClientsRequest) {
+		return this.getClientsMethod.getClients(getClientsRequest);
+	}
 
 }

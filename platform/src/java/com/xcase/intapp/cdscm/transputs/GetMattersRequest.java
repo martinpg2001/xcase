@@ -1,6 +1,6 @@
 package com.xcase.intapp.cdscm.transputs;
 
-public interface GetMattersRequest extends CDSCMRequest {
+public interface GetMattersRequest extends ListableCDSCMRequest {
 
 	void setClientId(String clientId);
 

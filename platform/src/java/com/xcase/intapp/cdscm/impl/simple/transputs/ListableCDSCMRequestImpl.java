@@ -1,8 +1,8 @@
-package com.xcase.intapp.cdsusers.impl.simple.transputs;
+package com.xcase.intapp.cdscm.impl.simple.transputs;
 
-import com.xcase.intapp.cdsusers.transputs.ListableCDSUsersRequest;
+import com.xcase.intapp.cdscm.transputs.ListableCDSCMRequest;
 
-public class ListableCDSUsersRequestImpl extends CDSUsersRequestImpl implements ListableCDSUsersRequest {
+public class ListableCDSCMRequestImpl extends CDSCMRequestImpl implements ListableCDSCMRequest {
     private int limit;
     private int skip;
     

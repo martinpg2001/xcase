@@ -1,6 +1,6 @@
-package com.xcase.intapp.cdsusers.transputs;
+package com.xcase.intapp.cdscm.transputs;
 
-public interface ListableCDSUsersRequest extends CDSUsersRequest {
+public interface ListableCDSCMRequest extends CDSCMRequest {
     int getLimit();
     
     int getSkip();

@@ -1,6 +1,6 @@
 package com.xcase.intapp.cdscm.transputs;
 
-public interface GetClientsModifiedSinceDateRequest extends CDSCMRequest {
+public interface GetClientsModifiedSinceDateRequest extends ListableCDSCMRequest {
     String getSince();
     
     int getSuccessResponseCode();

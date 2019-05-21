@@ -104,4 +104,9 @@ public class CDSCMResponseFactory extends BaseCDSCMFactory {
         return (CreateClientsUsingPatchResponse) obj;
     }
 
+	public static GetClientsResponse createGetClientsResponse() {
+        Object obj = newInstanceOf("cdscm.config.responsefactory.GetClientsResponse");
+        return (GetClientsResponse) obj;
+	}
+
 }

@@ -49,11 +49,13 @@ public class DocumentApplication {
         try {
         	documentExternalAPI.generateTokenPair();
             String accessToken = documentExternalAPI.getAccessToken();
+            /* Get categories */
             LOGGER.debug("about to get categories");
             GetCategoriesRequest getCategoriesRequest = DocumentRequestFactory.createGetCategoriesRequest(accessToken);
             LOGGER.debug("created getCategoriesRequest");
             GetCategoriesResponse getCategoriesResponse = documentExternalAPI.getCategories(getCategoriesRequest);            
             LOGGER.debug("got categories");
+            /* Save template */
             LOGGER.debug("about to save template");
             SaveTemplateRequest saveTemplateRequest = DocumentRequestFactory.createSaveTemplateRequest(accessToken);
             LOGGER.debug("created saveTemplateRequest");
@@ -63,12 +65,14 @@ public class DocumentApplication {
             Path path = (new File("BlankTemplate.docx")).toPath();
             saveTemplateRequest.setItem2(Files.readAllBytes(path));         
             SaveTemplateResponse saveTemplateResponse = documentExternalAPI.saveTemplate(saveTemplateRequest);            
-            LOGGER.debug("saved template");            
+            LOGGER.debug("saved template");
+            /* Get templates */
             LOGGER.debug("about to get templates");
             GetTemplatesRequest getTemplatesRequest = DocumentRequestFactory.createGetTemplatesRequest(accessToken);
             LOGGER.debug("created getTemplatesRequest");
             GetTemplatesResponse getTemplatesResponse = documentExternalAPI.getTemplates(getTemplatesRequest);            
             LOGGER.debug("got templates");
+            /* Get template file */
             LOGGER.debug("about to get template file");
             GetTemplateFileRequest getTemplateFileRequest = DocumentRequestFactory.createGetTemplateFileRequest(accessToken);
             LOGGER.debug("created getTemplateFileRequest");
@@ -76,18 +80,32 @@ public class DocumentApplication {
             GetTemplateFileResponse getTemplateFileResponse = documentExternalAPI.getTemplateFile(getTemplateFileRequest);
             Path tempTemplatePath = (new File("TempTemplate.docx")).toPath();
             byte[] tempTemplateByteArray = getTemplateFileResponse.getBytes();
-            LOGGER.debug("got template file");             
+            LOGGER.debug("got template file");
+            /* Use HEAD to template data */
             LOGGER.debug("about to head templates");
             HeadTemplatesRequest headTemplatesRequest = DocumentRequestFactory.createHeadTemplatesRequest(accessToken);
             LOGGER.debug("created headTemplatesRequest");
             HeadTemplatesResponse headTemplatesResponse = documentExternalAPI.headTemplates(headTemplatesRequest);            
             LOGGER.debug("headed templates");
+            /* Render document */
+            LOGGER.debug("about to render document");
+            RenderDocumentRequest renderDocumentRequest = DocumentRequestFactory.createRenderDocumentRequest(accessToken);
+            LOGGER.debug("created renderDocumentRequest");
+            renderDocumentRequest.setDataItem1("data");
+            Path dataPath = (new File("BlankTemplate.docx")).toPath();
+            renderDocumentRequest.setDataItem2(Files.readAllBytes(dataPath));
+            renderDocumentRequest.setFileItem1("file");
+            Path filePath = (new File("BlankTemplate.docx")).toPath();
+            renderDocumentRequest.setFileItem2(Files.readAllBytes(filePath));              
+            RenderDocumentResponse renderDocumentResponse = documentExternalAPI.renderDocument(renderDocumentRequest);            
+            LOGGER.debug("rendered document");            
+            /* Delete template */
             LOGGER.debug("about to delete template");
             DeleteTemplateRequest deleteTemplateRequest = DocumentRequestFactory.createDeleteTemplateRequest(accessToken);
             LOGGER.debug("created deleteTemplateRequest");
             deleteTemplateRequest.setId("7ba257c3-eaee-4ac2-b77c-12705a0b6854");
             DeleteTemplateResponse deleteTemplateResponse = documentExternalAPI.deleteTemplate(deleteTemplateRequest);            
-            LOGGER.debug("headed templates");
+            LOGGER.debug("deleted templates");
         } catch (Exception e) {
             LOGGER.warn("exception executing methods: " + e.getMessage());
         }

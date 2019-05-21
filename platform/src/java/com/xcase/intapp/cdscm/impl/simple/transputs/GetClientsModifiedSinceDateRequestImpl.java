@@ -2,7 +2,7 @@ package com.xcase.intapp.cdscm.impl.simple.transputs;
 
 import com.xcase.intapp.cdscm.transputs.GetClientsModifiedSinceDateRequest;
 
-public class GetClientsModifiedSinceDateRequestImpl extends CDSCMRequestImpl implements GetClientsModifiedSinceDateRequest {
+public class GetClientsModifiedSinceDateRequestImpl extends ListableCDSCMRequestImpl implements GetClientsModifiedSinceDateRequest {
     private String operationPath = "api/v1/clients/updates";
     private String since;
     private int successResponseCode = 200;

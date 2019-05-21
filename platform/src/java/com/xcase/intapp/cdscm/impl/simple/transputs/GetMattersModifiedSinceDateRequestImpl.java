@@ -2,7 +2,7 @@ package com.xcase.intapp.cdscm.impl.simple.transputs;
 
 import com.xcase.intapp.cdscm.transputs.GetMattersModifiedSinceDateRequest;
 
-public class GetMattersModifiedSinceDateRequestImpl extends CDSCMRequestImpl
+public class GetMattersModifiedSinceDateRequestImpl extends ListableCDSCMRequestImpl
 		implements GetMattersModifiedSinceDateRequest {
     private String clientId;
     private String matterId;

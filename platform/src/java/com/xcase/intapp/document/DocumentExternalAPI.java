@@ -20,4 +20,6 @@ public interface DocumentExternalAPI {
 
     GetTemplateFileResponse getTemplateFile(GetTemplateFileRequest getTemplateFileRequest);
 
+	RenderDocumentResponse renderDocument(RenderDocumentRequest renderDocumentRequest);
+
 }

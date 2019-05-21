@@ -2,7 +2,7 @@ package com.xcase.intapp.cdscm.impl.simple.transputs;
 
 import com.xcase.intapp.cdscm.transputs.GetMattersRequest;
 
-public class GetMattersRequestImpl extends CDSCMRequestImpl implements GetMattersRequest {
+public class GetMattersRequestImpl extends ListableCDSCMRequestImpl implements GetMattersRequest {
     private String clientId;
     private String operationPath = "api/v1/clients/{clientId}/matters";
     private int successResponseCode = 200;

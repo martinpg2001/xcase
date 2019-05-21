@@ -6,6 +6,7 @@ import com.xcase.intapp.document.transputs.GetCategoriesResponse;
 import com.xcase.intapp.document.transputs.GetTemplateFileResponse;
 import com.xcase.intapp.document.transputs.GetTemplatesResponse;
 import com.xcase.intapp.document.transputs.HeadTemplatesResponse;
+import com.xcase.intapp.document.transputs.RenderDocumentResponse;
 import com.xcase.intapp.document.transputs.SaveTemplateResponse;
 
 public class DocumentResponseFactory extends BaseDocumentFactory {
@@ -39,5 +40,10 @@ public class DocumentResponseFactory extends BaseDocumentFactory {
         Object obj = newInstanceOf("document.config.responsefactory.GetTemplateFileResponse");
         return (GetTemplateFileResponse) obj;
     }
+
+	public static RenderDocumentResponse createRenderDocumentResponse() {
+        Object obj = newInstanceOf("document.config.responsefactory.RenderDocumentResponse");
+        return (RenderDocumentResponse) obj;
+	}
 
 }

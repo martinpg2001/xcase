@@ -105,7 +105,13 @@ public class CDSCMApplication {
             DeleteClientSecurityResponse deleteClientSecurityResponse = cdscmExternalAPI.deleteClientSecurity(deleteClientSecurityRequest);
             LOGGER.debug("deleted client security");
             getClientSecurityResponse = cdscmExternalAPI.getClientSecurity(getClientSecurityRequest);
-            LOGGER.debug("got client security");            
+            LOGGER.debug("got client security");
+            /* Get clients */
+            LOGGER.debug("about to get clients");
+            GetClientsRequest getClientsRequest = CDSCMRequestFactory.createGetClientsRequest(accessToken);
+            LOGGER.debug("created getClientsRequest");
+            GetClientsResponse getClientsResponse = cdscmExternalAPI.getClients(getClientsRequest);
+            LOGGER.debug("got clients");
             /* Get clients modified since yesterday */
             LOGGER.debug("about to get clients modified since yesterday");
             GetClientsModifiedSinceDateRequest getClientsModifiedSinceDateRequest = CDSCMRequestFactory.createGetClientsModifiedSinceDateRequest(accessToken);
@@ -115,7 +121,7 @@ public class CDSCMApplication {
             String since = formatter.format(date);
             LOGGER.debug("since is " + since); 
             getClientsModifiedSinceDateRequest.setSince(since);
-            GetClientsModifiedSinceDateResponse getClientsModifiedSinceDate = cdscmExternalAPI.getClientsModifiedSinceDate(getClientsModifiedSinceDateRequest);
+            GetClientsModifiedSinceDateResponse getClientsModifiedSinceDateResponse = cdscmExternalAPI.getClientsModifiedSinceDate(getClientsModifiedSinceDateRequest);
             LOGGER.debug("got clients modified since yesterday");
             /* Publish clients */
             LOGGER.debug("about to publish clients");

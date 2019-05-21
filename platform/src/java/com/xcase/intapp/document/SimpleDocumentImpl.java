@@ -74,6 +74,11 @@ public class SimpleDocumentImpl implements DocumentExternalAPI {
     /**
      * method implementation.
      */
+    private RenderDocumentMethod renderDocumentMethod = new RenderDocumentMethod();
+    
+    /**
+     * method implementation.
+     */
     private SaveTemplateMethod saveTemplateMethod = new SaveTemplateMethod();
 	
 	public void generateTokenPair() throws Exception {
@@ -223,4 +228,9 @@ public class SimpleDocumentImpl implements DocumentExternalAPI {
     public GetTemplateFileResponse getTemplateFile(GetTemplateFileRequest getTemplateFileRequest) {
         return this.getTemplateFileMethod.getTemplateFile(getTemplateFileRequest);
     }
+
+	@Override
+	public RenderDocumentResponse renderDocument(RenderDocumentRequest renderDocumentRequest) {
+		return this.renderDocumentMethod.renderDocument(renderDocumentRequest);
+	}
 }

@@ -68,5 +68,16 @@ public class DocumentRequestFactory extends BaseDocumentFactory {
         request.setAccessToken(accessToken);
         return request;
     }
+    
+    public static RenderDocumentRequest createRenderDocumentRequest() {
+        Object obj = newInstanceOf("document.config.requestfactory.RenderDocumentRequest");
+        return (RenderDocumentRequest) obj;
+    }
+
+	public static RenderDocumentRequest createRenderDocumentRequest(String accessToken) {
+		RenderDocumentRequest request = createRenderDocumentRequest();
+        request.setAccessToken(accessToken);
+        return request;
+	}
 
 }
