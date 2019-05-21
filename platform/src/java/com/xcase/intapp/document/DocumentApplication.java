@@ -92,11 +92,17 @@ public class DocumentApplication {
             RenderDocumentRequest renderDocumentRequest = DocumentRequestFactory.createRenderDocumentRequest(accessToken);
             LOGGER.debug("created renderDocumentRequest");
             renderDocumentRequest.setDataItem1("data");
-            Path dataPath = (new File("BlankTemplate.docx")).toPath();
+            Path dataPath = (new File("BlankData.json")).toPath();
             renderDocumentRequest.setDataItem2(Files.readAllBytes(dataPath));
+            String dataContentType = Files.probeContentType(dataPath);
+            LOGGER.debug("dataContentType is " + dataContentType);
+            renderDocumentRequest.setDataItem3(dataContentType);
             renderDocumentRequest.setFileItem1("file");
             Path filePath = (new File("BlankTemplate.docx")).toPath();
-            renderDocumentRequest.setFileItem2(Files.readAllBytes(filePath));              
+            renderDocumentRequest.setFileItem2(Files.readAllBytes(filePath));
+            String fileContentType = Files.probeContentType(filePath);
+            LOGGER.debug("fileContentType is " + fileContentType);
+            renderDocumentRequest.setFileItem3(fileContentType);
             RenderDocumentResponse renderDocumentResponse = documentExternalAPI.renderDocument(renderDocumentRequest);            
             LOGGER.debug("rendered document");            
             /* Delete template */

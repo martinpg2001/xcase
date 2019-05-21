@@ -7,17 +7,25 @@ public interface RenderDocumentRequest extends DocumentRequest {
 	String getDataItem1();
 
 	byte[] getDataItem2();
+	
+    String getDataItem3();
 
 	String getFileItem1();
 
 	byte[] getFileItem2();
 	
+    String getfileItem3();
+	
 	void setDataItem1(String dataItem1);
 
 	void setDataItem2(byte[] dataItem2);
+	
+    void setDataItem3(String dataContentType);
 
 	void setFileItem1(String fileItem1);
 
 	void setFileItem2(byte[] fileItem2);
+
+    void setFileItem3(String fileContentType);
 
 }

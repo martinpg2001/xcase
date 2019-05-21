@@ -541,6 +541,99 @@ public class CommonHTTPManager implements AutoCloseable {
 	        LOGGER.debug("finally...");
 	    }
 	}
+	
+    /**
+     * upload multiple files.
+     *
+     * @param url http URL
+     * @param byteArrayHashMap hashmap, key is string(file name), value is byte array.
+     * @param headers headers array
+     * @param parameters parameters list
+     * @param credentials credentials
+     * @return response
+     * @throws IOException exception
+     */
+    public CommonHttpResponse doCommonHttpResponseMultipartContentHashMapPost(String url, HashMap<String, MultiPartContent> multiPartContentHashMap, Header[] headers, List<NameValuePair> parameters, Credentials credentials) throws Exception, IOException {
+        LOGGER.debug("starting doCommonHttpResponseMultipartContentHashMapPost()");
+        try {
+            /* Local context is going to be used to pass credentials in to request */
+            HttpClientContext localContext = HttpClientContext.create();
+            if (credentials != null) {
+                LOGGER.debug("credentials is not null");
+                CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+                credentialsProvider.setCredentials(AuthScope.ANY, credentials);
+                LOGGER.debug("set AuthScope.ANY");
+                localContext.setCredentialsProvider(credentialsProvider);
+                LOGGER.debug("set CredentialsProvider");
+            } else {
+                LOGGER.debug("credentials is null");
+            }
+    
+            HttpPost postMethod = new HttpPost(url);
+            for (Header header : headers) {
+                /* Exclude setting Content-Type from headers parameter */
+                if (!header.getName().equals("Content-Type")) {
+                    postMethod.addHeader(header);
+                    LOGGER.debug("added header " + header.getName());
+                }
+            }
+    
+            MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create();
+            multipartEntityBuilder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+            if (parameters != null) {
+                LOGGER.debug("parameters is not null");
+                for (NameValuePair parameter : parameters) {
+                    String parameterName = parameter.getName();
+                    LOGGER.debug("parameter name is " + parameterName);
+                    String parameterValue = parameter.getValue();
+                    LOGGER.debug("parameter value is " + parameterValue);
+                    StringBody valueBody = new StringBody(parameterValue, ContentType.MULTIPART_FORM_DATA);
+                    multipartEntityBuilder.addPart(parameterName, valueBody);
+                    LOGGER.debug("added parameter " + parameterName + ":" + parameterValue);
+                }
+    
+                LOGGER.debug("added parameters");
+            } else {
+                LOGGER.debug("parameters is null");
+            }
+    
+            if (multiPartContentHashMap != null) {
+                LOGGER.debug("multiPartContentHashMap is not null");
+                LOGGER.debug("multiPartContentHashMap has size " + multiPartContentHashMap.size());
+                Iterator iterator = multiPartContentHashMap.keySet().iterator();
+                while (iterator.hasNext()) {
+                    String key = (String) iterator.next();
+                    LOGGER.debug("next key " + key);
+                    MultiPartContent multiPartContent = multiPartContentHashMap.get(key);
+                    LOGGER.debug("next content type is " + multiPartContent.getContentType());
+                    if (multiPartContent.isText()) {
+                        multipartEntityBuilder.addTextBody(key, new String(multiPartContent.getContent()), ContentType.getByMimeType(multiPartContent.getContentType()));
+                    } else {
+                        multipartEntityBuilder.addBinaryBody(key, multiPartContent.getContent(), ContentType.create(multiPartContent.getContentType()), key);
+                    }
+                }
+    
+                LOGGER.debug("added multiPartContentHashMap");
+            } else {
+                LOGGER.debug("multiPartContentHashMap is null");
+            }
+    
+            HttpEntity httpEntity = multipartEntityBuilder.build();
+            postMethod.setEntity(httpEntity);
+            LOGGER.debug("about to post multi-part message");
+            HttpResponse httpResponse = this.httpClient.execute(postMethod, localContext);
+            LOGGER.debug("httpResponse status code is " + httpResponse.getStatusLine().getStatusCode());
+            LOGGER.debug("httpResponse reason phrase is " + httpResponse.getStatusLine().getReasonPhrase());
+            CommonHttpResponse commonHttpResponse = new CommonHttpResponse(httpResponse);
+            LOGGER.debug("created commonHttpResponse");
+            return commonHttpResponse;
+        } catch (Exception e) {
+            LOGGER.warn("exception doing multi-part POST: " + e.getMessage());
+            throw e;
+        } finally {
+            LOGGER.debug("finally...");
+        }
+    }
 
 	public CommonHttpResponse doCommonHttpResponsePatch(String url, Header[] headers, List<NameValuePair> parameters, String entityString, Credentials credentials) throws Exception, IOException {
         LOGGER.debug("starting doCommonHttpResponsePatch()");
