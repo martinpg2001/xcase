@@ -25,15 +25,15 @@ public class InvokeOperationRequestImpl extends AdvancedRequestImpl implements I
 	public List<NameValuePair> getParameters() {
 		return parameters;
 	}
-
-	@Override
-	public void setEntityString(String entityString) {
-        this.entityString = entityString;
-	}
 	
 	@Override
 	public int getSuccessResponseCode() {
 		return successResponseCode;
+	}
+
+	@Override
+	public void setEntityString(String entityString) {
+        this.entityString = entityString;
 	}
 
 	@Override
@@ -56,6 +56,7 @@ public class InvokeOperationRequestImpl extends AdvancedRequestImpl implements I
 		this.apiURL = apiURL;
 	}
 
+	@Override
 	public void setSuccessResponseCode(int successResponseCode) {
 		this.successResponseCode = successResponseCode;
 	}

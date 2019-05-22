@@ -26,5 +26,7 @@ public interface InvokeOperationRequest extends AdvancedRequest {
 	void setOperationPath(String operationPath);
 
 	void setParameters(List<NameValuePair> parameters);
+	
+	void setSuccessResponseCode(int successResponseCode);
 
 }
