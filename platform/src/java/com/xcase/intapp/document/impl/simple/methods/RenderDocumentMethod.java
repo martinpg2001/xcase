@@ -7,6 +7,7 @@ import com.xcase.intapp.document.transputs.RenderDocumentRequest;
 import com.xcase.intapp.document.transputs.RenderDocumentResponse;
 import com.xcase.intapp.document.transputs.SaveTemplateResponse;
 
+import java.io.ByteArrayOutputStream;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,6 +48,8 @@ public class RenderDocumentMethod extends BaseDocumentMethod {
             HashMap<String, byte[]> byteArrayHashMap = new HashMap<String, byte[]>();
             CommonHttpResponse commonHttpResponse = null;
             String templateId = request.getTemplateId();
+            /* If a template id is provided, then use this and the Json data provided. If not, 
+             * then assume that both template and document are provided as file byte arrays. */
             if (templateId != null && !templateId.isEmpty()) {
                 endPoint = endPoint + "/" + templateId;
                 LOGGER.debug("endPoint is " + endPoint);
@@ -73,8 +76,12 @@ public class RenderDocumentMethod extends BaseDocumentMethod {
             
             int responseCode = commonHttpResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
-            if (responseCode == 201) {
-                handleExpectedResponseCode(response, commonHttpResponse);
+            if (responseCode == 200) {
+                /* Gather the response data in order to be able to pass the rendered document back to the calling application */
+                response.setBytes(commonHttpResponse.getContent());
+                response.setResponseCode(commonHttpResponse.getResponseCode());
+                response.setStatus(commonHttpResponse.getStatusLine().getReasonPhrase());
+                response.setStatusLine(commonHttpResponse.getStatusLine());
             } else {
                 handleUnexpectedResponseCode(response, commonHttpResponse);
             }

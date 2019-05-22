@@ -15,6 +15,7 @@ import com.xcase.intapp.document.impl.simple.core.DocumentConfigurationManager;
 import com.xcase.intapp.document.transputs.*;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.nio.file.Files;
@@ -108,11 +109,27 @@ public class DocumentApplication {
             LOGGER.debug("fileContentType is " + fileContentType);
             renderDocumentRequest.setFileItem3(fileContentType);
             renderDocumentRequest.setFileItem4(fileFileName);
-            RenderDocumentResponse renderDocumentResponse = documentExternalAPI.renderDocument(renderDocumentRequest);            
+            RenderDocumentResponse renderDocumentResponse = documentExternalAPI.renderDocument(renderDocumentRequest);
+            byte[] renderedDocumentBytes = renderDocumentResponse.getBytes();
+            String renderedDocumentFileName = "RenderedDocument.docx";
+            try (FileOutputStream fos = new FileOutputStream(renderedDocumentFileName)) {
+                fos.write(renderedDocumentBytes);
+            } catch (Exception e) {
+                LOGGER.warn("exception writing rendered document to file: " + e.getMessage());
+            }
+            
             LOGGER.debug("rendered document");
             renderDocumentRequest.setData("{ }");
             renderDocumentRequest.setTemplateId(templateId);
-            renderDocumentResponse = documentExternalAPI.renderDocument(renderDocumentRequest);            
+            renderDocumentResponse = documentExternalAPI.renderDocument(renderDocumentRequest);
+            byte[] renderedDocumentByTemplateIdBytes = renderDocumentResponse.getBytes();
+            String renderedDocumentByTemplateIdFileName = "RenderedDocumentByTemplateId.docx";
+            try (FileOutputStream fos = new FileOutputStream(renderedDocumentByTemplateIdFileName)) {
+                fos.write(renderedDocumentByTemplateIdBytes);
+            } catch (Exception e) {
+                LOGGER.warn("exception writing rendered document to file: " + e.getMessage());
+            }
+            
             LOGGER.debug("rendered document");
             /* Delete template */
             LOGGER.debug("about to delete template");
