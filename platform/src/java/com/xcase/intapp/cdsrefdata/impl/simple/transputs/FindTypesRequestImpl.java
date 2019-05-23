@@ -7,21 +7,6 @@ public class FindTypesRequestImpl extends ListableRefDataRequestImpl implements 
     private String name;	
     private String type;
     private String operationPath = "api/v1/rdcds/";
-    
-	@Override
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	@Override
-	public String getType() {
-		return type;
-	}
-
-	@Override
-	public String getOperationPath() {
-		return operationPath;
-	}
 
 	@Override
 	public String getKey() {
@@ -31,6 +16,21 @@ public class FindTypesRequestImpl extends ListableRefDataRequestImpl implements 
 	@Override
 	public String getName() {
 		return name;
+	}
+	
+	@Override
+	public String getOperationPath() {
+		return operationPath;
+	}
+    
+	@Override
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	@Override
+	public String getType() {
+		return type;
 	}
 
 }

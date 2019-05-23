@@ -7,5 +7,5 @@ public interface ListableRefDataRequest extends CDSRefDataRequest {
     
     void setLimit(int limit);
     
-    void setskip(int skip);
+    void setSkip(int skip);
 }

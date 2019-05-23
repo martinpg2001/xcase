@@ -45,7 +45,7 @@ public class FindTypesMethod extends BaseCDSRefDataMethod {
             LOGGER.debug("operationPath is " + operationPath);
             endPoint = baseVersionUrl + operationPath;
             String type = request.getType();
-            endPoint = endPoint + typeHashMap.get(type);
+            endPoint = endPoint + typeHashMap.get(type) + "?";
             LOGGER.debug("endPoint is " + endPoint);
             String key = request.getKey();
             if (key != null && !key.isEmpty()) {
@@ -54,7 +54,17 @@ public class FindTypesMethod extends BaseCDSRefDataMethod {
             
             String name = request.getName();
             if (name != null && !name.isEmpty()) {
-            	endPoint = endPoint + "name=" + name;
+            	endPoint = endPoint + "&name=" + name;
+            }
+            
+            int limit = request.getLimit();
+            if (limit > 0) {
+            	endPoint = endPoint + "&limit=" + limit;
+            }
+            
+            int skip = request.getSkip();
+            if (skip > 0) {
+            	endPoint = endPoint + "&skip=" + skip;
             }
             
             LOGGER.debug("endPoint is " + endPoint);

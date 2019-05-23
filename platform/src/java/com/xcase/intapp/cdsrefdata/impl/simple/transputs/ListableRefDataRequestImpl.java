@@ -22,7 +22,7 @@ public class ListableRefDataRequestImpl extends CDSRefDataRequestImpl implements
 	}
 
 	@Override
-	public void setskip(int skip) {
+	public void setSkip(int skip) {
 		this.skip = skip;
 	}
 

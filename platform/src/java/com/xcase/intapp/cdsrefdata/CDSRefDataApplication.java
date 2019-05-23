@@ -86,6 +86,8 @@ public class CDSRefDataApplication {
             findTypesRequest.setType("Office");
             findTypesResponse = cdsRefDataExternalAPI.findTypes(findTypesRequest);
             findTypesRequest.setType("PersonExternalId");
+            findTypesRequest.setLimit(5);
+            findTypesRequest.setSkip(5);
             findTypesResponse = cdsRefDataExternalAPI.findTypes(findTypesRequest);
             findTypesRequest.setType("Practice");
             findTypesResponse = cdsRefDataExternalAPI.findTypes(findTypesRequest);
