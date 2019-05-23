@@ -29,8 +29,18 @@ public class FindRolesMethod extends BaseCDSUsersMethod {
         try {
             String baseVersionUrl = getAPIVersionUrl();
             LOGGER.debug("baseVersionUrl is " + baseVersionUrl);
-            endPoint = baseVersionUrl + request.getOperationPath();
+            endPoint = baseVersionUrl + request.getOperationPath() + "?";
             LOGGER.debug("endPoint is " + endPoint);
+            int limit = request.getLimit();
+            if (limit > 0) {
+                endPoint = endPoint + "&limit=" + limit;
+            }
+            
+            int skip = request.getSkip();
+            if (skip > 0) {
+                endPoint = endPoint + "&skip=" + skip;
+            }
+            
             String accessToken = request.getAccessToken();
             LOGGER.debug("accessToken is " + accessToken);
             String name = request.getName();

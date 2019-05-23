@@ -29,7 +29,17 @@ public class GetMattersMethod extends BaseCDSCMMethod {
 			LOGGER.debug("baseVersionUrl is " + baseVersionUrl);
 			String clientId = request.getClientId();
 			LOGGER.debug("clientId is " + clientId);
-			endPoint = baseVersionUrl + request.getOperationPath().replace("{clientId}", clientId);
+			endPoint = baseVersionUrl + request.getOperationPath().replace("{clientId}", clientId) + "?";
+            int limit = request.getLimit();
+            if (limit > 0) {
+                endPoint = endPoint + "&limit=" + limit;
+            }
+            
+            int skip = request.getSkip();
+            if (skip > 0) {
+                endPoint = endPoint + "&skip=" + skip;
+            }
+            
 			LOGGER.debug("endPoint is " + endPoint);
 			String accessToken = request.getAccessToken();
 			LOGGER.debug("accessToken is " + accessToken);
