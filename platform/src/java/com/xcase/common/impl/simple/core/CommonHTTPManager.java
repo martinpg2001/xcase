@@ -143,7 +143,7 @@ public class CommonHTTPManager implements AutoCloseable {
 //        LOGGER.debug("about to return instance");
         return instance;
     }
-    
+
     public static CommonHTTPManager getCommonHTTPManager(CommonHttpManagerConfig commonHttpManagerConfig) {
 //        LOGGER.debug("starting getCommonHTTPManager()");
         if (instance == null) {
@@ -158,7 +158,7 @@ public class CommonHTTPManager implements AutoCloseable {
      * config properties.
      */
     private Properties config;
-    
+
     /**
      * config properties.
      */
@@ -233,7 +233,7 @@ public class CommonHTTPManager implements AutoCloseable {
             if (localConfig.getProperty("supportedprotocols") != null) {
                 supportedProtocolsArray = ((String) localConfig.getProperty("supportedprotocols")).split(",");
             }
-            
+
             LOGGER.debug("supportedProtocolsArray is " + Arrays.toString(supportedProtocolsArray));
             SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext, supportedProtocolsArray, null, NoopHostnameVerifier.INSTANCE);
             RegistryBuilder<ConnectionSocketFactory> connectionSocketFactoryRegistryBuilder = RegistryBuilder.<ConnectionSocketFactory>create();
@@ -247,7 +247,7 @@ public class CommonHTTPManager implements AutoCloseable {
             if (localConfig.getProperty("useragent") != null) {
                 userAgent = (String) localConfig.getProperty("useragent");
             }
-            
+
             this.httpClientBuilder.setUserAgent(userAgent);
             /* Proxy server */
             if (localConfig.getProperty("proxy") != null && localConfig.getProperty("proxy").equalsIgnoreCase("yes")) {
@@ -261,7 +261,7 @@ public class CommonHTTPManager implements AutoCloseable {
 //                LOGGER.debug("proxyScheme is " + proxyScheme);
                 httpClientBuilder.setProxy(new HttpHost(proxyServer, proxyPort, proxyScheme));
             }
-            
+
             this.httpClient = this.httpClientBuilder.build();
         } catch (KeyManagementException kme) {
             LOGGER.warn("KeyManagementException thrown building HttpClient: " + kme.getMessage());
@@ -275,7 +275,7 @@ public class CommonHTTPManager implements AutoCloseable {
 
 //        LOGGER.debug("finishing CommonHttpManager()");
     }
-    
+
     private CommonHTTPManager(ICommonHttpManagerConfig commonHttpManagerConfig) {
 //        LOGGER.debug("starting CommonHTTPManager() with commonHttpManagerConfig parameter");
         loadConfigProperties();
@@ -324,9 +324,9 @@ public class CommonHTTPManager implements AutoCloseable {
                 InputStream keyStoreStream = this.getClass().getResourceAsStream(commonHttpManagerConfig.getKeystorePath());
                 keystore = KeyStore.getInstance("JKS");
                 keystore.load(keyStoreStream, commonHttpManagerConfig.getKeystorePass().toCharArray());
-                sslContexBuilder.loadKeyMaterial(keystore, commonHttpManagerConfig.getKeyPass().toCharArray());              
+                sslContexBuilder.loadKeyMaterial(keystore, commonHttpManagerConfig.getKeyPass().toCharArray());
             }
-            
+
             SSLContext sslContext = sslContexBuilder.build();
             this.httpClientBuilder.setSSLContext(sslContext);
             /* Connection manager */
@@ -336,7 +336,7 @@ public class CommonHTTPManager implements AutoCloseable {
             if (commonHttpManagerConfig.getSupportedProtocols() != null) {
                 supportedProtocolsArray = (commonHttpManagerConfig.getSupportedProtocols()).split(",");
             }
-            
+
             LOGGER.debug("supportedProtocolsArray is " + Arrays.toString(supportedProtocolsArray));
             SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext, supportedProtocolsArray, null, NoopHostnameVerifier.INSTANCE);
             RegistryBuilder<ConnectionSocketFactory> connectionSocketFactoryRegistryBuilder = RegistryBuilder.<ConnectionSocketFactory>create();
@@ -350,7 +350,7 @@ public class CommonHTTPManager implements AutoCloseable {
             if (commonHttpManagerConfig.getUserAgent() != null) {
                 userAgent = commonHttpManagerConfig.getUserAgent();
             }
-            
+
             this.httpClientBuilder.setUserAgent(userAgent);
             /* Proxy server */
             if (commonHttpManagerConfig.getProxy() != null) {
@@ -359,7 +359,7 @@ public class CommonHTTPManager implements AutoCloseable {
             } else {
                 LOGGER.debug("proxy configuration is null");
             }
-            
+
             this.httpClient = this.httpClientBuilder.build();
         } catch (KeyManagementException kme) {
             LOGGER.warn("KeyManagementException thrown building HttpClient: " + kme.getMessage());
@@ -430,7 +430,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	    LOGGER.debug("starting doCommonHttpResponseGet()");
 	    return doCommonHttpResponseMethod("GET", url, headers, parameters, null, credentials);
 	}
-	
+
     public CommonHttpResponse doCommonHttpResponseHead(String url, Header[] headers, List<NameValuePair> parameters, Credentials credentials) throws Exception, IOException {
         LOGGER.debug("starting doCommonHttpResponseHead()");
         return doCommonHttpResponseMethod("HEAD", url, headers, parameters, null, credentials);
@@ -481,7 +481,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	        } else {
 	            LOGGER.debug("credentials is null");
 	        }
-	
+
 	        HttpPost postMethod = new HttpPost(url);
 	        for (Header header : headers) {
 	        	/* Exclude setting Content-Type from headers parameter */
@@ -490,7 +490,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	                LOGGER.debug("added header " + header.getName());
 	        	}
 	        }
-	
+
 	        MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create();
 	        multipartEntityBuilder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 	        if (parameters != null) {
@@ -504,14 +504,14 @@ public class CommonHTTPManager implements AutoCloseable {
 	                multipartEntityBuilder.addPart(parameterName, valueBody);
 	                LOGGER.debug("added parameter " + parameterName + ":" + parameterValue);
 	            }
-	
+
 	            LOGGER.debug("added parameters");
 	        } else {
 	            LOGGER.debug("parameters is null");
 	        }
-	
+
 	        if (byteArrayHashMap != null) {
-	            LOGGER.debug("byteArrayHashMap is not null");            
+	            LOGGER.debug("byteArrayHashMap is not null");
 	            Iterator iterator = byteArrayHashMap.keySet().iterator();
 	            while (iterator.hasNext()) {
 	                String key = (String) iterator.next();
@@ -519,12 +519,12 @@ public class CommonHTTPManager implements AutoCloseable {
 	                byte[] byteArray = byteArrayHashMap.get(key);
 	                multipartEntityBuilder.addBinaryBody(key, byteArray, ContentType.DEFAULT_BINARY, key);
 	            }
-	
+
 	            LOGGER.debug("added byteArrayHashMap");
 	        } else {
 	            LOGGER.debug("byteArrayHashMap is null");
 	        }
-	
+
 	        HttpEntity httpEntity = multipartEntityBuilder.build();
 	        postMethod.setEntity(httpEntity);
 	        LOGGER.debug("about to post multi-part message");
@@ -541,12 +541,12 @@ public class CommonHTTPManager implements AutoCloseable {
 	        LOGGER.debug("finally...");
 	    }
 	}
-	
+
     /**
      * upload multiple files.
      *
      * @param url http URL
-     * @param byteArrayHashMap hashmap, key is string(file name), value is byte array.
+     * @param multiPartContentHashMap hashmap, key is string(file name), value is MultiPartContent.
      * @param headers headers array
      * @param parameters parameters list
      * @param credentials credentials
@@ -568,7 +568,7 @@ public class CommonHTTPManager implements AutoCloseable {
             } else {
                 LOGGER.debug("credentials is null");
             }
-    
+
             HttpPost postMethod = new HttpPost(url);
             for (Header header : headers) {
                 /* Exclude setting Content-Type from headers parameter */
@@ -577,7 +577,7 @@ public class CommonHTTPManager implements AutoCloseable {
                     LOGGER.debug("added header " + header.getName());
                 }
             }
-    
+
             MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create();
             multipartEntityBuilder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
             if (parameters != null) {
@@ -591,12 +591,12 @@ public class CommonHTTPManager implements AutoCloseable {
                     multipartEntityBuilder.addPart(parameterName, valueBody);
                     LOGGER.debug("added parameter " + parameterName + ":" + parameterValue);
                 }
-    
+
                 LOGGER.debug("added parameters");
             } else {
                 LOGGER.debug("parameters is null");
             }
-    
+
             if (multiPartContentHashMap != null) {
                 LOGGER.debug("multiPartContentHashMap is not null");
                 LOGGER.debug("multiPartContentHashMap has size " + multiPartContentHashMap.size());
@@ -614,12 +614,12 @@ public class CommonHTTPManager implements AutoCloseable {
                         multipartEntityBuilder.addBinaryBody(key, multiPartContent.getContent(), ContentType.create(multiPartContent.getContentType()), multiPartContent.getFileName());
                     }
                 }
-    
+
                 LOGGER.debug("added multiPartContentHashMap");
             } else {
                 LOGGER.debug("multiPartContentHashMap is null");
             }
-    
+
             HttpEntity httpEntity = multipartEntityBuilder.build();
             postMethod.setEntity(httpEntity);
             LOGGER.debug("about to post multi-part message");
@@ -711,7 +711,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	    if (LOGGER.isDebugEnabled()) {
 	        LOGGER.debug("##### doGetFile-start  #####, url=" + url);
 	    }
-	    
+
 	    try {
 	        InputStream responseBodyInputStream = null;
 	        LOGGER.debug("url is " + url);
@@ -724,7 +724,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	        } else {
 	            LOGGER.debug("headers is null");
 	        }
-	    
+
 	        if (parameters != null) {
 	            LOGGER.debug("parameters is not null");
 	            if (httpRequestBase instanceof HttpEntityEnclosingRequest) {
@@ -736,7 +736,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	                    nameValuePairList.add(new BasicNameValuePair(parameterName, parameterValue));
 	                    LOGGER.debug("added parameter " + parameterName + ":" + parameterValue);
 	                }
-	
+
 	                ((HttpEntityEnclosingRequest) httpRequestBase).setEntity(new UrlEncodedFormEntity(nameValuePairList));
 	            } else {
 	                LOGGER.debug("httpRequestBase not instance of HttpEntityEnclosingRequest");
@@ -753,7 +753,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	        } else {
 	            LOGGER.debug("parameters is null");
 	        }
-	
+
 	        HttpClientContext localContext = HttpClientContext.create();
 	        if (credentials != null) {
 	            LOGGER.debug("created local context");
@@ -765,7 +765,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	        } else {
 	            LOGGER.debug("credentials is null");
 	        }
-	
+
 	        LOGGER.debug("about to execute method");
 	        HttpResponse httpResponse = this.httpClient.execute(httpRequestBase, localContext);
 	        LOGGER.debug("executed method");
@@ -783,7 +783,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	                fileOutputStream.write(buffer);
 	            }
 	        }
-	
+
 	        LOGGER.debug("written out file");
 	        fileOutputStream.close();
 	    } catch (Exception e) {
@@ -792,11 +792,11 @@ public class CommonHTTPManager implements AutoCloseable {
 	    } finally {
 	        LOGGER.debug("finally...");
 	    }
-	
+
 	    if (LOGGER.isDebugEnabled()) {
 	        LOGGER.debug("##### doGetFile-end    #####, used time: " + (System.currentTimeMillis() - t1) + " ms\n");
 	    }
-	
+
 	    return inFile;
 	}
 
@@ -847,7 +847,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	        if (LOGGER.isDebugEnabled()) {
 	            LOGGER.debug("##### doHttpResponseMethod-start  #####, url=" + url);
 	        }
-	
+
 	        HttpResponse httpResponse = null;
 	        HttpRequestBase httpRequestBase = null;
 	        if (method != null) {
@@ -869,7 +869,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	            LOGGER.warn("method is null");
 	            return null;
 	        }
-	
+
 	        try {
 	            LOGGER.debug("url is " + url);
 	            /* Local context is going to be used to pass credentials in to request */
@@ -885,7 +885,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	            } else {
 	                LOGGER.debug("credentials is null");
 	            }
-	
+
 	            if (headers != null) {
 	                LOGGER.debug("headers is not null");
 	                for (Header header : headers) {
@@ -897,7 +897,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	            } else {
 	                LOGGER.debug("headers is null");
 	            }
-	
+
 	            if (parameters != null) {
 	                LOGGER.debug("parameters is not null");
 	                if (httpRequestBase instanceof HttpEntityEnclosingRequest) {
@@ -909,7 +909,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	                        nameValuePairList.add(new BasicNameValuePair(parameterName, parameterValue));
 	                        LOGGER.debug("added parameter " + parameterName + ":" + parameterValue);
 	                    }
-	
+
 	                    ((HttpEntityEnclosingRequest) httpRequestBase).setEntity(new UrlEncodedFormEntity(nameValuePairList));
 	                } else {
 	                    LOGGER.debug("httpRequestBase not instance of HttpEntityEnclosingRequest");
@@ -926,7 +926,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	            } else {
 	                LOGGER.debug("parameters is null");
 	            }
-	
+
 	            if (entityString != null) {
 	                LOGGER.debug("entityString is not null " + entityString);
 	                if (httpRequestBase instanceof HttpEntityEnclosingRequest) {
@@ -936,12 +936,12 @@ public class CommonHTTPManager implements AutoCloseable {
 	            } else {
 	                LOGGER.debug("entityString is null");
 	            }
-	
+
 	            if (!redirect) {
 	                LOGGER.debug("redirect is false");
 	                httpRequestBase.setConfig(RequestConfig.custom().setRedirectsEnabled(false).build());
 	            }
-	            
+
 	            LOGGER.debug("about to execute httpRequestBase");
 	            httpResponse = this.httpClient.execute(httpRequestBase, localContext);
 	            LOGGER.debug("httpResponse code is " + httpResponse.getStatusLine().getStatusCode());
@@ -953,7 +953,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	                for (URI location : locations) {
 	                    LOGGER.debug("location is " + location.toURL().toString());
 	                }
-	                
+
 	                URI finalRedirectURI = locations.get(locations.size() - 1);
 	                LOGGER.debug("finalRedirectURI is " + finalRedirectURI.toString());
 	                httpRequestBase.setURI(finalRedirectURI);
@@ -961,7 +961,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	                httpResponse = this.httpClient.execute(httpRequestBase, localContext);
 	                LOGGER.debug("executed redirected httpRequestBase");
 	            }
-	            
+
 	            LOGGER.debug("executed httpRequestBase");
 	        } catch (Exception e) {
 	            LOGGER.warn("exception doing " + method + ": " + e.getMessage());
@@ -969,11 +969,11 @@ public class CommonHTTPManager implements AutoCloseable {
 	        } finally {
 	            LOGGER.debug("finally...");
 	        }
-	
+
 	        if (LOGGER.isDebugEnabled()) {
 	            LOGGER.debug("##### doHttpResponseMethod-end    #####, used time: " + (System.currentTimeMillis() - t1) + " ms\n");
 	        }
-	
+
 	        return httpResponse;
 	    }
 
@@ -1025,7 +1025,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	    } finally {
 	        LOGGER.debug("finally...");
 	    }
-	
+
 	    return jsonElement;
 	}
 
@@ -1041,7 +1041,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	    } finally {
 	        LOGGER.debug("finally...");
 	    }
-	
+
 	    return jsonElement;
 	}
 
@@ -1111,7 +1111,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	            LOGGER.debug("responseEntityString is not null");
 	            jsonElement = ConverterUtils.parseStringToJson(responseEntityString);
 	        }
-	
+
 	        return jsonElement;
 	    } catch (Exception e) {
 	        LOGGER.warn("exception doing POST: " + e.getMessage());
@@ -1139,7 +1139,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	        LOGGER.debug("finally...");
 	    }
 	}
-	
+
 	/**
 	 * upload multiple files.
 	 *
@@ -1157,7 +1157,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	    if (LOGGER.isDebugEnabled()) {
 	        LOGGER.debug("##### doHttpResponseMethod-start  #####, url=" + url);
 	    }
-	
+
 	    String response = null;
 	    try {
 	        /* Local context is going to be used to pass credentials in to request */
@@ -1172,7 +1172,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	        } else {
 	            LOGGER.debug("credentials is null");
 	        }
-	
+
 	        HttpPost postMethod = new HttpPost(url);
 	        for (Header header : headers) {
 	        	/* Exclude setting Content-Type from headers parameter */
@@ -1181,7 +1181,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	                LOGGER.debug("added header " + header.getName());
 	        	}
 	        }
-	
+
 	        MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create();
 	        multipartEntityBuilder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 	        if (parameters != null) {
@@ -1195,14 +1195,14 @@ public class CommonHTTPManager implements AutoCloseable {
 	                multipartEntityBuilder.addPart(parameterName, valueBody);
 	                LOGGER.debug("added parameter " + parameterName + ":" + parameterValue);
 	            }
-	
+
 	            LOGGER.debug("added parameters");
 	        } else {
 	            LOGGER.debug("parameters is null");
 	        }
-	
+
 	        if (byteArrayHashMap != null) {
-	            LOGGER.debug("byteArrayHashMap is not null");            
+	            LOGGER.debug("byteArrayHashMap is not null");
 	            Iterator iterator = byteArrayHashMap.keySet().iterator();
 	            while (iterator.hasNext()) {
 	                String key = (String) iterator.next();
@@ -1210,12 +1210,12 @@ public class CommonHTTPManager implements AutoCloseable {
 	                byte[] byteArray = byteArrayHashMap.get(key);
 	                multipartEntityBuilder.addBinaryBody(key, byteArray, ContentType.DEFAULT_BINARY, key);
 	            }
-	
+
 	            LOGGER.debug("added byteArrayHashMap");
 	        } else {
 	            LOGGER.debug("byteArrayHashMap is null");
 	        }
-	
+
 	        HttpEntity httpEntity = multipartEntityBuilder.build();
 	        postMethod.setEntity(httpEntity);
 	        HttpResponse httpResponse = this.httpClient.execute(postMethod, localContext);
@@ -1232,11 +1232,11 @@ public class CommonHTTPManager implements AutoCloseable {
 	    } finally {
 	        LOGGER.debug("finally...");
 	    }
-	
+
 	    if (LOGGER.isDebugEnabled()) {
 	        LOGGER.debug("##### doHttpResponseMethod-end    #####, used time: " + (System.currentTimeMillis() - t1) + " ms\n");
 	    }
-	
+
 	    return response;
 	}
 
@@ -1267,7 +1267,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	 * @param filesHashMap hashmap, key is string(file name), value is byte
 	 * @param headers headers array
 	 * @param parameters parameters list
-	 * @param credentials 
+	 * @param credentials
 	 * array.
 	 * @return response
 	 * @throws IOException exception
@@ -1278,7 +1278,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	    if (LOGGER.isDebugEnabled()) {
 	        LOGGER.debug("##### doHttpResponseMethod-start  #####, url=" + url);
 	    }
-	
+
 	    String response = null;
 	    try {
 	        /* Local context is going to be used to pass credentials in to request */
@@ -1293,7 +1293,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	        } else {
 	            LOGGER.debug("credentials is null");
 	        }
-	
+
 	        HttpPost postMethod = new HttpPost(url);
 	        for (Header header : headers) {
 	        	/* Exclude setting Content-Type from headers parameter */
@@ -1302,7 +1302,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	                LOGGER.debug("added header " + header.getName());
 	        	}
 	        }
-	
+
 	        MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create();
 	        if (parameters != null) {
 	            for (NameValuePair parameter : parameters) {
@@ -1310,10 +1310,10 @@ public class CommonHTTPManager implements AutoCloseable {
 	                multipartEntityBuilder.addTextBody(parameterName, parameter.getValue());
 	                LOGGER.debug("added parameter " + parameterName);
 	            }
-	
+
 	            LOGGER.debug("added parameters");
 	        }
-	
+
 	        Iterator iterator = filesHashMap.keySet().iterator();
 	        while (iterator.hasNext()) {
 	            String key = (String) iterator.next();
@@ -1321,7 +1321,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	            File file = filesHashMap.get(key);
 	            multipartEntityBuilder.addBinaryBody(key, file);
 	        }
-	
+
 	        HttpEntity httpEntity = multipartEntityBuilder.build();
 	        postMethod.setEntity(httpEntity);
 	        HttpResponse httpResponse = this.httpClient.execute(postMethod, localContext);
@@ -1335,11 +1335,11 @@ public class CommonHTTPManager implements AutoCloseable {
 	    } finally {
 	        LOGGER.debug("finally...");
 	    }
-	
+
 	    if (LOGGER.isDebugEnabled()) {
 	        LOGGER.debug("##### doHttpResponseMethod-end    #####, used time: " + (System.currentTimeMillis() - t1) + " ms\n");
 	    }
-	
+
 	    return response;
 	}
 
@@ -1387,7 +1387,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	        fileHashMap.put(file.getName(), file);
 	        LOGGER.debug("put file in HashMap");
 	    }
-	
+
 	    return doMultipartPost(url, fileHashMap, headers, parameters);
 	}
 
@@ -1410,7 +1410,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	    } else {
 	        LOGGER.debug("commonHttpResponse is null");
 	    }
-	
+
 	    return responseEntityString;
 	}
 
@@ -1432,7 +1432,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	        } else {
 	            LOGGER.debug("commonHttpResponse is null");
 	        }
-	
+
 	        return null;
 	    } catch (Exception e) {
 	        LOGGER.warn("exception doing GET: " + e.getMessage());
@@ -1470,7 +1470,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	        } else {
 	            LOGGER.debug("commonHttpResponse is null");
 	        }
-	
+
 	        return null;
 	    } catch (Exception e) {
 	        LOGGER.warn("exception doing PATCH: " + e.getMessage());
@@ -1536,7 +1536,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	            for (Header responseHeader : responseHeaders) {
 	                LOGGER.debug("responseHeader is " + responseHeader.getName() + ":" + responseHeader.getValue());
 	            }
-	
+
 	            HttpEntity httpEntity = commonHttpResponse.getResponseEntity();
 	            LOGGER.debug("got responseEntity");
 	            if (httpEntity != null) {
@@ -1550,7 +1550,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	        } else {
 	            LOGGER.debug("commonHttpResponse is null");
 	        }
-	
+
 	        return null;
 	    } catch (Exception e) {
 	        LOGGER.warn("exception doing PUT: " + e.getMessage());
