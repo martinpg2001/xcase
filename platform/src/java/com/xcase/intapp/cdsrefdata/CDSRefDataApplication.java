@@ -103,7 +103,7 @@ public class CDSRefDataApplication {
             patchTypesRequest.setEntityString("[{\"key\":\"OPN\",\"name\":\"Opened\",\"active\":true,\"system\":false}]");
             patchTypesResponse = cdsRefDataExternalAPI.patchTypes(patchTypesRequest);
             patchTypesRequest.setType("ClientExternalId");
-            patchTypesRequest.setEntityString("[]");
+            patchTypesRequest.setEntityString("[{\"key\":\"financialSystemId\",\"name\":\"financialSystemId\",\"active\":true,\"system\":false}]");
             patchTypesResponse = cdsRefDataExternalAPI.patchTypes(patchTypesRequest);
             patchTypesRequest.setType("ClientPerson");
             patchTypesRequest.setEntityString("[{\"key\":\"resourceLawyer\",\"name\":\"Resource Lawyer\",\"active\":true,\"system\":false},{\"key\":\"billingLawyer\",\"name\":\"Billing Lawyer\",\"active\":true,\"system\":true},{\"key\":\"responsibleLawyer\",\"name\":\"Responsible Lawyer\",\"active\":true,\"system\":true},{\"key\":\"referenceLawyer\",\"name\":\"Reference Lawyer\",\"active\":true,\"system\":true},{\"key\":\"engagementManager\",\"name\":\"Engagement Manager\",\"active\":true,\"system\":true}]");
@@ -121,7 +121,7 @@ public class CDSRefDataApplication {
             patchTypesRequest.setEntityString("[]");
             patchTypesResponse = cdsRefDataExternalAPI.patchTypes(patchTypesRequest);
             patchTypesRequest.setType("MatterExternalId");
-            patchTypesRequest.setEntityString("[]");
+            patchTypesRequest.setEntityString("[{\"key\":\"financialSystemId\",\"name\":\"financialSystemId\",\"active\":true,\"system\":false}]");
             patchTypesResponse = cdsRefDataExternalAPI.patchTypes(patchTypesRequest);
             patchTypesRequest.setType("MatterPerson");
             patchTypesRequest.setEntityString("[{\"key\":\"billingLawyer\",\"name\":\"Billing Lawyer\",\"active\":true,\"system\":true},{\"key\":\"responsibleLawyer\",\"name\":\"Responsible Lawyer\",\"active\":true,\"system\":true},{\"key\":\"referenceLawyer\",\"name\":\"Reference Lawyer\",\"active\":true,\"system\":true},{\"key\":\"originatingLawyer\",\"name\":\"Originating Lawyer\",\"active\":true,\"system\":true},{\"key\":\"relationshipPartner\",\"name\":\"Relationship Partner\",\"active\":true,\"system\":true}]");
@@ -133,13 +133,13 @@ public class CDSRefDataApplication {
             patchTypesRequest.setEntityString("[{\"key\":\"ActivityDirectory\",\"name\":\"ActivityDirectory\",\"active\":true,\"system\":false},{\"key\":\"financialSystemId\",\"name\":\"financialSystemId\",\"active\":true,\"system\":false},{\"key\":\"dmsSystemId\",\"name\":\"dmsSystemId\",\"active\":true,\"system\":false},{\"key\":\"timeKeeperId\",\"name\":\"timeKeeperId\",\"active\":true,\"system\":false},{\"key\":\"billingSystemid\",\"name\":\"billingSystemid\",\"active\":true,\"system\":false},{\"key\":\"dictationuserid\",\"name\":\"dictationuserid\",\"active\":true,\"system\":true},{\"key\":\"dmsuserid\",\"name\":\"dmsuserid\",\"active\":true,\"system\":false},{\"key\":\"pmsid\",\"name\":\"pmsid\",\"active\":true,\"system\":true},{\"key\":\"dmsid\",\"name\":\"dmsid\",\"active\":true,\"system\":true}]");
             patchTypesResponse = cdsRefDataExternalAPI.patchTypes(patchTypesRequest);
             patchTypesRequest.setType("Practice");
-            patchTypesRequest.setEntityString("[]");
+            patchTypesRequest.setEntityString("[{\"key\":\"LIT\",\"name\":\"Litigation\",\"active\":true,\"system\":false}]");
             patchTypesResponse = cdsRefDataExternalAPI.patchTypes(patchTypesRequest);
             patchTypesRequest.setType("Rounding");
             patchTypesRequest.setEntityString("[{\"key\":\"BNK\",\"name\":\"Banker's Rounding\",\"active\":true,\"system\":false}]");
             patchTypesResponse = cdsRefDataExternalAPI.patchTypes(patchTypesRequest);
             patchTypesRequest.setType("Title");
-            patchTypesRequest.setEntityString("[]");
+            patchTypesRequest.setEntityString("[{\"key\":\"DR\",\"name\":\"Doctor\",\"active\":true,\"system\":false}]");
             patchTypesResponse = cdsRefDataExternalAPI.patchTypes(patchTypesRequest);
             LOGGER.debug("patched types");
             LOGGER.debug("about to post types");
@@ -151,7 +151,7 @@ public class CDSRefDataApplication {
             postTypesRequest.setEntityString("[{\"key\":\"OPN\",\"name\":\"Opened\",\"active\":true,\"system\":false}]");
             postTypesResponse = cdsRefDataExternalAPI.postTypes(postTypesRequest);
             postTypesRequest.setType("ClientExternalId");
-            postTypesRequest.setEntityString("[]");
+            postTypesRequest.setEntityString("[{\"key\":\"financialSystemId\",\"name\":\"financialSystemId\",\"active\":true,\"system\":false}]");
             postTypesResponse = cdsRefDataExternalAPI.postTypes(postTypesRequest);
             postTypesRequest.setType("ClientPerson");
             postTypesRequest.setEntityString("[{\"key\":\"resourceLawyer\",\"name\":\"Resource Lawyer\",\"active\":true,\"system\":false},{\"key\":\"billingLawyer\",\"name\":\"Billing Lawyer\",\"active\":true,\"system\":true},{\"key\":\"responsibleLawyer\",\"name\":\"Responsible Lawyer\",\"active\":true,\"system\":true},{\"key\":\"referenceLawyer\",\"name\":\"Reference Lawyer\",\"active\":true,\"system\":true},{\"key\":\"engagementManager\",\"name\":\"Engagement Manager\",\"active\":true,\"system\":true}]");
@@ -169,7 +169,7 @@ public class CDSRefDataApplication {
             postTypesRequest.setEntityString("[]");
             postTypesResponse = cdsRefDataExternalAPI.postTypes(postTypesRequest);
             postTypesRequest.setType("MatterExternalId");
-            postTypesRequest.setEntityString("[]");
+            postTypesRequest.setEntityString("[{\"key\":\"financialSystemId\",\"name\":\"financialSystemId\",\"active\":true,\"system\":false}]");
             postTypesResponse = cdsRefDataExternalAPI.postTypes(postTypesRequest);
             postTypesRequest.setType("MatterPerson");
             postTypesRequest.setEntityString("[{\"key\":\"billingLawyer\",\"name\":\"Billing Lawyer\",\"active\":true,\"system\":true},{\"key\":\"responsibleLawyer\",\"name\":\"Responsible Lawyer\",\"active\":true,\"system\":true},{\"key\":\"referenceLawyer\",\"name\":\"Reference Lawyer\",\"active\":true,\"system\":true},{\"key\":\"originatingLawyer\",\"name\":\"Originating Lawyer\",\"active\":true,\"system\":true},{\"key\":\"relationshipPartner\",\"name\":\"Relationship Partner\",\"active\":true,\"system\":true}]");
@@ -181,13 +181,13 @@ public class CDSRefDataApplication {
             postTypesRequest.setEntityString("[{\"key\":\"ActivityDirectory\",\"name\":\"ActivityDirectory\",\"active\":true,\"system\":false},{\"key\":\"financialSystemId\",\"name\":\"financialSystemId\",\"active\":true,\"system\":false},{\"key\":\"dmsSystemId\",\"name\":\"dmsSystemId\",\"active\":true,\"system\":false},{\"key\":\"timeKeeperId\",\"name\":\"timeKeeperId\",\"active\":true,\"system\":false},{\"key\":\"billingSystemid\",\"name\":\"billingSystemid\",\"active\":true,\"system\":false},{\"key\":\"dictationuserid\",\"name\":\"dictationuserid\",\"active\":true,\"system\":true},{\"key\":\"dmsuserid\",\"name\":\"dmsuserid\",\"active\":true,\"system\":false},{\"key\":\"pmsid\",\"name\":\"pmsid\",\"active\":true,\"system\":true},{\"key\":\"dmsid\",\"name\":\"dmsid\",\"active\":true,\"system\":true}]");
             postTypesResponse = cdsRefDataExternalAPI.postTypes(postTypesRequest);
             postTypesRequest.setType("Practice");
-            postTypesRequest.setEntityString("[]");
+            postTypesRequest.setEntityString("[{\"key\":\"LIT\",\"name\":\"Litigation\",\"active\":true,\"system\":false}]");
             postTypesResponse = cdsRefDataExternalAPI.postTypes(postTypesRequest);
             postTypesRequest.setType("Rounding");
             postTypesRequest.setEntityString("[{\"key\":\"BNK\",\"name\":\"Banker's Rounding\",\"active\":true,\"system\":false}]");
             postTypesResponse = cdsRefDataExternalAPI.postTypes(postTypesRequest);
             postTypesRequest.setType("Title");
-            postTypesRequest.setEntityString("[]");
+            postTypesRequest.setEntityString("[{\"key\":\"DR\",\"name\":\"Doctor\",\"active\":true,\"system\":false}]");
             postTypesResponse = cdsRefDataExternalAPI.postTypes(postTypesRequest);
             LOGGER.debug("posted types");
             LOGGER.debug("about to get type by key");
@@ -195,10 +195,10 @@ public class CDSRefDataApplication {
             LOGGER.debug("created getTypeByKeyRequest");
             GetTypeByKeyResponse getTypeByKeyResponse = null;
             getTypeByKeyRequest.setType("BillableStatus");
-            getTypeByKeyRequest.setKey(null);
+            getTypeByKeyRequest.setKey("OPN");
             getTypeByKeyResponse = cdsRefDataExternalAPI.getTypeByKey(getTypeByKeyRequest);
             getTypeByKeyRequest.setType("ClientExternalId");
-            getTypeByKeyRequest.setKey(null);
+            getTypeByKeyRequest.setKey("financialSystemId");
             getTypeByKeyResponse = cdsRefDataExternalAPI.getTypeByKey(getTypeByKeyRequest);
             getTypeByKeyRequest.setType("ClientPerson");
             getTypeByKeyRequest.setKey("resourceLawyer");
@@ -216,7 +216,7 @@ public class CDSRefDataApplication {
             getTypeByKeyRequest.setKey(null);
             getTypeByKeyResponse = cdsRefDataExternalAPI.getTypeByKey(getTypeByKeyRequest);
             getTypeByKeyRequest.setType("MatterExternalId");
-            getTypeByKeyRequest.setKey(null);
+            getTypeByKeyRequest.setKey("financialSystemId");
             getTypeByKeyResponse = cdsRefDataExternalAPI.getTypeByKey(getTypeByKeyRequest);
             getTypeByKeyRequest.setType("MatterPerson");
             getTypeByKeyRequest.setKey("billingLawyer");
@@ -228,13 +228,13 @@ public class CDSRefDataApplication {
             getTypeByKeyRequest.setKey("ActivityDirectory");
             getTypeByKeyResponse = cdsRefDataExternalAPI.getTypeByKey(getTypeByKeyRequest);
             getTypeByKeyRequest.setType("Practice");
-            getTypeByKeyRequest.setKey(null);
+            getTypeByKeyRequest.setKey("LIT");
             getTypeByKeyResponse = cdsRefDataExternalAPI.getTypeByKey(getTypeByKeyRequest);
             getTypeByKeyRequest.setType("Rounding");
             getTypeByKeyRequest.setKey("BNK");
             getTypeByKeyResponse = cdsRefDataExternalAPI.getTypeByKey(getTypeByKeyRequest);
             getTypeByKeyRequest.setType("Title");
-            getTypeByKeyRequest.setKey(null);
+            getTypeByKeyRequest.setKey("DR");
             getTypeByKeyResponse = cdsRefDataExternalAPI.getTypeByKey(getTypeByKeyRequest);
             LOGGER.debug("got type by key");
         } catch (Exception e) {
