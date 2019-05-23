@@ -51,7 +51,7 @@ public class FindUsersMethod extends BaseCDSUsersMethod {
             Header contentTypeHeader = createContentTypeHeader();
             Header[] headers = {acceptHeader, acceptLanguageHeader, authorizationHeader, contentTypeHeader};
             List<NameValuePair> parameters = new ArrayList<NameValuePair>();
-            parameters.add(new BasicNameValuePair("Authorization", "Bearer " + accessToken));
+            //parameters.add(new BasicNameValuePair("Authorization", "Bearer " + accessToken));
             CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponseGet(endPoint, headers, parameters, null);
             int responseCode = commonHttpResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);

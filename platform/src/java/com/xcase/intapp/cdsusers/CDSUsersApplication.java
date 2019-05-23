@@ -48,8 +48,10 @@ public class CDSUsersApplication {
             CreatePersonResponse createPersonResponse = cdsUsersExternalAPI.createPerson(createPersonRequest);
             LOGGER.debug("created person");
             /* Get persons */
-            LOGGER.debug("about to get persons");
+            LOGGER.debug("about to get 10 persons");
             GetPersonsRequest getPersonsRequest = CDSUsersRequestFactory.createGetPersonsRequest(accessToken);
+            getPersonsRequest.setLimit(10);
+            getPersonsRequest.setSkip(5);
             LOGGER.debug("created getPersonsRequest");
             GetPersonsResponse getPersonsResponse = cdsUsersExternalAPI.getPersons(getPersonsRequest);
             LOGGER.debug("got persons");
@@ -74,6 +76,7 @@ public class CDSUsersApplication {
             partiallyUpdateUserRequest.setUserString("{\"timekeeper\":false}");
             PartiallyUpdateUserResponse partiallyUpdateUserResponse = cdsUsersExternalAPI.partiallyUpdateUser(partiallyUpdateUserRequest);
             LOGGER.debug("partially updated user");
+            /* Put user */
             LOGGER.debug("about to put user");
             PutUserRequest putUserRequest = CDSUsersRequestFactory.createPutUserRequest(accessToken);
             LOGGER.debug("created putUserRequest");
@@ -81,30 +84,39 @@ public class CDSUsersApplication {
             putUserRequest.setUserString("{\"userId\" : \"dennis.gilchrist@intapp.com\",\"email\" : \"dennis.gilchrist@intapp.com\",\"enabled\" : true,\"name\" : \"Dennis Gilchrist\",\"firstName\" : \"Dennis\",\"lastName\" : \"Gilchrist\",\"personKey\" : \"-vGpeSugaRv20cCo\",\"external\" : true,\"userOrigin\" : \"REGULAR\",\"providerAlias\" : \"saml\",\"enableOtp\" : false,\"timekeeper\" : false,\"exchangeUsername\" : \"\",\"exchangeHost\" : \"\",\"readonly\" : false}");
             PutUserResponse putUserResponse = cdsUsersExternalAPI.putUser(putUserRequest);
             LOGGER.debug("put user");
+            /* Get user */
             LOGGER.debug("about to get user");
             GetUserRequest getUserRequest = CDSUsersRequestFactory.createGetUserRequest(accessToken);
             LOGGER.debug("created getUserRequest");
             getUserRequest.setKey("j_GC6SvZOxsM9sC2");
             GetUserResponse getUserResponse = cdsUsersExternalAPI.getUser(getUserRequest);
             LOGGER.debug("get user");
+            /* Find 10 roles */
             LOGGER.debug("about to find roles");
             FindRolesRequest findRolesRequest = CDSUsersRequestFactory.createFindRolesRequest(accessToken);
             LOGGER.debug("created findRolesRequest");
             findRolesRequest.setName("System Admin");
+            findRolesRequest.setLimit(10);
+            findRolesRequest.setSkip(5);
             FindRolesResponse findRolesResponse = cdsUsersExternalAPI.findRoles(findRolesRequest);
             LOGGER.debug("found roles");
+            /* Find 10 capabilities */
             LOGGER.debug("about to find capabilities");
             FindCapabilitiesRequest findCapabilitiesRequest = CDSUsersRequestFactory.createFindCapabilitiesRequest(accessToken);
             LOGGER.debug("created findCapabilitiesRequest");
             findCapabilitiesRequest.setRole("System Admin");
+            findCapabilitiesRequest.setLimit(10);
+            findCapabilitiesRequest.setSkip(5);
             FindCapabilitiesResponse findCapabilitiesResponse = cdsUsersExternalAPI.findCapabilities(findCapabilitiesRequest);
             LOGGER.debug("found capabilities");
+            /* Get capability */
             LOGGER.debug("about to get capability");
             GetCapabilityRequest getCapabilityRequest = CDSUsersRequestFactory.createGetCapabilityRequest(accessToken);
             LOGGER.debug("created getCapabilityRequest");
             getCapabilityRequest.setKey("SfEDIyu2DxvB08OR");
             GetCapabilityResponse getCapabilityResponse = cdsUsersExternalAPI.getCapability(getCapabilityRequest);
             LOGGER.debug("got capability");
+            /* Publish entities */
             LOGGER.debug("about to publish entities");
             PublishEntitiesRequest publishEntitiesRequest = CDSUsersRequestFactory.createPublishEntitiesRequest(accessToken);
             LOGGER.debug("created publishEntitiesRequest");
