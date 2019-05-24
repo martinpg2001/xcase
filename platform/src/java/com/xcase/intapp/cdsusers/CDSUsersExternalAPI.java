@@ -7,12 +7,14 @@ public interface CDSUsersExternalAPI {
 	CreatePersonResponse createPerson(CreatePersonRequest createPersonRequest);
 
     CreateUserResponse createUser(CreateUserRequest createUserRequest);
-
-    FindUsersResponse findUsers(FindUsersRequest findUsersRequest);
-
+    
     FindRolesResponse findRoles(FindRolesRequest findRolesRequest);
 
     FindCapabilitiesResponse findCapabilities(FindCapabilitiesRequest findCapabilitiesRequest);
+    
+	FindServiceUsersResponse findServiceUsers(FindServiceUsersRequest findServiceUsersRequest);
+
+    FindUsersResponse findUsers(FindUsersRequest findUsersRequest);
     
     GetCapabilityResponse getCapability(GetCapabilityRequest getCapabilityRequest);
     

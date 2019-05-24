@@ -1,9 +1,9 @@
 package com.xcase.intapp.cdsusers.impl.simple.transputs;
 
-import com.xcase.intapp.cdsusers.transputs.FindUsersRequest;
+import com.xcase.intapp.cdsusers.transputs.FindServiceUsersRequest;
 
-public class FindUsersRequestImpl extends ListableCDSUsersRequestImpl implements FindUsersRequest {
-    private String operationPath = "api/v1/cds/users";
+public class FindServiceUsersRequestImpl extends ListableCDSUsersRequestImpl implements FindServiceUsersRequest {
+    private String operationPath = "api/v1/cds/service-users";
     private String search;
     
 	@Override

@@ -40,6 +40,11 @@ public class SimpleCDSUsersImpl implements CDSUsersExternalAPI {
     /**
      * method implementation.
      */
+    private FindServiceUsersMethod findServiceUsersMethod = new FindServiceUsersMethod();
+    
+    /**
+     * method implementation.
+     */
     private FindUsersMethod findUsersMethod = new FindUsersMethod();
     
     /**
@@ -125,5 +130,10 @@ public class SimpleCDSUsersImpl implements CDSUsersExternalAPI {
 	@Override
 	public PublishEntitiesResponse publishEntities(PublishEntitiesRequest publishEntitiesRequest) {
 		return this.publishEntitiesMethod.publishEntities(publishEntitiesRequest);
+	}
+
+	@Override
+	public FindServiceUsersResponse findServiceUsers(FindServiceUsersRequest findServiceUsersRequest) {
+		return this.findServiceUsersMethod.findServiceUsers(findServiceUsersRequest);
 	}
 }

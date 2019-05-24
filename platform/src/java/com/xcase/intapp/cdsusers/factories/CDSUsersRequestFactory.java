@@ -132,5 +132,16 @@ public class CDSUsersRequestFactory extends BaseCDSUsersFactory {
         request.setAccessToken(accessToken);
         return request;
 	}
+	
+    public static FindServiceUsersRequest createFindServiceUsersRequest() {
+        Object obj = newInstanceOf("cdsusers.config.requestfactory.FindServiceUsersRequest");
+        return (FindServiceUsersRequest) obj;
+    }
+
+	public static FindServiceUsersRequest createFindServiceUsersRequest(String accessToken) {
+		FindServiceUsersRequest request = createFindServiceUsersRequest();
+        request.setAccessToken(accessToken);
+        return request;
+	}
 
 }

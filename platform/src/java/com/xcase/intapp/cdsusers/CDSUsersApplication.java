@@ -68,6 +68,12 @@ public class CDSUsersApplication {
             LOGGER.debug("created findUsersRequest");
             FindUsersResponse findUsersResponse = cdsUsersExternalAPI.findUsers(findUsersRequest);
             LOGGER.debug("found users");
+            /* Find service users */
+            LOGGER.debug("about to find service users");
+            FindServiceUsersRequest findServiceUsersRequest = CDSUsersRequestFactory.createFindServiceUsersRequest(accessToken);
+            LOGGER.debug("created findServiceUsersRequest");
+            FindServiceUsersResponse findServiceUsersResponse = cdsUsersExternalAPI.findServiceUsers(findServiceUsersRequest);
+            LOGGER.debug("found service users");
             /* Partially update user */
             LOGGER.debug("about to partially update user");
             PartiallyUpdateUserRequest partiallyUpdateUserRequest = CDSUsersRequestFactory.createPartiallyUpdateUserRequest(accessToken);
