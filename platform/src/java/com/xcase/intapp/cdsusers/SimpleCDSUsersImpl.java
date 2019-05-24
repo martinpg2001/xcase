@@ -97,6 +97,11 @@ public class SimpleCDSUsersImpl implements CDSUsersExternalAPI {
      */
     private PutUserMethod putUserMethod = new PutUserMethod();
     
+    /**
+     * method implementation.
+     */
+    private SetRoleUsersMethod setRoleUsersMethod = new SetRoleUsersMethod();
+    
     @Override
 	public CreatePersonResponse createPerson(CreatePersonRequest createPersonRequest) {
     	return this.createPersonMethod.createPerson(createPersonRequest);
@@ -175,5 +180,10 @@ public class SimpleCDSUsersImpl implements CDSUsersExternalAPI {
     @Override
     public DeleteRoleResponse deleteRole(DeleteRoleRequest deleteRoleRequest) {
         return this.deleteRoleMethod.deleteRole(deleteRoleRequest);
+    }
+
+    @Override
+    public SetRoleUsersResponse setRoleUsers(SetRoleUsersRequest setRoleUsersRequest) {
+        return this.setRoleUsersMethod.setRoleUsers(setRoleUsersRequest);
     }
 }

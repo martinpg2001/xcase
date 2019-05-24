@@ -113,7 +113,7 @@ public class CDSUsersApplication {
             LOGGER.debug("about to create role");
             CreateRoleRequest createRoleRequest = CDSUsersRequestFactory.createCreateRoleRequest(accessToken);
             LOGGER.debug("created createRoleRequest");
-            createRoleRequest.setRoleString("{\"userId\":\"dennis.gilchrist@intapp.com\",\"email\":\"dennis.gilchrist@intapp.com\",\"enabled\":true,\"name\":\"Dennis Gilchrist\",\"personKey\":\"-vGpeSugaRv20cCo\",\"timeZoneId\":null,\"locale\":null,\"roles\":[],\"enableOtp\":null,\"timekeeper\":true,\"exchangeUsername\":\"\",\"exchangeHost\":\"\",\"emailAliases\":[],\"timeLinks\":{}}");
+            createRoleRequest.setRoleString("{\"name\":\"TEST ROLE\",\"description\":\"This is a test role.\"}");
             CreateRoleResponse createRoleResponse = cdsUsersExternalAPI.createRole(createRoleRequest);
             LOGGER.debug("created role");
             /* Find 10 roles */
@@ -125,11 +125,22 @@ public class CDSUsersApplication {
             findRolesRequest.setSkip(5);
             FindRolesResponse findRolesResponse = cdsUsersExternalAPI.findRoles(findRolesRequest);
             LOGGER.debug("found roles");
+            /* Set role to users */
+            LOGGER.debug("about to set role to users");
+            SetRoleUsersRequest setRoleUsersRequest = CDSUsersRequestFactory.createSetRoleUsersRequest(accessToken);
+            LOGGER.debug("created setRoleUsersRequest");
+            setRoleUsersRequest.setKey("SvGWqysOUBs0pMDs");
+            List<String> userList = new ArrayList<String>();
+            userList.add("j_GC6SvZOxsM9sC2");
+            String[] userArray = userList.toArray(new String[0]);
+            setRoleUsersRequest.setUsers(userArray);
+            SetRoleUsersResponse setRoleUsersResponse = cdsUsersExternalAPI.setRoleUsers(setRoleUsersRequest);
+            LOGGER.debug("set role to users");            
             /* Delete role */
             LOGGER.debug("about to delete role");
             DeleteRoleRequest deleteRoleRequest = CDSUsersRequestFactory.createDeleteRoleRequest(accessToken);
             LOGGER.debug("created deleteRoleRequest");
-            deleteRoleRequest.setKey("");
+            deleteRoleRequest.setKey("SvGWqysOUBs0pMDs");
             DeleteRoleResponse deleteRoleResponse = cdsUsersExternalAPI.deleteRole(deleteRoleRequest);
             LOGGER.debug("deleted role");
             /* Find 10 capabilities */

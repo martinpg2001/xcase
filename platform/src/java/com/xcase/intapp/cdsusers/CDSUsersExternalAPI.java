@@ -12,9 +12,11 @@ public interface CDSUsersExternalAPI {
 
     CreateUserResponse createUser(CreateUserRequest createUserRequest);
     
-    FindRolesResponse findRoles(FindRolesRequest findRolesRequest);
-
+    DeleteRoleResponse deleteRole(DeleteRoleRequest deleteRoleRequest);
+    
     FindCapabilitiesResponse findCapabilities(FindCapabilitiesRequest findCapabilitiesRequest);
+    
+    FindRolesResponse findRoles(FindRolesRequest findRolesRequest);
     
 	FindServiceUsersResponse findServiceUsers(FindServiceUsersRequest findServiceUsersRequest);
 
@@ -34,6 +36,6 @@ public interface CDSUsersExternalAPI {
 	
     PutUserResponse putUser(PutUserRequest putUserRequest);
 
-    DeleteRoleResponse deleteRole(DeleteRoleRequest deleteRoleRequest);
+    SetRoleUsersResponse setRoleUsers(SetRoleUsersRequest setRoleUsersRequest);
 
 }

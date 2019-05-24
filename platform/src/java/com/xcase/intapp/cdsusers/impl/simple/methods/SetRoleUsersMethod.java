@@ -2,27 +2,28 @@ package com.xcase.intapp.cdsusers.impl.simple.methods;
 
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.intapp.cdsusers.factories.CDSUsersResponseFactory;
-import com.xcase.intapp.cdsusers.transputs.DeleteRoleRequest;
-import com.xcase.intapp.cdsusers.transputs.DeleteRoleResponse;
+import com.xcase.intapp.cdsusers.transputs.CreatePersonResponse;
+import com.xcase.intapp.cdsusers.transputs.SetRoleUsersRequest;
+import com.xcase.intapp.cdsusers.transputs.SetRoleUsersResponse;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicHeader;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class DeleteRoleMethod extends BaseCDSUsersMethod {
+public class SetRoleUsersMethod extends BaseCDSUsersMethod {
     /**
      * log4j object.
      */
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
-
-    public DeleteRoleResponse deleteRole(DeleteRoleRequest request) {
-        LOGGER.debug("starting deleteRole()");
-        DeleteRoleResponse response = CDSUsersResponseFactory.createDeleteRoleResponse();
+    
+    public SetRoleUsersResponse setRoleUsers(SetRoleUsersRequest request) {
+        LOGGER.debug("starting setRoleUsers()");
+        SetRoleUsersResponse response = CDSUsersResponseFactory.createSetRoleUsersResponse();
         LOGGER.debug("created response");
         try {
             String baseVersionUrl = getAPIVersionUrl();
@@ -42,11 +43,21 @@ public class DeleteRoleMethod extends BaseCDSUsersMethod {
             Header[] headers = {acceptHeader, acceptLanguageHeader, authorizationHeader, contentTypeHeader};
             List<NameValuePair> parameters = new ArrayList<NameValuePair>();
             //parameters.add(new BasicNameValuePair("Authorization", "Bearer " + accessToken));
-            CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponseDelete(endPoint, headers, parameters, null);
+            String[] userArray = request.getUsers();
+            StringBuilder entityStringBuilder = new StringBuilder();
+            entityStringBuilder.append("[");
+            for (String user : userArray) {
+                entityStringBuilder.append("{\"key\":\"" + user + "\"},");
+            }
+            
+            entityStringBuilder.append("]");
+            String entityString = entityStringBuilder.toString().replace(",]", "]");
+            LOGGER.debug("entityString is " + entityString);
+            CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponsePut(endPoint, headers, parameters, entityString);
             int responseCode = commonHttpResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
             response.setResponseCode(responseCode);
-            if (responseCode == 200) {
+            if (responseCode == 201) {
                 handleExpectedResponseCode(response, commonHttpResponse);
             } else {
                 handleUnexpectedResponseCode(response, commonHttpResponse);
