@@ -1,14 +1,11 @@
 package com.xcase.intapp.cdscm.impl.simple.core;
 
-import java.lang.invoke.MethodHandles;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.xcase.common.IConfigurationManager;
 import com.xcase.common.impl.simple.core.AbstractConfigurationManager;
 import com.xcase.intapp.cdscm.constant.CDSCMConstant;
-import com.xcase.integrate.constant.IntegrateConstant;
+import java.lang.invoke.MethodHandles;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class CDSCMConfigurationManager extends AbstractConfigurationManager implements IConfigurationManager{
 
