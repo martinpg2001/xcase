@@ -165,5 +165,27 @@ public class CDSUsersRequestFactory extends BaseCDSUsersFactory {
         request.setAccessToken(accessToken);
         return request;
     }
+    
+    public static CreateRoleRequest createCreateRoleRequest() {
+        Object obj = newInstanceOf("cdsusers.config.requestfactory.CreateRoleRequest");
+        return (CreateRoleRequest) obj;
+    }
+
+    public static CreateRoleRequest createCreateRoleRequest(String accessToken) {
+        CreateRoleRequest request = createCreateRoleRequest();
+        request.setAccessToken(accessToken);
+        return request;
+    }
+    
+    public static DeleteRoleRequest createDeleteRoleRequest() {
+        Object obj = newInstanceOf("cdsusers.config.requestfactory.DeleteRoleRequest");
+        return (DeleteRoleRequest) obj;
+    }
+
+    public static DeleteRoleRequest createDeleteRoleRequest(String accessToken) {
+        DeleteRoleRequest request = createDeleteRoleRequest();
+        request.setAccessToken(accessToken);
+        return request;
+    }
 
 }

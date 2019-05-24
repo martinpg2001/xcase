@@ -109,6 +109,13 @@ public class CDSUsersApplication {
             getServiceUserRequest.setKey("GPE45StBaht0sMA0");
             GetServiceUserResponse getServiceUserResponse = cdsUsersExternalAPI.getServiceUser(getServiceUserRequest);
             LOGGER.debug("get service user");
+            /* Create role */
+            LOGGER.debug("about to create role");
+            CreateRoleRequest createRoleRequest = CDSUsersRequestFactory.createCreateRoleRequest(accessToken);
+            LOGGER.debug("created createRoleRequest");
+            createRoleRequest.setRoleString("{\"userId\":\"dennis.gilchrist@intapp.com\",\"email\":\"dennis.gilchrist@intapp.com\",\"enabled\":true,\"name\":\"Dennis Gilchrist\",\"personKey\":\"-vGpeSugaRv20cCo\",\"timeZoneId\":null,\"locale\":null,\"roles\":[],\"enableOtp\":null,\"timekeeper\":true,\"exchangeUsername\":\"\",\"exchangeHost\":\"\",\"emailAliases\":[],\"timeLinks\":{}}");
+            CreateRoleResponse createRoleResponse = cdsUsersExternalAPI.createRole(createRoleRequest);
+            LOGGER.debug("created role");
             /* Find 10 roles */
             LOGGER.debug("about to find roles");
             FindRolesRequest findRolesRequest = CDSUsersRequestFactory.createFindRolesRequest(accessToken);
@@ -118,6 +125,13 @@ public class CDSUsersApplication {
             findRolesRequest.setSkip(5);
             FindRolesResponse findRolesResponse = cdsUsersExternalAPI.findRoles(findRolesRequest);
             LOGGER.debug("found roles");
+            /* Delete role */
+            LOGGER.debug("about to delete role");
+            DeleteRoleRequest deleteRoleRequest = CDSUsersRequestFactory.createDeleteRoleRequest(accessToken);
+            LOGGER.debug("created deleteRoleRequest");
+            deleteRoleRequest.setKey("");
+            DeleteRoleResponse deleteRoleResponse = cdsUsersExternalAPI.deleteRole(deleteRoleRequest);
+            LOGGER.debug("deleted role");
             /* Find 10 capabilities */
             LOGGER.debug("about to find capabilities");
             FindCapabilitiesRequest findCapabilitiesRequest = CDSUsersRequestFactory.createFindCapabilitiesRequest(accessToken);

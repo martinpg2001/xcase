@@ -74,4 +74,14 @@ public class CDSUsersResponseFactory extends BaseCDSUsersFactory {
         return (GetServiceUserResponse) obj;
 	}
 
+    public static CreateRoleResponse createCreateRoleResponse() {
+        Object obj = newInstanceOf("cdsusers.config.responsefactory.CreateRoleResponse");
+        return (CreateRoleResponse) obj;
+    }
+
+    public static DeleteRoleResponse createDeleteRoleResponse() {
+        Object obj = newInstanceOf("cdsusers.config.responsefactory.DeleteRoleResponse");
+        return (DeleteRoleResponse) obj;
+    }
+
 }

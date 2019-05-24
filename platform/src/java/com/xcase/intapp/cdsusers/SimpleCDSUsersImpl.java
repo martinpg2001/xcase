@@ -25,12 +25,22 @@ public class SimpleCDSUsersImpl implements CDSUsersExternalAPI {
     /**
      * method implementation.
      */
+    private CreateRoleMethod createRoleMethod = new CreateRoleMethod();
+    
+    /**
+     * method implementation.
+     */
     private CreateServiceUserMethod createServiceUserMethod = new CreateServiceUserMethod();
     
     /**
      * method implementation.
      */
     private CreateUserMethod createUserMethod = new CreateUserMethod();
+    
+    /**
+     * method implementation.
+     */
+    private DeleteRoleMethod deleteRoleMethod = new DeleteRoleMethod();
     
     /**
      * method implementation.
@@ -155,5 +165,15 @@ public class SimpleCDSUsersImpl implements CDSUsersExternalAPI {
     @Override
     public CreateServiceUserResponse createServiceUser(CreateServiceUserRequest createServiceUserRequest) {
         return this.createServiceUserMethod.createServiceUser(createServiceUserRequest);
+    }
+
+    @Override
+    public CreateRoleResponse createRole(CreateRoleRequest createRoleRequest) {
+        return this.createRoleMethod.createRole(createRoleRequest);
+    }
+
+    @Override
+    public DeleteRoleResponse deleteRole(DeleteRoleRequest deleteRoleRequest) {
+        return this.deleteRoleMethod.deleteRole(deleteRoleRequest);
     }
 }

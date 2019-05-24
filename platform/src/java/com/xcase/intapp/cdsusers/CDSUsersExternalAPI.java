@@ -5,6 +5,10 @@ import com.xcase.intapp.cdsusers.transputs.*;
 public interface CDSUsersExternalAPI {
 
 	CreatePersonResponse createPerson(CreatePersonRequest createPersonRequest);
+	
+    CreateServiceUserResponse createServiceUser(CreateServiceUserRequest createServiceUserRequest);
+
+    CreateRoleResponse createRole(CreateRoleRequest createRoleRequest);
 
     CreateUserResponse createUser(CreateUserRequest createUserRequest);
     
@@ -30,6 +34,6 @@ public interface CDSUsersExternalAPI {
 	
     PutUserResponse putUser(PutUserRequest putUserRequest);
 
-    CreateServiceUserResponse createServiceUser(CreateServiceUserRequest createServiceUserRequest);
+    DeleteRoleResponse deleteRole(DeleteRoleRequest deleteRoleRequest);
 
 }
