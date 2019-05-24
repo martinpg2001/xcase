@@ -4,7 +4,7 @@ import com.xcase.intapp.cdsusers.transputs.SetRoleUsersRequest;
 
 public class SetRoleUsersRequestImpl extends CDSUsersRequestImpl implements SetRoleUsersRequest {
     private String key;
-    private String operationPath = "api/v1/cds/roles/{key}";
+    private String operationPath = "api/v1/cds/roles/{key}/users";
     private String[] userArray;
     
     @Override

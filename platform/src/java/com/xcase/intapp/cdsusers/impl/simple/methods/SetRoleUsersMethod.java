@@ -57,7 +57,7 @@ public class SetRoleUsersMethod extends BaseCDSUsersMethod {
             int responseCode = commonHttpResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
             response.setResponseCode(responseCode);
-            if (responseCode == 201) {
+            if (responseCode == 200) {
                 handleExpectedResponseCode(response, commonHttpResponse);
             } else {
                 handleUnexpectedResponseCode(response, commonHttpResponse);

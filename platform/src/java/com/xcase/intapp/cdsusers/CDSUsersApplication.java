@@ -57,7 +57,7 @@ public class CDSUsersApplication {
             LOGGER.debug("about to create service user");
             CreateServiceUserRequest createServiceUserRequest = CDSUsersRequestFactory.createCreateServiceUserRequest(accessToken);
             LOGGER.debug("created createServiceUserRequest");
-            createServiceUserRequest.setServiceUserString("{\"userId\":\"dennis.gilchrist@intapp.com\",\"email\":\"dennis.gilchrist@intapp.com\",\"enabled\":true,\"name\":\"Dennis Gilchrist\",\"personKey\":\"-vGpeSugaRv20cCo\",\"timeZoneId\":null,\"locale\":null,\"roles\":[],\"enableOtp\":null,\"timekeeper\":true,\"exchangeUsername\":\"\",\"exchangeHost\":\"\",\"emailAliases\":[],\"timeLinks\":{}}");
+            createServiceUserRequest.setServiceUserString("{\"userId\":\"TestCDS\",\"enabled\":true,\"name\":\"Test CDS Service User\",\"roles\":[]}");
             CreateServiceUserResponse createServiceUserResponse = cdsUsersExternalAPI.createServiceUser(createServiceUserRequest);
             LOGGER.debug("created service user");
             /* Create user */
@@ -116,6 +116,13 @@ public class CDSUsersApplication {
             createRoleRequest.setRoleString("{\"name\":\"TEST ROLE\",\"description\":\"This is a test role.\"}");
             CreateRoleResponse createRoleResponse = cdsUsersExternalAPI.createRole(createRoleRequest);
             LOGGER.debug("created role");
+            /* Find all roles */
+            LOGGER.debug("about to find all roles");
+            FindRolesRequest findAllRolesRequest = CDSUsersRequestFactory.createFindRolesRequest(accessToken);
+            LOGGER.debug("created findAllRolesRequest");
+            findAllRolesRequest.setName(null);
+            FindRolesResponse findAllRolesResponse = cdsUsersExternalAPI.findRoles(findAllRolesRequest);
+            LOGGER.debug("found all roles");
             /* Find 10 roles */
             LOGGER.debug("about to find roles");
             FindRolesRequest findRolesRequest = CDSUsersRequestFactory.createFindRolesRequest(accessToken);
@@ -129,7 +136,7 @@ public class CDSUsersApplication {
             LOGGER.debug("about to set role to users");
             SetRoleUsersRequest setRoleUsersRequest = CDSUsersRequestFactory.createSetRoleUsersRequest(accessToken);
             LOGGER.debug("created setRoleUsersRequest");
-            setRoleUsersRequest.setKey("SvGWqysOUBs0pMDs");
+            setRoleUsersRequest.setKey("HfFhDCuH4Rs4_8Ds");
             List<String> userList = new ArrayList<String>();
             userList.add("j_GC6SvZOxsM9sC2");
             String[] userArray = userList.toArray(new String[0]);
