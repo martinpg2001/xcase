@@ -13,6 +13,11 @@ public class CDSUsersResponseFactory extends BaseCDSUsersFactory {
         Object obj = newInstanceOf("cdsusers.config.responsefactory.GetPersonsResponse");
         return (GetPersonsResponse) obj;
     }
+    
+    public static CreateServiceUserResponse createCreateServiceUserResponse() {
+        Object obj = newInstanceOf("cdsusers.config.responsefactory.CreateServiceUserResponse");
+        return (CreateServiceUserResponse) obj;
+    }
 
     public static CreateUserResponse createCreateUserResponse() {
         Object obj = newInstanceOf("cdsusers.config.responsefactory.CreateUserResponse");
@@ -68,4 +73,5 @@ public class CDSUsersResponseFactory extends BaseCDSUsersFactory {
         Object obj = newInstanceOf("cdsusers.config.responsefactory.GetServiceUserResponse");
         return (GetServiceUserResponse) obj;
 	}
+
 }

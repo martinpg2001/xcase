@@ -154,5 +154,16 @@ public class CDSUsersRequestFactory extends BaseCDSUsersFactory {
         request.setAccessToken(accessToken);
         return request;
 	}
+	
+    public static CreateServiceUserRequest createCreateServiceUserRequest() {
+        Object obj = newInstanceOf("cdsusers.config.requestfactory.CreateServiceUserRequest");
+        return (CreateServiceUserRequest) obj;
+    }
+
+    public static CreateServiceUserRequest createCreateServiceUserRequest(String accessToken) {
+        CreateServiceUserRequest request = createCreateServiceUserRequest();
+        request.setAccessToken(accessToken);
+        return request;
+    }
 
 }

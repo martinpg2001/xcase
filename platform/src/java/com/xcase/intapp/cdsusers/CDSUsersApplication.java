@@ -53,6 +53,13 @@ public class CDSUsersApplication {
             LOGGER.debug("created getPersonsRequest");
             GetPersonsResponse getPersonsResponse = cdsUsersExternalAPI.getPersons(getPersonsRequest);
             LOGGER.debug("got persons");
+            /* Create service user */
+            LOGGER.debug("about to create service user");
+            CreateServiceUserRequest createServiceUserRequest = CDSUsersRequestFactory.createCreateServiceUserRequest(accessToken);
+            LOGGER.debug("created createServiceUserRequest");
+            createServiceUserRequest.setServiceUserString("{\"userId\":\"dennis.gilchrist@intapp.com\",\"email\":\"dennis.gilchrist@intapp.com\",\"enabled\":true,\"name\":\"Dennis Gilchrist\",\"personKey\":\"-vGpeSugaRv20cCo\",\"timeZoneId\":null,\"locale\":null,\"roles\":[],\"enableOtp\":null,\"timekeeper\":true,\"exchangeUsername\":\"\",\"exchangeHost\":\"\",\"emailAliases\":[],\"timeLinks\":{}}");
+            CreateServiceUserResponse createServiceUserResponse = cdsUsersExternalAPI.createServiceUser(createServiceUserRequest);
+            LOGGER.debug("created service user");
             /* Create user */
             LOGGER.debug("about to create user");
             CreateUserRequest createUserRequest = CDSUsersRequestFactory.createCreateUserRequest(accessToken);

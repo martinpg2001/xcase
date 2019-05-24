@@ -30,4 +30,6 @@ public interface CDSUsersExternalAPI {
 	
     PutUserResponse putUser(PutUserRequest putUserRequest);
 
+    CreateServiceUserResponse createServiceUser(CreateServiceUserRequest createServiceUserRequest);
+
 }

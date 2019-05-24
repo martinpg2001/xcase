@@ -25,6 +25,11 @@ public class SimpleCDSUsersImpl implements CDSUsersExternalAPI {
     /**
      * method implementation.
      */
+    private CreateServiceUserMethod createServiceUserMethod = new CreateServiceUserMethod();
+    
+    /**
+     * method implementation.
+     */
     private CreateUserMethod createUserMethod = new CreateUserMethod();
     
     /**
@@ -146,4 +151,9 @@ public class SimpleCDSUsersImpl implements CDSUsersExternalAPI {
 	public GetServiceUserResponse getServiceUser(GetServiceUserRequest getServiceUserRequest) {
 		return this.getServiceUserMethod.getServiceUser(getServiceUserRequest);
 	}
+
+    @Override
+    public CreateServiceUserResponse createServiceUser(CreateServiceUserRequest createServiceUserRequest) {
+        return this.createServiceUserMethod.createServiceUser(createServiceUserRequest);
+    }
 }
