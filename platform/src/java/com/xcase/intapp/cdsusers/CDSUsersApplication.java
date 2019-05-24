@@ -4,8 +4,6 @@ import com.google.gson.JsonObject;
 import com.xcase.common.impl.simple.core.CommonHTTPManager;
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.common.utils.ConverterUtils;
-import com.xcase.intapp.cdsusers.CDSUsersExternalAPI;
-import com.xcase.intapp.cdsusers.SimpleCDSUsersImpl;
 import com.xcase.intapp.cdsusers.constant.CDSUsersConstant;
 import com.xcase.intapp.cdsusers.factories.CDSUsersRequestFactory;
 import com.xcase.intapp.cdsusers.impl.simple.core.CDSUsersConfigurationManager;
@@ -97,6 +95,13 @@ public class CDSUsersApplication {
             getUserRequest.setKey("j_GC6SvZOxsM9sC2");
             GetUserResponse getUserResponse = cdsUsersExternalAPI.getUser(getUserRequest);
             LOGGER.debug("get user");
+            /* Get service user */
+            LOGGER.debug("about to get service user");
+            GetServiceUserRequest getServiceUserRequest = CDSUsersRequestFactory.createGetServiceUserRequest(accessToken);
+            LOGGER.debug("created getServiceUserRequest");
+            getServiceUserRequest.setKey("GPE45StBaht0sMA0");
+            GetServiceUserResponse getServiceUserResponse = cdsUsersExternalAPI.getServiceUser(getServiceUserRequest);
+            LOGGER.debug("get service user");
             /* Find 10 roles */
             LOGGER.debug("about to find roles");
             FindRolesRequest findRolesRequest = CDSUsersRequestFactory.createFindRolesRequest(accessToken);

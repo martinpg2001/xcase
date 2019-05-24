@@ -20,6 +20,8 @@ public interface CDSUsersExternalAPI {
     
     GetPersonsResponse getPersons(GetPersonsRequest getPersonsRequest);
     
+	GetServiceUserResponse getServiceUser(GetServiceUserRequest getServiceUserRequest);
+    
     GetUserResponse getUser(GetUserRequest getUserRequest);
     
     PartiallyUpdateUserResponse partiallyUpdateUser(PartiallyUpdateUserRequest partiallyUpdateUserRequest);

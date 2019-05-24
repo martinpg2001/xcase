@@ -63,4 +63,9 @@ public class CDSUsersResponseFactory extends BaseCDSUsersFactory {
         Object obj = newInstanceOf("cdsusers.config.responsefactory.FindServiceUsersResponse");
         return (FindServiceUsersResponse) obj;
 	}
+
+	public static GetServiceUserResponse createGetServiceUserResponse() {
+        Object obj = newInstanceOf("cdsusers.config.responsefactory.GetServiceUserResponse");
+        return (GetServiceUserResponse) obj;
+	}
 }
