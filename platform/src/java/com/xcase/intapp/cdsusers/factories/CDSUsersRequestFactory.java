@@ -198,5 +198,16 @@ public class CDSUsersRequestFactory extends BaseCDSUsersFactory {
         request.setAccessToken(accessToken);
         return request;
     }
+    
+    public static UploadEntitiesRequest createUploadEntitiesRequest() {
+        Object obj = newInstanceOf("cdsusers.config.requestfactory.UploadEntitiesRequest");
+        return (UploadEntitiesRequest) obj;
+    }
+
+	public static UploadEntitiesRequest createUploadEntitiesRequest(String accessToken) {
+		UploadEntitiesRequest request = createUploadEntitiesRequest();
+        request.setAccessToken(accessToken);
+        return request;
+	}
 
 }

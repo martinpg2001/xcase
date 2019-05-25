@@ -89,4 +89,9 @@ public class CDSUsersResponseFactory extends BaseCDSUsersFactory {
         return (SetRoleUsersResponse) obj;
     }
 
+	public static UploadEntitiesResponse createUploadEntitiesResponse() {
+        Object obj = newInstanceOf("cdsusers.config.responsefactory.UploadEntitiesResponse");
+        return (UploadEntitiesResponse) obj;
+	}
+
 }

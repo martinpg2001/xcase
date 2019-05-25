@@ -174,6 +174,26 @@ public class CDSUsersApplication {
             publishEntitiesRequest.setEntity("User");
             PublishEntitiesResponse publishEntitiesResponse = cdsUsersExternalAPI.publishEntities(publishEntitiesRequest);
             LOGGER.debug("published entities");
+            /* Upload entities */
+            LOGGER.debug("about to upload entities");
+            UploadEntitiesRequest uploadPersonEntitiesRequest = CDSUsersRequestFactory.createUploadEntitiesRequest(accessToken);
+            LOGGER.debug("created uploadPersonEntitiesRequest");
+            uploadPersonEntitiesRequest.setEntity("Person");
+            uploadPersonEntitiesRequest.setEntityString("[{\"firstName\":\"Ellen\",\"middleName\":\"Philippa\",\"lastName\":\"Gilchrist\",\"name\":\"Ellen Gilchrist\",\"titles\":[],\"email\":\"ellen.gilchrist@intapp.com\",\"costPoolId\":null,\"addresses\":[],\"communications\":[],\"employee\":true,\"department\":null,\"office\":null,\"practiceAreas\":[],\"externalIds\":[]},{\"firstName\":\"Frank\",\"middleName\":\"Philippa\",\"lastName\":\"Gilchrist\",\"name\":\"Frank Gilchrist\",\"titles\":[],\"email\":\"frank.gilchrist@intapp.com\",\"costPoolId\":null,\"addresses\":[],\"communications\":[],\"employee\":false,\"department\":null,\"office\":null,\"practiceAreas\":[],\"externalIds\":[]}]");
+            UploadEntitiesResponse uploadPersonEntitiesResponse = cdsUsersExternalAPI.uploadEntities(uploadPersonEntitiesRequest);
+            LOGGER.debug("uploaded person entities");  
+            UploadEntitiesRequest uploadRoleEntitiesRequest = CDSUsersRequestFactory.createUploadEntitiesRequest(accessToken);
+            LOGGER.debug("created uploadRoleEntitiesRequest");
+            uploadRoleEntitiesRequest.setEntity("Role");
+            uploadRoleEntitiesRequest.setEntityString("[{\"name\":\"TEST ROLE 2\",\"description\":\"This is a second test role.\"}]");
+            UploadEntitiesResponse uploadRoleEntitiesResponse = cdsUsersExternalAPI.uploadEntities(uploadRoleEntitiesRequest);
+            LOGGER.debug("uploaded role entities");
+            UploadEntitiesRequest uploadUserEntitiesRequest = CDSUsersRequestFactory.createUploadEntitiesRequest(accessToken);
+            LOGGER.debug("created uploadUserEntitiesRequest");
+            uploadUserEntitiesRequest.setEntity("User");
+            uploadUserEntitiesRequest.setEntityString("[{\"userId\":\"ellen.gilchrist@intapp.com\",\"email\":\"ellen.gilchrist@intapp.com\",\"enabled\":true,\"name\":\"Ellen Gilchrist\",\"personKey\":\"-vGpeSugaRv20cCo\",\"timeZoneId\":null,\"locale\":null,\"roles\":[],\"enableOtp\":null,\"timekeeper\":true,\"exchangeUsername\":\"\",\"exchangeHost\":\"\",\"emailAliases\":[],\"timeLinks\":{}},{\"userId\":\"frank.gilchrist@intapp.com\",\"email\":\"frank.gilchrist@intapp.com\",\"enabled\":true,\"name\":\"Frank Gilchrist\",\"personKey\":\"7vHDVCunIRuXfsDq\",\"timeZoneId\":null,\"locale\":null,\"roles\":[],\"enableOtp\":null,\"timekeeper\":true,\"exchangeUsername\":\"\",\"exchangeHost\":\"\",\"emailAliases\":[],\"timeLinks\":{}}]");
+            UploadEntitiesResponse uploadUserEntitiesResponse = cdsUsersExternalAPI.uploadEntities(uploadUserEntitiesRequest);
+            LOGGER.debug("uploaded user entities"); 
         } catch (Exception e) {
             LOGGER.warn("exception executing methods: " + e.getMessage());
         }

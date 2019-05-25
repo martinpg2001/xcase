@@ -38,4 +38,6 @@ public interface CDSUsersExternalAPI {
 
     SetRoleUsersResponse setRoleUsers(SetRoleUsersRequest setRoleUsersRequest);
 
+	UploadEntitiesResponse uploadEntities(UploadEntitiesRequest uploadEntitiesRequest);
+
 }
