@@ -36,13 +36,13 @@ public class CDSUsersApplication {
         try {
             generateTokenPair();
             String accessToken = CDSUsersConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(CDSUsersConstant.ACCESS_TOKEN);
-            String personId = "martin.gilchrist@intapp.com";
+            String personId = "gilian.gilchrist@intapp.com";
             LOGGER.debug("personId is " + personId);
             /* Create person */
             LOGGER.debug("about to create person");
             CreatePersonRequest createPersonRequest = CDSUsersRequestFactory.createCreatePersonRequest(accessToken);
             LOGGER.debug("created createPersonRequest");
-            createPersonRequest.setPersonString("{\"personId\":null,\"firstName\":\"Dennis\",\"middleName\":\"Philip\",\"lastName\":\"Gilchrist\",\"name\":\"Dennis Gilchrist\",\"titles\":[],\"email\":\"dennis.gilchrist@intapp.com\",\"costPoolId\":null,\"addresses\":[],\"communications\":[],\"employee\":true,\"department\":null,\"office\":null,\"practiceAreas\":[],\"externalIds\":[]}");
+            createPersonRequest.setPersonString("{\"personId\":null,\"firstName\":\"Gilian\",\"middleName\":\"Philippa\",\"lastName\":\"Gilchrist\",\"name\":\"Gilian Gilchrist\",\"titles\":[],\"email\":\"gilian.gilchrist@intapp.com\",\"costPoolId\":\"ACC\",\"addresses\":[],\"communications\":[],\"employee\":true,\"department\":null,\"office\":null,\"practiceAreas\":[],\"externalIds\":[]}");
             CreatePersonResponse createPersonResponse = cdsUsersExternalAPI.createPerson(createPersonRequest);
             LOGGER.debug("created person");
             /* Get persons */

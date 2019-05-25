@@ -128,7 +128,7 @@ public class WebApplicationDisplayHelper {
     /**
      *
      * @param sourceHashMap
-     * @return
+     * @return a sorted by key TreeMap
      * @throws java.lang.Exception
      */
     @SuppressWarnings("unchecked")

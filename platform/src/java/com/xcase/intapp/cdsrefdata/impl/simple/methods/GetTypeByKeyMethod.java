@@ -41,11 +41,11 @@ public class GetTypeByKeyMethod extends BaseCDSRefDataMethod {
         	typeHashMap.put("Title", "titles");
             String baseVersionUrl = getAPIVersionUrl();
             LOGGER.debug("baseVersionUrl is " + baseVersionUrl);
-            String operationPath = request.getOperationPath() + "?";
+            String operationPath = request.getOperationPath();
             LOGGER.debug("operationPath is " + operationPath);
             endPoint = baseVersionUrl + operationPath;
             String type = request.getType();
-            endPoint = endPoint + typeHashMap.get(type);
+            endPoint = endPoint + typeHashMap.get(type) + "?";
             String key = request.getKey();
             if (key != null && !key.isEmpty()) {
                 endPoint = endPoint + "key=" + key;

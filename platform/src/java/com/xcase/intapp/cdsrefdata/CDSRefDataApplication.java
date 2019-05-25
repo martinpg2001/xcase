@@ -114,7 +114,7 @@ public class CDSRefDataApplication {
             patchTypesRequest.setEntityString("[{\"key\":\"ACT\",\"name\":\"Active\",\"active\":true,\"system\":false},{\"key\":\"INT\",\"name\":\"Inactive\",\"active\":true,\"system\":false}]");
             patchTypesResponse = cdsRefDataExternalAPI.patchTypes(patchTypesRequest);
             patchTypesRequest.setType("CostPool");
-            patchTypesRequest.setEntityString("[]");
+            patchTypesRequest.setEntityString("[{\"currencyCode\":\"USD\",\"key\":\"TRV\",\"name\":\"Travel\",\"active\":true,\"system\":false},{\"currencyCode\":\"USD\",\"key\":\"ACC\",\"name\":\"Accomodation\",\"active\":true,\"system\":false}]");
             patchTypesResponse = cdsRefDataExternalAPI.patchTypes(patchTypesRequest);
             patchTypesRequest.setType("Department");
             patchTypesRequest.setEntityString("[{\"key\":\"QA\",\"name\":\"Test Department\",\"active\":true,\"system\":false},{\"key\":\"DEV\",\"name\":\"Development\",\"active\":true,\"system\":false}]");
@@ -162,7 +162,7 @@ public class CDSRefDataApplication {
             postTypesRequest.setEntityString("[{\"key\":\"ACT\",\"name\":\"Active\",\"active\":true,\"system\":false},{\"key\":\"INT\",\"name\":\"Inactive\",\"active\":true,\"system\":false}]");
             postTypesResponse = cdsRefDataExternalAPI.postTypes(postTypesRequest);
             postTypesRequest.setType("CostPool");
-            postTypesRequest.setEntityString("[]");
+            postTypesRequest.setEntityString("[{\"currencyCode\":\"USD\",\"key\":\"TRV\",\"name\":\"Travel\",\"active\":true,\"system\":false},{\"currencyCode\":\"USD\",\"key\":\"ACC\",\"name\":\"Accomodation\",\"active\":true,\"system\":false}]");
             postTypesResponse = cdsRefDataExternalAPI.postTypes(postTypesRequest);
             postTypesRequest.setType("Department");
             postTypesRequest.setEntityString("[{\"key\":\"QA\",\"name\":\"Test Department\",\"active\":true,\"system\":false},{\"key\":\"DEV\",\"name\":\"Development\",\"active\":true,\"system\":false}]");
@@ -209,7 +209,7 @@ public class CDSRefDataApplication {
             getTypeByKeyRequest.setKey("ACT");
             getTypeByKeyResponse = cdsRefDataExternalAPI.getTypeByKey(getTypeByKeyRequest);
             getTypeByKeyRequest.setType("CostPool");
-            getTypeByKeyRequest.setKey(null);
+            getTypeByKeyRequest.setKey("TRV");
             getTypeByKeyResponse = cdsRefDataExternalAPI.getTypeByKey(getTypeByKeyRequest);
             getTypeByKeyRequest.setType("Department");
             getTypeByKeyRequest.setKey("QA");
