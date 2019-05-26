@@ -30,6 +30,8 @@ public interface CDSUsersExternalAPI {
     
     GetUserResponse getUser(GetUserRequest getUserRequest);
     
+    GetUserRolesResponse getUserRoles(GetUserRolesRequest getUserRolesRequest);
+    
     PartiallyUpdateUserResponse partiallyUpdateUser(PartiallyUpdateUserRequest partiallyUpdateUserRequest);
 
 	PublishEntitiesResponse publishEntities(PublishEntitiesRequest publishEntitiesRequest);

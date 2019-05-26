@@ -94,4 +94,9 @@ public class CDSUsersResponseFactory extends BaseCDSUsersFactory {
         return (UploadEntitiesResponse) obj;
 	}
 
+    public static GetUserRolesResponse createGetUserRolesResponse() {
+        Object obj = newInstanceOf("cdsusers.config.responsefactory.GetUserRolesResponse");
+        return (GetUserRolesResponse) obj;
+    }
+
 }

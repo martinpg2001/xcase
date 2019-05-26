@@ -85,6 +85,11 @@ public class SimpleCDSUsersImpl implements CDSUsersExternalAPI {
     /**
      * method implementation.
      */
+    private GetUserRolesMethod getUserRolesMethod = new GetUserRolesMethod();
+    
+    /**
+     * method implementation.
+     */
     private PartiallyUpdateUserMethod partiallyUpdateUserMethod = new PartiallyUpdateUserMethod();
     
     /**
@@ -196,4 +201,9 @@ public class SimpleCDSUsersImpl implements CDSUsersExternalAPI {
 	public UploadEntitiesResponse uploadEntities(UploadEntitiesRequest uploadEntitiesRequest) {
 		return this.uploadEntitiesMethod.uploadEntities(uploadEntitiesRequest);
 	}
+
+    @Override
+    public GetUserRolesResponse getUserRoles(GetUserRolesRequest getUserRolesRequest) {
+        return this.getUserRolesMethod.getUserRoles(getUserRolesRequest);
+    }
 }

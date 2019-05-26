@@ -42,14 +42,14 @@ public class CDSUsersApplication {
             LOGGER.debug("about to create person");
             CreatePersonRequest createPersonRequest = CDSUsersRequestFactory.createCreatePersonRequest(accessToken);
             LOGGER.debug("created createPersonRequest");
-            createPersonRequest.setPersonString("{\"personId\":null,\"firstName\":\"Gilian\",\"middleName\":\"Philippa\",\"lastName\":\"Gilchrist\",\"name\":\"Gilian Gilchrist\",\"titles\":[],\"email\":\"gilian.gilchrist@intapp.com\",\"costPoolId\":\"ACC\",\"addresses\":[],\"communications\":[],\"employee\":true,\"department\":null,\"office\":null,\"practiceAreas\":[],\"externalIds\":[]}");
+            createPersonRequest.setPersonString("{\"personId\":null,\"firstName\":\"Imogen\",\"middleName\":\"Philippa\",\"lastName\":\"Gilchrist\",\"name\":\"Imogen Gilchrist\",\"titles\":[],\"email\":\"imogen.gilchrist@intapp.com\",\"costPoolId\":\"ACC\",\"addresses\":[{\"type\":\"Home\",\"country\":\"US\",\"state\":\"UT\",\"city\":\"Salt Lake City\",\"streetAddress\":\"1 Park Avenue\",\"postalCode\":\"09876\"},{\"type\":\"Work\",\"country\":\"US\",\"state\":\"UT\",\"city\":\"Salt Lake City\",\"streetAddress\":\"2 Park Avenue\",\"postalCode\":\"09875\"}],\"communications\":[{\"type\":\"Mobile\",\"areaCode\":\"408\",\"number\":\"5551212\"},{\"type\":\"Work\",\"areaCode\":\"408\",\"number\":\"6661212\"}],\"employee\":true,\"department\":{\"key\":\"QA\"},\"office\":{\"key\":\"LND\"},\"practiceAreas\":[{\"key\":\"LIT\"}],\"externalIds\":[]}");
             CreatePersonResponse createPersonResponse = cdsUsersExternalAPI.createPerson(createPersonRequest);
             LOGGER.debug("created person");
             /* Get persons */
             LOGGER.debug("about to get 10 persons");
             GetPersonsRequest getPersonsRequest = CDSUsersRequestFactory.createGetPersonsRequest(accessToken);
-            getPersonsRequest.setLimit(10);
-            getPersonsRequest.setSkip(5);
+            getPersonsRequest.setLimit(0);
+            getPersonsRequest.setSkip(0);
             LOGGER.debug("created getPersonsRequest");
             GetPersonsResponse getPersonsResponse = cdsUsersExternalAPI.getPersons(getPersonsRequest);
             LOGGER.debug("got persons");
@@ -142,7 +142,14 @@ public class CDSUsersApplication {
             String[] userArray = userList.toArray(new String[0]);
             setRoleUsersRequest.setUsers(userArray);
             SetRoleUsersResponse setRoleUsersResponse = cdsUsersExternalAPI.setRoleUsers(setRoleUsersRequest);
-            LOGGER.debug("set role to users");            
+            LOGGER.debug("set role to users");
+            /* Get roles assigned to user */
+            LOGGER.debug("about to get roles assigned to user");
+            GetUserRolesRequest getUserRolesRequest = CDSUsersRequestFactory.createGetUserRolesRequest(accessToken);
+            LOGGER.debug("created getUserRolesRequest");
+            getUserRolesRequest.setKey("j_GC6SvZOxsM9sC2");
+            GetUserRolesResponse getUserRolesResponse = cdsUsersExternalAPI.getUserRoles(getUserRolesRequest);
+            LOGGER.debug("got roles assigned to user");   
             /* Delete role */
             LOGGER.debug("about to delete role");
             DeleteRoleRequest deleteRoleRequest = CDSUsersRequestFactory.createDeleteRoleRequest(accessToken);
