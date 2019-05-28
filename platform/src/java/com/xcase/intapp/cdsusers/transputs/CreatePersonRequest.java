@@ -1,5 +1,7 @@
 package com.xcase.intapp.cdsusers.transputs;
 
+import com.xcase.intapp.cdsusers.objects.PersonPostDTO;
+
 /**
  * Use this interface to create a person using the CDS service.
  * @author martinpg
@@ -11,6 +13,12 @@ public interface CreatePersonRequest extends CDSUsersRequest {
      * @return the operation URL
      */
     public String getOperationPath();
+    
+    /**
+     * Returns the PersonPostDTO object.
+     * @return the operation URL
+     */
+    public PersonPostDTO getPerson();
 
     /**
      * Returns the entity string used to create the person. For example: 
@@ -20,4 +28,6 @@ public interface CreatePersonRequest extends CDSUsersRequest {
 	public String getPersonString();
 
 	public void setPersonString(String person);
+
+    public void setPerson(PersonPostDTO personPostDTO);
 }

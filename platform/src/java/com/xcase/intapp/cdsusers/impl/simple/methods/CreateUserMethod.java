@@ -39,7 +39,13 @@ public class CreateUserMethod extends BaseCDSUsersMethod {
             Header[] headers = {acceptHeader, acceptLanguageHeader, authorizationHeader, contentTypeHeader};
             List<NameValuePair> parameters = new ArrayList<NameValuePair>();
             //parameters.add(new BasicNameValuePair("Authorization", "Bearer " + accessToken));
-            String userString = request.getUserString();
+            String userString = null;
+            if (request.getUser() != null) {
+                userString = gson.toJson(request.getUser());
+            } else {
+                userString = request.getUserString();
+            }
+            
             LOGGER.debug("userString is " + userString);
             CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponsePost(endPoint, headers, parameters, userString, null);
             int responseCode = commonHttpResponse.getResponseCode();

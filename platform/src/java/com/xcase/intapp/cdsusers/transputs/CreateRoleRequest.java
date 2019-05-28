@@ -1,11 +1,17 @@
 package com.xcase.intapp.cdsusers.transputs;
 
-public interface CreateRoleRequest extends CDSUsersRequest {
+import com.google.gson.JsonElement;
+import com.xcase.intapp.cdsusers.objects.RolePostDTO;
 
-    void setRoleString(String string);
+public interface CreateRoleRequest extends CDSUsersRequest {
 
     String getOperationPath();
 
     String getRoleString();
 
+    RolePostDTO getRole();
+    
+    void setRole(RolePostDTO rolePostDTO);
+
+    void setRoleString(String string);
 }

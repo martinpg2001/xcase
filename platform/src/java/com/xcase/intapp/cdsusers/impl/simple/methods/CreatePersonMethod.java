@@ -44,7 +44,13 @@ public class CreatePersonMethod extends BaseCDSUsersMethod {
             Header[] headers = {acceptHeader, acceptLanguageHeader, authorizationHeader, contentTypeHeader};
             List<NameValuePair> parameters = new ArrayList<NameValuePair>();
             //parameters.add(new BasicNameValuePair("Authorization", "Bearer " + accessToken));
-            String personString = request.getPersonString();
+            String personString = null;
+            if (request.getPerson() != null) {
+                personString = gson.toJson(request.getPerson());
+            } else {
+                personString = request.getPersonString();
+            }
+
             LOGGER.debug("personString is " + personString);
             CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponsePost(endPoint, headers, parameters, personString, null);
             int responseCode = commonHttpResponse.getResponseCode();

@@ -28,6 +28,11 @@ public class BaseCDSUsersMethod {
      * core http manager.
      */
     protected CommonHTTPManager httpManager = CommonHTTPManager.refreshCommonHTTPManager();
+    
+    /**
+     * Gson clas for converting to and from Json.
+     */
+    protected Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd' 'HH:mm:ss").create();
 
     public String endPoint;
 
@@ -59,7 +64,6 @@ public class BaseCDSUsersMethod {
         response.setStatus(commonHttpResponse.getStatusLine().getReasonPhrase());
         response.setStatusLine(commonHttpResponse.getStatusLine());
         if (responseEntityString != null && !responseEntityString.isEmpty()) {
-        	Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd' 'HH:mm:ss").create();
             JsonElement jsonElement = (JsonElement) ConverterUtils.parseStringToJson(responseEntityString);
             if (jsonElement.isJsonArray()) {
                 JsonArray jsonArray = (JsonArray) jsonElement;

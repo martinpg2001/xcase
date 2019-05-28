@@ -39,7 +39,13 @@ public class CreateRoleMethod extends BaseCDSUsersMethod {
             Header[] headers = {acceptHeader, acceptLanguageHeader, authorizationHeader, contentTypeHeader};
             List<NameValuePair> parameters = new ArrayList<NameValuePair>();
             //parameters.add(new BasicNameValuePair("Authorization", "Bearer " + accessToken));
-            String roleString = request.getRoleString();
+            String roleString = null;
+            if (request.getRole() != null) {
+                roleString = gson.toJson(request.getRole());
+            } else {
+                roleString = request.getRoleString();
+            }
+            
             LOGGER.debug("roleString is " + roleString);
             CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponsePost(endPoint, headers, parameters, roleString, null);
             int responseCode = commonHttpResponse.getResponseCode();
