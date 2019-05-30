@@ -5,6 +5,7 @@ package com.xcase.salesforce.impl.simple.methods;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.salesforce.constant.SalesforceConstant;
 import com.xcase.salesforce.factories.SalesforceResponseFactory;
 import com.xcase.salesforce.impl.simple.objects.SalesforceAccountImpl;
@@ -42,35 +43,33 @@ public class GetAccountMethod extends BaseSalesforceMethod {
         LOGGER.debug("starting getAccount()");
         GetAccountResponse response = SalesforceResponseFactory.createGetAccountResponse();
         LOGGER.debug("created account response");
-        String accessToken = request.getAccessToken();
-        LOGGER.debug("accessToken is " + accessToken);
-        String accountId = request.getAccountId();
-        LOGGER.debug("accountId is " + accountId);
-        StringBuffer urlBuff = super.getApiUrl("sobjects/Account");
-        urlBuff.append("/" + accountId);
-        String accountApiUrl = urlBuff.toString();
-        LOGGER.debug("accountApiUrl is " + accountApiUrl);
-        String bearerString = "Bearer " + accessToken;
-        LOGGER.debug("bearerString is " + bearerString);
-        Header header = new BasicHeader("Authorization", bearerString);
-        LOGGER.debug("created Authorization header");
-        Header[] headers = {header};
-        List<NameValuePair> parameters = new ArrayList<NameValuePair>();
         try {
-            JsonElement jsonElement = httpManager.doJsonGet(accountApiUrl, headers, parameters);
-            if (!jsonElement.isJsonNull()) {
-                LOGGER.debug("jsonElement is " + jsonElement.toString());
-                JsonObject jsonObject = (JsonObject) jsonElement;
-                SalesforceAccountImpl salesforceAccountImpl = SalesforceAccountImpl.CreateSalesforceAccountImpl(jsonObject);
-                LOGGER.debug("created salesforceAccountImpl from jsonObject");
-                String accountName = salesforceAccountImpl.getName();
-                LOGGER.debug("accountName is " + accountName);
+            String accessToken = request.getAccessToken();
+            LOGGER.debug("accessToken is " + accessToken);
+            String accountId = request.getAccountId();
+            LOGGER.debug("accountId is " + accountId);
+            StringBuffer urlBuff = super.getApiUrl("sobjects/Account");
+            urlBuff.append("/" + accountId);
+            String endPoint = urlBuff.toString();
+            LOGGER.debug("endPoint is " + endPoint);
+            String bearerString = "Bearer " + accessToken;
+            LOGGER.debug("bearerString is " + bearerString);
+            Header header = new BasicHeader("Authorization", bearerString);
+            LOGGER.debug("created Authorization header");
+            Header[] headers = { header };
+            List<NameValuePair> parameters = new ArrayList<NameValuePair>();
+            CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponseGet(endPoint, headers, parameters,
+                    null);
+            int responseCode = commonHttpResponse.getResponseCode();
+            LOGGER.debug("responseCode is " + responseCode);
+            response.setResponseCode(responseCode);
+            if (responseCode == 200) {
+                handleExpectedResponseCode(response, commonHttpResponse);
             } else {
-                String status = SalesforceConstant.STATUS_NOT_LOGGED_IN;
-                response.setStatus(status);
+                handleUnexpectedResponseCode(response, commonHttpResponse);
             }
         } catch (Exception e) {
-            throw new SalesforceException("Failed to parse to a document.", e);
+            handleUnexpectedException(response, e);
         }
 
         return response;

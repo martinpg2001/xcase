@@ -4,6 +4,8 @@
 package com.xcase.salesforce.impl.simple.methods;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.salesforce.constant.SalesforceConstant;
 import com.xcase.salesforce.factories.SalesforceResponseFactory;
 import com.xcase.salesforce.objects.SalesforceException;
@@ -36,36 +38,44 @@ public class DeleteAccountMethod extends BaseSalesforceMethod {
      * @throws IOException
      * @throws SalesforceException
      */
-    public DeleteAccountResponse deleteAccount(DeleteAccountRequest deleteAccountRequest) throws IOException, SalesforceException {
+    public DeleteAccountResponse deleteAccount(DeleteAccountRequest request)
+            throws IOException, SalesforceException {
         LOGGER.debug("starting deleteAccount()");
-        DeleteAccountResponse deleteAccountResponse = SalesforceResponseFactory.createDeleteAccountResponse();
-        LOGGER.debug("created search account response");
-        String accessToken = deleteAccountRequest.getAccessToken();
-        LOGGER.debug("accessToken is " + accessToken);
-        String accountId = deleteAccountRequest.getAccountId();
-        LOGGER.debug("accountId is " + accountId);
-        StringBuffer urlBuff = super.getApiUrl("sobjects/Account");
-        urlBuff.append("/" + accountId);
-        String accountApiUrl = urlBuff.toString();
-        LOGGER.debug("accountApiUrl is " + accountApiUrl);
-        String bearerString = "Bearer " + accessToken;
-        LOGGER.debug("bearerString is " + bearerString);
-        Header header = new BasicHeader("Authorization", bearerString);
-        LOGGER.debug("created Authorization header");
-        Header[] headers = {header};
-        List<NameValuePair> parameters = new ArrayList<NameValuePair>();
+        DeleteAccountResponse response = SalesforceResponseFactory.createDeleteAccountResponse();
+        LOGGER.debug("created response");
         try {
-            JsonElement jsonElement = httpManager.doJsonDelete(accountApiUrl, headers, parameters, null);
-            if (!jsonElement.isJsonNull()) {
-                LOGGER.debug("jsonElement is " + jsonElement.toString());
+            String accessToken = request.getAccessToken();
+            LOGGER.debug("accessToken is " + accessToken);
+            String accountId = request.getAccountId();
+            LOGGER.debug("accountId is " + accountId);
+            StringBuffer urlBuff = super.getApiUrl("sobjects/Account");
+            urlBuff.append("/" + accountId);
+            String endPoint = urlBuff.toString();
+            LOGGER.debug("endPoint is " + endPoint);
+            String bearerString = "Bearer " + accessToken;
+            LOGGER.debug("bearerString is " + bearerString);
+            Header header = new BasicHeader("Authorization", bearerString);
+            LOGGER.debug("created Authorization header");
+            Header[] headers = { header };
+            List<NameValuePair> parameters = new ArrayList<NameValuePair>();
+            CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponseDelete(endPoint, headers,
+                    parameters, null, null);
+            int responseCode = commonHttpResponse.getResponseCode();
+            LOGGER.debug("responseCode is " + responseCode);
+            response.setResponseCode(responseCode);
+            if (responseCode == 204) {
+                handleExpectedResponseCode(response, commonHttpResponse);
+                JsonElement jsonElement = response.getJsonElement();
+                if (!jsonElement.isJsonNull()) {
+                    LOGGER.debug("jsonElement is " + jsonElement.toString());
+                }
             } else {
-                String status = SalesforceConstant.STATUS_NOT_LOGGED_IN;
-                deleteAccountResponse.setStatus(status);
+                handleUnexpectedResponseCode(response, commonHttpResponse);
             }
         } catch (Exception e) {
-            throw new SalesforceException("Failed to parse to a document.", e);
+            handleUnexpectedException(response, e);
         }
 
-        return deleteAccountResponse;
+        return response;
     }
 }

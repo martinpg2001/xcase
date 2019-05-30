@@ -5,10 +5,16 @@ package com.xcase.salesforce.impl.simple.methods;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.xcase.common.constant.CommonConstant;
 import com.xcase.common.impl.simple.core.CommonHTTPManager;
+import com.xcase.common.impl.simple.core.CommonHttpResponse;
+import com.xcase.common.utils.ConverterUtils;
 import com.xcase.salesforce.constant.SalesforceConstant;
 import com.xcase.salesforce.impl.simple.core.SalesforceConfigurationManager;
+import com.xcase.salesforce.transputs.SalesforceResponse;
 import java.lang.invoke.*;
 import java.util.Properties;
 import org.apache.logging.log4j.*;
@@ -300,5 +306,39 @@ public class BaseSalesforceMethod {
         Element elm = DocumentHelper.createElement(elmName);
         elm.addAttribute("xsi:type", elmType);
         return elm;
+    }
+    
+    public void handleExpectedResponseCode(SalesforceResponse response, CommonHttpResponse commonHttpResponse) {
+        String responseEntityString = commonHttpResponse.getResponseEntityString();
+        LOGGER.debug("responseEntityString is " + responseEntityString);
+        response.setEntityString(responseEntityString);
+        response.setResponseCode(commonHttpResponse.getResponseCode());
+        response.setStatus(commonHttpResponse.getStatusLine().getReasonPhrase());
+        response.setStatusLine(commonHttpResponse.getStatusLine());
+        if (responseEntityString != null && !responseEntityString.isEmpty()) {
+            JsonElement jsonElement = (JsonElement) ConverterUtils.parseStringToJson(responseEntityString);
+            response.setJsonElement(jsonElement);
+            if (jsonElement.isJsonArray()) {
+                JsonArray jsonArray = (JsonArray) jsonElement;
+            } else {
+                JsonObject jsonObject = (JsonObject) jsonElement;
+            }
+        } else {
+            LOGGER.debug("responseEntityString is null or empty");
+        }       
+    }
+
+    public void handleUnexpectedResponseCode(SalesforceResponse response, CommonHttpResponse commonHttpResponse) {
+        LOGGER.warn("unexpected response code: " + commonHttpResponse.getResponseCode());
+        response.setMessage("Unexpected response code: " + commonHttpResponse.getResponseCode());
+        response.setResponseCode(commonHttpResponse.getResponseCode());
+        response.setStatusLine(commonHttpResponse.getStatusLine());
+        response.setStatus(commonHttpResponse.getStatusLine().getReasonPhrase());
+    }
+
+    public void handleUnexpectedException(SalesforceResponse response, Exception e) {
+        LOGGER.warn("exception invoking API: " + e.getMessage());
+        response.setMessage("Exception invoking API: " + e.getMessage());
+        response.setStatus("FAIL");
     }
 }

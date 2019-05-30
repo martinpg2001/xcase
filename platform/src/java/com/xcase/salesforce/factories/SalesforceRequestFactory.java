@@ -73,6 +73,12 @@ public class SalesforceRequestFactory extends BaseSalesforceFactory {
         Object obj = newInstanceOf("salesforce.config.requestfactory.CreateAccountRequest");
         return (CreateAccountRequest) obj;
     }
+    
+    public static CreateAccountRequest createCreateAccountRequest(String accessToken) {
+        CreateAccountRequest request = createCreateAccountRequest();
+        request.setAccessToken(accessToken);
+        return request;
+    }
 
     public static CreateAccountRequest createCreateAccountRequest(String accessToken, String accountName) {
         CreateAccountRequest request = createCreateAccountRequest();
@@ -96,6 +102,31 @@ public class SalesforceRequestFactory extends BaseSalesforceFactory {
         request.setAccessToken(accessToken);
         request.setRecordType(recordType);
         request.setRecordBody(recordBody);
+        return request;
+    }
+    
+    public static DeleteAccountRequest createDeleteAccountRequest() {
+        Object obj = newInstanceOf("salesforce.config.requestfactory.DeleteAccountRequest");
+        return (DeleteAccountRequest) obj;
+    }     
+
+    public static DeleteAccountRequest createDeleteAccountRequest(String accessToken, String accountId) {
+        DeleteAccountRequest request = createDeleteAccountRequest();
+        request.setAccessToken(accessToken);
+        request.setAccountId(accountId);
+        return request;
+    }
+    
+    public static DeleteRecordRequest createDeleteRecordRequest() {
+        Object obj = newInstanceOf("salesforce.config.requestfactory.DeleteRecordRequest");
+        return (DeleteRecordRequest) obj;
+    }     
+
+    public static DeleteRecordRequest createDeleteRecordRequest(String accessToken, String recordType, String recordId) {
+        DeleteRecordRequest request = createDeleteRecordRequest();
+        request.setAccessToken(accessToken);
+        request.setRecordType(recordType);
+        request.setRecordId(recordId);
         return request;
     }
 
@@ -124,28 +155,15 @@ public class SalesforceRequestFactory extends BaseSalesforceFactory {
         return request;
     }
     
-    public static DeleteAccountRequest createDeleteAccountRequest() {
-        Object obj = newInstanceOf("salesforce.config.requestfactory.DeleteAccountRequest");
-        return (DeleteAccountRequest) obj;
-    }     
-
-    public static DeleteAccountRequest createDeleteAccountRequest(String accessToken, String accountId) {
-        DeleteAccountRequest request = createDeleteAccountRequest();
-        request.setAccessToken(accessToken);
-        request.setAccountId(accountId);
-        return request;
+    public static GetUserRequest createGetUserRequest() {
+        Object obj = newInstanceOf("salesforce.config.requestfactory.GetUserRequest");
+        return (GetUserRequest) obj;
     }
-    
-    public static DeleteRecordRequest createDeleteRecordRequest() {
-        Object obj = newInstanceOf("salesforce.config.requestfactory.DeleteRecordRequest");
-        return (DeleteRecordRequest) obj;
-    }     
 
-    public static DeleteRecordRequest createDeleteRecordRequest(String accessToken, String recordType, String recordId) {
-        DeleteRecordRequest request = createDeleteRecordRequest();
+    public static GetUserRequest createGetUserRequest(String accessToken, String userId) {
+        GetUserRequest request = createGetUserRequest();
         request.setAccessToken(accessToken);
-        request.setRecordType(recordType);
-        request.setRecordId(recordId);
+        request.setUserId(userId);
         return request;
     }
     
@@ -196,18 +214,6 @@ public class SalesforceRequestFactory extends BaseSalesforceFactory {
         request.setRecordType(recordType);
         request.setRecordId(recordId);
         request.setRecordBody(recordBody);
-        return request;
-    }
-    
-    public static GetUserRequest createGetUserRequest() {
-        Object obj = newInstanceOf("salesforce.config.requestfactory.GetUserRequest");
-        return (GetUserRequest) obj;
-    }
-
-    public static GetUserRequest createGetUserRequest(String accessToken, String userId) {
-        GetUserRequest request = createGetUserRequest();
-        request.setAccessToken(accessToken);
-        request.setUserId(userId);
         return request;
     }
 }

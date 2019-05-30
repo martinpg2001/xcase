@@ -12,13 +12,7 @@ import com.xcase.salesforce.constant.SalesforceConstant;
 import com.xcase.salesforce.impl.simple.core.SalesforceConfigurationManager;
 import com.xcase.salesforce.constant.SalesforceConstant;
 import com.xcase.salesforce.factories.SalesforceRequestFactory;
-import com.xcase.salesforce.transputs.GetAccessTokenRequest;
-import com.xcase.salesforce.transputs.GetAccessTokenResponse;
-import com.xcase.salesforce.transputs.GetAccountRequest;
-import com.xcase.salesforce.transputs.GetAccountResponse;
-import com.xcase.salesforce.transputs.GetUserRequest;
-import com.xcase.salesforce.transputs.GetUserResponse;
-
+import com.xcase.salesforce.transputs.*;
 import java.io.IOException;
 import java.lang.invoke.*;
 import java.util.ArrayList;
@@ -108,12 +102,24 @@ public class SalesforceApplication {
             LOGGER.debug("created getUserRequest");
             GetUserResponse getUserResponse = iSalesforceExternalAPI.getUser(getUserRequest);            
             /* Get an account */
-            String accountId = "001R000000pcP7z";
+            String accountId = "0014P000026SEdhQAG";
             GetAccountRequest getAccountRequest = SalesforceRequestFactory.createGetAccountRequest(accessToken, accountId);
             LOGGER.debug("created getAccountRequest");
             GetAccountResponse getAccountResponse = iSalesforceExternalAPI.getAccount(getAccountRequest);
+            /* Create an account */
+            CreateAccountRequest createAccountRequest = SalesforceRequestFactory.createCreateAccountRequest(accessToken);
+            LOGGER.debug("created createAccountRequest");
+            createAccountRequest.setAccountName("Bugbane");
+            CreateAccountResponse createAccountResponse = iSalesforceExternalAPI.createAccount(createAccountRequest);
+            accountId  = createAccountResponse.getAccountId();
+            LOGGER.debug("accountId is " + accountId);
+            /* Delete an account */
+            accountId  = "0014P000026SEneQAG";
+            DeleteAccountRequest deleteAccountRequest = SalesforceRequestFactory.createDeleteAccountRequest(accessToken, accountId);
+            LOGGER.debug("created deleteAccountRequest");
+            DeleteAccountResponse deleteAccountResponse = iSalesforceExternalAPI.deleteAccount(deleteAccountRequest);          
         } catch (Exception e) {
-
+            LOGGER.warn("exception running application: " + e.getMessage());
         }
     }
 
