@@ -100,27 +100,38 @@ public class BaseSalesforceMethod {
      */
     protected String soapApiUrl;
 
+    public String jsonOAuthTokenUrl;
+
     /**
      *
      */
     public BaseSalesforceMethod() {
-        LOGGER.debug("starting BaseSalesforceMethod()");
+//        LOGGER.debug("starting BaseSalesforceMethod()");
         this.apiOAuthTokenPrefix = config.getProperty(SalesforceConstant.CONFIG_API_OAUTH_TOKEN_PREFIX);
-        LOGGER.debug("apiOAuthTokenPrefix is " + apiOAuthTokenPrefix);
+//        LOGGER.debug("apiOAuthTokenPrefix is " + apiOAuthTokenPrefix);
         this.apiOAuthAuthorizePrefix = config.getProperty(SalesforceConstant.CONFIG_API_OAUTH_AUTHORIZE_PREFIX);
-        LOGGER.debug("apiOAuthAuthorizePrefix is " + apiOAuthAuthorizePrefix);
+//        LOGGER.debug("apiOAuthAuthorizePrefix is " + apiOAuthAuthorizePrefix);
         this.apiOAuthRevokePrefix = config.getProperty(SalesforceConstant.CONFIG_API_OAUTH_REVOKE_PREFIX);
-        LOGGER.debug("apiOAuthAuthorizePrefix is " + apiOAuthAuthorizePrefix);
+//        LOGGER.debug("apiOAuthAuthorizePrefix is " + apiOAuthAuthorizePrefix);
         this.apiUrlPrefix = localConfig.getProperty(SalesforceConstant.LOCAL_OAUTH2_INSTANCE_URL);
-        LOGGER.debug("apiUrlPrefix is " + apiUrlPrefix);
+//        LOGGER.debug("apiUrlPrefix is " + apiUrlPrefix);
         this.apiUploadUrlPrefix = config.getProperty(SalesforceConstant.CONFIG_API_UPLOAD_URL_PREFIX);
         this.apiVersion = config.getProperty(SalesforceConstant.CONFIG_API_VERSION);
         this.apiRequestFormat = config.getProperty(SalesforceConstant.CONFIG_API_REQUEST_FORMAT);
+        this.jsonOAuthTokenUrl = getJsonOAuthTokenUrl();
         this.xmlApiUrl = getXMLUrl();
         this.soapApiUrl = getSOAPUrl();
         this.xmlOAuthApiUrl = getOAuthAuthorizeUrl();
         this.xmlOAuthRevokeUrl = getOAuthRevokeUrl();
         this.xmlOAuthTokenUrl = getOAuthTokenUrl();
+    }
+
+    private String getJsonOAuthTokenUrl() {
+//      LOGGER.debug("starting getJsonOAuthTokenUrl()");
+      StringBuffer urlBuf = new StringBuffer();
+      urlBuf.append(apiOAuthTokenPrefix);
+      //LOGGER.debug("BaseBoxMethod: urlBuf is " + urlBuf.toString());
+      return urlBuf.toString();
     }
 
     /**
@@ -131,7 +142,7 @@ public class BaseSalesforceMethod {
      * @return the URL in string buffer
      */
     public StringBuffer getRestUrl(String actionName) {
-        LOGGER.debug("starting getRestUrl()");
+//        LOGGER.debug("starting getRestUrl()");
         StringBuffer urlBuf = new StringBuffer();
         urlBuf.append(this.apiUrlPrefix);
         urlBuf.append(CommonConstant.SLASH_STRING);
@@ -152,7 +163,7 @@ public class BaseSalesforceMethod {
      * @return the URL in string buffer
      */
     public StringBuffer getApiUrl(String actionType) {
-        LOGGER.debug("starting getApiUrl()");
+//        LOGGER.debug("starting getApiUrl()");
         StringBuffer urlBuf = new StringBuffer();
         urlBuf.append(this.apiUrlPrefix);
         urlBuf.append(CommonConstant.SLASH_STRING);
@@ -172,7 +183,7 @@ public class BaseSalesforceMethod {
      * @return URL string
      */
     private String getXMLUrl() {
-        LOGGER.debug("starting getXMLUrl()");
+//        LOGGER.debug("starting getXMLUrl()");
         StringBuffer urlBuf = new StringBuffer();
         urlBuf.append(apiUrlPrefix);
         urlBuf.append(CommonConstant.SLASH_STRING);
@@ -189,7 +200,7 @@ public class BaseSalesforceMethod {
      * @return URL string
      */
     private String getOAuthAuthorizeUrl() {
-        LOGGER.debug("starting getOAuthAuthorizeUrl()");
+//        LOGGER.debug("starting getOAuthAuthorizeUrl()");
         StringBuffer urlBuf = new StringBuffer();
         urlBuf.append(apiOAuthAuthorizePrefix);
 //        urlBuf.append(BoxConstant.SLASH_STRING);
@@ -201,7 +212,7 @@ public class BaseSalesforceMethod {
     }
 
     private String getOAuthRevokeUrl() {
-        LOGGER.debug("starting getOAuthRevokeUrl()");
+//        LOGGER.debug("starting getOAuthRevokeUrl()");
         StringBuffer urlBuf = new StringBuffer();
         urlBuf.append(apiOAuthRevokePrefix);
         return urlBuf.toString();
@@ -213,7 +224,7 @@ public class BaseSalesforceMethod {
      * @return URL string
      */
     private String getOAuthTokenUrl() {
-        LOGGER.debug("starting getOAuthTokenUrl()");
+//        LOGGER.debug("starting getOAuthTokenUrl()");
         StringBuffer urlBuf = new StringBuffer();
         urlBuf.append(apiOAuthTokenPrefix);
         //LOGGER.debug("BaseBoxMethod: urlBuf is " + urlBuf.toString());
@@ -226,7 +237,7 @@ public class BaseSalesforceMethod {
      * @return URL string
      */
     private String getSOAPUrl() {
-        LOGGER.debug("starting getSOAPUrl()");
+//        LOGGER.debug("starting getSOAPUrl()");
         StringBuffer urlBuf = new StringBuffer();
         urlBuf.append(apiUrlPrefix);
         urlBuf.append(CommonConstant.SLASH_STRING);

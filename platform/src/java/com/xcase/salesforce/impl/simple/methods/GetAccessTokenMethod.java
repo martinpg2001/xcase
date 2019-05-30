@@ -37,37 +37,54 @@ public class GetAccessTokenMethod extends BaseSalesforceMethod {
      * @throws IOException
      * @throws SalesforceException
      */
-    public GetAccessTokenResponse getAccessToken(GetAccessTokenRequest getAccessTokenRequest) throws IOException, SalesforceException {
+    public GetAccessTokenResponse getAccessToken(GetAccessTokenRequest request) throws IOException, SalesforceException {
         LOGGER.debug("starting getAccessToken()");
         GetAccessTokenResponse getAccessTokenResponse = SalesforceResponseFactory.createGetAccessTokenResponse();
         LOGGER.debug("created get access token response");
-        String clientId = getAccessTokenRequest.getClientId();
+        String clientId = request.getClientId();
         LOGGER.debug("clientId is " + clientId);
-        String authorizationCode = getAccessTokenRequest.getAuthorizationCode();
+        String authorizationCode = request.getAuthorizationCode();
         LOGGER.debug("authorizationCode is " + authorizationCode);
-        String clientSecret = getAccessTokenRequest.getClientSecret();
+        String clientSecret = request.getClientSecret();
         LOGGER.debug("clientSecret is " + clientSecret);
-        String refreshToken = getAccessTokenRequest.getRefreshToken();
+        String refreshToken = request.getRefreshToken();
         LOGGER.debug("refreshToken is " + refreshToken);
-        String oAuthTokenUrl = super.xmlOAuthTokenUrl;
+        String oAuthTokenUrl = super.jsonOAuthTokenUrl;
         LOGGER.debug("oAuthTokenUrl is " + oAuthTokenUrl);
         HttpPost postMethod = new HttpPost(xmlOAuthTokenUrl);
         LOGGER.debug("created postMethod with URL " + xmlOAuthTokenUrl);
-        String authorizationCodeString = "authorization_code";
-        String refreshTokenString = "refresh_token";
+        String grant_type = null;
+        if (authorizationCode != null && !authorizationCode.isEmpty()) {
+            grant_type = "authorization_code";
+        } else if (refreshToken != null && !refreshToken.isEmpty()) {
+            grant_type = "refresh_token";
+        } else {
+            LOGGER.warn("unrecognized grant type");
+        }
+        
+        String redirectURI = SalesforceConfigurationManager.getConfigurationManager().getLocalConfig()
+                .getProperty(SalesforceConstant.LOCAL_OAUTH2_REDIRECT_URL);
+        LOGGER.debug("redirectURI is " + redirectURI);
         LOGGER.debug("SalesforceConstant.PARAM_NAME_GRANT_TYPE name is " + SalesforceConstant.PARAM_NAME_GRANT_TYPE);
-        LOGGER.debug("SalesforceConstant.PARAM_NAME_GRANT_TYPE value is " + refreshTokenString);
+        LOGGER.debug("SalesforceConstant.PARAM_NAME_GRANT_TYPE value is " + grant_type);
         LOGGER.debug("SalesforceConstant.PARAM_NAME_CLIENT_ID name is " + SalesforceConstant.PARAM_NAME_CLIENT_ID);
         LOGGER.debug("SalesforceConstant.PARAM_NAME_CLIENT_ID value is " + clientId);
         LOGGER.debug("SalesforceConstant.PARAM_NAME_CLIENT_SECRET name is " + SalesforceConstant.PARAM_NAME_CLIENT_SECRET);
         LOGGER.debug("SalesforceConstant.PARAM_NAME_CLIENT_SECRET value is " + clientSecret);
         LOGGER.debug("SalesforceConstant.PARAM_NAME_REFRESH_TOKEN name is " + SalesforceConstant.PARAM_NAME_REFRESH_TOKEN);
         LOGGER.debug("SalesforceConstant.PARAM_NAME_REFRESH_TOKEN value is " + "5Aep8619hWPJoouFYbRZLY3mazegL5Nbrc.HvUEM535Qm5QBzoGXQe0yL_71p4JeQ4cigUUziqh.0wtm8CehSY0");
+        LOGGER.debug("SalesforceConstant.PARAM_NAME_REDIRECT_URI name is " + SalesforceConstant.PARAM_NAME_REDIRECT_URI);
         List<NameValuePair> parameters = new ArrayList<NameValuePair>();
-        parameters.add(new BasicNameValuePair(SalesforceConstant.PARAM_NAME_GRANT_TYPE, refreshTokenString));
+        parameters.add(new BasicNameValuePair(SalesforceConstant.PARAM_NAME_GRANT_TYPE, grant_type));
         parameters.add(new BasicNameValuePair(SalesforceConstant.PARAM_NAME_CLIENT_ID, clientId));
         parameters.add(new BasicNameValuePair(SalesforceConstant.PARAM_NAME_CLIENT_SECRET, clientSecret));
-        parameters.add(new BasicNameValuePair(SalesforceConstant.PARAM_NAME_REFRESH_TOKEN, "5Aep8619hWPJoouFYbRZLY3mazegL5Nbrc.HvUEM535Qm5QBzoGXQe0yL_71p4JeQ4cigUUziqh.0wtm8CehSY0"));
+        if (grant_type != null && grant_type.equals("refresh_token")) {
+            parameters.add(new BasicNameValuePair(SalesforceConstant.PARAM_NAME_REFRESH_TOKEN, refreshToken));
+        } else {
+            parameters.add(new BasicNameValuePair(SalesforceConstant.PARAM_NAME_CODE, authorizationCode));            
+        }
+        
+        parameters.add(new BasicNameValuePair(SalesforceConstant.PARAM_NAME_REDIRECT_URI, redirectURI));
         try {
             JsonElement jsonElement = httpManager.doJsonPost(oAuthTokenUrl, null, parameters);
             if (!jsonElement.isJsonNull()) {
