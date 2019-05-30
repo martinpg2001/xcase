@@ -1,6 +1,3 @@
-/**
- * Copyright 2016 Xcase All rights reserved.
- */
 package com.xcase.salesforce.impl.simple.methods;
 
 import com.google.gson.JsonElement;
@@ -9,47 +6,38 @@ import com.xcase.salesforce.constant.SalesforceConstant;
 import com.xcase.salesforce.factories.SalesforceResponseFactory;
 import com.xcase.salesforce.impl.simple.objects.SalesforceAccountImpl;
 import com.xcase.salesforce.objects.SalesforceException;
-import com.xcase.salesforce.transputs.GetAccountRequest;
-import com.xcase.salesforce.transputs.GetAccountResponse;
-import java.io.*;
-import java.lang.invoke.*;
+import com.xcase.salesforce.transputs.GetUserRequest;
+import com.xcase.salesforce.transputs.GetUserResponse;
+
+import java.io.IOException;
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicHeader;
-import org.apache.logging.log4j.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-/**
- *
- * @author martin
- */
-public class GetAccountMethod extends BaseSalesforceMethod {
+public class GetUserMethod extends BaseSalesforceMethod {
 
     /**
      * log4j object.
      */
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
-
-    /**
-     *
-     * @param request
-     * @return response
-     * @throws IOException
-     * @throws SalesforceException
-     */
-    public GetAccountResponse getAccount(GetAccountRequest request) throws IOException, SalesforceException {
-        LOGGER.debug("starting getAccount()");
-        GetAccountResponse response = SalesforceResponseFactory.createGetAccountResponse();
+    
+    public GetUserResponse getUser(GetUserRequest request) throws IOException, SalesforceException {
+        LOGGER.debug("starting getUser()");
+        GetUserResponse response = SalesforceResponseFactory.createGetUserResponse();
         LOGGER.debug("created account response");
         String accessToken = request.getAccessToken();
         LOGGER.debug("accessToken is " + accessToken);
-        String accountId = request.getAccountId();
-        LOGGER.debug("accountId is " + accountId);
-        StringBuffer urlBuff = super.getApiUrl("sobjects/Account");
-        urlBuff.append("/" + accountId);
-        String accountApiUrl = urlBuff.toString();
-        LOGGER.debug("accountApiUrl is " + accountApiUrl);
+        String userId = request.getUserId();
+        LOGGER.debug("userId is " + userId);
+        StringBuffer urlBuff = super.getApiUrl("sobjects/User");
+        urlBuff.append("/" + userId);
+        String endPoint = urlBuff.toString();
+        LOGGER.debug("endPoint is " + endPoint);
         String bearerString = "Bearer " + accessToken;
         LOGGER.debug("bearerString is " + bearerString);
         Header header = new BasicHeader("Authorization", bearerString);
@@ -57,14 +45,10 @@ public class GetAccountMethod extends BaseSalesforceMethod {
         Header[] headers = {header};
         List<NameValuePair> parameters = new ArrayList<NameValuePair>();
         try {
-            JsonElement jsonElement = httpManager.doJsonGet(accountApiUrl, headers, parameters);
+            JsonElement jsonElement = httpManager.doJsonGet(endPoint, headers, parameters);
             if (!jsonElement.isJsonNull()) {
                 LOGGER.debug("jsonElement is " + jsonElement.toString());
                 JsonObject jsonObject = (JsonObject) jsonElement;
-                SalesforceAccountImpl salesforceAccountImpl = SalesforceAccountImpl.CreateSalesforceAccountImpl(jsonObject);
-                LOGGER.debug("created salesforceAccountImpl from jsonObject");
-                String accountName = salesforceAccountImpl.getName();
-                LOGGER.debug("accountName is " + accountName);
             } else {
                 String status = SalesforceConstant.STATUS_NOT_LOGGED_IN;
                 response.setStatus(status);
@@ -75,4 +59,5 @@ public class GetAccountMethod extends BaseSalesforceMethod {
 
         return response;
     }
+
 }

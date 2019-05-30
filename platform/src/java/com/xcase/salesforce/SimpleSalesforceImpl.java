@@ -11,6 +11,7 @@ import com.xcase.salesforce.impl.simple.methods.DeleteRecordMethod;
 import com.xcase.salesforce.impl.simple.methods.GetAccessTokenMethod;
 import com.xcase.salesforce.impl.simple.methods.GetAccountMethod;
 import com.xcase.salesforce.impl.simple.methods.GetRecordMethod;
+import com.xcase.salesforce.impl.simple.methods.GetUserMethod;
 import com.xcase.salesforce.impl.simple.methods.QueryRecordMethod;
 import com.xcase.salesforce.impl.simple.methods.RefreshAccessTokenMethod;
 import com.xcase.salesforce.impl.simple.methods.SearchAccountMethod;
@@ -31,6 +32,8 @@ import com.xcase.salesforce.transputs.GetAccountRequest;
 import com.xcase.salesforce.transputs.GetAccountResponse;
 import com.xcase.salesforce.transputs.GetRecordRequest;
 import com.xcase.salesforce.transputs.GetRecordResponse;
+import com.xcase.salesforce.transputs.GetUserRequest;
+import com.xcase.salesforce.transputs.GetUserResponse;
 import com.xcase.salesforce.transputs.QueryRecordRequest;
 import com.xcase.salesforce.transputs.QueryRecordResponse;
 import com.xcase.salesforce.transputs.RefreshAccessTokenRequest;
@@ -64,6 +67,11 @@ public class SimpleSalesforceImpl implements SalesforceExternalAPI {
      * Salesforce action implementation.
      */
     private GetAccessTokenMethod getAccessTokenMethod = new GetAccessTokenMethod();
+    
+    /**
+     * Salesforce action implementation.
+     */
+    private GetUserMethod getUserMethod = new GetUserMethod();
 
     /**
      * Salesforce action implementation.
@@ -122,6 +130,11 @@ public class SimpleSalesforceImpl implements SalesforceExternalAPI {
 
     public GetAccessTokenResponse getAccessToken(GetAccessTokenRequest getAccessTokenRequest) throws IOException, SalesforceException {
         return this.getAccessTokenMethod.getAccessToken(getAccessTokenRequest);
+    }
+    
+    @Override
+    public GetUserResponse getUser(GetUserRequest getUserRequest) throws IOException, SalesforceException {
+        return this.getUserMethod.getUser(getUserRequest);
     }
 
     public RefreshAccessTokenResponse refreshAccessToken(RefreshAccessTokenRequest refreshAccessTokenRequest) throws IOException, SalesforceException {

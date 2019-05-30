@@ -72,7 +72,7 @@ public class GetAccessTokenMethod extends BaseSalesforceMethod {
         LOGGER.debug("SalesforceConstant.PARAM_NAME_CLIENT_SECRET name is " + SalesforceConstant.PARAM_NAME_CLIENT_SECRET);
         LOGGER.debug("SalesforceConstant.PARAM_NAME_CLIENT_SECRET value is " + clientSecret);
         LOGGER.debug("SalesforceConstant.PARAM_NAME_REFRESH_TOKEN name is " + SalesforceConstant.PARAM_NAME_REFRESH_TOKEN);
-        LOGGER.debug("SalesforceConstant.PARAM_NAME_REFRESH_TOKEN value is " + "5Aep8619hWPJoouFYbRZLY3mazegL5Nbrc.HvUEM535Qm5QBzoGXQe0yL_71p4JeQ4cigUUziqh.0wtm8CehSY0");
+        LOGGER.debug("SalesforceConstant.PARAM_NAME_REFRESH_TOKEN value is " + refreshToken);
         LOGGER.debug("SalesforceConstant.PARAM_NAME_REDIRECT_URI name is " + SalesforceConstant.PARAM_NAME_REDIRECT_URI);
         List<NameValuePair> parameters = new ArrayList<NameValuePair>();
         parameters.add(new BasicNameValuePair(SalesforceConstant.PARAM_NAME_GRANT_TYPE, grant_type));

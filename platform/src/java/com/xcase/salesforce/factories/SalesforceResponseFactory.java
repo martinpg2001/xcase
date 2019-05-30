@@ -10,6 +10,7 @@ import com.xcase.salesforce.transputs.DeleteRecordResponse;
 import com.xcase.salesforce.transputs.GetAccessTokenResponse;
 import com.xcase.salesforce.transputs.GetAccountResponse;
 import com.xcase.salesforce.transputs.GetRecordResponse;
+import com.xcase.salesforce.transputs.GetUserResponse;
 import com.xcase.salesforce.transputs.QueryRecordResponse;
 import com.xcase.salesforce.transputs.RefreshAccessTokenResponse;
 import com.xcase.salesforce.transputs.SearchAccountResponse;
@@ -147,5 +148,15 @@ public class SalesforceResponseFactory extends BaseSalesforceFactory {
     public static UpdateRecordResponse createUpdateRecordResponse() {
         Object obj = newInstanceOf("salesforce.config.responsefactory.UpdateRecordResponse");
         return (UpdateRecordResponse) obj;
+    }
+
+    /**
+     * create response object.
+     *
+     * @return response object
+     */
+    public static GetUserResponse createGetUserResponse() {
+        Object obj = newInstanceOf("salesforce.config.responsefactory.GetUserResponse");
+        return (GetUserResponse) obj;
     }
 }

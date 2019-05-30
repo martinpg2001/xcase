@@ -32,18 +32,18 @@ public class CreateAccountMethod extends BaseSalesforceMethod {
 
     /**
      *
-     * @param createAccountRequest
+     * @param request
      * @return response
      * @throws IOException
      * @throws SalesforceException
      */
-    public CreateAccountResponse createAccount(CreateAccountRequest createAccountRequest) throws IOException, SalesforceException {
+    public CreateAccountResponse createAccount(CreateAccountRequest request) throws IOException, SalesforceException {
         LOGGER.debug("starting createAccount()");
-        CreateAccountResponse createAccountResponse = SalesforceResponseFactory.createCreateAccountResponse();
+        CreateAccountResponse response = SalesforceResponseFactory.createCreateAccountResponse();
         LOGGER.debug("created create account response");
-        String accessToken = createAccountRequest.getAccessToken();
+        String accessToken = request.getAccessToken();
         LOGGER.debug("accessToken is " + accessToken);
-        String accountName = createAccountRequest.getAccountName();
+        String accountName = request.getAccountName();
         LOGGER.debug("accountName is " + accountName);
         String requestBody = "{ \"Name\" : \"" + accountName + "\" }";
         LOGGER.debug("requestBody is " + requestBody);
@@ -66,15 +66,15 @@ public class CreateAccountMethod extends BaseSalesforceMethod {
                 JsonElement idElement = jsonObject.get("id");
                 String id = idElement.getAsString();
                 LOGGER.debug("id is " + id);
-                createAccountResponse.setAccountId(id);
+                response.setAccountId(id);
             } else {
                 String status = SalesforceConstant.STATUS_NOT_LOGGED_IN;
-                createAccountResponse.setStatus(status);
+                response.setStatus(status);
             }
         } catch (Exception e) {
             throw new SalesforceException("Failed to parse to a document.", e);
         }
 
-        return createAccountResponse;
+        return response;
     }
 }

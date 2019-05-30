@@ -3,20 +3,7 @@
  */
 package com.xcase.salesforce.factories;
 
-import com.xcase.salesforce.transputs.CreateAccountRequest;
-import com.xcase.salesforce.transputs.CreateRecordRequest;
-import com.xcase.salesforce.transputs.DeleteAccountRequest;
-import com.xcase.salesforce.transputs.DeleteRecordRequest;
-import com.xcase.salesforce.transputs.GetAccessTokenRequest;
-import com.xcase.salesforce.transputs.GetAccountRequest;
-import com.xcase.salesforce.transputs.GetRecordRequest;
-import com.xcase.salesforce.transputs.QueryRecordRequest;
-import com.xcase.salesforce.transputs.RefreshAccessTokenRequest;
-import com.xcase.salesforce.transputs.SalesforceRecordRequest;
-import com.xcase.salesforce.transputs.SalesforceRequest;
-import com.xcase.salesforce.transputs.SearchAccountRequest;
-import com.xcase.salesforce.transputs.SearchRecordRequest;
-import com.xcase.salesforce.transputs.UpdateRecordRequest;
+import com.xcase.salesforce.transputs.*;
 import java.lang.invoke.*;
 import org.apache.logging.log4j.*;
 
@@ -47,11 +34,11 @@ public class SalesforceRequestFactory extends BaseSalesforceFactory {
      * @return request object
      */
     public static GetAccessTokenRequest createGetAccessTokenRequest(String clientId, String clientSecret, String refreshToken) {
-        Object obj = newInstanceOf("salesforce.config.requestfactory.GetAccessTokenRequest");
-        ((SalesforceRequest) obj).setClientId(clientId);
-        ((GetAccessTokenRequest) obj).setClientSecret(clientSecret);
-        ((GetAccessTokenRequest) obj).setRefreshToken(refreshToken);
-        return (GetAccessTokenRequest) obj;
+        GetAccessTokenRequest request = createGetAccessTokenRequest();
+        request.setClientId(clientId);
+        request.setClientSecret(clientSecret);
+        request.setRefreshToken(refreshToken);
+        return request;
     }
 
     /**
@@ -70,26 +57,46 @@ public class SalesforceRequestFactory extends BaseSalesforceFactory {
      * @return request object
      */
     public static RefreshAccessTokenRequest createRefreshAccessTokenRequest(String clientId, String clientSecret, String refreshToken) {
-        Object obj = newInstanceOf("salesforce.config.requestfactory.RefreshAccessTokenRequest");
-        ((SalesforceRequest) obj).setClientId(clientId);
-        ((RefreshAccessTokenRequest) obj).setClientSecret(clientSecret);
-        ((RefreshAccessTokenRequest) obj).setRefreshToken(refreshToken);
-        return (RefreshAccessTokenRequest) obj;
+        RefreshAccessTokenRequest request = createRefreshAccessTokenRequest();
+        request.setClientId(clientId);
+        request.setClientSecret(clientSecret);
+        request.setRefreshToken(refreshToken);
+        return request;
     }
-
-    public static CreateAccountRequest createCreateAccountRequest(String accessToken, String accountName) {
+    
+    /**
+     * create request object.
+     *
+     * @return request object
+     */
+    public static CreateAccountRequest createCreateAccountRequest() {
         Object obj = newInstanceOf("salesforce.config.requestfactory.CreateAccountRequest");
-        ((SalesforceRequest) obj).setAccessToken(accessToken);
-        ((CreateAccountRequest) obj).setAccountName(accountName);
         return (CreateAccountRequest) obj;
     }
 
-    public static CreateRecordRequest createCreateRecordRequest(String accessToken, String recordType, String recordBody) {
+    public static CreateAccountRequest createCreateAccountRequest(String accessToken, String accountName) {
+        CreateAccountRequest request = createCreateAccountRequest();
+        request.setAccessToken(accessToken);
+        request.setAccountName(accountName);
+        return request;
+    }
+    
+    /**
+     * create request object.
+     *
+     * @return request object
+     */
+    public static CreateRecordRequest createCreateRecordRequest() {
         Object obj = newInstanceOf("salesforce.config.requestfactory.CreateRecordRequest");
-        ((SalesforceRequest) obj).setAccessToken(accessToken);
-        ((SalesforceRecordRequest) obj).setRecordType(recordType);
-        ((CreateRecordRequest) obj).setRecordBody(recordBody);
         return (CreateRecordRequest) obj;
+    }
+
+    public static CreateRecordRequest createCreateRecordRequest(String accessToken, String recordType, String recordBody) {
+        CreateRecordRequest request = createCreateRecordRequest();
+        request.setAccessToken(accessToken);
+        request.setRecordType(recordType);
+        request.setRecordBody(recordBody);
+        return request;
     }
 
     public static GetAccountRequest createGetAccountRequest() {
@@ -98,62 +105,109 @@ public class SalesforceRequestFactory extends BaseSalesforceFactory {
     }
 
     public static GetAccountRequest createGetAccountRequest(String accessToken, String accountId) {
-        Object obj = newInstanceOf("salesforce.config.requestfactory.GetAccountRequest");
-        ((SalesforceRequest) obj).setAccessToken(accessToken);
-        ((GetAccountRequest) obj).setAccountId(accountId);
-        return (GetAccountRequest) obj;
+        GetAccountRequest request = createGetAccountRequest();
+        request.setAccessToken(accessToken);
+        request.setAccountId(accountId);
+        return request;
     }
+    
+    public static GetRecordRequest createGetRecordRequest() {
+        Object obj = newInstanceOf("salesforce.config.requestfactory.GetRecordRequest");
+        return (GetRecordRequest) obj;
+    }    
 
     public static GetRecordRequest createGetRecordRequest(String accessToken, String recordType, String recordId) {
-        Object obj = newInstanceOf("salesforce.config.requestfactory.GetRecordRequest");
-        ((SalesforceRequest) obj).setAccessToken(accessToken);
-        ((SalesforceRecordRequest) obj).setRecordType(recordType);
-        ((GetRecordRequest) obj).setRecordId(recordId);
-        return (GetRecordRequest) obj;
+        GetRecordRequest request = createGetRecordRequest();
+        request.setAccessToken(accessToken);
+        request.setRecordType(recordType);
+        request.setRecordId(recordId);
+        return request;
     }
+    
+    public static DeleteAccountRequest createDeleteAccountRequest() {
+        Object obj = newInstanceOf("salesforce.config.requestfactory.DeleteAccountRequest");
+        return (DeleteAccountRequest) obj;
+    }     
 
     public static DeleteAccountRequest createDeleteAccountRequest(String accessToken, String accountId) {
-        Object obj = newInstanceOf("salesforce.config.requestfactory.DeleteAccountRequest");
-        ((SalesforceRequest) obj).setAccessToken(accessToken);
-        ((DeleteAccountRequest) obj).setAccountId(accountId);
-        return (DeleteAccountRequest) obj;
+        DeleteAccountRequest request = createDeleteAccountRequest();
+        request.setAccessToken(accessToken);
+        request.setAccountId(accountId);
+        return request;
     }
+    
+    public static DeleteRecordRequest createDeleteRecordRequest() {
+        Object obj = newInstanceOf("salesforce.config.requestfactory.DeleteRecordRequest");
+        return (DeleteRecordRequest) obj;
+    }     
 
     public static DeleteRecordRequest createDeleteRecordRequest(String accessToken, String recordType, String recordId) {
-        Object obj = newInstanceOf("salesforce.config.requestfactory.DeleteRecordRequest");
-        ((SalesforceRequest) obj).setAccessToken(accessToken);
-        ((SalesforceRecordRequest) obj).setRecordType(recordType);
-        ((DeleteRecordRequest) obj).setRecordId(recordId);
-        return (DeleteRecordRequest) obj;
+        DeleteRecordRequest request = createDeleteRecordRequest();
+        request.setAccessToken(accessToken);
+        request.setRecordType(recordType);
+        request.setRecordId(recordId);
+        return request;
     }
+    
+    public static QueryRecordRequest createQueryRecordRequest() {
+        Object obj = newInstanceOf("salesforce.config.requestfactory.QueryRecordRequest");
+        return (QueryRecordRequest) obj;
+    }    
 
     public static QueryRecordRequest createQueryRecordRequest(String accessToken, String queryString) {
-        Object obj = newInstanceOf("salesforce.config.requestfactory.QueryRecordRequest");
-        ((SalesforceRequest) obj).setAccessToken(accessToken);
-        ((QueryRecordRequest) obj).setQueryString(queryString);
-        return (QueryRecordRequest) obj;
+        QueryRecordRequest request = createQueryRecordRequest();
+        request.setAccessToken(accessToken);
+        request.setQueryString(queryString);
+        return request;
     }
+    
+    public static SearchAccountRequest createSearchAccountRequest() {
+        Object obj = newInstanceOf("salesforce.config.requestfactory.SearchAccountRequest");
+        return (SearchAccountRequest) obj;
+    }     
 
     public static SearchAccountRequest createSearchAccountRequest(String accessToken, String searchString) {
-        Object obj = newInstanceOf("salesforce.config.requestfactory.SearchAccountRequest");
-        ((SalesforceRequest) obj).setAccessToken(accessToken);
-        ((SearchAccountRequest) obj).setSearchString(searchString);
-        return (SearchAccountRequest) obj;
+        SearchAccountRequest request = createSearchAccountRequest();
+        request.setAccessToken(accessToken);
+        request.setSearchString(searchString);
+        return request;
     }
+    
+    public static SearchRecordRequest createSearchRecordRequest() {
+        Object obj = newInstanceOf("salesforce.config.requestfactory.SearchRecordRequest");
+        return (SearchRecordRequest) obj;
+    }     
 
     public static SearchRecordRequest createSearchRecordRequest(String accessToken, String searchString) {
-        Object obj = newInstanceOf("salesforce.config.requestfactory.SearchRecordRequest");
-        ((SalesforceRequest) obj).setAccessToken(accessToken);
-        ((SearchRecordRequest) obj).setSearchString(searchString);
-        return (SearchRecordRequest) obj;
+        SearchRecordRequest request = createSearchRecordRequest();
+        request.setAccessToken(accessToken);
+        request.setSearchString(searchString);
+        return request;
+    }
+    
+    public static UpdateRecordRequest createUpdateRecordRequest() {
+        Object obj = newInstanceOf("salesforce.config.requestfactory.UpdateRecordRequest");
+        return (UpdateRecordRequest) obj;
     }
 
     public static UpdateRecordRequest createUpdateRecordRequest(String accessToken, String recordType, String recordId, String recordBody) {
-        Object obj = newInstanceOf("salesforce.config.requestfactory.UpdateRecordRequest");
-        ((SalesforceRequest) obj).setAccessToken(accessToken);
-        ((SalesforceRecordRequest) obj).setRecordType(recordType);
-        ((UpdateRecordRequest) obj).setRecordId(recordId);
-        ((UpdateRecordRequest) obj).setRecordBody(recordBody);
-        return (UpdateRecordRequest) obj;
+        UpdateRecordRequest request = createUpdateRecordRequest();
+        request.setAccessToken(accessToken);
+        request.setRecordType(recordType);
+        request.setRecordId(recordId);
+        request.setRecordBody(recordBody);
+        return request;
+    }
+    
+    public static GetUserRequest createGetUserRequest() {
+        Object obj = newInstanceOf("salesforce.config.requestfactory.GetUserRequest");
+        return (GetUserRequest) obj;
+    }
+
+    public static GetUserRequest createGetUserRequest(String accessToken, String userId) {
+        GetUserRequest request = createGetUserRequest();
+        request.setAccessToken(accessToken);
+        request.setUserId(userId);
+        return request;
     }
 }

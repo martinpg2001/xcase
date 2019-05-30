@@ -3,6 +3,8 @@
  */
 package com.xcase.salesforce.impl.simple.methods;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.xcase.common.constant.CommonConstant;
 import com.xcase.common.impl.simple.core.CommonHTTPManager;
 import com.xcase.salesforce.constant.SalesforceConstant;
@@ -24,6 +26,11 @@ public class BaseSalesforceMethod {
      * log4j logger.
      */
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
+    
+    /**
+     * Gson clas for converting to and from Json.
+     */
+    protected Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd' 'HH:mm:ss").create();
 
     /**
      * core http manager.
