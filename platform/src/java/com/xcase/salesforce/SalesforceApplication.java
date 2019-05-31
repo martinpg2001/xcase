@@ -155,6 +155,33 @@ public class SalesforceApplication {
             } else {
                 LOGGER.debug("searchRecordsJsonElement is null");
             }
+            
+            /* Query for record */
+            QueryRecordRequest queryRecordRequest = SalesforceRequestFactory.createQueryRecordRequest(accessToken,
+                    null);
+            LOGGER.debug("created queryRecordRequest");
+            String queryString = "SELECT+name+FROM+Account";
+            queryRecordRequest.setQueryString(queryString);
+            QueryRecordResponse queryRecordResponse = iSalesforceExternalAPI.queryRecord(queryRecordRequest);
+            JsonElement queryRecordsJsonElement = queryRecordResponse.getJsonElement();
+            if (queryRecordsJsonElement != null) {
+                JsonObject queryRecordJsonObject = (JsonObject) queryRecordsJsonElement;
+                JsonArray queryRecordJsonArray = queryRecordJsonObject.getAsJsonArray("searchRecords");
+                if (queryRecordJsonArray != null) {
+                    LOGGER.debug("queryRecordJsonArray is not null");
+                    Iterator<JsonElement> queryRecordJsonElementIterator = queryRecordJsonArray.iterator();
+                    while (queryRecordJsonElementIterator.hasNext()) {
+                        LOGGER.debug("queryRecordJsonElementIterator has next");
+                        JsonElement queryRecordJsonElement = queryRecordJsonElementIterator.next();
+                        LOGGER.debug("queryRecordJsonElement is " + queryRecordJsonElement);
+                    }
+                } else {
+                    LOGGER.debug("queryRecordJsonArray is null");
+                }
+            } else {
+                LOGGER.debug("queryRecordsJsonElement is null");
+            }
+            
             /* Delete an account */
             accountId = "0014P000026SEneQAG";
             DeleteAccountRequest deleteAccountRequest = SalesforceRequestFactory.createDeleteAccountRequest(accessToken,

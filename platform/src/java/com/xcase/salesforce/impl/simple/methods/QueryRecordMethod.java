@@ -6,6 +6,7 @@ package com.xcase.salesforce.impl.simple.methods;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.salesforce.constant.SalesforceConstant;
 import com.xcase.salesforce.factories.SalesforceResponseFactory;
 import com.xcase.salesforce.objects.SalesforceException;
@@ -37,48 +38,64 @@ public class QueryRecordMethod extends BaseSalesforceMethod {
      * @throws IOException
      * @throws SalesforceException
      */
-    public QueryRecordResponse queryRecord(QueryRecordRequest queryRecordRequest) throws IOException, SalesforceException {
+    public QueryRecordResponse queryRecord(QueryRecordRequest request) throws IOException, SalesforceException {
         LOGGER.debug("starting queryRecord()");
-        QueryRecordResponse queryRecordResponse = SalesforceResponseFactory.createQueryRecordResponse();
+        QueryRecordResponse response = SalesforceResponseFactory.createQueryRecordResponse();
         LOGGER.debug("created query account response");
-        String accessToken = queryRecordRequest.getAccessToken();
-        LOGGER.debug("accessToken is " + accessToken);
-        String queryString = queryRecordRequest.getQueryString();
-        LOGGER.debug("queryString is " + queryString);
-        StringBuffer urlBuff = super.getApiUrl("query/?q=" + queryString);
-        String accountApiUrl = urlBuff.toString();
-        LOGGER.debug("accountApiUrl is " + accountApiUrl);
-        String bearerString = "Bearer " + accessToken;
-        LOGGER.debug("bearerString is " + bearerString);
-        Header header = new BasicHeader("Authorization", bearerString);
-        LOGGER.debug("created Authorization header");
-        Header[] headers = {header};
-        List<NameValuePair> parameters = new ArrayList<NameValuePair>();
-        //parameters.add(new BasicNameValuePair("q", searchString));
         try {
-            JsonElement jsonElement = httpManager.doJsonGet(accountApiUrl, headers, parameters);
+            String accessToken = request.getAccessToken();
+            LOGGER.debug("accessToken is " + accessToken);
+            String queryString = request.getQueryString();
+            LOGGER.debug("queryString is " + queryString);
+            StringBuffer urlBuff = super.getApiUrl("query/?q=" + queryString);
+            String endPoint = urlBuff.toString();
+            LOGGER.debug("endPoint is " + endPoint);
+            String bearerString = "Bearer " + accessToken;
+            LOGGER.debug("bearerString is " + bearerString);
+            Header header = new BasicHeader("Authorization", bearerString);
+            LOGGER.debug("created Authorization header");
+            Header[] headers = { header };
+            List<NameValuePair> parameters = new ArrayList<NameValuePair>();
+            CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponseGet(endPoint, headers, parameters, null);
+            int responseCode = commonHttpResponse.getResponseCode();
+            LOGGER.debug("responseCode is " + responseCode);
+            response.setResponseCode(responseCode);
+            if (responseCode == 200) {
+                handleExpectedResponseCode(response, commonHttpResponse);
+            } else {
+                handleUnexpectedResponseCode(response, commonHttpResponse);
+            }
+
+            JsonElement jsonElement = response.getJsonElement();
             if (!jsonElement.isJsonNull()) {
                 LOGGER.debug("jsonElement is " + jsonElement.toString());
                 JsonObject jsonObject = (JsonObject) jsonElement;
+                LOGGER.debug("cast jsonElement to jsonObject");
                 JsonElement totalSizeElement = jsonObject.get("totalSize");
-                int totalSize = totalSizeElement.getAsInt();
-                LOGGER.info("totalSize is " + totalSize);
-                JsonArray recordsArray = jsonObject.getAsJsonArray("records");
-                int recordsSize = recordsArray.size();
-                LOGGER.debug("recordsSize is " + recordsSize);
-                Iterator<JsonElement> recordsIterator = recordsArray.iterator();
-                while (recordsIterator.hasNext()) {
-                    JsonElement recordElement = recordsIterator.next();
-                    LOGGER.debug("recordElement is " + recordElement.toString());
+                if (totalSizeElement != null) {
+                    int totalSize = totalSizeElement.getAsInt();
+                    LOGGER.debug("totalSize is " + totalSize);
+                } else {
+                    LOGGER.debug("totalSizeElement is null");
                 }
-            } else {
-                String status = SalesforceConstant.STATUS_NOT_LOGGED_IN;
-                queryRecordResponse.setStatus(status);
+
+                JsonArray recordsArray = jsonObject.getAsJsonArray("records");
+                if (recordsArray != null) {
+                    int recordsSize = recordsArray.size();
+                    LOGGER.debug("recordsSize is " + recordsSize);
+                    Iterator<JsonElement> recordsIterator = recordsArray.iterator();
+                    while (recordsIterator.hasNext()) {
+                        JsonElement recordElement = recordsIterator.next();
+                        LOGGER.debug("recordElement is " + recordElement.toString());
+                    }
+                } else {
+                    LOGGER.debug("recordsArray is null");
+                }
             }
         } catch (Exception e) {
-            throw new SalesforceException("Failed to parse to a document.", e);
+            handleUnexpectedException(response, e);
         }
 
-        return queryRecordResponse;
+        return response;
     }
 }
