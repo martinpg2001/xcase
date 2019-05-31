@@ -32,7 +32,7 @@ public class BaseSalesforceMethod {
      * log4j logger.
      */
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
-    
+
     /**
      * Gson clas for converting to and from Json.
      */
@@ -141,10 +141,10 @@ public class BaseSalesforceMethod {
 
     private String getJsonOAuthTokenUrl() {
 //      LOGGER.debug("starting getJsonOAuthTokenUrl()");
-      StringBuffer urlBuf = new StringBuffer();
-      urlBuf.append(apiOAuthTokenPrefix);
-      //LOGGER.debug("BaseBoxMethod: urlBuf is " + urlBuf.toString());
-      return urlBuf.toString();
+        StringBuffer urlBuf = new StringBuffer();
+        urlBuf.append(apiOAuthTokenPrefix);
+        // LOGGER.debug("BaseBoxMethod: urlBuf is " + urlBuf.toString());
+        return urlBuf.toString();
     }
 
     /**
@@ -184,8 +184,8 @@ public class BaseSalesforceMethod {
         urlBuf.append(CommonConstant.SLASH_STRING);
         urlBuf.append(this.apiVersion);
         urlBuf.append(CommonConstant.SLASH_STRING);
-        //urlBuf.append("sobjects");
-        //urlBuf.append(SalesforceConstant.SLASH_STRING);
+        // urlBuf.append("sobjects");
+        // urlBuf.append(SalesforceConstant.SLASH_STRING);
         urlBuf.append(actionType);
         return urlBuf;
     }
@@ -203,7 +203,7 @@ public class BaseSalesforceMethod {
         urlBuf.append(apiVersion);
         urlBuf.append(CommonConstant.SLASH_STRING);
         urlBuf.append(SalesforceConstant.CONFIG_API_REQUEST_FORMAT_XML);
-        //LOGGER.debug("BaseBoxMethod: urlBuf is " + urlBuf.toString());
+        // LOGGER.debug("BaseBoxMethod: urlBuf is " + urlBuf.toString());
         return urlBuf.toString();
     }
 
@@ -220,7 +220,7 @@ public class BaseSalesforceMethod {
 //        urlBuf.append(apiVersion);
 //        urlBuf.append(BoxConstant.SLASH_STRING);
 //        urlBuf.append(BoxConstant.CONFIG_API_REQUEST_FORMAT_XML);
-        //LOGGER.debug("BaseBoxMethod: urlBuf is " + urlBuf.toString());
+        // LOGGER.debug("BaseBoxMethod: urlBuf is " + urlBuf.toString());
         return urlBuf.toString();
     }
 
@@ -240,7 +240,7 @@ public class BaseSalesforceMethod {
 //        LOGGER.debug("starting getOAuthTokenUrl()");
         StringBuffer urlBuf = new StringBuffer();
         urlBuf.append(apiOAuthTokenPrefix);
-        //LOGGER.debug("BaseBoxMethod: urlBuf is " + urlBuf.toString());
+        // LOGGER.debug("BaseBoxMethod: urlBuf is " + urlBuf.toString());
         return urlBuf.toString();
     }
 
@@ -257,7 +257,7 @@ public class BaseSalesforceMethod {
         urlBuf.append(apiVersion);
         urlBuf.append(CommonConstant.SLASH_STRING);
         urlBuf.append(SalesforceConstant.CONFIG_API_REQUEST_FORMAT_SOAP);
-        //LOGGER.debug("BaseBoxMethod: urlBuf is " + urlBuf.toString());
+        // LOGGER.debug("BaseBoxMethod: urlBuf is " + urlBuf.toString());
         return urlBuf.toString();
 //      return "http://box.net/api/1.0/soap";
     }
@@ -307,7 +307,7 @@ public class BaseSalesforceMethod {
         elm.addAttribute("xsi:type", elmType);
         return elm;
     }
-    
+
     public void handleExpectedResponseCode(SalesforceResponse response, CommonHttpResponse commonHttpResponse) {
         String responseEntityString = commonHttpResponse.getResponseEntityString();
         LOGGER.debug("responseEntityString is " + responseEntityString);
@@ -316,16 +316,23 @@ public class BaseSalesforceMethod {
         response.setStatus(commonHttpResponse.getStatusLine().getReasonPhrase());
         response.setStatusLine(commonHttpResponse.getStatusLine());
         if (responseEntityString != null && !responseEntityString.isEmpty()) {
+            LOGGER.debug("responseEntityString is neither null nor empty");
             JsonElement jsonElement = (JsonElement) ConverterUtils.parseStringToJson(responseEntityString);
+            LOGGER.debug("parsed jsonElement");
             response.setJsonElement(jsonElement);
-            if (jsonElement.isJsonArray()) {
-                JsonArray jsonArray = (JsonArray) jsonElement;
+            LOGGER.debug("set jsonElement");
+            if (jsonElement != null) {
+                if (jsonElement.isJsonArray()) {
+                    JsonArray jsonArray = (JsonArray) jsonElement;
+                } else {
+                    JsonObject jsonObject = (JsonObject) jsonElement;
+                }
             } else {
-                JsonObject jsonObject = (JsonObject) jsonElement;
+                LOGGER.debug("jsonElement is null");
             }
         } else {
             LOGGER.debug("responseEntityString is null or empty");
-        }       
+        }
     }
 
     public void handleUnexpectedResponseCode(SalesforceResponse response, CommonHttpResponse commonHttpResponse) {
