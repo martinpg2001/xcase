@@ -5,6 +5,7 @@ package com.xcase.salesforce.impl.simple.methods;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.salesforce.constant.SalesforceConstant;
 import com.xcase.salesforce.factories.SalesforceResponseFactory;
 import com.xcase.salesforce.objects.SalesforceException;
@@ -31,49 +32,43 @@ public class SearchRecordMethod extends BaseSalesforceMethod {
 
     /**
      *
-     * @param searchRecordRequest
+     * @param request
      * @return response
      * @throws IOException
      * @throws SalesforceException
      */
-    public SearchRecordResponse searchRecord(SearchRecordRequest searchRecordRequest) throws IOException, SalesforceException {
-        LOGGER.debug("info searchRecord()");
-        SearchRecordResponse searchRecordResponse = SalesforceResponseFactory.createSearchRecordResponse();
+    public SearchRecordResponse searchRecord(SearchRecordRequest request) throws IOException, SalesforceException {
+        LOGGER.debug("starting searchRecord()");
+        SearchRecordResponse response = SalesforceResponseFactory.createSearchRecordResponse();
         LOGGER.debug("created search record response");
-        String accessToken = searchRecordRequest.getAccessToken();
-        LOGGER.debug("accessToken is " + accessToken);
-        String searchString = searchRecordRequest.getSearchString();
-        LOGGER.debug("searchString is " + searchString);
-        StringBuffer urlBuff = super.getApiUrl("search/?q=" + searchString);
-        String accountApiUrl = urlBuff.toString();
-        LOGGER.debug("accountApiUrl is " + accountApiUrl);
-        String bearerString = "Bearer " + accessToken;
-        LOGGER.debug("bearerString is " + bearerString);
-        Header header = new BasicHeader("Authorization", bearerString);
-        LOGGER.debug("created Authorization header");
-        Header[] headers = {header};
-        List<NameValuePair> parameters = new ArrayList<NameValuePair>();
-        //parameters.add(new BasicNameValuePair("q", searchString));
         try {
-            JsonElement jsonElement = httpManager.doJsonGet(accountApiUrl, headers, parameters);
-            if (!jsonElement.isJsonNull()) {
-                LOGGER.debug("jsonElement is " + jsonElement.toString());
-                JsonArray jsonArray = (JsonArray) jsonElement;
-                int jsonArraySize = jsonArray.size();
-                LOGGER.info("jsonArraySize is " + jsonArraySize);
-                Iterator<JsonElement> recordsIterator = jsonArray.iterator();
-                while (recordsIterator.hasNext()) {
-                    JsonElement recordElement = recordsIterator.next();
-                    LOGGER.debug("recordElement is " + recordElement.toString());
-                }
+            String accessToken = request.getAccessToken();
+            LOGGER.debug("accessToken is " + accessToken);
+            String searchString = request.getSearchString();
+            LOGGER.debug("searchString is " + searchString);
+            StringBuffer urlBuff = super.getApiUrl("search/?q=" + searchString);
+            String endPoint = urlBuff.toString();
+            LOGGER.debug("endPoint is " + endPoint);
+            String bearerString = "Bearer " + accessToken;
+            LOGGER.debug("bearerString is " + bearerString);
+            Header header = new BasicHeader("Authorization", bearerString);
+            LOGGER.debug("created Authorization header");
+            Header[] headers = { header };
+            List<NameValuePair> parameters = new ArrayList<NameValuePair>();
+            CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponseGet(endPoint, headers, parameters,
+                    null);
+            int responseCode = commonHttpResponse.getResponseCode();
+            LOGGER.debug("responseCode is " + responseCode);
+            response.setResponseCode(responseCode);
+            if (responseCode == 200) {
+                handleExpectedResponseCode(response, commonHttpResponse);
             } else {
-                String status = SalesforceConstant.STATUS_NOT_LOGGED_IN;
-                searchRecordResponse.setStatus(status);
+                handleUnexpectedResponseCode(response, commonHttpResponse);
             }
         } catch (Exception e) {
-            throw new SalesforceException("Failed to parse to a document.", e);
+            handleUnexpectedException(response, e);
         }
 
-        return searchRecordResponse;
+        return response;
     }
 }

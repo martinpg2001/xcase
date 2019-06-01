@@ -5,6 +5,7 @@ package com.xcase.salesforce.impl.simple.methods;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.salesforce.constant.SalesforceConstant;
 import com.xcase.salesforce.factories.SalesforceResponseFactory;
 import com.xcase.salesforce.objects.SalesforceException;
@@ -32,49 +33,57 @@ public class CreateRecordMethod extends BaseSalesforceMethod {
 
     /**
      *
-     * @param createRecordRequest
+     * @param request
      * @return response
      * @throws IOException
      * @throws SalesforceException
      */
-    public CreateRecordResponse createRecord(CreateRecordRequest createRecordRequest) throws IOException, SalesforceException {
+    public CreateRecordResponse createRecord(CreateRecordRequest request)
+            throws IOException, SalesforceException {
         LOGGER.debug("starting createRecord()");
-        CreateRecordResponse createRecordResponse = SalesforceResponseFactory.createCreateRecordResponse();
+        CreateRecordResponse response = SalesforceResponseFactory.createCreateRecordResponse();
         LOGGER.debug("created create account response");
-        String accessToken = createRecordRequest.getAccessToken();
-        LOGGER.debug("accessToken is " + accessToken);
-        String recordType = createRecordRequest.getRecordType();
-        LOGGER.debug("recordType is " + recordType);
-        String recordBody = createRecordRequest.getRecordBody();
-        LOGGER.debug("recordBody is " + recordBody);
-        StringBuffer urlBuff = super.getApiUrl("sobjects/" + recordType);
-        String accountApiUrl = urlBuff.toString();
-        LOGGER.debug("accountApiUrl is " + accountApiUrl);
-        String bearerString = "Bearer " + accessToken;
-        LOGGER.debug("bearerString is " + bearerString);
-        Header authorizationHeader = new BasicHeader("Authorization", bearerString);
-        LOGGER.debug("created Authorization header");
-        Header contentTypeHeader = new BasicHeader("Content-Type", "application/json");
-        LOGGER.debug("created Content-Type header");
-        Header[] headers = {authorizationHeader, contentTypeHeader};
-        List<NameValuePair> parameters = new ArrayList<NameValuePair>();
         try {
-            JsonElement jsonElement = httpManager.doJsonPost(accountApiUrl, headers, parameters, recordBody);
-            if (!jsonElement.isJsonNull()) {
-                LOGGER.debug("jsonElement is " + jsonElement.toString());
-                JsonObject jsonObject = (JsonObject) jsonElement;
-                JsonElement idElement = jsonObject.get("id");
-                String id = idElement.getAsString();
-                LOGGER.info("id is " + id);
-                createRecordResponse.setRecordId(id);
+            String accessToken = request.getAccessToken();
+            LOGGER.debug("accessToken is " + accessToken);
+            String recordType = request.getRecordType();
+            LOGGER.debug("recordType is " + recordType);
+            String recordBody = request.getRecordBody();
+            LOGGER.debug("recordBody is " + recordBody);
+            StringBuffer urlBuff = super.getApiUrl("sobjects/" + recordType);
+            String endPoint = urlBuff.toString();
+            LOGGER.debug("endPoint is " + endPoint);
+            String bearerString = "Bearer " + accessToken;
+            LOGGER.debug("bearerString is " + bearerString);
+            Header authorizationHeader = new BasicHeader("Authorization", bearerString);
+            LOGGER.debug("created Authorization header");
+            Header contentTypeHeader = new BasicHeader("Content-Type", "application/json");
+            LOGGER.debug("created Content-Type header");
+            Header[] headers = { authorizationHeader, contentTypeHeader };
+            List<NameValuePair> parameters = new ArrayList<NameValuePair>();
+            CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponsePost(endPoint, headers, parameters, recordBody, 
+                    null);
+            int responseCode = commonHttpResponse.getResponseCode();
+            LOGGER.debug("responseCode is " + responseCode);
+            response.setResponseCode(responseCode);
+            if (responseCode == 201) {
+                handleExpectedResponseCode(response, commonHttpResponse);
+                JsonElement jsonElement = response.getJsonElement();
+                if (!jsonElement.isJsonNull()) {
+                    LOGGER.debug("jsonElement is " + jsonElement.toString());
+                    JsonObject jsonObject = (JsonObject) jsonElement;
+                    JsonElement idElement = jsonObject.get("id");
+                    String id = idElement.getAsString();
+                    LOGGER.debug("id is " + id);
+                    response.setRecordId(id);
+                }
             } else {
-                String status = SalesforceConstant.STATUS_NOT_LOGGED_IN;
-                createRecordResponse.setStatus(status);
+                handleUnexpectedResponseCode(response, commonHttpResponse);
             }
         } catch (Exception e) {
-            throw new SalesforceException("Failed to parse to a document.", e);
+            handleUnexpectedException(response, e);
         }
 
-        return createRecordResponse;
+        return response;
     }
 }

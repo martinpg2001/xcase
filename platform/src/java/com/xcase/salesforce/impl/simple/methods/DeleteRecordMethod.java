@@ -4,6 +4,7 @@
 package com.xcase.salesforce.impl.simple.methods;
 
 import com.google.gson.JsonElement;
+import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.salesforce.constant.SalesforceConstant;
 import com.xcase.salesforce.factories.SalesforceResponseFactory;
 import com.xcase.salesforce.objects.SalesforceException;
@@ -31,44 +32,50 @@ public class DeleteRecordMethod extends BaseSalesforceMethod {
 
     /**
      *
-     * @param deleteRecordRequest
+     * @param request
      * @return response
      * @throws IOException
      * @throws SalesforceException
      */
-    public DeleteRecordResponse deleteRecord(DeleteRecordRequest deleteRecordRequest) throws IOException, SalesforceException {
+    public DeleteRecordResponse deleteRecord(DeleteRecordRequest request) throws IOException, SalesforceException {
         LOGGER.debug("starting deleteRecord()");
-        DeleteRecordResponse deleteRecordResponse = SalesforceResponseFactory.createDeleteRecordResponse();
+        DeleteRecordResponse response = SalesforceResponseFactory.createDeleteRecordResponse();
         LOGGER.debug("created delete record response");
-        String accessToken = deleteRecordRequest.getAccessToken();
-        LOGGER.debug("accessToken is " + accessToken);
-        String recordType = deleteRecordRequest.getRecordType();
-        LOGGER.debug("recordType is " + recordType);
-        String recordId = deleteRecordRequest.getRecordId();
-        LOGGER.debug("recordId is " + recordId);
-        StringBuffer urlBuff = super.getApiUrl("sobjects/" + recordType);
-        urlBuff.append("/" + recordId);
-        String accountApiUrl = urlBuff.toString();
-        LOGGER.debug("accountApiUrl is " + accountApiUrl);
-        String bearerString = "Bearer " + accessToken;
-        LOGGER.debug("bearerString is " + bearerString);
-        Header header = new BasicHeader("Authorization", bearerString);
-        LOGGER.debug("created Authorization header");
-        Header[] headers = {header};
-        List<NameValuePair> parameters = new ArrayList<NameValuePair>();
         try {
-            JsonElement jsonElement = httpManager.doJsonDelete(accountApiUrl, headers, parameters, null);
-            if (!jsonElement.isJsonNull()) {
-                LOGGER.debug("jsonElement is " + jsonElement.toString());
+            String accessToken = request.getAccessToken();
+            LOGGER.debug("accessToken is " + accessToken);
+            String recordType = request.getRecordType();
+            LOGGER.debug("recordType is " + recordType);
+            String recordId = request.getRecordId();
+            LOGGER.debug("recordId is " + recordId);
+            StringBuffer urlBuff = super.getApiUrl("sobjects/" + recordType);
+            urlBuff.append("/" + recordId);
+            String endPoint = urlBuff.toString();
+            LOGGER.debug("endPoint is " + endPoint);
+            String bearerString = "Bearer " + accessToken;
+            LOGGER.debug("bearerString is " + bearerString);
+            Header header = new BasicHeader("Authorization", bearerString);
+            LOGGER.debug("created Authorization header");
+            Header[] headers = { header };
+            List<NameValuePair> parameters = new ArrayList<NameValuePair>();
+            CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponseDelete(endPoint, headers,
+                    parameters, null, null);
+            int responseCode = commonHttpResponse.getResponseCode();
+            LOGGER.debug("responseCode is " + responseCode);
+            response.setResponseCode(responseCode);
+            if (responseCode == 204) {
+                handleExpectedResponseCode(response, commonHttpResponse);
+                JsonElement jsonElement = response.getJsonElement();
+                if (!jsonElement.isJsonNull()) {
+                    LOGGER.debug("jsonElement is " + jsonElement.toString());
+                }
             } else {
-                String status = SalesforceConstant.STATUS_NOT_LOGGED_IN;
-                deleteRecordResponse.setStatus(status);
+                handleUnexpectedResponseCode(response, commonHttpResponse);
             }
         } catch (Exception e) {
-            LOGGER.warn("catching exception: " + e.getMessage());
-            throw new SalesforceException("Failed to parse to a document.", e);
+            handleUnexpectedException(response, e);
         }
 
-        return deleteRecordResponse;
+        return response;
     }
 }
