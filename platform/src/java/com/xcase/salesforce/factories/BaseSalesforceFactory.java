@@ -37,11 +37,11 @@ public class BaseSalesforceFactory {
 	 * @return implement object
 	 */
 	protected static Object newInstanceOf(String interfaceKey) {
-		LOGGER.debug("starting newInstanceOf()");
+//		LOGGER.debug("starting newInstanceOf()");
 		Object obj = null;
-		LOGGER.debug("interfaceKey is " + interfaceKey);
+//		LOGGER.debug("interfaceKey is " + interfaceKey);
 		String className = CONFIG.getProperty(interfaceKey);
-		LOGGER.debug("className is " + className);
+//		LOGGER.debug("className is " + className);
 		try {
 			Class clazz = Class.forName(className);
 			obj = clazz.getDeclaredConstructor().newInstance();
@@ -70,7 +70,7 @@ public class BaseSalesforceFactory {
 	 * @return object
 	 */
 	private static Object getDefaultImpl(String interfaceKey) {
-		LOGGER.debug("starting getDefaultImpl()");
+//		LOGGER.debug("starting getDefaultImpl()");
 		Object obj = null;
 		if (defaultConfig == null) {
 			// LOGGER.debug("defaultConfig is null");

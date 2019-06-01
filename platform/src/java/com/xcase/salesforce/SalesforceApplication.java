@@ -27,7 +27,15 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.logging.log4j.*;
 
 /**
- *
+ * This is a sample application to showcase how to invoke the Salesforce REST APis using Xcase classes.
+ * After logging in to get an access token and the instance URL, the application updates its instance API URL to 
+ * the later version. It then executes a number of API calls to show how request and response classes are used 
+ * by method classes.
+ * 
+ * Standard Salesforce URL are stored in the salesforce-config.properties file. Properties specific to your 
+ * account, username, password, client id, and client secret, are stored locally in the salesforce-local-config.properties 
+ * files, and the instance-specific URLs are updated in this file.
+ * 
  * @author martin
  */
 public class SalesforceApplication {
@@ -43,6 +51,9 @@ public class SalesforceApplication {
     public static void main(String[] args) {
         LOGGER.debug("starting main()");
         try {
+            /* Initialze the CommonHTTPManager */
+            CommonHTTPManager httpManager = CommonHTTPManager.refreshCommonHTTPManager();
+            /* Retrieve properties from the Salesforce properties files */
             String authorizePrefixURL = SalesforceConfigurationManager.getConfigurationManager().getConfig()
                     .getProperty(SalesforceConstant.CONFIG_API_OAUTH_AUTHORIZE_PREFIX);
             LOGGER.debug("authorizePrefixURL is " + authorizePrefixURL);
@@ -78,17 +89,56 @@ public class SalesforceApplication {
             parameters.add(new BasicNameValuePair("client_secret", consumerSecret));
             parameters.add(new BasicNameValuePair("username", username));
             parameters.add(new BasicNameValuePair("password", password));
-            CommonHTTPManager httpManager = CommonHTTPManager.refreshCommonHTTPManager();
+            /* Log in to retrieve an access token */
             CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponseMethod("POST", tokenPrefixURL, null,
                     parameters, null, null);
             LOGGER.debug("got response status code " + commonHttpResponse.getResponseCode());
             String responseEntityString = commonHttpResponse.getResponseEntityString();
             LOGGER.debug("responseEntityString is " + responseEntityString);
             JsonObject responseEntityJsonObject = (JsonObject) ConverterUtils.parseStringToJson(responseEntityString);
+            /* Retrieve the access token and instance URL from the response */
             String accessToken = responseEntityJsonObject.get("access_token").getAsString();
             LOGGER.debug("accessToken is " + accessToken);
-            String refreshToken = "";
-            LOGGER.debug("refreshToken is " + refreshToken);
+            String instanceUrl = responseEntityJsonObject.get("instance_url").getAsString();
+            LOGGER.debug("instanceUrl is " + instanceUrl);
+            SalesforceConfigurationManager.getConfigurationManager().getLocalConfig()
+                    .setProperty(SalesforceConstant.LOCAL_OAUTH2_INSTANCE_URL, instanceUrl);
+            LOGGER.debug("set instanceUrl to " + instanceUrl);
+            instanceUrl = SalesforceConfigurationManager.getConfigurationManager().getLocalConfig()
+                    .getProperty(SalesforceConstant.LOCAL_OAUTH2_INSTANCE_URL);
+            LOGGER.debug("instanceURL is " + instanceUrl);
+            String version = SalesforceConfigurationManager.getConfigurationManager().getConfig()
+                    .getProperty(SalesforceConstant.CONFIG_API_VERSION);
+            LOGGER.debug("version is " + version);
+            /* Construct a version URL using local properties. */
+            String servicesUrl = instanceUrl + "/services/data/";
+            String versionUrl = servicesUrl + version;
+            /* Use the services URL to get the latest Salesforce version. */
+            commonHttpResponse = httpManager.doCommonHttpResponseMethod("GET", servicesUrl, null,
+                    null, null, null);
+            JsonElement versionJsonElement = ConverterUtils.parseStringToJson(commonHttpResponse.getResponseEntityString());
+            if (versionJsonElement instanceof JsonObject) {
+                /* Just the current version used to be returned by this call */
+                version = "v" + ((JsonObject) versionJsonElement).get("version").getAsString();
+                versionUrl = servicesUrl + version;
+            } else {
+                /* Now, an array of versions is returned by this call */
+                JsonArray versionJsonArray = ((JsonArray) versionJsonElement);
+                /* Iterate through the versions to get the latest version. */
+                Iterator<JsonElement> versionIterator = versionJsonArray.iterator();
+                while (versionIterator.hasNext()) {
+                    version = "v" + ((JsonObject) versionIterator.next()).get("version").getAsString();
+                    versionUrl = servicesUrl + version;
+                }
+            }
+            
+            LOGGER.debug("version is " + version);
+            SalesforceConfigurationManager.getConfigurationManager().localConfig.setProperty(SalesforceConstant.LOCAL_OAUTH2_INSTANCE_VERSION, version);
+            LOGGER.debug("versionUrl is " + versionUrl);
+            SalesforceConfigurationManager.getConfigurationManager().localConfig.setProperty(SalesforceConstant.LOCAL_OAUTH2_INSTANCE_VERSION_URL, versionUrl);
+            /* Save the updated instance and version information */
+            SalesforceConfigurationManager.getConfigurationManager().storeLocalConfigProperties();
+            /* Create an instance of the Salesforce API to invoke Salesforce operations */
             SalesforceExternalAPI iSalesforceExternalAPI = new SimpleSalesforceImpl();
             LOGGER.debug("created iSalesforceExternalAPI");
             // generateTokenPair();

@@ -234,7 +234,7 @@ public class CommonHTTPManager implements AutoCloseable {
                 supportedProtocolsArray = ((String) localConfig.getProperty("supportedprotocols")).split(",");
             }
 
-            LOGGER.debug("supportedProtocolsArray is " + Arrays.toString(supportedProtocolsArray));
+//            LOGGER.debug("supportedProtocolsArray is " + Arrays.toString(supportedProtocolsArray));
             SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext, supportedProtocolsArray, null, NoopHostnameVerifier.INSTANCE);
             RegistryBuilder<ConnectionSocketFactory> connectionSocketFactoryRegistryBuilder = RegistryBuilder.<ConnectionSocketFactory>create();
             connectionSocketFactoryRegistryBuilder.register("http", plainConnectionSocketFactory);
@@ -337,7 +337,7 @@ public class CommonHTTPManager implements AutoCloseable {
                 supportedProtocolsArray = (commonHttpManagerConfig.getSupportedProtocols()).split(",");
             }
 
-            LOGGER.debug("supportedProtocolsArray is " + Arrays.toString(supportedProtocolsArray));
+//            LOGGER.debug("supportedProtocolsArray is " + Arrays.toString(supportedProtocolsArray));
             SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext, supportedProtocolsArray, null, NoopHostnameVerifier.INSTANCE);
             RegistryBuilder<ConnectionSocketFactory> connectionSocketFactoryRegistryBuilder = RegistryBuilder.<ConnectionSocketFactory>create();
             connectionSocketFactoryRegistryBuilder.register("http", plainConnectionSocketFactory);

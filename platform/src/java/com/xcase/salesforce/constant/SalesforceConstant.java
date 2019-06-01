@@ -23,6 +23,8 @@ public class SalesforceConstant {
     public static final String CONFIG_FILE_NAME = "salesforce-config.properties";
     public static final String CONFIG_FILE_DEFAULT_NAME = "salesforce-config-default.properties";
     public static final String LOCAL_CONFIG_FILE_NAME = "salesforce-local-config.properties";
+    public static final String LOCAL_OAUTH2_INSTANCE_VERSION = "salesforce.config.api.instance_version";
+    public static final String LOCAL_OAUTH2_INSTANCE_VERSION_URL = "salesforce.config.api.instance_version_url";
     public static final String LOCAL_OAUTH2_AUTHORIZATION_CODE = "salesforce.config.api.oauth2_authorization_code";
     public static final String LOCAL_OAUTH2_ACCESS_TOKEN = "salesforce.config.api.oauth2_access_token";
     public static final String LOCAL_OAUTH2_CLIENT_ID = "salesforce.config.api.oauth2_client_id";
