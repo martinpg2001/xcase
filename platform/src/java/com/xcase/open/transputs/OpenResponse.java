@@ -5,12 +5,12 @@
  */
 package com.xcase.open.transputs;
 
-import com.xcase.common.transputs.CommonResponse;
+import com.xcase.common.transputs.RestResponse;
 
 /**
  *
  * @author martinpg
  */
-public interface OpenResponse extends CommonResponse {
+public interface OpenResponse extends RestResponse {
     
 }

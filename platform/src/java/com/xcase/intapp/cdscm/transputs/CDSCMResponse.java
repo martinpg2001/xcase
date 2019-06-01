@@ -1,27 +1,7 @@
 package com.xcase.intapp.cdscm.transputs;
 
-import org.apache.http.StatusLine;
+import com.xcase.common.transputs.RestResponse;
 
-public interface CDSCMResponse {
-    
-    String getEntityString();
-    
-    String getMessage();
-
-    int getResponseCode();
-
-    StatusLine getStatusLine();
-
-    String getStatus();
-    
-    void setEntityString(String entityString);
-
-    void setMessage(String message);
-
-    void setResponseCode(int responseCode);
-
-    void setStatusLine(StatusLine statusLine);
-
-    void setStatus(String reasonPhrase);
+public interface CDSCMResponse extends RestResponse {
 
 }

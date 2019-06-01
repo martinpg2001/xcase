@@ -176,7 +176,7 @@ public class BaseSalesforceMethod {
      * @return the URL in string buffer
      */
     public StringBuffer getApiUrl(String actionType) {
-//        LOGGER.debug("starting getApiUrl()");
+        LOGGER.debug("starting getApiUrl()");
         StringBuffer urlBuf = new StringBuffer();
         urlBuf.append(this.apiUrlPrefix);
         urlBuf.append(CommonConstant.SLASH_STRING);
@@ -187,6 +187,7 @@ public class BaseSalesforceMethod {
         // urlBuf.append("sobjects");
         // urlBuf.append(SalesforceConstant.SLASH_STRING);
         urlBuf.append(actionType);
+        LOGGER.debug("about to return urlBuf");
         return urlBuf;
     }
 

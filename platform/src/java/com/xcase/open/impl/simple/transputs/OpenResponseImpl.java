@@ -3,13 +3,13 @@
  */
 package com.xcase.open.impl.simple.transputs;
 
-import com.xcase.common.impl.simple.transputs.CommonResponseImpl;
+import com.xcase.common.impl.simple.transputs.RestResponseImpl;
 import com.xcase.open.transputs.OpenResponse;
 
 /**
  *
  * @author martin
  */
-public class OpenResponseImpl extends CommonResponseImpl implements OpenResponse {
+public class OpenResponseImpl extends RestResponseImpl implements OpenResponse {
 
 }

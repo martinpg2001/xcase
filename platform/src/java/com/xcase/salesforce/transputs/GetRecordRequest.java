@@ -9,7 +9,11 @@ package com.xcase.salesforce.transputs;
  */
 public interface GetRecordRequest extends SalesforceRecordRequest {
 
-    public String getRecordId();
+    String getRecordId();
+    
+    String getRecordUrl();
 
-    public void setRecordId(String recordIdId);
+    void setRecordId(String recordId);
+
+    void setRecordUrl(String url);
 }

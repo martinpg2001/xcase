@@ -145,6 +145,12 @@ public class SalesforceRequestFactory extends BaseSalesforceFactory {
     public static GetRecordRequest createGetRecordRequest() {
         Object obj = newInstanceOf("salesforce.config.requestfactory.GetRecordRequest");
         return (GetRecordRequest) obj;
+    }
+    
+    public static GetRecordRequest createGetRecordRequest(String accessToken) {
+        GetRecordRequest request = createGetRecordRequest();
+        request.setAccessToken(accessToken);
+        return request;
     }    
 
     public static GetRecordRequest createGetRecordRequest(String accessToken, String recordType, String recordId) {

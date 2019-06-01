@@ -5,18 +5,12 @@
  */
 package com.xcase.common.transputs;
 
-import org.apache.http.StatusLine;
-
 /**
  *
  * @author martinpg
  */
 public interface CommonResponse {
-    public int getResponseCode();
-
-    public void setResponseCode(int responseCode);
+    String getMessage();
     
-    public StatusLine getStatusLine();
-    
-    public void setStatusLine(StatusLine statusLine);
+    void setMessage(String message);
 }

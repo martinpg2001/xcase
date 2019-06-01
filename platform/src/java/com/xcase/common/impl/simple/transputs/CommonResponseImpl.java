@@ -11,29 +11,15 @@ import org.apache.http.StatusLine;
  * @author martinpg
  */
 public class CommonResponseImpl implements CommonResponse {
-    /**
-     * HTTP response code of response.
-     */
-    protected int responseCode;
+    private String message = "SUCCESS";
     
-    /**
-     * HTTP response status line.
-     */    
-    protected StatusLine statusLine;
-
-    public int getResponseCode() {
-        return this.responseCode;
+    @Override
+    public String getMessage() {
+        return message;
     }
 
-    public void setResponseCode(int responseCode) {
-        this.responseCode = responseCode;
-    }
-    
-    public StatusLine getStatusLine() {
-        return this.statusLine;
-    }
-    
-    public void setStatusLine(StatusLine statusLine) {
-        this.statusLine = statusLine;
+    @Override
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

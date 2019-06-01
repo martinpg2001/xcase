@@ -119,6 +119,12 @@ public class SalesforceApplication {
                     accountId);
             LOGGER.debug("created getAccountRequest");
             GetAccountResponse getAccountResponse = iSalesforceExternalAPI.getAccount(getAccountRequest);
+            /* Get a record */
+            String recordId = "0014P000026SEdhQAG";
+            GetRecordRequest getRecordRequest = SalesforceRequestFactory.createGetRecordRequest(accessToken, "Account",
+                    recordId);
+            LOGGER.debug("created getRecordRequest");
+            GetRecordResponse getRecordResponse = iSalesforceExternalAPI.getRecord(getRecordRequest);
             /* Create an account */
             CreateAccountRequest createAccountRequest = SalesforceRequestFactory
                     .createCreateAccountRequest(accessToken);
@@ -165,8 +171,8 @@ public class SalesforceApplication {
             QueryRecordResponse queryRecordResponse = iSalesforceExternalAPI.queryRecord(queryRecordRequest);
             JsonElement queryRecordsJsonElement = queryRecordResponse.getJsonElement();
             if (queryRecordsJsonElement != null) {
-                JsonObject queryRecordJsonObject = (JsonObject) queryRecordsJsonElement;
-                JsonArray queryRecordJsonArray = queryRecordJsonObject.getAsJsonArray("searchRecords");
+                JsonObject queryRecordsJsonObject = (JsonObject) queryRecordsJsonElement;
+                JsonArray queryRecordJsonArray = queryRecordsJsonObject.getAsJsonArray("records");
                 if (queryRecordJsonArray != null) {
                     LOGGER.debug("queryRecordJsonArray is not null");
                     Iterator<JsonElement> queryRecordJsonElementIterator = queryRecordJsonArray.iterator();
@@ -174,6 +180,13 @@ public class SalesforceApplication {
                         LOGGER.debug("queryRecordJsonElementIterator has next");
                         JsonElement queryRecordJsonElement = queryRecordJsonElementIterator.next();
                         LOGGER.debug("queryRecordJsonElement is " + queryRecordJsonElement);
+                        JsonObject queryRecordJsonObject = (JsonObject) queryRecordJsonElement;
+                        String url  = queryRecordJsonObject.getAsJsonObject("attributes").get("url").getAsString();
+                        LOGGER.debug("url is " + url);
+                        GetRecordRequest getQueryRecordRequest = SalesforceRequestFactory.createGetRecordRequest(accessToken);
+                        LOGGER.debug("created getQueryRecordRequest");
+                        getQueryRecordRequest.setRecordUrl(url);
+                        GetRecordResponse getQueryRecordResponse = iSalesforceExternalAPI.getRecord(getQueryRecordRequest);
                     }
                 } else {
                     LOGGER.debug("queryRecordJsonArray is null");

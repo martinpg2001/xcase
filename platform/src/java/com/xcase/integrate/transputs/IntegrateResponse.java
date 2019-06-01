@@ -3,19 +3,12 @@
  */
 package com.xcase.integrate.transputs;
 
-import com.xcase.common.transputs.CommonResponse;
+import com.xcase.common.transputs.RestResponse;
 
 /**
  *
  * @author martin
  */
-public interface IntegrateResponse extends CommonResponse {
+public interface IntegrateResponse extends RestResponse {
 
-    public String getMessage();
-
-    public void setMessage(String message);
-
-    public String getStatus();
-
-    public void setStatus(String status);
 }

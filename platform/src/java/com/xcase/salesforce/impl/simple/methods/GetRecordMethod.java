@@ -5,6 +5,7 @@ package com.xcase.salesforce.impl.simple.methods;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.salesforce.constant.SalesforceConstant;
 import com.xcase.salesforce.factories.SalesforceResponseFactory;
 import com.xcase.salesforce.impl.simple.objects.SalesforceRecordImpl;
@@ -33,49 +34,59 @@ public class GetRecordMethod extends BaseSalesforceMethod {
 
     /**
      *
-     * @param getRecordRequest
+     * @param request
      * @return response
      * @throws IOException
      * @throws SalesforceException
      */
-    public GetRecordResponse getRecord(GetRecordRequest getRecordRequest) throws IOException, SalesforceException {
+    public GetRecordResponse getRecord(GetRecordRequest request) throws IOException, SalesforceException {
         LOGGER.debug("starting getRecord()");
-        GetRecordResponse getRecordResponse = SalesforceResponseFactory.createGetRecordResponse();
+        GetRecordResponse response = SalesforceResponseFactory.createGetRecordResponse();
         LOGGER.debug("created get record response");
-        String accessToken = getRecordRequest.getAccessToken();
-        LOGGER.debug("accessToken is " + accessToken);
-        String recordType = getRecordRequest.getRecordType();
-        LOGGER.debug("recordType is " + recordType);
-        String recordId = getRecordRequest.getRecordId();
-        LOGGER.debug("recordId is " + recordId);
-        StringBuffer urlBuff = super.getApiUrl("sobjects/" + recordType);
-        urlBuff.append("/" + recordId);
-        String accountApiUrl = urlBuff.toString();
-        LOGGER.debug("accountApiUrl is " + accountApiUrl);
-        String bearerString = "Bearer " + accessToken;
-        LOGGER.debug("bearerString is " + bearerString);
-        Header header = new BasicHeader("Authorization", bearerString);
-        LOGGER.debug("created Authorization header");
-        Header[] headers = {header};
-        List<NameValuePair> parameters = new ArrayList<NameValuePair>();
         try {
-            JsonElement jsonElement = httpManager.doJsonGet(accountApiUrl, headers, parameters);
-            if (!jsonElement.isJsonNull()) {
-                LOGGER.debug("jsonElement is " + jsonElement.toString());
-                JsonObject jsonObject = (JsonObject) jsonElement;
-                SalesforceRecordImpl salesforceRecordImpl = SalesforceRecordImpl.CreateSalesforceRecordImpl(jsonObject);
-                LOGGER.debug("created salesforceRecordImpl from jsonObject");
-                String recordName = salesforceRecordImpl.getName();
-                LOGGER.info("recordName is " + recordName);
+            String accessToken = request.getAccessToken();
+            LOGGER.debug("accessToken is " + accessToken);
+            String recordType = request.getRecordType();
+            LOGGER.debug("recordType is " + recordType);
+            String recordId = request.getRecordId();
+            LOGGER.debug("recordId is " + recordId);
+            StringBuffer urlBuffer = null;
+            if (recordId != null && !recordId.isEmpty()) {
+                LOGGER.debug("recordId is neither null nor empty");
+                urlBuffer = super.getApiUrl("sobjects/");
+                urlBuffer.append(recordType + "/" + recordId);
+            } else if (request.getRecordUrl() != null) {
+                LOGGER.debug("recordUrl is not null");
+                String recordUrl = request.getRecordUrl();
+                LOGGER.debug("recordUrl is " + recordUrl);
+                urlBuffer = new StringBuffer(this.apiUrlPrefix);
+                urlBuffer.append(recordUrl);
             } else {
-                String status = SalesforceConstant.STATUS_NOT_LOGGED_IN;
-                getRecordResponse.setStatus(status);
+                LOGGER.warn("neither recordId nor recordUrl is provided");
+            }
+
+            String endPoint = urlBuffer.toString();
+            LOGGER.debug("endPoint is " + endPoint);
+            String bearerString = "Bearer " + accessToken;
+            LOGGER.debug("bearerString is " + bearerString);
+            Header header = new BasicHeader("Authorization", bearerString);
+            LOGGER.debug("created Authorization header");
+            Header[] headers = { header };
+            List<NameValuePair> parameters = new ArrayList<NameValuePair>();
+            CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponseGet(endPoint, headers, parameters,
+                    null);
+            int responseCode = commonHttpResponse.getResponseCode();
+            LOGGER.debug("responseCode is " + responseCode);
+            response.setResponseCode(responseCode);
+            if (responseCode == 200) {
+                handleExpectedResponseCode(response, commonHttpResponse);
+            } else {
+                handleUnexpectedResponseCode(response, commonHttpResponse);
             }
         } catch (Exception e) {
-            LOGGER.warn("catching exception: " + e.getMessage());
-            throw new SalesforceException("Failed to parse to a document.", e);
+            handleUnexpectedException(response, e);
         }
 
-        return getRecordResponse;
+        return response;
     }
 }
