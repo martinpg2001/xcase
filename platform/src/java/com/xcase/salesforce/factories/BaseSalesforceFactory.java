@@ -46,15 +46,15 @@ public class BaseSalesforceFactory {
 			Class clazz = Class.forName(className);
 			obj = clazz.getDeclaredConstructor().newInstance();
 		} catch (ClassNotFoundException cnfe) {
-			LOGGER.info("exception creating new instance: " + cnfe.getMessage());
+			LOGGER.warn("exception creating new instance: " + cnfe.getMessage());
 		} catch (InstantiationException ie) {
-			LOGGER.info("exception creating new instance: " + ie.getMessage());
+			LOGGER.warn("exception creating new instance: " + ie.getMessage());
 		} catch (IllegalAccessException iae) {
-			LOGGER.info("exception creating new instance: " + iae.getMessage());
+			LOGGER.warn("exception creating new instance: " + iae.getMessage());
 		} catch (InvocationTargetException ite) {
-			LOGGER.info("exception creating new instance: " + ite.getMessage());
+			LOGGER.warn("exception creating new instance: " + ite.getMessage());
 		} catch (NoSuchMethodException nsme) {
-			LOGGER.info("exception creating new instance: " + nsme.getMessage());
+			LOGGER.warn("exception creating new instance: " + nsme.getMessage());
 		}
 
 		if (obj == null) {

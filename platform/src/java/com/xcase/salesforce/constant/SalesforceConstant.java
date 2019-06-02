@@ -12,7 +12,7 @@ public class SalesforceConstant {
     public static final String CONFIG_API_AUTHENTICATION_HEADER = "salesforce.authentication.header";
     public static final String CONFIG_API_OAUTH_TOKEN_PREFIX = "salesforce.config.api.oauth2_token_prefix";
     public static final String CONFIG_API_OAUTH_AUTHORIZE_PREFIX = "salesforce.config.api.oauth2_authorize_prefix";
-    public static final String CONFIG_API_OAUTH_REVOKE_PREFIX = "";
+    public static final String CONFIG_API_OAUTH_REVOKE_PREFIX = "salesforce.config.api.oauth2_revoke_prefix";
     public static final String CONFIG_API_REQUEST_FORMAT = "";
     public static final String CONFIG_API_REQUEST_FORMAT_SOAP = "";
     public static final String CONFIG_API_REQUEST_FORMAT_XML = "";

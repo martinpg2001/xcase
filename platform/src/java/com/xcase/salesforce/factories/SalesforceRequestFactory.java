@@ -185,6 +185,17 @@ public class SalesforceRequestFactory extends BaseSalesforceFactory {
         return request;
     }
     
+    public static RevokeAccessTokenRequest createRevokeAccessTokenRequest() {
+        Object obj = newInstanceOf("salesforce.config.requestfactory.RevokeAccessTokenRequest");
+        return (RevokeAccessTokenRequest) obj;
+    } 
+    
+    public static RevokeAccessTokenRequest createRevokeAccessTokenRequest(String accessToken) {
+        RevokeAccessTokenRequest request = createRevokeAccessTokenRequest();
+        request.setAccessToken(accessToken);
+        return request;
+    }
+    
     public static SearchAccountRequest createSearchAccountRequest() {
         Object obj = newInstanceOf("salesforce.config.requestfactory.SearchAccountRequest");
         return (SearchAccountRequest) obj;

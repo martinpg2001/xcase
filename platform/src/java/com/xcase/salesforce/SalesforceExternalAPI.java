@@ -25,16 +25,16 @@ public interface SalesforceExternalAPI {
      * @throws SalesforceException Salesforce exception
      */
     GetAccessTokenResponse getAccessToken(GetAccessTokenRequest getAccessTokenRequest) throws IOException, SalesforceException;
-
+    
     /**
-     * This method is used to refresh an access token.
+     * This method is used to get users.
      *
-     * @param refreshAccessTokenRequest
+     * @param getUserRequest
      * @return response object
      * @throws IOException IO exception
      * @throws SalesforceException Salesforce exception
      */
-    RefreshAccessTokenResponse refreshAccessToken(RefreshAccessTokenRequest refreshAccessTokenRequest) throws IOException, SalesforceException;
+    GetUserResponse getUser(GetUserRequest getUserRequest) throws IOException, SalesforceException;
 
     /**
      * This method is used to create an account.
@@ -105,6 +105,26 @@ public interface SalesforceExternalAPI {
      * @throws SalesforceException Salesforce exception
      */
     QueryRecordResponse queryRecord(QueryRecordRequest queryRecordRequest) throws IOException, SalesforceException;
+    
+    /**
+     * This method is used to refresh an access token.
+     *
+     * @param refreshAccessTokenRequest
+     * @return response object
+     * @throws IOException IO exception
+     * @throws SalesforceException Salesforce exception
+     */
+    RefreshAccessTokenResponse refreshAccessToken(RefreshAccessTokenRequest refreshAccessTokenRequest) throws IOException, SalesforceException;
+    
+    /**
+     * This method is used to revoke access tokens.
+     *
+     * @param revokeAcessTokenRequest request object
+     * @return response object
+     * @throws IOException IO exception
+     * @throws SalesforceException Salesforce exception
+     */    
+    RevokeAccessTokenResponse revokeAccessToken(RevokeAccessTokenRequest revokeAcessTokenRequest) throws IOException, SalesforceException;
 
     /**
      * This method is used to search accounts.
@@ -135,6 +155,4 @@ public interface SalesforceExternalAPI {
      * @throws SalesforceException Salesforce exception
      */
     UpdateRecordResponse updateRecord(UpdateRecordRequest updateRecordRequest) throws IOException, SalesforceException;
-
-    GetUserResponse getUser(GetUserRequest getUserRequest) throws IOException, SalesforceException;
 }

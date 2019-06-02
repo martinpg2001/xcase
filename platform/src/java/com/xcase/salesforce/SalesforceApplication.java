@@ -251,6 +251,11 @@ public class SalesforceApplication {
                     accountId);
             LOGGER.debug("created deleteAccountRequest");
             DeleteAccountResponse deleteAccountResponse = iSalesforceExternalAPI.deleteAccount(deleteAccountRequest);
+            LOGGER.debug("deleted account");
+            /* Revoke access token */
+            RevokeAccessTokenRequest revokeAcessTokenRequest = SalesforceRequestFactory.createRevokeAccessTokenRequest(accessToken);
+            LOGGER.debug("created revokeAcessTokenRequest");
+            RevokeAccessTokenResponse revokeAcessTokenResponse = iSalesforceExternalAPI.revokeAccessToken(revokeAcessTokenRequest);            
         } catch (Exception e) {
             LOGGER.warn("exception running application: " + e.getMessage());
         }

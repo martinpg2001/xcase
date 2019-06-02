@@ -4,46 +4,9 @@
 package com.xcase.salesforce;
 
 import com.xcase.salesforce.impl.simple.core.SalesforceConfigurationManager;
-import com.xcase.salesforce.impl.simple.methods.CreateAccountMethod;
-import com.xcase.salesforce.impl.simple.methods.CreateRecordMethod;
-import com.xcase.salesforce.impl.simple.methods.DeleteAccountMethod;
-import com.xcase.salesforce.impl.simple.methods.DeleteRecordMethod;
-import com.xcase.salesforce.impl.simple.methods.GetAccessTokenMethod;
-import com.xcase.salesforce.impl.simple.methods.GetAccountMethod;
-import com.xcase.salesforce.impl.simple.methods.GetRecordMethod;
-import com.xcase.salesforce.impl.simple.methods.GetUserMethod;
-import com.xcase.salesforce.impl.simple.methods.QueryRecordMethod;
-import com.xcase.salesforce.impl.simple.methods.RefreshAccessTokenMethod;
-import com.xcase.salesforce.impl.simple.methods.SearchAccountMethod;
-import com.xcase.salesforce.impl.simple.methods.SearchRecordMethod;
-import com.xcase.salesforce.impl.simple.methods.UpdateRecordMethod;
+import com.xcase.salesforce.impl.simple.methods.*;
 import com.xcase.salesforce.objects.SalesforceException;
-import com.xcase.salesforce.transputs.CreateAccountRequest;
-import com.xcase.salesforce.transputs.CreateAccountResponse;
-import com.xcase.salesforce.transputs.CreateRecordRequest;
-import com.xcase.salesforce.transputs.CreateRecordResponse;
-import com.xcase.salesforce.transputs.DeleteAccountRequest;
-import com.xcase.salesforce.transputs.DeleteAccountResponse;
-import com.xcase.salesforce.transputs.DeleteRecordRequest;
-import com.xcase.salesforce.transputs.DeleteRecordResponse;
-import com.xcase.salesforce.transputs.GetAccessTokenRequest;
-import com.xcase.salesforce.transputs.GetAccessTokenResponse;
-import com.xcase.salesforce.transputs.GetAccountRequest;
-import com.xcase.salesforce.transputs.GetAccountResponse;
-import com.xcase.salesforce.transputs.GetRecordRequest;
-import com.xcase.salesforce.transputs.GetRecordResponse;
-import com.xcase.salesforce.transputs.GetUserRequest;
-import com.xcase.salesforce.transputs.GetUserResponse;
-import com.xcase.salesforce.transputs.QueryRecordRequest;
-import com.xcase.salesforce.transputs.QueryRecordResponse;
-import com.xcase.salesforce.transputs.RefreshAccessTokenRequest;
-import com.xcase.salesforce.transputs.RefreshAccessTokenResponse;
-import com.xcase.salesforce.transputs.SearchAccountRequest;
-import com.xcase.salesforce.transputs.SearchAccountResponse;
-import com.xcase.salesforce.transputs.SearchRecordRequest;
-import com.xcase.salesforce.transputs.SearchRecordResponse;
-import com.xcase.salesforce.transputs.UpdateRecordRequest;
-import com.xcase.salesforce.transputs.UpdateRecordResponse;
+import com.xcase.salesforce.transputs.*;
 import java.io.IOException;
 import java.lang.invoke.*;
 import org.apache.logging.log4j.*;
@@ -112,6 +75,11 @@ public class SimpleSalesforceImpl implements SalesforceExternalAPI {
      * Salesforce action implementation.
      */
     private QueryRecordMethod queryRecordMethod = new QueryRecordMethod();
+    
+    /**
+     * Salesforce action implementation.
+     */
+    private RevokeAccessTokenMethod revokeAccessTokenMethod = new RevokeAccessTokenMethod();
 
     /**
      * Salesforce action implementation.
@@ -167,6 +135,11 @@ public class SimpleSalesforceImpl implements SalesforceExternalAPI {
 
     public QueryRecordResponse queryRecord(QueryRecordRequest queryRecordRequest) throws IOException, SalesforceException {
         return this.queryRecordMethod.queryRecord(queryRecordRequest);
+    }
+    
+    @Override
+    public RevokeAccessTokenResponse revokeAccessToken(RevokeAccessTokenRequest revokeAcessTokenRequest) {
+        return this.revokeAccessTokenMethod.revokeAccessToken(revokeAcessTokenRequest);
     }
 
     public SearchAccountResponse searchAccount(SearchAccountRequest searchAccountRequest) throws IOException, SalesforceException {

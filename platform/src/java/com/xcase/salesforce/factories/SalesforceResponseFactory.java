@@ -3,19 +3,7 @@
  */
 package com.xcase.salesforce.factories;
 
-import com.xcase.salesforce.transputs.CreateAccountResponse;
-import com.xcase.salesforce.transputs.CreateRecordResponse;
-import com.xcase.salesforce.transputs.DeleteAccountResponse;
-import com.xcase.salesforce.transputs.DeleteRecordResponse;
-import com.xcase.salesforce.transputs.GetAccessTokenResponse;
-import com.xcase.salesforce.transputs.GetAccountResponse;
-import com.xcase.salesforce.transputs.GetRecordResponse;
-import com.xcase.salesforce.transputs.GetUserResponse;
-import com.xcase.salesforce.transputs.QueryRecordResponse;
-import com.xcase.salesforce.transputs.RefreshAccessTokenResponse;
-import com.xcase.salesforce.transputs.SearchAccountResponse;
-import com.xcase.salesforce.transputs.SearchRecordResponse;
-import com.xcase.salesforce.transputs.UpdateRecordResponse;
+import com.xcase.salesforce.transputs.*;
 import java.lang.invoke.*;
 import org.apache.logging.log4j.*;
 
@@ -109,6 +97,16 @@ public class SalesforceResponseFactory extends BaseSalesforceFactory {
         Object obj = newInstanceOf("salesforce.config.responsefactory.GetRecordResponse");
         return (GetRecordResponse) obj;
     }
+    
+    /**
+     * create response object.
+     *
+     * @return response object
+     */
+    public static GetUserResponse createGetUserResponse() {
+        Object obj = newInstanceOf("salesforce.config.responsefactory.GetUserResponse");
+        return (GetUserResponse) obj;
+    }
 
     /**
      * create response object.
@@ -118,6 +116,11 @@ public class SalesforceResponseFactory extends BaseSalesforceFactory {
     public static QueryRecordResponse createQueryRecordResponse() {
         Object obj = newInstanceOf("salesforce.config.responsefactory.QueryRecordResponse");
         return (QueryRecordResponse) obj;
+    }
+    
+    public static RevokeAccessTokenResponse createRevokeAccessTokenResponse() {
+        Object obj = newInstanceOf("salesforce.config.responsefactory.RevokeAccessTokenResponse");
+        return (RevokeAccessTokenResponse) obj;
     }
 
     /**
@@ -148,15 +151,5 @@ public class SalesforceResponseFactory extends BaseSalesforceFactory {
     public static UpdateRecordResponse createUpdateRecordResponse() {
         Object obj = newInstanceOf("salesforce.config.responsefactory.UpdateRecordResponse");
         return (UpdateRecordResponse) obj;
-    }
-
-    /**
-     * create response object.
-     *
-     * @return response object
-     */
-    public static GetUserResponse createGetUserResponse() {
-        Object obj = newInstanceOf("salesforce.config.responsefactory.GetUserResponse");
-        return (GetUserResponse) obj;
     }
 }
