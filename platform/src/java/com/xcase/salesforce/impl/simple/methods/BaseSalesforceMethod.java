@@ -350,17 +350,17 @@ public class BaseSalesforceMethod {
     public void handleUnexpectedResponseCode(SalesforceResponse response, CommonHttpResponse commonHttpResponse) {
         LOGGER.warn("unexpected response code: " + commonHttpResponse.getResponseCode());
         response.setMessage("Unexpected response code: " + commonHttpResponse.getResponseCode());
-        LOGGER.debug("set message");
+//        LOGGER.debug("set message");
         response.setResponseCode(commonHttpResponse.getResponseCode());
-        LOGGER.debug("set response code");
+//        LOGGER.debug("set response code");
         response.setStatusLine(commonHttpResponse.getStatusLine());
-        LOGGER.debug("set status line");
+//        LOGGER.debug("set status line");
         response.setStatus(commonHttpResponse.getStatusLine().getReasonPhrase());
-        LOGGER.debug("set status");
+//        LOGGER.debug("set status");
     }
 
     public void handleUnexpectedException(SalesforceResponse response, Exception e) {
-        LOGGER.warn("exception invoking API: " + e.getMessage());
+        LOGGER.warn("unexpected exception invoking API: " + e.getMessage());
         response.setMessage("Exception invoking API: " + e.getMessage());
         response.setStatus("FAIL");
     }

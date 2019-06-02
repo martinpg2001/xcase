@@ -61,7 +61,6 @@ public class RevokeAccessTokenMethod extends BaseSalesforceMethod {
             handleUnexpectedException(response, e);
         }
 
-        LOGGER.debug("about to return response");
         return response;
     }
 
