@@ -8,13 +8,17 @@
     <property name="src" value="src/java"/>
     <property name="src-xcase-box" value="src/java/com/xcase/box"/>
     <property name="src-xcase-common" value="src/java/com/xcase/common"/>
-	<property name="src-xcase-intapp" value="src/java/com/xcase/intapp"/>
+    <property name="src-xcase-intapp" value="src/java/com/xcase/intapp"/>
     <property name="src-xcase-integrate" value="src/java/com/xcase/integrate"/>
     <property name="src-xcase-msgraph" value="src/java/com/xcase/msgraph"/>
     <property name="src-xcase-open" value="src/java/com/xcase/open"/>
     <property name="src-xcase-salesforce" value="src/java/com/xcase/salesforce"/>
     <property name="src-xcase-sharepoint" value="src/java/com/xcase/sharepoint"/>
     <property name="src-xcase-webservice" value="src/java/com/xcase/webservice"/>
+    <property name="ant-jar" value="lib/ant-1.7.0.jar" />
+    <property name="ant-launcher-jar" value="lib/ant-launcher-1.7.0.jar" />
+    <property name="log4j-api-jar" value="lib/log4j-api-2.11.2.jar" />
+    <property name="log4j-core-jar" value="lib/log4j-core-2.11.2.jar" />
     <property name="ssh-jar" value="lib/ganymed-ssh2.jar" />
     <property name="tst-dir" location="src/junit" />
     <property name="tst.dir" location="src/testng" />
@@ -22,8 +26,8 @@
     <property name="tomcat.home" value="${env.TOMCAT_HOME}"/>
     <property name="version" value="1.0.0"/>
     <path id="classpath.base">
-    	<pathelement location="lib/activation-1.1.jar" />
-        <pathelement location="lib/ant.jar" />
+        <pathelement location="lib/activation-1.1.jar" />
+        <pathelement location="${ant-jar}" />
         <pathelement location="lib/antlr-2.7.7.jar" />
         <pathelement location="lib/ant-jsch.jar" />
         <pathelement location="lib/ant-launcher.jar" />
@@ -56,7 +60,7 @@
         <pathelement location="lib/httpmime-4.5.5.jar" />
         <pathelement location="lib/ifxjdbc.jar" />
         <pathelement location="lib/java-sharepoint-2.0-BETA2.jar" />
-    	<pathelement location="lib/jaxb-api-2.3.0.jar" />
+        <pathelement location="lib/jaxb-api-2.3.0.jar" />
         <pathelement location="lib/jcifs-1.2.24.jar" />
         <pathelement location="lib/jcommander-1.7.jar" />
         <pathelement location="lib/jconn4.jar" />
@@ -68,7 +72,8 @@
         <pathelement location="lib/jsoup-1.11.3.jar" />
         <pathelement location="lib/jtds.jar" />
         <pathelement location="lib/junit-4.12.jar" />
-        <pathelement location="lib/log4j-api-2.3.jar" />
+        <pathelement location="${log4j-api-jar}" />
+        <pathelement location="${log4j-core-jar}" />
         <pathelement location="lib/mail.jar" />
         <pathelement location="lib/mysql.jar" />
         <pathelement location="lib/oracle.jar" />
@@ -78,7 +83,7 @@
         <pathelement location="lib/testng-6.9.10.jar" />
     </path>
     <path id="classpath.run">
-    	<pathelement location="lib/activation-1.1.jar" />
+        <pathelement location="lib/activation-1.1.jar" />
         <pathelement location="lib/ant.jar" />
         <pathelement location="lib/antlr-2.7.7.jar" />
         <pathelement location="lib/ant-jsch.jar" />
@@ -101,7 +106,7 @@
         <pathelement location="lib/httpmime-4.5.5.jar" />
         <pathelement location="lib/ifxjdbc.jar" />
         <pathelement location="lib/jaf.jar" />
-    	<pathelement location="lib/jaxb-api-2.3.0.jar" />
+        <pathelement location="lib/jaxb-api-2.3.0.jar" />
         <pathelement location="lib/jcommander-1.7.jar" />
         <pathelement location="lib/jconn4.jar" />
         <pathelement location="lib/jdom2-2.0.6.jar" />
@@ -110,7 +115,8 @@
         <pathelement location="lib/jsoup-1.11.3.jar" />
         <pathelement location="lib/jtds.jar" />
         <pathelement location="lib/junit-4.12.jar" />
-        <pathelement location="lib/log4j-api-2.3.jar" />
+        <pathelement location="${log4j-api-jar}" />
+        <pathelement location="${log4j-core-jar}" />
         <pathelement location="lib/mail.jar" />
         <pathelement location="lib/oracle.jar" />
         <pathelement location="lib/selenium-java-2.53.0.jar" />
@@ -128,8 +134,8 @@
     <path id="classpath.test">
         <pathelement location="${tst-dir}" />
         <pathelement location="${junitjar}" />
-        <pathelement location="lib/log4j-api-2.3.jar" />
-        <pathelement location="lib/log4j-core-2.3.jar" />
+        <pathelement location="${log4j-api-jar}" />
+        <pathelement location="${log4j-core-jar}" />
         <pathelement location="lib/log4j.jar" />
         <path refid="classpath.base" />
         <path refid="classpath.mocquer" />
@@ -262,20 +268,18 @@
         <delete file="${release-dir}.tgz"/>
         <mkdir dir="${release-dir}"/>
         <mkdir dir="${release-dir}/lib"/>
-        <copy file="lib/rbservice-client.jar" todir="${release-dir}/lib" />
-    	<copy file="lib/activation-1.1.jar" todir="${release-dir}/lib" />
+        <copy file="lib/activation-1.1.jar" todir="${release-dir}/lib" />
         <copy file="lib/asm-1.5.2.jar" todir="${release-dir}/lib" />
         <copy file="lib/bcprov.jar" todir="${release-dir}/lib" />
         <copy file="lib/commons-cli-1.4.jar" todir="${release-dir}/lib" />
         <copy file="lib/ganymed-ssh2.jar" todir="${release-dir}/lib" />
-    	<copy file="lib/jaxb-api-2.3.0.jar" todir="${release-dir}/lib" />
+        <copy file="lib/jaxb-api-2.3.0.jar" todir="${release-dir}/lib" />
         <copy file="lib/jdom2-2.0.6.jar" todir="${release-dir}/lib" />
         <copy file="lib/jsch-0.1.54.jar" todir="${release-dir}/lib" />
         <copy file="lib/jsoup-1.11.3.jar" todir="${release-dir}/lib" />
         <copy file="lib/jtds.jar" todir="${release-dir}/lib" />
+        <copy file="${log4j-api-jar}" todir="${release-dir}/lib" />
+        <copy file="${log4j-core-jar}" todir="${release-dir}/lib" />
         <copy file="lib/oracle.jar" todir="${release-dir}/lib" />
-        <copy file="lib/harness.jar" todir="${release-dir}/lib" />
-        <copy file="runnerApp.sh" todir="${release-dir}" />
-        <tar destfile="harness-release.tgz" compression="gzip" basedir="." includes="${release-dir}/*,${release-dir}/lib/*"/>
     </target>
 </project>
