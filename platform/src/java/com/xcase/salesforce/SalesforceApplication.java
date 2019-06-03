@@ -84,11 +84,11 @@ public class SalesforceApplication {
                     + CommonConstant.EQUALS_SIGN_STRING + redirectURI;
             LOGGER.debug("authorizationCodeURL is " + authorizationCodeURL);
             List<NameValuePair> parameters = new ArrayList<NameValuePair>();
-            parameters.add(new BasicNameValuePair("grant_type", "password"));
             parameters.add(new BasicNameValuePair("client_id", consumerKey));
             parameters.add(new BasicNameValuePair("client_secret", consumerSecret));
-            parameters.add(new BasicNameValuePair("username", username));
+            parameters.add(new BasicNameValuePair("grant_type", "password"));
             parameters.add(new BasicNameValuePair("password", password));
+            parameters.add(new BasicNameValuePair("username", username));
             /* Log in to retrieve an access token */
             CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponseMethod("POST", tokenPrefixURL, null,
                     parameters, null, null);
@@ -141,7 +141,7 @@ public class SalesforceApplication {
             /* Create an instance of the Salesforce API to invoke Salesforce operations */
             SalesforceExternalAPI iSalesforceExternalAPI = new SimpleSalesforceImpl();
             LOGGER.debug("created iSalesforceExternalAPI");
-            // generateTokenPair();
+            generateTokenPair();
             /*
              * LOGGER.debug("about to get access token"); GetAccessTokenRequest
              * getAccessTokenRequest =
@@ -158,6 +158,13 @@ public class SalesforceApplication {
              * getAccessTokenResponse.getAccessToken(); LOGGER.debug("your access token is "
              * + accessToken);
              */
+            /* Refresh tokens */
+            RefreshAccessTokenRequest refreshAccessTokenRequest = SalesforceRequestFactory.createRefreshAccessTokenRequest();
+            LOGGER.debug("created refreshAccessTokenRequest");
+            refreshAccessTokenRequest.setClientId(SalesforceConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(SalesforceConstant.LOCAL_OAUTH2_CLIENT_ID));
+            refreshAccessTokenRequest.setClientSecret(SalesforceConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(SalesforceConstant.LOCAL_OAUTH2_CLIENT_SECRET));
+            refreshAccessTokenRequest.setRefreshToken(SalesforceConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(SalesforceConstant.LOCAL_OAUTH2_REFRESH_TOKEN));
+            RefreshAccessTokenResponse refreshAccessTokenResponse = iSalesforceExternalAPI.refreshAccessToken(refreshAccessTokenRequest);            
             /* Get a user */
             String userId = "0054P000009Be9r";
             GetUserRequest getUserRequest = SalesforceRequestFactory.createGetUserRequest(accessToken, userId);
@@ -246,7 +253,6 @@ public class SalesforceApplication {
             }
             
             /* Delete an account */
-            accountId = "0014P000026SEneQAG";
             DeleteAccountRequest deleteAccountRequest = SalesforceRequestFactory.createDeleteAccountRequest(accessToken,
                     accountId);
             LOGGER.debug("created deleteAccountRequest");
@@ -262,6 +268,7 @@ public class SalesforceApplication {
     }
 
     private static void generateTokenPair() throws Exception, IOException {
+        LOGGER.debug("starting generateTokenPair()");
         String authorizationCode = SalesforceConfigurationManager.getConfigurationManager().getLocalConfig()
                 .getProperty(SalesforceConstant.LOCAL_OAUTH2_AUTHORIZATION_CODE);
         LOGGER.debug("authorizationCode is " + authorizationCode);
@@ -271,8 +278,8 @@ public class SalesforceApplication {
         String consumerSecret = SalesforceConfigurationManager.getConfigurationManager().getLocalConfig()
                 .getProperty(SalesforceConstant.LOCAL_OAUTH2_CLIENT_SECRET);
         LOGGER.debug("consumerSecret is " + consumerSecret);
-        String tokenURL = SalesforceConfigurationManager.getConfigurationManager().getLocalConfig()
-                .getProperty(SalesforceConstant.LOCAL_OAUTH2_TOKEN_URL);
+        String tokenURL = SalesforceConfigurationManager.getConfigurationManager().getConfig()
+                .getProperty(SalesforceConstant.CONFIG_API_OAUTH_TOKEN_PREFIX);
         LOGGER.debug("tokenURL is " + tokenURL);
         String redirectURI = SalesforceConfigurationManager.getConfigurationManager().getLocalConfig()
                 .getProperty(SalesforceConstant.LOCAL_OAUTH2_REDIRECT_URL);
@@ -280,9 +287,9 @@ public class SalesforceApplication {
         CommonHTTPManager httpManager = CommonHTTPManager.refreshCommonHTTPManager();
         List<NameValuePair> parameters = new ArrayList<NameValuePair>();
         parameters.add(new BasicNameValuePair("code", authorizationCode));
-        parameters.add(new BasicNameValuePair("grant_type", "authorization_code"));
         parameters.add(new BasicNameValuePair("client_id", consumerKey));
         parameters.add(new BasicNameValuePair("client_secret", consumerSecret));
+        parameters.add(new BasicNameValuePair("grant_type", "authorization_code"));
         parameters.add(new BasicNameValuePair("redirect_uri", redirectURI));
         CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponseMethod("POST", tokenURL, null,
                 parameters, null, null);
@@ -294,6 +301,13 @@ public class SalesforceApplication {
         LOGGER.debug("accessToken is " + accessToken);
         SalesforceConfigurationManager.getConfigurationManager().getLocalConfig()
                 .setProperty(SalesforceConstant.LOCAL_OAUTH2_ACCESS_TOKEN, accessToken);
+        if (responseEntityJsonObject.get("refresh_token") != null) {
+            String refreshToken = responseEntityJsonObject.get("refresh_token").getAsString();
+            LOGGER.debug("refreshToken is " + refreshToken);
+            SalesforceConfigurationManager.getConfigurationManager().getLocalConfig()
+                .setProperty(SalesforceConstant.LOCAL_OAUTH2_REFRESH_TOKEN, refreshToken);
+        }
+        
         SalesforceConfigurationManager.getConfigurationManager().storeLocalConfigProperties();
     }
 

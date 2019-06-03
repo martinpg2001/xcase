@@ -66,8 +66,10 @@ public class DeleteAccountMethod extends BaseSalesforceMethod {
             if (responseCode == 204) {
                 handleExpectedResponseCode(response, commonHttpResponse);
                 JsonElement jsonElement = response.getJsonElement();
-                if (!jsonElement.isJsonNull()) {
+                if (jsonElement != null && !jsonElement.isJsonNull()) {
                     LOGGER.debug("jsonElement is " + jsonElement.toString());
+                } else {
+                    LOGGER.debug("jsonElement is null");
                 }
             } else {
                 handleUnexpectedResponseCode(response, commonHttpResponse);

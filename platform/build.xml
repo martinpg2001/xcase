@@ -15,8 +15,12 @@
     <property name="src-xcase-salesforce" value="src/java/com/xcase/salesforce"/>
     <property name="src-xcase-sharepoint" value="src/java/com/xcase/sharepoint"/>
     <property name="src-xcase-webservice" value="src/java/com/xcase/webservice"/>
+    <property name="activation-jar" value="lib/activation-1.1.jar" />
     <property name="ant-jar" value="lib/ant-1.7.0.jar" />
+    <property name="ant-jsch-jar" value="lib/ant-jsch.jar" />
     <property name="ant-launcher-jar" value="lib/ant-launcher-1.7.0.jar" />
+    <property name="antlr-jar" value="lib/antlr-2.7.7.jar" />
+    <property name="asm-jar" value="lib/asm-3.2.jar" />
     <property name="log4j-api-jar" value="lib/log4j-api-2.11.2.jar" />
     <property name="log4j-core-jar" value="lib/log4j-core-2.11.2.jar" />
     <property name="ssh-jar" value="lib/ganymed-ssh2.jar" />
@@ -26,12 +30,12 @@
     <property name="tomcat.home" value="${env.TOMCAT_HOME}"/>
     <property name="version" value="1.0.0"/>
     <path id="classpath.base">
-        <pathelement location="lib/activation-1.1.jar" />
+        <pathelement location="${activation-jar}" />
         <pathelement location="${ant-jar}" />
-        <pathelement location="lib/antlr-2.7.7.jar" />
-        <pathelement location="lib/ant-jsch.jar" />
-        <pathelement location="lib/ant-launcher.jar" />
-        <pathelement location="lib/asm-3.2.jar" />
+        <pathelement location="${antlr-jar}" />
+        <pathelement location="${ant-jsch-jar}" />
+        <pathelement location="${ant-launcher-jar}" />
+        <pathelement location="${asm-jar}" />
         <pathelement location="lib/axiom-api-1.2.14.jar" />
         <pathelement location="lib/axiom-compat-1.2.14.jar" />
         <pathelement location="lib/axiom-dom-1.2.14.jar" />
@@ -83,12 +87,12 @@
         <pathelement location="lib/testng-6.9.10.jar" />
     </path>
     <path id="classpath.run">
-        <pathelement location="lib/activation-1.1.jar" />
-        <pathelement location="lib/ant.jar" />
-        <pathelement location="lib/antlr-2.7.7.jar" />
-        <pathelement location="lib/ant-jsch.jar" />
-        <pathelement location="lib/ant-launcher.jar" />
-        <pathelement location="lib/asm-3.2.jar" />
+        <pathelement location="${activation-jar}" />
+        <pathelement location="${ant-jar}" />
+        <pathelement location="${antlr-jar}" />
+        <pathelement location="${ant-jsch-jar}" />
+        <pathelement location="${ant-launcher-jar}" />
+        <pathelement location="${asm-jar}" />
         <pathelement location="lib/axis2-adb-1.7.8.jar" />
         <pathelement location="lib/axis2-kernel-1.7.8.jar" />
         <pathelement location="lib/axis2-transport-base-1.7.8.jar" />
@@ -268,8 +272,12 @@
         <delete file="${release-dir}.tgz"/>
         <mkdir dir="${release-dir}"/>
         <mkdir dir="${release-dir}/lib"/>
-        <copy file="lib/activation-1.1.jar" todir="${release-dir}/lib" />
-        <copy file="lib/asm-1.5.2.jar" todir="${release-dir}/lib" />
+        <copy file="${activation-jar}" todir="${release-dir}/lib" />
+        <copy file="${ant-jar}" todir="${release-dir}/lib" />
+        <copy file="${ant-jsch-jar}" todir="${release-dir}/lib" />
+        <copy file="${ant-launcher-jar}" todir="${release-dir}/lib" />
+        <copy file="${antlr-jar}" todir="${release-dir}/lib" />
+        <copy file="${asm-jar}" todir="${release-dir}/lib" />
         <copy file="lib/bcprov.jar" todir="${release-dir}/lib" />
         <copy file="lib/commons-cli-1.4.jar" todir="${release-dir}/lib" />
         <copy file="lib/ganymed-ssh2.jar" todir="${release-dir}/lib" />
