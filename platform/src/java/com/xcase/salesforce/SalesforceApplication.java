@@ -158,13 +158,6 @@ public class SalesforceApplication {
              * getAccessTokenResponse.getAccessToken(); LOGGER.debug("your access token is "
              * + accessToken);
              */
-            /* Refresh tokens */
-            RefreshAccessTokenRequest refreshAccessTokenRequest = SalesforceRequestFactory.createRefreshAccessTokenRequest();
-            LOGGER.debug("created refreshAccessTokenRequest");
-            refreshAccessTokenRequest.setClientId(SalesforceConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(SalesforceConstant.LOCAL_OAUTH2_CLIENT_ID));
-            refreshAccessTokenRequest.setClientSecret(SalesforceConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(SalesforceConstant.LOCAL_OAUTH2_CLIENT_SECRET));
-            refreshAccessTokenRequest.setRefreshToken(SalesforceConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(SalesforceConstant.LOCAL_OAUTH2_REFRESH_TOKEN));
-            RefreshAccessTokenResponse refreshAccessTokenResponse = iSalesforceExternalAPI.refreshAccessToken(refreshAccessTokenRequest);            
             /* Get a user */
             String userId = "0054P000009Be9r";
             GetUserRequest getUserRequest = SalesforceRequestFactory.createGetUserRequest(accessToken, userId);
@@ -309,6 +302,16 @@ public class SalesforceApplication {
         }
         
         SalesforceConfigurationManager.getConfigurationManager().storeLocalConfigProperties();
+        /* Refresh tokens */
+        SalesforceExternalAPI iSalesforceExternalAPI = new SimpleSalesforceImpl();
+        RefreshAccessTokenRequest refreshAccessTokenRequest = SalesforceRequestFactory.createRefreshAccessTokenRequest();
+        LOGGER.debug("created refreshAccessTokenRequest");
+        refreshAccessTokenRequest.setClientId(SalesforceConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(SalesforceConstant.LOCAL_OAUTH2_CLIENT_ID));
+        refreshAccessTokenRequest.setClientSecret(SalesforceConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(SalesforceConstant.LOCAL_OAUTH2_CLIENT_SECRET));
+        refreshAccessTokenRequest.setRefreshToken(SalesforceConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(SalesforceConstant.LOCAL_OAUTH2_REFRESH_TOKEN));
+        RefreshAccessTokenResponse refreshAccessTokenResponse = iSalesforceExternalAPI.refreshAccessToken(refreshAccessTokenRequest);            
+        accessToken = refreshAccessTokenResponse.getAccessToken();
+        LOGGER.debug("refreshed accessToken is " + accessToken);
     }
 
     public static Header createAcceptHeader() {

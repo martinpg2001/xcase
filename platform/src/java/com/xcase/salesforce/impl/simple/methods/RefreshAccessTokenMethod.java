@@ -81,6 +81,17 @@ public class RefreshAccessTokenMethod extends BaseSalesforceMethod {
                 JsonElement jsonElement = response.getJsonElement();
                 if (!jsonElement.isJsonNull()) {
                     LOGGER.debug("jsonElement is " + jsonElement.toString());
+                    JsonObject jsonObject = (JsonObject) jsonElement;
+                    JsonElement accessTokenElement = jsonObject.get("access_token");
+                    if (accessTokenElement != null && !accessTokenElement.isJsonNull()) {
+                        LOGGER.debug("access token element is not null");
+                        String accessToken = accessTokenElement.getAsString();
+                        LOGGER.debug("accessToken is " + accessToken);
+                        response.setAccessToken(accessToken);
+                        LOGGER.debug("set accessToken");
+                    } else {
+                        LOGGER.warn("access token element is null");
+                    }
                 }
             } else {
                 handleUnexpectedResponseCode(response, commonHttpResponse);
