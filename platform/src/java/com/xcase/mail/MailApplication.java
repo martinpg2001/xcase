@@ -27,12 +27,19 @@ public class MailApplication {
         try {
             MailExternalAPI mailExternalAPI = new SimpleMailImpl();
             Properties localMailProperties = MailConfigurationManager.getConfigurationManager().getLocalConfig();
+            /* Send email message */
+            SendEmailRequest sendEmailRequest = MailRequestFactory.createSendEmailRequest();
+            populateSMTPMailRequest(sendEmailRequest, localMailProperties);
+            sendEmailRequest.setEmailSubject("Test Subject");
+            sendEmailRequest.setEmailText("This is a test.");
+            sendEmailRequest.setEmailTo(localMailProperties.getProperty(MailConstant.LOCAL_MAIL_USERNAME));
+            SendEmailResponse sendMailResponse = mailExternalAPI.sendEmail(sendEmailRequest);            
+            /* Sent email message */
             /* Get email messages */
             GetEmailRequest getEmailRequest = MailRequestFactory.createGetEmailRequest();
             populateMailRequest(getEmailRequest, localMailProperties);
             getEmailRequest.setEmailSubject(null);
             GetEmailResponse getMailResponse = mailExternalAPI.getEmail(getEmailRequest);
-            String emailId = null;
             Message[] messageArray = getMailResponse.getMessages();
             if (messageArray != null) {
                 LOGGER.debug("messageArray has length " + messageArray.length);
@@ -60,11 +67,18 @@ public class MailApplication {
         }
     }
 
+    private static void populateSMTPMailRequest(SendEmailRequest sendEmailRequest, Properties localConfig) {
+        sendEmailRequest.setSMTPHostname(localConfig.getProperty(MailConstant.LOCAL_MAIL_SMTP_HOSTNAME));
+        sendEmailRequest.setSMTPMailbox(localConfig.getProperty(MailConstant.LOCAL_MAIL_SMTP_MAILBOX));
+        sendEmailRequest.setSMTPPassword(localConfig.getProperty(MailConstant.LOCAL_MAIL_SMTP_PASSWORD));
+        sendEmailRequest.setSMTPPort(localConfig.getProperty(MailConstant.LOCAL_MAIL_SMTP_PORT));
+        sendEmailRequest.setSMTPUsername(localConfig.getProperty(MailConstant.LOCAL_MAIL_SMTP_USERNAME));
+    }
+
     private static void populateMailRequest(MailRequest mailRequest, Properties localConfig) {
         mailRequest.setHostname(localConfig.getProperty(MailConstant.LOCAL_MAIL_HOSTNAME));
         mailRequest.setUsername(localConfig.getProperty(MailConstant.LOCAL_MAIL_USERNAME));
         mailRequest.setPassword(localConfig.getProperty(MailConstant.LOCAL_MAIL_PASSWORD));
         mailRequest.setMailbox(localConfig.getProperty(MailConstant.LOCAL_MAIL_MAILBOX));
-
     }
 }

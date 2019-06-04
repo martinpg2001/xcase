@@ -34,7 +34,7 @@ public class GetEmailMethod extends BaseMailMethod {
             String mailbox = request.getMailbox();
             LOGGER.debug("mailbox is " + mailbox);
             Folder folder = store.getFolder(mailbox);
-            folder.open(javax.mail.Folder.READ_WRITE);
+            folder.open(Folder.READ_WRITE);
             LOGGER.debug("connected to INBOX");
             String emailSubject = request.getEmailSubject();
             LOGGER.debug("emailSubject is " + emailSubject);

@@ -28,6 +28,11 @@ public class SimpleMailImpl implements MailExternalAPI {
      */
     private GetEmailMethod getEmailMethod = new GetEmailMethod();
     
+    /**
+     * Mail action implementation.
+     */
+    private SendEmailMethod sendEmailMethod = new SendEmailMethod();
+    
     @Override
     public DeleteEmailResponse deleteEmail(DeleteEmailRequest deleteEmailRequest) {
         return this.deleteEmailMethod.deleteEmail(deleteEmailRequest);
@@ -36,6 +41,11 @@ public class SimpleMailImpl implements MailExternalAPI {
     @Override
     public GetEmailResponse getEmail(GetEmailRequest getEmailRequest) {
         return this.getEmailMethod.getEmail(getEmailRequest);
+    }
+
+    @Override
+    public SendEmailResponse sendEmail(SendEmailRequest sendEmailRequest) {
+        return this.sendEmailMethod.sendEmail(sendEmailRequest);
     }
 
 }

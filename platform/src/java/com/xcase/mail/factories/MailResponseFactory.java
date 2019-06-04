@@ -22,4 +22,14 @@ public class MailResponseFactory extends BaseMailFactory {
         Object obj = newInstanceOf("mail.config.responsefactory.GetEmailResponse");
         return (GetEmailResponse) obj;
     }
+
+    /**
+     * create response object.
+     *
+     * @return response object
+     */
+    public static SendEmailResponse createSendEmailResponse() {
+        Object obj = newInstanceOf("mail.config.responsefactory.SendEmailResponse");
+        return (SendEmailResponse) obj;
+    }
 }

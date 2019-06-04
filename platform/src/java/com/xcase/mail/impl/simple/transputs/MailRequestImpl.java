@@ -13,6 +13,16 @@ public class MailRequestImpl implements MailRequest {
     
     private String username;
     
+    private String smtpHostname;
+    
+    private String smtpMailbox;
+    
+    private String smtpPassword;
+    
+    private String smtpPort;
+    
+    private String smtpUsername;
+    
     @Override
     public String getHostname() {
         return hostname;
@@ -61,6 +71,62 @@ public class MailRequestImpl implements MailRequest {
     @Override
     public void setDebug(boolean debug) {
         this.debug = debug;        
+    }
+
+    @Override
+    public String getSMTPHostname() {
+        return smtpHostname;
+    }
+
+    @Override
+    public String getSMTPPort() {
+        return smtpPort;
+    }
+
+    @Override
+    public String getSMTPPassword() {
+        return smtpPassword;
+    }
+
+    @Override
+    public String getSMTPMailbox() {
+        return smtpMailbox;
+    }
+
+    @Override
+    public String getSMTPUsername() {
+        return smtpUsername;
+    }
+
+    @Override
+    public void setSMTPHostname(String hostname) {
+        this.smtpHostname = hostname;        
+    }
+
+    @Override
+    public void setSMTPMailbox(String mailbox) {
+        this.smtpMailbox = mailbox;          
+    }
+
+    @Override
+    public void setSMTPPassword(String password) {
+        this.smtpPassword = password;         
+    }
+
+    @Override
+    public void setSMTPPort(String port) {
+        this.smtpPort = port;         
+    }
+
+    @Override
+    public void setSMTPUsername(String username) {
+        this.smtpUsername = username; 
+        
+    }
+
+    @Override
+    public boolean isSecure() {
+        return true;
     }
 
 }

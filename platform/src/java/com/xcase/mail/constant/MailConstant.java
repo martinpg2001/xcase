@@ -16,4 +16,14 @@ public class MailConstant {
 
     public static final String LOCAL_MAIL_MAILBOX = "mail.mailbox";
 
+    public static final String LOCAL_MAIL_SMTP_HOSTNAME = "mail.smtp.hostname";
+    
+    public static final String LOCAL_MAIL_SMTP_PORT = "mail.smtp.port";
+
+    public static final String LOCAL_MAIL_SMTP_USERNAME = "mail.smtp.username";
+
+    public static final String LOCAL_MAIL_SMTP_PASSWORD = "mail.smtp.password";
+
+    public static final String LOCAL_MAIL_SMTP_MAILBOX = "mail.smtp.mailbox";
+
 }

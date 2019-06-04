@@ -12,13 +12,36 @@ public interface MailRequest {
 
     String getMailbox();
     
-    void setHostname(String property);
+    String getSMTPHostname();
+    
+    String getSMTPPort();
 
-    void setUsername(String property);
+    String getSMTPPassword();
 
-    void setPassword(String property);
+    String getSMTPMailbox();
+    
+    String getSMTPUsername();
+    
+    void setHostname(String hostname);
 
-    void setMailbox(String property);
+    void setUsername(String username);
+
+    void setPassword(String password);
+
+    void setMailbox(String mailbox);
 
     void setDebug(boolean debug);
+    
+    void setSMTPHostname(String hostname);
+    
+    void setSMTPMailbox(String mailbox);
+    
+    void setSMTPPassword(String password);
+    
+    void setSMTPPort(String port);
+
+    void setSMTPUsername(String username);
+
+    boolean isSecure();
+
 }
