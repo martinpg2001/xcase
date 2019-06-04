@@ -8,15 +8,18 @@ import com.xcase.mail.transputs.GetEmailResponse;
 import com.xcase.msgraph.factories.MSGraphResponseFactory;
 import com.xcase.msgraph.transputs.AddGroupMemberResponse;
 import java.lang.invoke.MethodHandles;
-import javax.mail.*;
-import javax.mail.search.SubjectTerm;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.mail.*;
+import javax.mail.internet.MimeMessage;
+import javax.mail.search.SubjectTerm;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class GetEmailMethod extends MailMethod {
+public class GetEmailMethod extends BaseMailMethod {
     /**
      * log4j object.
      */
@@ -27,24 +30,9 @@ public class GetEmailMethod extends MailMethod {
         GetEmailResponse response = MailResponseFactory.createGetEmailResponse();
         LOGGER.debug("created response");
         try {
-            String hostname = request.getHostname();
-            LOGGER.debug("hostname is " + hostname);
-            String username = request.getUsername();
-            LOGGER.debug("username is " + username);
-            String password = request.getPassword();
-            LOGGER.debug("password is " + hostname);
+            Store store = connectToStore(request);
             String mailbox = request.getMailbox();
             LOGGER.debug("mailbox is " + mailbox);
-            java.security.Security.setProperty("ssl.SocketFactory.provider",
-                    "com.xcase.common.impl.simple.core.DummySSLSocketFactory");
-            java.util.Properties props = new java.util.Properties();
-            props.setProperty("mail.imap.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-            props.setProperty("mail.imap.socketFactory.fallback", "false");
-            props.setProperty("mail.imap.socketFactory.port", "993");
-            Session session = Session.getInstance(props);
-            session.setDebug(true);
-            Store store = session.getStore("imap");
-            store.connect(hostname, username, password);
             Folder folder = store.getFolder(mailbox);
             folder.open(javax.mail.Folder.READ_WRITE);
             LOGGER.debug("connected to INBOX");
@@ -61,6 +49,21 @@ public class GetEmailMethod extends MailMethod {
                 LOGGER.debug("got messages");
             }
             
+            /* We are going to close the connection to the server, and so we must clone the messages to 
+             * return them to the calling class.
+             */
+            if (messageArray != null) {
+                LOGGER.debug("messageArray has length " + messageArray.length);
+                List<Message> messageList = new ArrayList<Message>();
+                for (Message message : messageArray) {
+                    messageList.add(new MimeMessage( (MimeMessage) message ));
+                }
+                
+                response.setMessages(messageList.toArray(new Message[0]));
+            } else {
+                LOGGER.debug("messageArray is null");
+            }
+            
             folder.close(false);
             LOGGER.debug("closed folder");
             store.close();
@@ -72,5 +75,4 @@ public class GetEmailMethod extends MailMethod {
 
         return response;
     }
-
 }

@@ -17,11 +17,21 @@ public class SimpleMailImpl implements MailExternalAPI {
      * configuration manager
      */
     public MailConfigurationManager LocalConfigurationManager = MailConfigurationManager.getConfigurationManager();
+
+    /**
+     * Mail action implementation.
+     */
+    private DeleteEmailMethod deleteEmailMethod = new DeleteEmailMethod();
     
     /**
-     * MSGraph action implementation.
+     * Mail action implementation.
      */
     private GetEmailMethod getEmailMethod = new GetEmailMethod();
+    
+    @Override
+    public DeleteEmailResponse deleteEmail(DeleteEmailRequest deleteEmailRequest) {
+        return this.deleteEmailMethod.deleteEmail(deleteEmailRequest);
+    }
     
     @Override
     public GetEmailResponse getEmail(GetEmailRequest getEmailRequest) {

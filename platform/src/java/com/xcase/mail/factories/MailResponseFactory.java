@@ -8,6 +8,16 @@ public class MailResponseFactory extends BaseMailFactory {
      *
      * @return response object
      */
+    public static DeleteEmailResponse createDeleteEmailResponse() {
+        Object obj = newInstanceOf("mail.config.responsefactory.DeleteEmailResponse");
+        return (DeleteEmailResponse) obj;
+    }
+
+    /**
+     * create response object.
+     *
+     * @return response object
+     */
     public static GetEmailResponse createGetEmailResponse() {
         Object obj = newInstanceOf("mail.config.responsefactory.GetEmailResponse");
         return (GetEmailResponse) obj;
