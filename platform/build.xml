@@ -114,10 +114,10 @@
         <pathelement location="${ant-jsch-jar}" />
         <pathelement location="${ant-launcher-jar}" />
         <pathelement location="${asm-jar}" />
-        <pathelement location="lib/axiom-api-1.2.14.jar" />
-        <pathelement location="lib/axiom-compat-1.2.14.jar" />
-        <pathelement location="lib/axiom-dom-1.2.14.jar" />
-        <pathelement location="lib/axiom-impl-1.2.14.jar" />
+        <pathelement location="${axiom-api-jar}" />
+        <pathelement location="${axiom-compat-jar}" />
+        <pathelement location="${axiom-dom-jar}" />
+        <pathelement location="${axiom-impl-jar}" />
         <pathelement location="lib/axis2-adb-1.7.8.jar" />
         <pathelement location="lib/axis2-kernel-1.7.8.jar" />
         <pathelement location="lib/axis2-transport-base-1.7.8.jar" />
@@ -171,6 +171,10 @@
         <pathelement location="${ant-jsch-jar}" />
         <pathelement location="${ant-launcher-jar}" />
         <pathelement location="${asm-jar}" />
+        <pathelement location="${axiom-api-jar}" />
+        <pathelement location="${axiom-compat-jar}" />
+        <pathelement location="${axiom-dom-jar}" />
+        <pathelement location="${axiom-impl-jar}" />
         <pathelement location="lib/axis2-adb-1.7.8.jar" />
         <pathelement location="lib/axis2-kernel-1.7.8.jar" />
         <pathelement location="lib/axis2-transport-base-1.7.8.jar" />
@@ -356,6 +360,10 @@
         <copy file="${ant-launcher-jar}" todir="${release-dir}/lib" />
         <copy file="${antlr-jar}" todir="${release-dir}/lib" />
         <copy file="${asm-jar}" todir="${release-dir}/lib" />
+        <copy file="${axiom-api-jar}" todir="${release-dir}/lib" />
+        <copy file="${axiom-compat-jar}" todir="${release-dir}/lib" />
+        <copy file="${axiom-dom-jar}" todir="${release-dir}/lib" />
+        <copy file="${axiom-impl-jar}" todir="${release-dir}/lib" />
         <copy file="lib/bcprov.jar" todir="${release-dir}/lib" />
         <copy file="lib/commons-cli-1.4.jar" todir="${release-dir}/lib" />
         <copy file="lib/ganymed-ssh2.jar" todir="${release-dir}/lib" />

@@ -27,13 +27,13 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.logging.log4j.*;
 
 /**
- * This is a sample application to showcase how to invoke the Salesforce REST APis using Xcase classes.
+ * This is a sample application to showcase how to invoke the Salesforce REST APIs using Xcase classes.
  * After logging in to get an access token and the instance URL, the application updates its instance API URL to 
  * the later version. It then executes a number of API calls to show how request and response classes are used 
  * by method classes.
  * 
  * Standard Salesforce URL are stored in the salesforce-config.properties file. Properties specific to your 
- * account, username, password, client id, and client secret, are stored locally in the salesforce-local-config.properties 
+ * account such as username, password, client id, and client secret, are stored locally in the salesforce-local-config.properties 
  * files, and the instance-specific URLs are updated in this file.
  * 
  * @author martin
@@ -141,23 +141,6 @@ public class SalesforceApplication {
             /* Create an instance of the Salesforce API to invoke Salesforce operations */
             SalesforceExternalAPI iSalesforceExternalAPI = new SimpleSalesforceImpl();
             LOGGER.debug("created iSalesforceExternalAPI");
-            generateTokenPair();
-            /*
-             * LOGGER.debug("about to get access token"); GetAccessTokenRequest
-             * getAccessTokenRequest =
-             * SalesforceRequestFactory.createGetAccessTokenRequest(consumerKey,
-             * consumerSecret, null); LOGGER.debug("got access token request");
-             * getAccessTokenRequest.setAuthorizationCode(authorizationCode);
-             * GetAccessTokenResponse getAccessTokenResponse =
-             * iSalesforceExternalAPI.getAccessToken(getAccessTokenRequest);
-             * LOGGER.debug("got access token response"); if
-             * (SalesforceConstant.STATUS_NOT_LOGGED_IN.equals(getAccessTokenResponse.
-             * getStatus())) { LOGGER.debug("status is not logged in"); return; }
-             * 
-             * LOGGER.debug("status is logged in"); String accessToken =
-             * getAccessTokenResponse.getAccessToken(); LOGGER.debug("your access token is "
-             * + accessToken);
-             */
             /* Get a user */
             String userId = "0054P000009Be9r";
             GetUserRequest getUserRequest = SalesforceRequestFactory.createGetUserRequest(accessToken, userId);
@@ -258,60 +241,6 @@ public class SalesforceApplication {
         } catch (Exception e) {
             LOGGER.warn("exception running application: " + e.getMessage());
         }
-    }
-
-    private static void generateTokenPair() throws Exception, IOException {
-        LOGGER.debug("starting generateTokenPair()");
-        String authorizationCode = SalesforceConfigurationManager.getConfigurationManager().getLocalConfig()
-                .getProperty(SalesforceConstant.LOCAL_OAUTH2_AUTHORIZATION_CODE);
-        LOGGER.debug("authorizationCode is " + authorizationCode);
-        String consumerKey = SalesforceConfigurationManager.getConfigurationManager().getLocalConfig()
-                .getProperty(SalesforceConstant.LOCAL_OAUTH2_CLIENT_ID);
-        LOGGER.debug("consumerKey is " + consumerKey);
-        String consumerSecret = SalesforceConfigurationManager.getConfigurationManager().getLocalConfig()
-                .getProperty(SalesforceConstant.LOCAL_OAUTH2_CLIENT_SECRET);
-        LOGGER.debug("consumerSecret is " + consumerSecret);
-        String tokenURL = SalesforceConfigurationManager.getConfigurationManager().getConfig()
-                .getProperty(SalesforceConstant.CONFIG_API_OAUTH_TOKEN_PREFIX);
-        LOGGER.debug("tokenURL is " + tokenURL);
-        String redirectURI = SalesforceConfigurationManager.getConfigurationManager().getLocalConfig()
-                .getProperty(SalesforceConstant.LOCAL_OAUTH2_REDIRECT_URL);
-        LOGGER.debug("redirectURI is " + redirectURI);
-        CommonHTTPManager httpManager = CommonHTTPManager.refreshCommonHTTPManager();
-        List<NameValuePair> parameters = new ArrayList<NameValuePair>();
-        parameters.add(new BasicNameValuePair("code", authorizationCode));
-        parameters.add(new BasicNameValuePair("client_id", consumerKey));
-        parameters.add(new BasicNameValuePair("client_secret", consumerSecret));
-        parameters.add(new BasicNameValuePair("grant_type", "authorization_code"));
-        parameters.add(new BasicNameValuePair("redirect_uri", redirectURI));
-        CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponseMethod("POST", tokenURL, null,
-                parameters, null, null);
-        LOGGER.debug("got response status code " + commonHttpResponse.getResponseCode());
-        String responseEntityString = commonHttpResponse.getResponseEntityString();
-        LOGGER.debug("responseEntityString is " + responseEntityString);
-        JsonObject responseEntityJsonObject = (JsonObject) ConverterUtils.parseStringToJson(responseEntityString);
-        String accessToken = responseEntityJsonObject.get("access_token").getAsString();
-        LOGGER.debug("accessToken is " + accessToken);
-        SalesforceConfigurationManager.getConfigurationManager().getLocalConfig()
-                .setProperty(SalesforceConstant.LOCAL_OAUTH2_ACCESS_TOKEN, accessToken);
-        if (responseEntityJsonObject.get("refresh_token") != null) {
-            String refreshToken = responseEntityJsonObject.get("refresh_token").getAsString();
-            LOGGER.debug("refreshToken is " + refreshToken);
-            SalesforceConfigurationManager.getConfigurationManager().getLocalConfig()
-                .setProperty(SalesforceConstant.LOCAL_OAUTH2_REFRESH_TOKEN, refreshToken);
-        }
-        
-        SalesforceConfigurationManager.getConfigurationManager().storeLocalConfigProperties();
-        /* Refresh tokens */
-        SalesforceExternalAPI iSalesforceExternalAPI = new SimpleSalesforceImpl();
-        RefreshAccessTokenRequest refreshAccessTokenRequest = SalesforceRequestFactory.createRefreshAccessTokenRequest();
-        LOGGER.debug("created refreshAccessTokenRequest");
-        refreshAccessTokenRequest.setClientId(SalesforceConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(SalesforceConstant.LOCAL_OAUTH2_CLIENT_ID));
-        refreshAccessTokenRequest.setClientSecret(SalesforceConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(SalesforceConstant.LOCAL_OAUTH2_CLIENT_SECRET));
-        refreshAccessTokenRequest.setRefreshToken(SalesforceConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(SalesforceConstant.LOCAL_OAUTH2_REFRESH_TOKEN));
-        RefreshAccessTokenResponse refreshAccessTokenResponse = iSalesforceExternalAPI.refreshAccessToken(refreshAccessTokenRequest);            
-        accessToken = refreshAccessTokenResponse.getAccessToken();
-        LOGGER.debug("refreshed accessToken is " + accessToken);
     }
 
     public static Header createAcceptHeader() {
