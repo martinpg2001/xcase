@@ -38,7 +38,7 @@
     <property name="classmate-jar" value="lib/classmate-1.1.0.jar" />
     <property name="commons-cli-jar" value="lib/commons-cli-1.4.jar" />
     <property name="commons-codec-jar" value="lib/commons-codec-1.10.jar" />
-    <property name="commons-collections-jar" value="lib/commons-collections4-4.0.jar" />
+    <property name="commons-collections4-jar" value="lib/commons-collections4-4.0.jar" />
     <property name="commons-exec-jar" value="lib/commons-exec-1.3.jar" />
     <property name="commons-httpclient-jar" value="lib/commons-httpclient-3.1.jar" />
     <property name="commons-io-jar" value="lib/commons-io-2.4.jar" />
@@ -106,7 +106,7 @@
     <property name="tst.dir" location="src/testng" />
     <property name="TALK" value="false" />
     <property name="tomcat.home" value="${env.TOMCAT_HOME}"/>
-    <property name="version" value="1.0.0"/>
+    <property name="version" value="1.0.15"/>
     <path id="classpath.base">
         <pathelement location="${activation-jar}" />
         <pathelement location="${ant-jar}" />
@@ -118,51 +118,62 @@
         <pathelement location="${axiom-compat-jar}" />
         <pathelement location="${axiom-dom-jar}" />
         <pathelement location="${axiom-impl-jar}" />
-        <pathelement location="lib/axis2-adb-1.7.8.jar" />
-        <pathelement location="lib/axis2-kernel-1.7.8.jar" />
-        <pathelement location="lib/axis2-transport-base-1.7.8.jar" />
-        <pathelement location="lib/axis2-transport-http-1.7.8.jar" />
-        <pathelement location="lib/axis2-transport-local-1.7.8.jar" />
-        <pathelement location="lib/bcprov.jar" />
-        <pathelement location="lib/commons-cli-1.4.jar" />
-        <pathelement location="lib/commons-codec-1.7.jar" />
-        <pathelement location="lib/commons-collections4-4.0.jar" />
-        <pathelement location="lib/commons-exec-1.3.jar" />
-        <pathelement location="lib/commons-httpclient-3.1.jar" />
-        <pathelement location="lib/commons-lang3-3.4.jar" />
-        <pathelement location="lib/commons-logging-1.1.2.jar" />
-        <pathelement location="lib/commons-io-2.4.jar" />
-        <pathelement location="lib/dom4j-1.6.1.jar" />
-        <pathelement location="lib/ganymed-ssh2.jar" />
-        <pathelement location="lib/gson-2.2.3.jar" />
-        <pathelement location="lib/guava-19.0.jar" />
-        <pathelement location="lib/hamcrest-core-1.3.jar" />
-        <pathelement location="lib/httpclient-4.5.5.jar" />
-        <pathelement location="lib/httpcore-4.4.9.jar" />
-        <pathelement location="lib/httpmime-4.5.5.jar" />
-        <pathelement location="lib/ifxjdbc.jar" />
-        <pathelement location="lib/java-sharepoint-2.0-BETA2.jar" />
-        <pathelement location="lib/jaxb-api-2.3.0.jar" />
-        <pathelement location="lib/jcifs-1.2.24.jar" />
-        <pathelement location="lib/jcommander-1.7.jar" />
-        <pathelement location="lib/jconn4.jar" />
-        <pathelement location="lib/jdom2-2.0.6.jar" />
-        <pathelement location="lib/jna-4.2.2.jar" />
-        <pathelement location="lib/jna-platform-4.2.2.jar" />
-        <pathelement location="lib/jnaexamples.jar" />
-        <pathelement location="lib/jsch-0.1.54.jar" />
-        <pathelement location="lib/jsoup-1.11.3.jar" />
-        <pathelement location="lib/jtds.jar" />
-        <pathelement location="lib/junit-4.12.jar" />
+        <pathelement location="${axis2-adb-jar}" />
+        <pathelement location="${axis2-kernel-jar}" />
+        <pathelement location="${axis2-transport-base-jar}" />
+        <pathelement location="${axis2-transport-http-jar}" />
+        <pathelement location="${axis2-transport-local-jar}" />
+        <pathelement location="${bcprov-jar}" />
+        <pathelement location="${commons-cli-jar}" />
+        <pathelement location="${commons-codec-jar}" />
+        <pathelement location="${commons-collections4-jar}" />
+        <pathelement location="${commons-exec-jar}" />
+        <pathelement location="${commons-httpclient-jar}" />
+        <pathelement location="${commons-io-jar}" /> 
+        <pathelement location="${commons-lang3-jar}" />
+        <pathelement location="${commons-logging-jar}" />
+        <pathelement location="${dom4j-jar}" />
+        <pathelement location="${ganymed-ssh2-jar}" />
+        <pathelement location="${gson-jar}" />
+        <pathelement location="${guava-jar}" />
+        <pathelement location="${hamcrest-core-jar}" />
+        <pathelement location="${httpclient-jar}" />
+        <pathelement location="${httpcore-jar}" />
+        <pathelement location="${httpmime-jar}" />
+        <pathelement location="${ifxjdbs-jar}" />
+        <pathelement location="${java-sharepoint-jar}" />
+        <pathelement location="${jaxb-api-jar}" />
+        <pathelement location="${jcifs-jar}" />
+        <pathelement location="${jcommander-jar}" />
+        <pathelement location="${jconn4-jar}" />
+        <pathelement location="${jdom2-jar}" />
+        <pathelement location="${jna-jar}" />
+        <pathelement location="${jna-platform-jar}" />
+        <pathelement location="${jnaexamples-jar}" />
+        <pathelement location="${jsch-jar}" />
+        <pathelement location="${jsoup-jar}" />
+        <pathelement location="${jtds-jar}" />
+        <pathelement location="${junit-jar}" />
         <pathelement location="${log4j-api-jar}" />
         <pathelement location="${log4j-core-jar}" />
-        <pathelement location="lib/mail.jar" />
-        <pathelement location="lib/mysql.jar" />
-        <pathelement location="lib/oracle.jar" />
-        <pathelement location="lib/scriptom-1.5.4b11.jar" />
-        <pathelement location="lib/selenium-java-2.53.0.jar" />
-        <pathelement location="lib/sqljdbc4.jar" />
-        <pathelement location="lib/testng-6.9.10.jar" />
+        <pathelement location="${mail-jar}" />
+        <pathelement location="${mysql-jar}" />
+        <pathelement location="${oracle-jar}" />
+        <pathelement location="${scriptom-jar}" />
+        <pathelement location="${selenium-java-jar}" />
+        <pathelement location="${sqljdbc4-jar}" />
+        <pathelement location="${stax_api-jar}" />
+        <pathelement location="${swing-worker-jar}" />
+        <pathelement location="${swingx-jar}" />
+        <pathelement location="${testng-jar}" />
+        <pathelement location="${wsdl4j-jar}" />
+        <pathelement location="${wstx-zip}" />
+        <pathelement location="${xercesImpl-jar}" />
+        <pathelement location="${xml-apis-jar}" />
+        <pathelement location="${xmlpull-jar}" />
+        <pathelement location="${XmlSchema-jar}" />
+        <pathelement location="${xpp3_min-jar}" />
+        <pathelement location="${xstream-jar}" />
     </path>
     <path id="classpath.run">
         <pathelement location="${activation-jar}" />
@@ -175,39 +186,63 @@
         <pathelement location="${axiom-compat-jar}" />
         <pathelement location="${axiom-dom-jar}" />
         <pathelement location="${axiom-impl-jar}" />
-        <pathelement location="lib/axis2-adb-1.7.8.jar" />
-        <pathelement location="lib/axis2-kernel-1.7.8.jar" />
-        <pathelement location="lib/axis2-transport-base-1.7.8.jar" />
-        <pathelement location="lib/axis2-transport-http-1.7.8.jar" />
-        <pathelement location="lib/axis2-transport-local-1.7.8.jar" />
-        <pathelement location="lib/bcprov.jar" />
-        <pathelement location="lib/commons-cli-1.4.jar" />
-        <pathelement location="lib/commons-exec-1.3.jar" />
-        <pathelement location="lib/commons-io-2.4.jar" />
-        <pathelement location="lib/commons-lang3-3.4.jar" />
-        <pathelement location="lib/ganymed-ssh2.jar" />
-        <pathelement location="lib/guava-19.0.jar" />
-        <pathelement location="lib/httpclient-4.5.5.jar" />
-        <pathelement location="lib/httpcore-4.4.9.jar" />
-        <pathelement location="lib/httpmime-4.5.5.jar" />
-        <pathelement location="lib/ifxjdbc.jar" />
-        <pathelement location="lib/jaf.jar" />
-        <pathelement location="lib/jaxb-api-2.3.0.jar" />
-        <pathelement location="lib/jcommander-1.7.jar" />
-        <pathelement location="lib/jconn4.jar" />
-        <pathelement location="lib/jdom2-2.0.6.jar" />
-        <pathelement location="lib/jna-4.2.2.jar" />
-        <pathelement location="lib/jsch-0.1.54.jar" />
-        <pathelement location="lib/jsoup-1.11.3.jar" />
-        <pathelement location="lib/jtds.jar" />
-        <pathelement location="lib/junit-4.12.jar" />
+        <pathelement location="${axis2-adb-jar}" />
+        <pathelement location="${axis2-kernel-jar}" />
+        <pathelement location="${axis2-transport-base-jar}" />
+        <pathelement location="${axis2-transport-http-jar}" />
+        <pathelement location="${axis2-transport-local-jar}" />
+        <pathelement location="${bcprov-jar}" />
+        <pathelement location="${commons-cli-jar}" />
+        <pathelement location="${commons-codec-jar}" />
+        <pathelement location="${commons-collections4-jar}" />
+        <pathelement location="${commons-exec-jar}" />
+        <pathelement location="${commons-httpclient-jar}" />
+        <pathelement location="${commons-io-jar}" /> 
+        <pathelement location="${commons-lang3-jar}" />
+        <pathelement location="${commons-logging-jar}" />
+        <pathelement location="${dom4j-jar}" />
+        <pathelement location="${ganymed-ssh2-jar}" />
+        <pathelement location="${gson-jar}" />
+        <pathelement location="${guava-jar}" />
+        <pathelement location="${hamcrest-core-jar}" />
+        <pathelement location="${httpclient-jar}" />
+        <pathelement location="${httpcore-jar}" />
+        <pathelement location="${httpmime-jar}" />
+        <pathelement location="${ifxjdbs-jar}" />
+        <pathelement location="${java-sharepoint-jar}" />
+        <pathelement location="${jaxb-api-jar}" />
+        <pathelement location="${jcifs-jar}" />
+        <pathelement location="${jcommander-jar}" />
+        <pathelement location="${jconn4-jar}" />
+        <pathelement location="${jdom2-jar}" />
+        <pathelement location="${jna-jar}" />
+        <pathelement location="${jna-platform-jar}" />
+        <pathelement location="${jnaexamples-jar}" />
+        <pathelement location="${jsch-jar}" />
+        <pathelement location="${jsoup-jar}" />
+        <pathelement location="${jtds-jar}" />
+        <pathelement location="${junit-jar}" />
         <pathelement location="${log4j-api-jar}" />
         <pathelement location="${log4j-core-jar}" />
-        <pathelement location="lib/mail.jar" />
-        <pathelement location="lib/oracle.jar" />
-        <pathelement location="lib/selenium-java-2.53.0.jar" />
-        <pathelement location="lib/sqljdbc4.jar" />
-        <pathelement location="lib/testng-6.9.10.jar" />
+        <pathelement location="${mail-jar}" />
+        <pathelement location="${mysql-jar}" />
+        <pathelement location="${neethi-jar}" />
+        <pathelement location="${oracle-jar}" />
+        <pathelement location="${scriptom-jar}" />
+        <pathelement location="${selenium-java-jar}" />
+        <pathelement location="${sqljdbc4-jar}" />
+        <pathelement location="${stax_api-jar}" />
+        <pathelement location="${swing-worker-jar}" />
+        <pathelement location="${swingx-jar}" />
+        <pathelement location="${testng-jar}" />
+        <pathelement location="${wsdl4j-jar}" />
+        <pathelement location="${wstx-zip}" />
+        <pathelement location="${xercesImpl-jar}" />
+        <pathelement location="${xml-apis-jar}" />
+        <pathelement location="${xmlpull-jar}" />
+        <pathelement location="${XmlSchema-jar}" />
+        <pathelement location="${xpp3_min-jar}" />
+        <pathelement location="${xstream-jar}" />
     </path>
     <path id="classpath.ssh">
         <pathelement location="${ganymed-ssh2-jar}" />
@@ -230,7 +265,7 @@
         <pathelement location="${build}" />
     </path>
     <taskdef name="testng" classname="org.testng.TestNGAntTask">
-        <classpath location="lib/testng-6.9.10.jar" />
+        <classpath location="${testng-jar}" />
     </taskdef>
     <target name="build" depends="jar">
     </target>
@@ -350,8 +385,8 @@
         </jar>
     </target>
     <target name="makerelease">
-        <delete dir="${release-dir}"/>
         <delete file="${release-dir}.tgz"/>
+        <delete dir="${release-dir}"/>
         <mkdir dir="${release-dir}"/>
         <mkdir dir="${release-dir}/lib"/>
         <copy file="${activation-jar}" todir="${release-dir}/lib" />
@@ -364,16 +399,53 @@
         <copy file="${axiom-compat-jar}" todir="${release-dir}/lib" />
         <copy file="${axiom-dom-jar}" todir="${release-dir}/lib" />
         <copy file="${axiom-impl-jar}" todir="${release-dir}/lib" />
-        <copy file="lib/bcprov.jar" todir="${release-dir}/lib" />
-        <copy file="lib/commons-cli-1.4.jar" todir="${release-dir}/lib" />
-        <copy file="lib/ganymed-ssh2.jar" todir="${release-dir}/lib" />
-        <copy file="lib/jaxb-api-2.3.0.jar" todir="${release-dir}/lib" />
-        <copy file="lib/jdom2-2.0.6.jar" todir="${release-dir}/lib" />
-        <copy file="lib/jsch-0.1.54.jar" todir="${release-dir}/lib" />
-        <copy file="lib/jsoup-1.11.3.jar" todir="${release-dir}/lib" />
-        <copy file="lib/jtds.jar" todir="${release-dir}/lib" />
+        <copy file="${axis2-adb-jar}" todir="${release-dir}/lib" />
+        <copy file="${axis2-kernel-jar}" todir="${release-dir}/lib" />
+        <copy file="${axis2-transport-base-jar}" todir="${release-dir}/lib" />
+        <copy file="${axis2-transport-http-jar}" todir="${release-dir}/lib" />
+        <copy file="${axis2-transport-local-jar}" todir="${release-dir}/lib" />
+        <copy file="${bcprov-jar}" todir="${release-dir}/lib" />
+        <copy file="${commons-cli-jar}" todir="${release-dir}/lib" />
+        <copy file="${commons-codec-jar}" todir="${release-dir}/lib" />
+        <copy file="${commons-collections4-jar}" todir="${release-dir}/lib" />
+        <copy file="${commons-exec-jar}" todir="${release-dir}/lib" />
+        <copy file="${commons-httpclient-jar}" todir="${release-dir}/lib" />
+        <copy file="${commons-io-jar}" todir="${release-dir}/lib" /> 
+        <copy file="${commons-lang3-jar}" todir="${release-dir}/lib" />
+        <copy file="${commons-logging-jar}" todir="${release-dir}/lib" />
+        <copy file="${dom4j-jar}" todir="${release-dir}/lib" />
+        <copy file="${ganymed-ssh2-jar}" todir="${release-dir}/lib" />
+        <copy file="${gson-jar}" todir="${release-dir}/lib" />
+        <copy file="${guava-jar}" todir="${release-dir}/lib" />
+        <copy file="${hamcrest-core-jar}" todir="${release-dir}/lib" />
+        <copy file="${httpclient-jar}" todir="${release-dir}/lib" />
+        <copy file="${httpcore-jar}" todir="${release-dir}/lib" />
+        <copy file="${httpmime-jar}" todir="${release-dir}/lib" />
+        <copy file="${ifxjdbs-jar}" todir="${release-dir}/lib" />
+        <copy file="${java-sharepoint-jar}" todir="${release-dir}/lib" />
+        <copy file="${jaxb-api-jar}" todir="${release-dir}/lib" />
+        <copy file="${jdom2-jar}" todir="${release-dir}/lib" />
+        <copy file="${jsch-jar}" todir="${release-dir}/lib" />
+        <copy file="${jsoup-jar}" todir="${release-dir}/lib" />
+        <copy file="${jtds-jar}" todir="${release-dir}/lib" />
         <copy file="${log4j-api-jar}" todir="${release-dir}/lib" />
         <copy file="${log4j-core-jar}" todir="${release-dir}/lib" />
-        <copy file="lib/oracle.jar" todir="${release-dir}/lib" />
+        <copy file="${mail-jar}" todir="${release-dir}/lib" />
+        <copy file="${mocquer-jar}" todir="${release-dir}/lib" />
+        <copy file="${mysql-jar}" todir="${release-dir}/lib" />
+        <copy file="${neethi-jar}" todir="${release-dir}/lib" />
+        <copy file="${oracle-jar}" todir="${release-dir}/lib" />
+        <copy file="${stax_api-jar}" todir="${release-dir}/lib" />
+        <copy file="${swing-worker-jar}" todir="${release-dir}/lib" />
+        <copy file="${swingx-jar}" todir="${release-dir}/lib" />
+        <copy file="${testng-jar}" todir="${release-dir}/lib" />
+        <copy file="${wsdl4j-jar}" todir="${release-dir}/lib" />
+        <copy file="${wstx-zip}" todir="${release-dir}/lib" />
+        <copy file="${xercesImpl-jar}" todir="${release-dir}/lib" />
+        <copy file="${xml-apis-jar}" todir="${release-dir}/lib" />
+        <copy file="${xmlpull-jar}" todir="${release-dir}/lib" />
+        <copy file="${XmlSchema-jar}" todir="${release-dir}/lib" />
+        <copy file="${xpp3_min-jar}" todir="${release-dir}/lib" />
+        <copy file="${xstream-jar}" todir="${release-dir}/lib" />
     </target>
 </project>
