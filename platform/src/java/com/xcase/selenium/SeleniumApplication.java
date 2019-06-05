@@ -1,5 +1,7 @@
 package com.xcase.selenium;
 
+import com.xcase.selenium.constant.SeleniumConstant;
+import com.xcase.selenium.impl.simple.core.SeleniumConfigurationManager;
 import com.xcase.selenium.impl.simple.pages.CalculatorHomePage;
 import com.xcase.selenium.impl.simple.pages.MathCalculatorsPage;
 import com.xcase.selenium.impl.simple.pages.PercentageCalculatorPage;
@@ -10,6 +12,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class SeleniumApplication {
@@ -23,7 +27,22 @@ public class SeleniumApplication {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WebDriver driver = new FirefoxDriver();
+        WebDriver driver = null;
+        String webDriver = SeleniumConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(SeleniumConstant.LOCAL_WEBDRIVER);
+        switch(webDriver) {
+            case "ChromeDriver":
+                driver = new ChromeDriver();
+                break;
+            case "FirefoxDriver":
+                driver = new FirefoxDriver();
+                break;
+            case "MSEdgeDriver":
+                driver = new EdgeDriver();
+                break;
+            default:
+                LOGGER.warn("unrecognized webDriver " + webDriver);
+        }
+        
         //Puts an Implicit wait, Will wait for 10 seconds before throwing exception
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         

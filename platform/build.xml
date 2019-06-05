@@ -37,6 +37,7 @@
     <property name="bcprov-jar" value="lib/bcprov.jar" />
     <property name="bsf-jar" value="lib/bsf.jar" />
     <property name="bsh-jar" value="lib/bsh.jar" />
+    <property name="chromedriver-exe" value="lib/chromedriver.exe" />
     <property name="classmate-jar" value="lib/classmate-1.1.0.jar" />
     <property name="commons-cli-jar" value="lib/commons-cli-1.4.jar" />
     <property name="commons-codec-jar" value="lib/commons-codec-1.10.jar" />
@@ -53,6 +54,7 @@
     <property name="dunamis-jar" value="lib/dunamis.jar" />
     <property name="filters-jar" value="lib/filters-2.0.235.jar" />
     <property name="ganymed-ssh2-jar" value="lib/ganymed-ssh2.jar" />
+    <property name="geckodriver-exe" value="lib/geckodriver.exe" />
     <property name="gnu-regexp-jar" value="lib/gnu-regexp.jar" />
     <property name="gson-jar" value="lib/gson-2.2.3.jar" />
     <property name="guava-jar" value="lib/guava-19.0.jar" />
@@ -83,11 +85,13 @@
     <property name="log4j-jar" value="lib/log4j.jar" />
     <property name="mail-jar" value="lib/mail-1.4.7.jar" />
     <property name="mocquer-jar" value="lib/mocquer.jar" />
+    <property name="msedgedriver" value="lib/msedgedriver" />
     <property name="mysql-jar" value="lib/mysql.jar" />
     <property name="neethi-jar" value="lib/neethi-3.0.2.jar" />
     <property name="oracle-jar" value="lib/oracle.jar" />
     <property name="paranamer-jar" value="lib/paranamer-2.7.jar" />
     <property name="pg73jdbc3-jar" value="lib/pg73jdbc3.jar" />
+    <property name="rb-jar" value="lib/rb.jar" />
     <property name="reflection-ui-jar" value="lib/reflection-ui-3.1.3.jar" />
     <property name="scriptom-jar" value="lib/scriptom-1.5.4b11.jar" />
     <property name="selenium-java-jar" value="lib/selenium-server-standalone-3.141.59.jar" />
@@ -125,7 +129,10 @@
         <pathelement location="${axis2-transport-base-jar}" />
         <pathelement location="${axis2-transport-http-jar}" />
         <pathelement location="${axis2-transport-local-jar}" />
+        <pathelement location="${bcel-jar}" />
         <pathelement location="${bcprov-jar}" />
+        <pathelement location="${bsf-jar}" />
+        <pathelement location="${bsh-jar}" />
         <pathelement location="${commons-cli-jar}" />
         <pathelement location="${commons-codec-jar}" />
         <pathelement location="${commons-collections4-jar}" />
@@ -160,7 +167,11 @@
         <pathelement location="${log4j-core-jar}" />
         <pathelement location="${mail-jar}" />
         <pathelement location="${mysql-jar}" />
+        <pathelement location="${neethi-jar}" />
         <pathelement location="${oracle-jar}" />
+        <pathelement location="${paranamer-jar}" />
+        <pathelement location="${rb-jar}" />
+        <pathelement location="${reflection-ui-jar}" />
         <pathelement location="${scriptom-jar}" />
         <pathelement location="${selenium-java-jar}" />
         <pathelement location="${sqljdbc4-jar}" />
@@ -230,6 +241,9 @@
         <pathelement location="${mysql-jar}" />
         <pathelement location="${neethi-jar}" />
         <pathelement location="${oracle-jar}" />
+        <pathelement location="${paranamer-jar}" />
+        <pathelement location="${rb-jar}" />
+        <pathelement location="${reflection-ui-jar}" />
         <pathelement location="${scriptom-jar}" />
         <pathelement location="${selenium-java-jar}" />
         <pathelement location="${sqljdbc4-jar}" />
@@ -418,7 +432,10 @@
         <copy file="${axis2-transport-base-jar}" todir="${release-dir}/lib" />
         <copy file="${axis2-transport-http-jar}" todir="${release-dir}/lib" />
         <copy file="${axis2-transport-local-jar}" todir="${release-dir}/lib" />
+        <copy file="${bcel-jar}" todir="${release-dir}/lib" />
         <copy file="${bcprov-jar}" todir="${release-dir}/lib" />
+        <copy file="${bsf-jar}" todir="${release-dir}/lib" />
+        <copy file="${bsh-jar}" todir="${release-dir}/lib" />
         <copy file="${commons-cli-jar}" todir="${release-dir}/lib" />
         <copy file="${commons-codec-jar}" todir="${release-dir}/lib" />
         <copy file="${commons-collections4-jar}" todir="${release-dir}/lib" />
@@ -427,7 +444,12 @@
         <copy file="${commons-io-jar}" todir="${release-dir}/lib" /> 
         <copy file="${commons-lang3-jar}" todir="${release-dir}/lib" />
         <copy file="${commons-logging-jar}" todir="${release-dir}/lib" />
+        <copy file="${data-jar}" todir="${release-dir}/lib" />
+        <copy file="${db2jcc-jar}" todir="${release-dir}/lib" />
+        <copy file="${db2jcc_license-cisuz-jar}" todir="${release-dir}/lib" />
         <copy file="${dom4j-jar}" todir="${release-dir}/lib" />
+        <copy file="${dunamis-jar}" todir="${release-dir}/lib" />
+        <copy file="${filters-jar}" todir="${release-dir}/lib" />
         <copy file="${ganymed-ssh2-jar}" todir="${release-dir}/lib" />
         <copy file="${gson-jar}" todir="${release-dir}/lib" />
         <copy file="${guava-jar}" todir="${release-dir}/lib" />
@@ -449,6 +471,10 @@
         <copy file="${mysql-jar}" todir="${release-dir}/lib" />
         <copy file="${neethi-jar}" todir="${release-dir}/lib" />
         <copy file="${oracle-jar}" todir="${release-dir}/lib" />
+        <copy file="${paranamer-jar}" todir="${release-dir}/lib" />
+        <copy file="${rb-jar}" todir="${release-dir}/lib" />
+        <copy file="${reflection-ui-jar}" todir="${release-dir}/lib" />
+        <copy file="${scriptom-jar}" todir="${release-dir}/lib" />
         <copy file="${selenium-java-jar}" todir="${release-dir}/lib" />
         <copy file="${stax_api-jar}" todir="${release-dir}/lib" />
         <copy file="${swing-worker-jar}" todir="${release-dir}/lib" />

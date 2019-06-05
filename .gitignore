@@ -243,3 +243,4 @@ platform/time-local-config.properties
 platform/advanced-local-config.properties
 platform/document-local-config.properties
 platform/mail-local-config.properties
+platform/selenium-local-config.properties
