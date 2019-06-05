@@ -10,10 +10,11 @@
     <property name="src-xcase-common" value="src/java/com/xcase/common"/>
     <property name="src-xcase-intapp" value="src/java/com/xcase/intapp"/>
     <property name="src-xcase-integrate" value="src/java/com/xcase/integrate"/>
-	<property name="src-xcase-mail" value="src/java/com/xcase/mail"/>
+    <property name="src-xcase-mail" value="src/java/com/xcase/mail"/>
     <property name="src-xcase-msgraph" value="src/java/com/xcase/msgraph"/>
     <property name="src-xcase-open" value="src/java/com/xcase/open"/>
     <property name="src-xcase-salesforce" value="src/java/com/xcase/salesforce"/>
+    <property name="src-xcase-selenium" value="src/java/com/xcase/selenium"/>
     <property name="src-xcase-sharepoint" value="src/java/com/xcase/sharepoint"/>
     <property name="src-xcase-webservice" value="src/java/com/xcase/webservice"/>
     <property name="abbot-jar" value="lib/abbot.jar" />
@@ -89,7 +90,7 @@
     <property name="pg73jdbc3-jar" value="lib/pg73jdbc3.jar" />
     <property name="reflection-ui-jar" value="lib/reflection-ui-3.1.3.jar" />
     <property name="scriptom-jar" value="lib/scriptom-1.5.4b11.jar" />
-    <property name="selenium-java-jar" value="lib/selenium-java-2.53.0.jar" />
+    <property name="selenium-java-jar" value="lib/selenium-server-standalone-3.141.59.jar" />
     <property name="sqljdbc4-jar" value="lib/sqljdbc4.jar" />
     <property name="stax_api-jar" value="lib/stax_api.jar" />
     <property name="swing-worker-jar" value="lib/swing-worker-1.1.jar" />
@@ -301,7 +302,7 @@
             <compilerarg value="-Xlint:unchecked"/>
         </javac>
     </target>
-    <target name="compile-xcase" depends="compile-xcase-common,compile-xcase-mail,compile-xcase-box,compile-xcase-intapp,compile-xcase-integrate,compile-xcase-msgraph,compile-xcase-open,compile-xcase-salesforce,compile-xcase-sharepoint,compile-xcase-webservice" />
+    <target name="compile-xcase" depends="compile-xcase-common,compile-xcase-mail,compile-xcase-box,compile-xcase-intapp,compile-xcase-integrate,compile-xcase-msgraph,compile-xcase-open,compile-xcase-salesforce,compile-xcase-selenium,compile-xcase-sharepoint,compile-xcase-webservice" />
     <target name="compile-xcase-box">
         <javac srcdir="${src-xcase-box}" destdir="${build}" debug="on">
             <classpath refid="classpath.base" />
@@ -346,6 +347,12 @@
     </target>
     <target name="compile-xcase-salesforce">
         <javac srcdir="${src-xcase-salesforce}" destdir="${build}" debug="on">
+            <classpath refid="classpath.base" />
+            <compilerarg value="-Xlint:-unchecked"/>
+        </javac>
+    </target>
+    <target name="compile-xcase-selenium">
+        <javac srcdir="${src-xcase-selenium}" destdir="${build}" debug="on">
             <classpath refid="classpath.base" />
             <compilerarg value="-Xlint:-unchecked"/>
         </javac>
@@ -442,6 +449,7 @@
         <copy file="${mysql-jar}" todir="${release-dir}/lib" />
         <copy file="${neethi-jar}" todir="${release-dir}/lib" />
         <copy file="${oracle-jar}" todir="${release-dir}/lib" />
+        <copy file="${selenium-java-jar}" todir="${release-dir}/lib" />
         <copy file="${stax_api-jar}" todir="${release-dir}/lib" />
         <copy file="${swing-worker-jar}" todir="${release-dir}/lib" />
         <copy file="${swingx-jar}" todir="${release-dir}/lib" />

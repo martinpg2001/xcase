@@ -32,6 +32,7 @@
     <classpathentry kind="lib" path="lib/log4j-api-2.11.2.jar"/>
     <classpathentry kind="lib" path="lib/log4j-core-2.11.2.jar"/>
     <classpathentry kind="lib" path="lib/mail-1.4.7.jar"/>
+    <classpathentry kind="lib" path="lib/selenium-server-standalone-3.141.59.jar"/>
     <classpathentry kind="src" path=".apt_generated">
         <attributes>
             <attribute name="optional" value="true"/>
