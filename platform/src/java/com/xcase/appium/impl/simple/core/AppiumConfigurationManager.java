@@ -1,13 +1,13 @@
-package com.xcase.selenium.impl.simple.core;
+package com.xcase.appium.impl.simple.core;
 
+import com.xcase.appium.constant.AppiumConstant;
 import com.xcase.common.IConfigurationManager;
 import com.xcase.common.impl.simple.core.AbstractConfigurationManager;
-import com.xcase.selenium.constant.SeleniumConstant;
 import java.lang.invoke.MethodHandles;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class SeleniumConfigurationManager extends AbstractConfigurationManager implements IConfigurationManager {
+public class AppiumConfigurationManager extends AbstractConfigurationManager implements IConfigurationManager {
 
     /**
      * log4j object.
@@ -17,20 +17,20 @@ public class SeleniumConfigurationManager extends AbstractConfigurationManager i
     /**
      * singleton instance.
      */
-    private static SeleniumConfigurationManager instance;
+    private static AppiumConfigurationManager instance;
 
     /**
      * get the only one manager.
      *
      * @return ConfigurationManager
      */
-    public static SeleniumConfigurationManager getConfigurationManager() {
+    public static AppiumConfigurationManager getConfigurationManager() {
 //        LOGGER.debug("starting getConfigurationManager()");
         if (instance == null) {
-            instance = new SeleniumConfigurationManager();
-            instance.configFile = SeleniumConstant.CONFIG_FILE_NAME;
-            instance.defaultConfigFile = SeleniumConstant.CONFIG_FILE_DEFAULT_NAME;
-            instance.localConfigFile = SeleniumConstant.LOCAL_CONFIG_FILE_NAME;
+            instance = new AppiumConfigurationManager();
+            instance.configFile = AppiumConstant.CONFIG_FILE_NAME;
+            instance.defaultConfigFile = AppiumConstant.CONFIG_FILE_DEFAULT_NAME;
+            instance.localConfigFile = AppiumConstant.LOCAL_CONFIG_FILE_NAME;
             LOGGER.debug("about to load config properties");
             instance.loadConfigProperties();
             LOGGER.debug("loaded config properties");
@@ -43,7 +43,7 @@ public class SeleniumConfigurationManager extends AbstractConfigurationManager i
     /**
      * private constructor, singleton.
      */
-    private SeleniumConfigurationManager() {
+    private AppiumConfigurationManager() {
 
     }
 }

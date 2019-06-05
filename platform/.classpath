@@ -27,6 +27,7 @@
     <classpathentry kind="lib" path="lib/activation-1.1.jar"/>
     <classpathentry kind="lib" path="lib/commons-cli-1.4.jar"/>
     <classpathentry kind="lib" path="lib/commons-logging-1.1.2.jar"/>
+    <classpathentry kind="lib" path="lib/java-client-7.0.0.jar"/>
     <classpathentry kind="lib" path="lib/jaxb-api-2.3.0.jar"/>
     <classpathentry kind="lib" path="lib/log4j.jar"/>
     <classpathentry kind="lib" path="lib/log4j-api-2.11.2.jar"/>

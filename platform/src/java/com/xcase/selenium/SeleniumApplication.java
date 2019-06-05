@@ -29,6 +29,7 @@ public class SeleniumApplication {
     public static void main(String[] args) {
         WebDriver driver = null;
         String webDriver = SeleniumConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(SeleniumConstant.LOCAL_WEBDRIVER);
+        LOGGER.debug("webDriver is " + webDriver);
         switch(webDriver) {
             case "ChromeDriver":
                 driver = new ChromeDriver();

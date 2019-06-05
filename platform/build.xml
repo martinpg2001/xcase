@@ -6,6 +6,7 @@
     <property name="junitjar" value="lib/junit-4.12.jar"/>
     <property name="release-dir" value="harness-release"/>
     <property name="src" value="src/java"/>
+	<property name="src-xcase-appium" value="src/java/com/xcase/appium"/>
     <property name="src-xcase-box" value="src/java/com/xcase/box"/>
     <property name="src-xcase-common" value="src/java/com/xcase/common"/>
     <property name="src-xcase-intapp" value="src/java/com/xcase/intapp"/>
@@ -64,6 +65,7 @@
     <property name="httpmime-jar" value="lib/httpmime-4.5.5.jar" />
     <property name="ifxjdbc-jar" value="lib/ifxjdbc.jar" />
     <property name="jansi-jar" value="lib/jansi-1.14.jar" />
+	<property name="java-client-jar" value="lib/java-client-7.0.0.jar" />
     <property name="java-sharepoint-2.0-jar" value="lib/java-sharepoint-2.0-BETA2.jar" />
     <property name="jaxb-api-jar" value="lib/jaxb-api-2.3.0.jar" />
     <property name="jaxen-jar" value="lib/jaxen-1.1.6.jar" />
@@ -150,8 +152,11 @@
         <pathelement location="${httpcore-jar}" />
         <pathelement location="${httpmime-jar}" />
         <pathelement location="${ifxjdbs-jar}" />
+    	<pathelement location="${jansi-jar}" />
+    	<pathelement location="${java-client-jar}" />
         <pathelement location="${java-sharepoint-jar}" />
         <pathelement location="${jaxb-api-jar}" />
+    	<pathelement location="${jaxen-jar}" />
         <pathelement location="${jcifs-jar}" />
         <pathelement location="${jcommander-jar}" />
         <pathelement location="${jconn4-jar}" />
@@ -222,8 +227,11 @@
         <pathelement location="${httpcore-jar}" />
         <pathelement location="${httpmime-jar}" />
         <pathelement location="${ifxjdbs-jar}" />
+    	<pathelement location="${jansi-jar}" />
+    	<pathelement location="${java-client-jar}" />
         <pathelement location="${java-sharepoint-jar}" />
         <pathelement location="${jaxb-api-jar}" />
+    	<pathelement location="${jaxen-jar}" />
         <pathelement location="${jcifs-jar}" />
         <pathelement location="${jcommander-jar}" />
         <pathelement location="${jconn4-jar}" />
@@ -316,9 +324,15 @@
             <compilerarg value="-Xlint:unchecked"/>
         </javac>
     </target>
-    <target name="compile-xcase" depends="compile-xcase-common,compile-xcase-mail,compile-xcase-box,compile-xcase-intapp,compile-xcase-integrate,compile-xcase-msgraph,compile-xcase-open,compile-xcase-salesforce,compile-xcase-selenium,compile-xcase-sharepoint,compile-xcase-webservice" />
+    <target name="compile-xcase" depends="compile-xcase-common,compile-xcase-appium,compile-xcase-mail,compile-xcase-box,compile-xcase-intapp,compile-xcase-integrate,compile-xcase-msgraph,compile-xcase-open,compile-xcase-salesforce,compile-xcase-selenium,compile-xcase-sharepoint,compile-xcase-webservice" />
     <target name="compile-xcase-box">
         <javac srcdir="${src-xcase-box}" destdir="${build}" debug="on">
+            <classpath refid="classpath.base" />
+            <compilerarg value="-Xlint:-unchecked"/>
+        </javac>
+    </target>
+    <target name="compile-xcase-appium">
+        <javac srcdir="${src-xcase-appium}" destdir="${build}" debug="on">
             <classpath refid="classpath.base" />
             <compilerarg value="-Xlint:-unchecked"/>
         </javac>
@@ -458,8 +472,11 @@
         <copy file="${httpcore-jar}" todir="${release-dir}/lib" />
         <copy file="${httpmime-jar}" todir="${release-dir}/lib" />
         <copy file="${ifxjdbs-jar}" todir="${release-dir}/lib" />
+    	<copy file="${jansi-jar}" todir="${release-dir}/lib" />
+    	<copy file="${java-client-jar}" todir="${release-dir}/lib" />
         <copy file="${java-sharepoint-jar}" todir="${release-dir}/lib" />
         <copy file="${jaxb-api-jar}" todir="${release-dir}/lib" />
+    	<copy file="${jaxen-jar}" todir="${release-dir}/lib" />
         <copy file="${jdom2-jar}" todir="${release-dir}/lib" />
         <copy file="${jsch-jar}" todir="${release-dir}/lib" />
         <copy file="${jsoup-jar}" todir="${release-dir}/lib" />
