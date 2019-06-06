@@ -81,22 +81,10 @@ public class AppiumApplication {
             // Puts an Implicit wait, Will wait for 10 seconds before throwing exception
             driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
-            // Launch website
-            driver.navigate().to("http://www.calculator.net/");
-
-            // Maximize the browser
-            driver.manage().window().maximize();
-
-            // Use POM to execute test
-            CalculatorHomePage calculatorHomePage = new CalculatorHomePage(driver);
-            calculatorHomePage.navigateToMathCalculatorsPage();
-            LOGGER.debug("navigated to MathCalculatorsPage");
-            MathCalculatorsPage mathCalculatorsPage = new MathCalculatorsPage(driver);
-            mathCalculatorsPage.navigateToPercentageCalculatorPage();
-            LOGGER.debug("navigated to PercentageCalculatorPage");
-            PercentageCalculatorPage percentageCalculatorPage = new PercentageCalculatorPage(driver);
-            percentageCalculatorPage.calculatePercentage("33", "16");
-            String result = percentageCalculatorPage.getResult();
+            // Find text on page
+            driver.findElementById("text_view_id");
+            LOGGER.debug("found element");
+            String result = driver.findElementById("text_view_id").getText();
 
             // Log the result
             LOGGER.debug("The result is " + result);
