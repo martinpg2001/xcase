@@ -40,4 +40,19 @@ public class PercentageCalculatorPage {
         String result = driver.findElement(resultField).getText();
         return result;
     }
+
+    public void clearFirstField() {
+        driver.findElement(firstField).clear();
+    }
+
+    public void clearSecondField() {
+        driver.findElement(secondField).clear();
+    }
+
+    public String getResult(String firstParameter, String secondParameter) {
+        clearFirstField();
+        clearSecondField();
+        calculatePercentage(firstParameter, secondParameter);
+        return getResult();
+    }
 }

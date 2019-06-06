@@ -6,7 +6,6 @@ import com.xcase.appium.impl.simple.pages.CalculatorHomePage;
 import com.xcase.appium.impl.simple.pages.MathCalculatorsPage;
 import com.xcase.appium.impl.simple.pages.PercentageCalculatorPage;
 import io.appium.java_client.android.AndroidDriver;
-
 import java.io.File;
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
