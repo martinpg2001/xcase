@@ -35,13 +35,18 @@ public class AppiumApplication {
     public static void main(String[] args) {
         try {
             File classpathRoot = new File(".");
-            File appDir = new File(classpathRoot, "./apps");
-            File app = new File(appDir.getCanonicalPath(), "app-debug.apk");
+            File appDir = new File(classpathRoot, AppiumConfigurationManager.getConfigurationManager().getLocalConfig()
+                    .getProperty(AppiumConstant.LOCAL_APP_DIRECTORY));
+            File app = new File(appDir.getCanonicalPath(), AppiumConfigurationManager.getConfigurationManager().getLocalConfig()
+                    .getProperty(AppiumConstant.LOCAL_APP));
             DesiredCapabilities capabilities = new DesiredCapabilities();
-            capabilities.setCapability("deviceName", "Android Emulator");
+            capabilities.setCapability("deviceName", AppiumConfigurationManager.getConfigurationManager().getLocalConfig()
+                    .getProperty(AppiumConstant.LOCAL_DEVICE_NAME));
             capabilities.setCapability("app", app.getAbsolutePath());
-            capabilities.setCapability("appPackage", "com.example.martin.myApplication");
-            capabilities.setCapability("appActivity", ".MainActivity");
+            capabilities.setCapability("appPackage", AppiumConfigurationManager.getConfigurationManager().getLocalConfig()
+                    .getProperty(AppiumConstant.LOCAL_APP_PACKAGE));
+            capabilities.setCapability("appActivity", AppiumConfigurationManager.getConfigurationManager().getLocalConfig()
+                    .getProperty(AppiumConstant.LOCAL_APP_ACTIVITY));
             AndroidDriver<WebElement> driver = null;
             String webDriver = AppiumConfigurationManager.getConfigurationManager().getLocalConfig()
                     .getProperty(AppiumConstant.LOCAL_WEBDRIVER);
