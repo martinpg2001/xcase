@@ -1,21 +1,17 @@
 package com.xcase.mail.impl.simple.methods;
 
+import com.xcase.mail.factories.MailResponseFactory;
+import com.xcase.mail.transputs.DeleteEmailRequest;
+import com.xcase.mail.transputs.DeleteEmailResponse;
 import java.lang.invoke.MethodHandles;
-
 import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.search.SubjectTerm;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.xcase.mail.factories.MailResponseFactory;
-import com.xcase.mail.transputs.DeleteEmailRequest;
-import com.xcase.mail.transputs.DeleteEmailResponse;
-import com.xcase.mail.transputs.GetEmailResponse;
 
 public class DeleteEmailMethod extends BaseMailMethod {
 

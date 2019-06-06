@@ -3,7 +3,6 @@ package com.xcase.mail.impl.simple.methods;
 import com.xcase.mail.transputs.MailRequest;
 import java.lang.invoke.MethodHandles;
 import java.util.Properties;
-
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;

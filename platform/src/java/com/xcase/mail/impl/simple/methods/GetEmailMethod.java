@@ -5,12 +5,9 @@ import com.xcase.mail.factories.MailResponseFactory;
 import com.xcase.mail.impl.simple.core.MailConfigurationManager;
 import com.xcase.mail.transputs.GetEmailRequest;
 import com.xcase.mail.transputs.GetEmailResponse;
-import com.xcase.msgraph.factories.MSGraphResponseFactory;
-import com.xcase.msgraph.transputs.AddGroupMemberResponse;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.mail.*;
 import javax.mail.internet.MimeMessage;
 import javax.mail.search.SubjectTerm;

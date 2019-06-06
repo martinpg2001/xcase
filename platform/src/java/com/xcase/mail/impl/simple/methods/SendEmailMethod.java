@@ -1,7 +1,6 @@
 package com.xcase.mail.impl.simple.methods;
 
 import com.xcase.mail.factories.MailResponseFactory;
-import com.xcase.mail.transputs.GetEmailResponse;
 import com.xcase.mail.transputs.SendEmailRequest;
 import com.xcase.mail.transputs.SendEmailResponse;
 import java.lang.invoke.MethodHandles;

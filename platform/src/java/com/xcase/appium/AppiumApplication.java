@@ -35,18 +35,28 @@ public class AppiumApplication {
     public static void main(String[] args) {
         try {
             File classpathRoot = new File(".");
-            File appDir = new File(classpathRoot, AppiumConfigurationManager.getConfigurationManager().getLocalConfig()
-                    .getProperty(AppiumConstant.LOCAL_APP_DIRECTORY));
-            File app = new File(appDir.getCanonicalPath(), AppiumConfigurationManager.getConfigurationManager().getLocalConfig()
-                    .getProperty(AppiumConstant.LOCAL_APP));
+            String appDirectory = AppiumConfigurationManager.getConfigurationManager().getLocalConfig()
+                    .getProperty(AppiumConstant.LOCAL_APP_DIRECTORY);
+            LOGGER.debug("appDirectory is " + appDirectory);
+            File appDir = new File(classpathRoot, appDirectory);
+            String appFilename = AppiumConfigurationManager.getConfigurationManager().getLocalConfig()
+                    .getProperty(AppiumConstant.LOCAL_APP);
+            LOGGER.debug("appFilename is " + appFilename);            
+            File app = new File(appDir.getCanonicalPath(), appFilename);
             DesiredCapabilities capabilities = new DesiredCapabilities();
-            capabilities.setCapability("deviceName", AppiumConfigurationManager.getConfigurationManager().getLocalConfig()
-                    .getProperty(AppiumConstant.LOCAL_DEVICE_NAME));
+            String deviceName = AppiumConfigurationManager.getConfigurationManager().getLocalConfig()
+                    .getProperty(AppiumConstant.LOCAL_DEVICE_NAME);
+            LOGGER.debug("deviceName is " + deviceName);             
+            capabilities.setCapability("deviceName", deviceName);
             capabilities.setCapability("app", app.getAbsolutePath());
-            capabilities.setCapability("appPackage", AppiumConfigurationManager.getConfigurationManager().getLocalConfig()
-                    .getProperty(AppiumConstant.LOCAL_APP_PACKAGE));
-            capabilities.setCapability("appActivity", AppiumConfigurationManager.getConfigurationManager().getLocalConfig()
-                    .getProperty(AppiumConstant.LOCAL_APP_ACTIVITY));
+            String appPackage = AppiumConfigurationManager.getConfigurationManager().getLocalConfig()
+                    .getProperty(AppiumConstant.LOCAL_APP_PACKAGE);
+            LOGGER.debug("appPackage is " + appPackage);             
+            capabilities.setCapability("appPackage", appPackage);
+            String appActivity = AppiumConfigurationManager.getConfigurationManager().getLocalConfig()
+                    .getProperty(AppiumConstant.LOCAL_APP_ACTIVITY);
+            LOGGER.debug("appActivity is " + appActivity);             
+            capabilities.setCapability("appActivity", appActivity);
             AndroidDriver<WebElement> driver = null;
             String webDriver = AppiumConfigurationManager.getConfigurationManager().getLocalConfig()
                     .getProperty(AppiumConstant.LOCAL_WEBDRIVER);
