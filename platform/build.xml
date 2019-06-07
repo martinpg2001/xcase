@@ -6,7 +6,7 @@
     <property name="junitjar" value="lib/junit-4.12.jar"/>
     <property name="release-dir" value="harness-release"/>
     <property name="src" value="src/java"/>
-	<property name="src-xcase-appium" value="src/java/com/xcase/appium"/>
+    <property name="src-xcase-appium" value="src/java/com/xcase/appium"/>
     <property name="src-xcase-box" value="src/java/com/xcase/box"/>
     <property name="src-xcase-common" value="src/java/com/xcase/common"/>
     <property name="src-xcase-intapp" value="src/java/com/xcase/intapp"/>
@@ -25,6 +25,8 @@
     <property name="ant-launcher-jar" value="lib/ant-launcher-1.7.0.jar" />
     <property name="antlr-jar" value="lib/antlr-2.7.7.jar" />
     <property name="asm-jar" value="lib/asm-3.2.jar" />
+    <property name="aws-sdk-java-jar" value="lib/aws-sdk-java-2.5.58.jar" />
+    <property name="aws-sdk-java-s3-jar" value="lib/aws-sdk-java-s3-2.5.58.jar" />
     <property name="axiom-api-jar" value="lib/axiom-api-1.2.14.jar" />
     <property name="axiom-compat-jar" value="lib/axiom-compat-1.2.14.jar" />
     <property name="axiom-dom-jar" value="lib/axiom-dom-1.2.14.jar" />
@@ -65,7 +67,7 @@
     <property name="httpmime-jar" value="lib/httpmime-4.5.5.jar" />
     <property name="ifxjdbc-jar" value="lib/ifxjdbc.jar" />
     <property name="jansi-jar" value="lib/jansi-1.14.jar" />
-	<property name="java-client-jar" value="lib/java-client-7.0.0.jar" />
+    <property name="java-client-jar" value="lib/java-client-7.0.0.jar" />
     <property name="java-sharepoint-2.0-jar" value="lib/java-sharepoint-2.0-BETA2.jar" />
     <property name="jaxb-api-jar" value="lib/jaxb-api-2.3.0.jar" />
     <property name="jaxen-jar" value="lib/jaxen-1.1.6.jar" />
@@ -116,12 +118,15 @@
     <property name="tomcat.home" value="${env.TOMCAT_HOME}"/>
     <property name="version" value="1.0.15"/>
     <path id="classpath.base">
+        <pathelement location="${abbot-jar}" />
         <pathelement location="${activation-jar}" />
         <pathelement location="${ant-jar}" />
         <pathelement location="${antlr-jar}" />
         <pathelement location="${ant-jsch-jar}" />
         <pathelement location="${ant-launcher-jar}" />
         <pathelement location="${asm-jar}" />
+        <pathelement location="${aws-sdk-java-jar}" />
+        <pathelement location="${aws-sdk-java-s3-jar}" />
         <pathelement location="${axiom-api-jar}" />
         <pathelement location="${axiom-compat-jar}" />
         <pathelement location="${axiom-dom-jar}" />
@@ -152,11 +157,11 @@
         <pathelement location="${httpcore-jar}" />
         <pathelement location="${httpmime-jar}" />
         <pathelement location="${ifxjdbs-jar}" />
-    	<pathelement location="${jansi-jar}" />
-    	<pathelement location="${java-client-jar}" />
+        <pathelement location="${jansi-jar}" />
+        <pathelement location="${java-client-jar}" />
         <pathelement location="${java-sharepoint-jar}" />
         <pathelement location="${jaxb-api-jar}" />
-    	<pathelement location="${jaxen-jar}" />
+        <pathelement location="${jaxen-jar}" />
         <pathelement location="${jcifs-jar}" />
         <pathelement location="${jcommander-jar}" />
         <pathelement location="${jconn4-jar}" />
@@ -194,12 +199,15 @@
         <pathelement location="${xstream-jar}" />
     </path>
     <path id="classpath.run">
+        <pathelement location="${abbot-jar}" />
         <pathelement location="${activation-jar}" />
         <pathelement location="${ant-jar}" />
         <pathelement location="${antlr-jar}" />
         <pathelement location="${ant-jsch-jar}" />
         <pathelement location="${ant-launcher-jar}" />
         <pathelement location="${asm-jar}" />
+        <pathelement location="${aws-sdk-java-jar}" />
+        <pathelement location="${aws-sdk-java-s3-jar}" />
         <pathelement location="${axiom-api-jar}" />
         <pathelement location="${axiom-compat-jar}" />
         <pathelement location="${axiom-dom-jar}" />
@@ -227,11 +235,11 @@
         <pathelement location="${httpcore-jar}" />
         <pathelement location="${httpmime-jar}" />
         <pathelement location="${ifxjdbs-jar}" />
-    	<pathelement location="${jansi-jar}" />
-    	<pathelement location="${java-client-jar}" />
+        <pathelement location="${jansi-jar}" />
+        <pathelement location="${java-client-jar}" />
         <pathelement location="${java-sharepoint-jar}" />
         <pathelement location="${jaxb-api-jar}" />
-    	<pathelement location="${jaxen-jar}" />
+        <pathelement location="${jaxen-jar}" />
         <pathelement location="${jcifs-jar}" />
         <pathelement location="${jcommander-jar}" />
         <pathelement location="${jconn4-jar}" />
@@ -310,7 +318,7 @@
             destdir="${build}"
             includes="${file}"
             debug="on"
-            source="1.7"
+            source="1.8"
             classpath="${classpath}" >
             <compilerarg value="-Xlint:deprecation"/>
             <!--compilerarg value="-Xlint:unchecked"/-->
@@ -405,7 +413,7 @@
             destdir="docs/api"
             author="false"
             use="true"
-            source="1.7"
+            source="1.8"
             windowtitle="Harness API">
             <classpath refid="classpath.test" />
             <classpath location="${build}"/>
@@ -431,12 +439,15 @@
         <delete dir="${release-dir}"/>
         <mkdir dir="${release-dir}"/>
         <mkdir dir="${release-dir}/lib"/>
+        <copy file="${abbot-jar}" todir="${release-dir}/lib" />
         <copy file="${activation-jar}" todir="${release-dir}/lib" />
         <copy file="${ant-jar}" todir="${release-dir}/lib" />
+        <copy file="${antlr-jar}" todir="${release-dir}/lib" />
         <copy file="${ant-jsch-jar}" todir="${release-dir}/lib" />
         <copy file="${ant-launcher-jar}" todir="${release-dir}/lib" />
-        <copy file="${antlr-jar}" todir="${release-dir}/lib" />
         <copy file="${asm-jar}" todir="${release-dir}/lib" />
+        <copy file="${aws-sdk-java-jar}" todir="${release-dir}/lib" />
+        <copy file="${aws-sdk-java-s3-jar}" todir="${release-dir}/lib" />
         <copy file="${axiom-api-jar}" todir="${release-dir}/lib" />
         <copy file="${axiom-compat-jar}" todir="${release-dir}/lib" />
         <copy file="${axiom-dom-jar}" todir="${release-dir}/lib" />
@@ -472,11 +483,11 @@
         <copy file="${httpcore-jar}" todir="${release-dir}/lib" />
         <copy file="${httpmime-jar}" todir="${release-dir}/lib" />
         <copy file="${ifxjdbs-jar}" todir="${release-dir}/lib" />
-    	<copy file="${jansi-jar}" todir="${release-dir}/lib" />
-    	<copy file="${java-client-jar}" todir="${release-dir}/lib" />
+        <copy file="${jansi-jar}" todir="${release-dir}/lib" />
+        <copy file="${java-client-jar}" todir="${release-dir}/lib" />
         <copy file="${java-sharepoint-jar}" todir="${release-dir}/lib" />
         <copy file="${jaxb-api-jar}" todir="${release-dir}/lib" />
-    	<copy file="${jaxen-jar}" todir="${release-dir}/lib" />
+        <copy file="${jaxen-jar}" todir="${release-dir}/lib" />
         <copy file="${jdom2-jar}" todir="${release-dir}/lib" />
         <copy file="${jsch-jar}" todir="${release-dir}/lib" />
         <copy file="${jsoup-jar}" todir="${release-dir}/lib" />

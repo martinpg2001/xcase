@@ -245,3 +245,4 @@ platform/document-local-config.properties
 platform/mail-local-config.properties
 platform/selenium-local-config.properties
 platform/appium-local-config.properties
+platform/aws-local-config.properties
