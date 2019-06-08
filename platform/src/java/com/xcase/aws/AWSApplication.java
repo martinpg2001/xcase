@@ -8,6 +8,12 @@ import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.http.SdkHttpClient;
 import software.amazon.awssdk.http.apache.ApacheHttpClient;
 import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.rds.RdsClient;
+import software.amazon.awssdk.services.rds.RdsClientBuilder;
+import software.amazon.awssdk.services.rds.model.CreateDbInstanceRequest;
+import software.amazon.awssdk.services.rds.model.CreateDbInstanceResponse;
+import software.amazon.awssdk.services.rds.model.DeleteDbInstanceRequest;
+import software.amazon.awssdk.services.rds.model.DeleteDbInstanceResponse;
 import software.amazon.awssdk.services.s3.*;
 import software.amazon.awssdk.services.s3.model.Bucket;
 import software.amazon.awssdk.services.s3.model.CreateBucketRequest;
@@ -37,6 +43,7 @@ public class AWSApplication {
             LOGGER.debug("secretKey is " + secretKey);
             SdkHttpClient apacheSdkHttpClient = ApacheHttpClient.builder().build();
             AwsCredentialsProvider awsCredentialsProvider = StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKey, secretKey));
+            /* S3 operations */
             S3ClientBuilder s3ClientBuilder = S3Client.builder().httpClient(apacheSdkHttpClient).region(Region.US_WEST_2).credentialsProvider(awsCredentialsProvider);
             S3Client s3Client = s3ClientBuilder.build();
             LOGGER.debug("created s3Client");
@@ -70,9 +77,22 @@ public class AWSApplication {
                 LOGGER.debug("bucketList size is " + bucketList.size());
             } else {
                 LOGGER.debug("bucketList is null");
-            }            
+            }
+            
+            /* Database operations */
+            RdsClientBuilder rdsClientBuilder = RdsClient.builder().httpClient(apacheSdkHttpClient).region(Region.US_WEST_2).credentialsProvider(awsCredentialsProvider);
+            RdsClient rdsClient = rdsClientBuilder.build();
+            LOGGER.debug("created rdsClient");
+            String dbInstanceIdentifier = "com-xcase-testdatabase";
+            String dbName = "TestDatabase";
+            CreateDbInstanceRequest createDbInstanceRequest = CreateDbInstanceRequest.builder().dbInstanceClass("db.t2.micro").engine("postgres").dbInstanceIdentifier(dbInstanceIdentifier).dbName(dbName).masterUsername("sa").masterUserPassword("Tsunami9").allocatedStorage(20).build();
+            CreateDbInstanceResponse createDbInstanceResponse = rdsClient.createDBInstance(createDbInstanceRequest);
+            LOGGER.debug("created dbInstance");
+            DeleteDbInstanceRequest deleteDbInstanceRequest = DeleteDbInstanceRequest.builder().dbInstanceIdentifier(dbInstanceIdentifier).build();
+            DeleteDbInstanceResponse deleteDbInstanceResponse = rdsClient.deleteDBInstance(deleteDbInstanceRequest);
+            LOGGER.debug("deleted dbInstance");
         } catch (Exception e) {
-            LOGGER.warn("exception getting bucket list: " + e.getMessage());
+            LOGGER.warn("exception executing AWS operations: " + e.getMessage());
         }
 
     }
