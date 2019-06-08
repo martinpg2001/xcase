@@ -8,6 +8,7 @@
     <property name="src" value="src/java"/>
     <property name="src-xcase-appium" value="src/java/com/xcase/appium"/>
     <property name="src-xcase-aws" value="src/java/com/xcase/aws"/>
+	<property name="src-xcase-azure" value="src/java/com/xcase/azure"/>
     <property name="src-xcase-box" value="src/java/com/xcase/box"/>
     <property name="src-xcase-common" value="src/java/com/xcase/common"/>
     <property name="src-xcase-intapp" value="src/java/com/xcase/intapp"/>
@@ -41,6 +42,9 @@
     <property name="axis2-transport-base-jar" value="lib/axis2-transport-base-1.7.8.jar" />
     <property name="axis2-transport-http-jar" value="lib/axis2-transport-http-1.7.8.jar" />
     <property name="axis2-transport-local-jar" value="lib/axis2-transport-local-1.7.8.jar" />
+	<property name="azure-jar" value="lib/azure-1.22.0.jar" />
+	<property name="azure-client-authentication-jar" value="lib/azure-client-authentication-1.6.8.jar" />
+	<property name="azure-storage-jar" value="lib/azure-storage-8.3.0.jar" />
     <property name="bcel-jar" value="lib/bcel-5.1.jar" />
     <property name="bcprov-jar" value="lib/bcprov.jar" />
     <property name="bsf-jar" value="lib/bsf.jar" />
@@ -149,6 +153,9 @@
         <pathelement location="${axis2-transport-base-jar}" />
         <pathelement location="${axis2-transport-http-jar}" />
         <pathelement location="${axis2-transport-local-jar}" />
+    	<pathelement location="${azure-jar}" />
+    	<pathelement location="${azure-client-authentication-jar}" />
+    	<pathelement location="${azure-storage-jar}" />
         <pathelement location="${bcel-jar}" />
         <pathelement location="${bcprov-jar}" />
         <pathelement location="${bsf-jar}" />
@@ -238,6 +245,9 @@
         <pathelement location="${axis2-transport-base-jar}" />
         <pathelement location="${axis2-transport-http-jar}" />
         <pathelement location="${axis2-transport-local-jar}" />
+    	<pathelement location="${azure-jar}" />
+    	<pathelement location="${azure-client-authentication-jar}" />
+    	<pathelement location="${azure-storage-jar}" />
         <pathelement location="${bcprov-jar}" />
         <pathelement location="${commons-cli-jar}" />
         <pathelement location="${commons-codec-jar}" />
@@ -357,7 +367,7 @@
             <compilerarg value="-Xlint:unchecked"/>
         </javac>
     </target>
-    <target name="compile-xcase" depends="compile-xcase-common,compile-xcase-appium,compile-xcase-aws,compile-xcase-mail,compile-xcase-box,compile-xcase-intapp,compile-xcase-integrate,compile-xcase-msgraph,compile-xcase-open,compile-xcase-salesforce,compile-xcase-selenium,compile-xcase-sharepoint,compile-xcase-webservice" />
+    <target name="compile-xcase" depends="compile-xcase-common,compile-xcase-appium,compile-xcase-aws,compile-xcase-azure,compile-xcase-box,compile-xcase-intapp,compile-xcase-integrate,compile-xcase-mail,compile-xcase-msgraph,compile-xcase-open,compile-xcase-salesforce,compile-xcase-selenium,compile-xcase-sharepoint,compile-xcase-webservice" />
     <target name="compile-xcase-appium">
         <javac srcdir="${src-xcase-appium}" destdir="${build}" debug="on">
             <classpath refid="classpath.base" />
@@ -366,6 +376,12 @@
     </target>
     <target name="compile-xcase-aws">
         <javac srcdir="${src-xcase-aws}" destdir="${build}" debug="on">
+            <classpath refid="classpath.base" />
+            <compilerarg value="-Xlint:-unchecked"/>
+        </javac>
+    </target>
+    <target name="compile-xcase-azure">
+        <javac srcdir="${src-xcase-azure}" destdir="${build}" debug="on">
             <classpath refid="classpath.base" />
             <compilerarg value="-Xlint:-unchecked"/>
         </javac>
@@ -382,12 +398,6 @@
             <compilerarg value="-Xlint:-unchecked"/>
         </javac>
     </target>
-    <target name="compile-xcase-mail">
-        <javac srcdir="${src-xcase-mail}" destdir="${build}" debug="on">
-            <classpath refid="classpath.base" />
-            <compilerarg value="-Xlint:-unchecked"/>
-        </javac>
-    </target>
     <target name="compile-xcase-intapp">
         <javac srcdir="${src-xcase-intapp}" destdir="${build}" debug="on">
             <classpath refid="classpath.base" />
@@ -396,6 +406,12 @@
     </target>
     <target name="compile-xcase-integrate">
         <javac srcdir="${src-xcase-integrate}" destdir="${build}" debug="on">
+            <classpath refid="classpath.base" />
+            <compilerarg value="-Xlint:-unchecked"/>
+        </javac>
+    </target>
+    <target name="compile-xcase-mail">
+        <javac srcdir="${src-xcase-mail}" destdir="${build}" debug="on">
             <classpath refid="classpath.base" />
             <compilerarg value="-Xlint:-unchecked"/>
         </javac>
@@ -492,6 +508,9 @@
         <copy file="${axis2-transport-base-jar}" todir="${release-dir}/lib" />
         <copy file="${axis2-transport-http-jar}" todir="${release-dir}/lib" />
         <copy file="${axis2-transport-local-jar}" todir="${release-dir}/lib" />
+    	<copy file="${azure-jar}" todir="${release-dir}/lib" />
+    	<copy file="${azure-client-authentication-jar}" todir="${release-dir}/lib" />
+    	<copy file="${azure-storage-jar}" todir="${release-dir}/lib" />
         <copy file="${bcel-jar}" todir="${release-dir}/lib" />
         <copy file="${bcprov-jar}" todir="${release-dir}/lib" />
         <copy file="${bsf-jar}" todir="${release-dir}/lib" />

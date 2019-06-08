@@ -22,7 +22,6 @@ import software.amazon.awssdk.services.s3.model.DeleteBucketRequest;
 import software.amazon.awssdk.services.s3.model.DeleteBucketResponse;
 import software.amazon.awssdk.services.s3.model.ListBucketsResponse;
 import software.amazon.awssdk.services.s3.model.S3Request;
-
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
@@ -43,8 +42,11 @@ public class AWSApplication {
             LOGGER.debug("secretKey is " + secretKey);
             SdkHttpClient apacheSdkHttpClient = ApacheHttpClient.builder().build();
             AwsCredentialsProvider awsCredentialsProvider = StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKey, secretKey));
+            String localRegion = AWSConfigurationManager.getConfigurationManager().getLocalConfig().getProperty("aws.region");
+            LOGGER.debug("localRegion is " + localRegion);
+            Region region = Region.of(localRegion);
             /* S3 operations */
-            S3ClientBuilder s3ClientBuilder = S3Client.builder().httpClient(apacheSdkHttpClient).region(Region.US_WEST_2).credentialsProvider(awsCredentialsProvider);
+            S3ClientBuilder s3ClientBuilder = S3Client.builder().httpClient(apacheSdkHttpClient).region(region).credentialsProvider(awsCredentialsProvider);
             S3Client s3Client = s3ClientBuilder.build();
             LOGGER.debug("created s3Client");
             ListBucketsResponse listBucketsResponse = s3Client.listBuckets();
@@ -80,7 +82,7 @@ public class AWSApplication {
             }
             
             /* Database operations */
-            RdsClientBuilder rdsClientBuilder = RdsClient.builder().httpClient(apacheSdkHttpClient).region(Region.US_WEST_2).credentialsProvider(awsCredentialsProvider);
+            RdsClientBuilder rdsClientBuilder = RdsClient.builder().httpClient(apacheSdkHttpClient).region(region).credentialsProvider(awsCredentialsProvider);
             RdsClient rdsClient = rdsClientBuilder.build();
             LOGGER.debug("created rdsClient");
             String dbInstanceIdentifier = "com-xcase-testdatabase";
