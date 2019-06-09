@@ -1,5 +1,6 @@
 package com.xcase.aws;
 
+import com.xcase.aws.constant.AWSConstant;
 import com.xcase.aws.impl.simple.core.AWSConfigurationManager;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.AwsCredentials;
@@ -28,6 +29,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class AWSApplication {
+    
     /**
      * log4j logger.
      */
@@ -36,13 +38,13 @@ public class AWSApplication {
     public static void main(String[] args) {
         try {
             LOGGER.debug("starting main()");
-            String accessKey = AWSConfigurationManager.getConfigurationManager().getLocalConfig().getProperty("aws.aws_access_key_id");
+            String accessKey = AWSConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(AWSConstant.LOCAL_AWS_ACCESS_KEY_ID);
             LOGGER.debug("accessKey is " + accessKey);
-            String secretKey = AWSConfigurationManager.getConfigurationManager().getLocalConfig().getProperty("aws.aws_secret_access_key");
+            String secretKey = AWSConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(AWSConstant.LOCAL_AWS_SECRET_ACCESS_KEY);
             LOGGER.debug("secretKey is " + secretKey);
             SdkHttpClient apacheSdkHttpClient = ApacheHttpClient.builder().build();
             AwsCredentialsProvider awsCredentialsProvider = StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKey, secretKey));
-            String localRegion = AWSConfigurationManager.getConfigurationManager().getLocalConfig().getProperty("aws.region");
+            String localRegion = AWSConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(AWSConstant.LOCAL_AWS_REGION);
             LOGGER.debug("localRegion is " + localRegion);
             Region region = Region.of(localRegion);
             /* S3 operations */
