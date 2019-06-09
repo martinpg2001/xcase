@@ -8,7 +8,7 @@
     <property name="src" value="src/java"/>
     <property name="src-xcase-appium" value="src/java/com/xcase/appium"/>
     <property name="src-xcase-aws" value="src/java/com/xcase/aws"/>
-	<property name="src-xcase-azure" value="src/java/com/xcase/azure"/>
+    <property name="src-xcase-azure" value="src/java/com/xcase/azure"/>
     <property name="src-xcase-box" value="src/java/com/xcase/box"/>
     <property name="src-xcase-common" value="src/java/com/xcase/common"/>
     <property name="src-xcase-intapp" value="src/java/com/xcase/intapp"/>
@@ -16,6 +16,7 @@
     <property name="src-xcase-mail" value="src/java/com/xcase/mail"/>
     <property name="src-xcase-msgraph" value="src/java/com/xcase/msgraph"/>
     <property name="src-xcase-open" value="src/java/com/xcase/open"/>
+    <property name="src-xcase-platform" value="src/java/com/xcase/platform"/>
     <property name="src-xcase-salesforce" value="src/java/com/xcase/salesforce"/>
     <property name="src-xcase-selenium" value="src/java/com/xcase/selenium"/>
     <property name="src-xcase-sharepoint" value="src/java/com/xcase/sharepoint"/>
@@ -42,15 +43,41 @@
     <property name="axis2-transport-base-jar" value="lib/axis2-transport-base-1.7.8.jar" />
     <property name="axis2-transport-http-jar" value="lib/axis2-transport-http-1.7.8.jar" />
     <property name="axis2-transport-local-jar" value="lib/axis2-transport-local-1.7.8.jar" />
-	<property name="azure-jar" value="lib/azure-1.22.0.jar" />
-	<property name="azure-client-authentication-jar" value="lib/azure-client-authentication-1.6.8.jar" />
-	<property name="azure-storage-jar" value="lib/azure-storage-8.3.0.jar" />
+    <property name="azure-jar" value="lib/azure-1.22.0.jar" />
+    <property name="azure-client-authentication-jar" value="lib/azure-client-authentication-1.6.8.jar" />
+    <property name="azure-client-runtime-jar" value="lib/azure-client-runtime-1.6.8.jar" />
+    <property name="azure-mgmt-appservice-jar" value="lib/azure-mgmt-appservice-1.22.0.jar" />
+    <property name="azure-mgmt-batch-jar" value="lib/azure-mgmt-batch-1.22.0.jar" />
+    <property name="azure-mgmt-batchai-jar" value="lib/azure-mgmt-batchai-1.22.0.jar" />
+    <property name="azure-mgmt-cdn-jar" value="lib/azure-mgmt-cdn-1.22.0.jar" />
+    <property name="azure-mgmt-compute-jar" value="lib/azure-mgmt-compute-1.22.0.jar" />
+    <property name="azure-mgmt-containerinstance-jar" value="lib/azure-mgmt-containerinstance-1.22.0.jar" />
+    <property name="azure-mgmt-containerregistry-jar" value="lib/azure-mgmt-containerregistry-1.22.0.jar" />
+    <property name="azure-mgmt-containerservice-jar" value="lib/azure-mgmt-containerservice-1.22.0.jar" />
+    <property name="azure-mgmt-cosmosdb-jar" value="lib/azure-mgmt-cosmosdb-1.22.0.jar" />
+    <property name="azure-mgmt-dns-jar" value="lib/azure-mgmt-dns-1.22.0.jar" />
+    <property name="azure-mgmt-eventhub-jar" value="lib/azure-mgmt-eventhub-1.22.0.jar" />
+    <property name="azure-mgmt-graph-rbac-jar" value="lib/azure-mgmt-graph-rbac-1.22.0.jar" />
+    <property name="azure-mgmt-keyvault-jar" value="lib/azure-mgmt-keyvault-1.22.0.jar" />
+    <property name="azure-mgmt-locks-jar" value="lib/azure-mgmt-locks-1.22.0.jar" />
+    <property name="azure-mgmt-monitor-jar" value="lib/azure-mgmt-monitor-1.22.0.jar" />
+    <property name="azure-mgmt-msi-jar" value="lib/azure-mgmt-msi-1.22.0.jar" />
+    <property name="azure-mgmt-mgmt-jar" value="lib/azure-mgmt-network-1.22.0.jar" />
+    <property name="azure-mgmt-redis-jar" value="lib/azure-mgmt-redis-1.22.0.jar" />
+    <property name="azure-mgmt-resources-jar" value="lib/azure-mgmt-resources-1.22.0.jar" />
+    <property name="azure-mgmt-search-jar" value="lib/azure-mgmt-search-1.22.0.jar" />
+    <property name="azure-mgmt-servicebus-jar" value="lib/azure-mgmt-servicebus-1.22.0.jar" />
+    <property name="azure-mgmt-sql-jar" value="lib/azure-mgmt-sql-1.22.0.jar" />
+    <property name="azure-mgmt-storage-jar" value="lib/azure-mgmt-storage-1.22.0.jar" />
+    <property name="azure-mgmt-trafficmanager-jar" value="lib/azure-mgmt-trafficmanager-1.22.0.jar" />
+    <property name="azure-storage-jar" value="lib/azure-storage-8.3.0.jar" />
     <property name="bcel-jar" value="lib/bcel-5.1.jar" />
     <property name="bcprov-jar" value="lib/bcprov.jar" />
     <property name="bsf-jar" value="lib/bsf.jar" />
     <property name="bsh-jar" value="lib/bsh.jar" />
     <property name="chromedriver-exe" value="lib/chromedriver.exe" />
     <property name="classmate-jar" value="lib/classmate-1.1.0.jar" />
+    <property name="client-runtime-jar" value="lib/client-runtime-1.6.8.jar" />
     <property name="commons-cli-jar" value="lib/commons-cli-1.4.jar" />
     <property name="commons-codec-jar" value="lib/commons-codec-1.10.jar" />
     <property name="commons-collections4-jar" value="lib/commons-collections4-4.0.jar" />
@@ -153,13 +180,39 @@
         <pathelement location="${axis2-transport-base-jar}" />
         <pathelement location="${axis2-transport-http-jar}" />
         <pathelement location="${axis2-transport-local-jar}" />
-    	<pathelement location="${azure-jar}" />
-    	<pathelement location="${azure-client-authentication-jar}" />
-    	<pathelement location="${azure-storage-jar}" />
+        <pathelement location="${azure-jar}" />
+        <pathelement location="${azure-client-authentication-jar}" />
+        <pathelement location="${azure-client-runtime-jar}" />
+        <pathelement location="${azure-mgmt-appservice-jar}" />
+        <pathelement location="${azure-mgmt-batch-jar}" />
+        <pathelement location="${azure-mgmt-batchai-jar}" />
+        <pathelement location="${azure-mgmt-cdn-jar}" />
+        <pathelement location="${azure-mgmt-compute-jar}" />
+        <pathelement location="${azure-mgmt-containerinstance-jar}" />
+        <pathelement location="${azure-mgmt-containerregistry-jar}" />
+        <pathelement location="${azure-mgmt-containerservice-jar}" />
+        <pathelement location="${azure-mgmt-cosmosdb-jar}" />
+        <pathelement location="${azure-mgmt-dns-jar}" />
+        <pathelement location="${azure-mgmt-eventhub-jar}" />
+        <pathelement location="${azure-mgmt-graph-rbac-jar}" />
+        <pathelement location="${azure-mgmt-keyvault-jar}" />
+        <pathelement location="${azure-mgmt-locks-jar}" />
+        <pathelement location="${azure-mgmt-monitor-jar}" />
+        <pathelement location="${azure-mgmt-msi-jar}" />
+        <pathelement location="${azure-mgmt-mgmt-jar}" />
+        <pathelement location="${azure-mgmt-redis-jar}" />
+        <pathelement location="${azure-mgmt-resources-jar}" />
+        <pathelement location="${azure-mgmt-search-jar}" />
+        <pathelement location="${azure-mgmt-servicebus-jar}" />
+        <pathelement location="${azure-mgmt-sql-jar}" />
+        <pathelement location="${azure-mgmt-storage-jar}" />
+        <pathelement location="${azure-mgmt-trafficmanager-jar}" />
+        <pathelement location="${azure-storage-jar}" />
         <pathelement location="${bcel-jar}" />
         <pathelement location="${bcprov-jar}" />
         <pathelement location="${bsf-jar}" />
         <pathelement location="${bsh-jar}" />
+        <pathelement location="${client-runtime-jar}" />
         <pathelement location="${commons-cli-jar}" />
         <pathelement location="${commons-codec-jar}" />
         <pathelement location="${commons-collections4-jar}" />
@@ -245,10 +298,39 @@
         <pathelement location="${axis2-transport-base-jar}" />
         <pathelement location="${axis2-transport-http-jar}" />
         <pathelement location="${axis2-transport-local-jar}" />
-    	<pathelement location="${azure-jar}" />
-    	<pathelement location="${azure-client-authentication-jar}" />
-    	<pathelement location="${azure-storage-jar}" />
+        <pathelement location="${azure-jar}" />
+        <pathelement location="${azure-client-authentication-jar}" />
+        <pathelement location="${azure-client-runtime-jar}" />
+        <pathelement location="${azure-mgmt-appservice-jar}" />
+        <pathelement location="${azure-mgmt-batch-jar}" />
+        <pathelement location="${azure-mgmt-batchai-jar}" />
+        <pathelement location="${azure-mgmt-cdn-jar}" />
+        <pathelement location="${azure-mgmt-compute-jar}" />
+        <pathelement location="${azure-mgmt-containerinstance-jar}" />
+        <pathelement location="${azure-mgmt-containerregistry-jar}" />
+        <pathelement location="${azure-mgmt-containerservice-jar}" />
+        <pathelement location="${azure-mgmt-cosmosdb-jar}" />
+        <pathelement location="${azure-mgmt-dns-jar}" />
+        <pathelement location="${azure-mgmt-eventhub-jar}" />
+        <pathelement location="${azure-mgmt-graph-rbac-jar}" />
+        <pathelement location="${azure-mgmt-keyvault-jar}" />
+        <pathelement location="${azure-mgmt-locks-jar}" />
+        <pathelement location="${azure-mgmt-monitor-jar}" />
+        <pathelement location="${azure-mgmt-msi-jar}" />
+        <pathelement location="${azure-mgmt-mgmt-jar}" />
+        <pathelement location="${azure-mgmt-redis-jar}" />
+        <pathelement location="${azure-mgmt-resources-jar}" />
+        <pathelement location="${azure-mgmt-search-jar}" />
+        <pathelement location="${azure-mgmt-servicebus-jar}" />
+        <pathelement location="${azure-mgmt-sql-jar}" />
+        <pathelement location="${azure-mgmt-storage-jar}" />
+        <pathelement location="${azure-mgmt-trafficmanager-jar}" />
+        <pathelement location="${azure-storage-jar}" />
+        <pathelement location="${bcel-jar}" />
         <pathelement location="${bcprov-jar}" />
+        <pathelement location="${bsf-jar}" />
+        <pathelement location="${bsh-jar}" />
+        <pathelement location="${client-runtime-jar}" />
         <pathelement location="${commons-cli-jar}" />
         <pathelement location="${commons-codec-jar}" />
         <pathelement location="${commons-collections4-jar}" />
@@ -367,7 +449,7 @@
             <compilerarg value="-Xlint:unchecked"/>
         </javac>
     </target>
-    <target name="compile-xcase" depends="compile-xcase-common,compile-xcase-appium,compile-xcase-aws,compile-xcase-azure,compile-xcase-box,compile-xcase-intapp,compile-xcase-integrate,compile-xcase-mail,compile-xcase-msgraph,compile-xcase-open,compile-xcase-salesforce,compile-xcase-selenium,compile-xcase-sharepoint,compile-xcase-webservice" />
+    <target name="compile-xcase" depends="compile-xcase-common,compile-xcase-appium,compile-xcase-aws,compile-xcase-azure,compile-xcase-box,compile-xcase-intapp,compile-xcase-integrate,compile-xcase-mail,compile-xcase-msgraph,compile-xcase-open,compile-xcase-salesforce,compile-xcase-selenium,compile-xcase-sharepoint,compile-xcase-webservice,compile-xcase-platform" />
     <target name="compile-xcase-appium">
         <javac srcdir="${src-xcase-appium}" destdir="${build}" debug="on">
             <classpath refid="classpath.base" />
@@ -424,6 +506,12 @@
     </target>
     <target name="compile-xcase-open">
         <javac srcdir="${src-xcase-open}" destdir="${build}" debug="on">
+            <classpath refid="classpath.base" />
+            <compilerarg value="-Xlint:-unchecked"/>
+        </javac>
+    </target>
+    <target name="compile-xcase-platform">
+        <javac srcdir="${src-xcase-platform}" destdir="${build}" debug="on">
             <classpath refid="classpath.base" />
             <compilerarg value="-Xlint:-unchecked"/>
         </javac>
@@ -508,13 +596,39 @@
         <copy file="${axis2-transport-base-jar}" todir="${release-dir}/lib" />
         <copy file="${axis2-transport-http-jar}" todir="${release-dir}/lib" />
         <copy file="${axis2-transport-local-jar}" todir="${release-dir}/lib" />
-    	<copy file="${azure-jar}" todir="${release-dir}/lib" />
-    	<copy file="${azure-client-authentication-jar}" todir="${release-dir}/lib" />
-    	<copy file="${azure-storage-jar}" todir="${release-dir}/lib" />
+        <copy file="${azure-jar}" todir="${release-dir}/lib" />
+        <copy file="${azure-client-authentication-jar}" todir="${release-dir}/lib" />
+        <copy file="${azure-client-runtime-jar}" todir="${release-dir}/lib" />
+        <copy file="${azure-mgmt-appservice-jar}" todir="${release-dir}/lib" />
+        <copy file="${azure-mgmt-batch-jar}" todir="${release-dir}/lib" />
+        <copy file="${azure-mgmt-batchai-jar}" todir="${release-dir}/lib" />
+        <copy file="${azure-mgmt-cdn-jar}" todir="${release-dir}/lib" />
+        <copy file="${azure-mgmt-compute-jar}" todir="${release-dir}/lib" />
+        <copy file="${azure-mgmt-containerinstance-jar}" todir="${release-dir}/lib" />
+        <copy file="${azure-mgmt-containerregistry-jar}" todir="${release-dir}/lib" />
+        <copy file="${azure-mgmt-containerservice-jar}" todir="${release-dir}/lib" />
+        <copy file="${azure-mgmt-cosmosdb-jar}" todir="${release-dir}/lib" />
+        <copy file="${azure-mgmt-dns-jar}" todir="${release-dir}/lib" />
+        <copy file="${azure-mgmt-eventhub-jar}" todir="${release-dir}/lib" />
+        <copy file="${azure-mgmt-graph-rbac-jar}" todir="${release-dir}/lib" />
+        <copy file="${azure-mgmt-keyvault-jar}" todir="${release-dir}/lib" />
+        <copy file="${azure-mgmt-locks-jar}" todir="${release-dir}/lib" />
+        <copy file="${azure-mgmt-monitor-jar}" todir="${release-dir}/lib" />
+        <copy file="${azure-mgmt-msi-jar}" todir="${release-dir}/lib" />
+        <copy file="${azure-mgmt-mgmt-jar}" todir="${release-dir}/lib" />
+        <copy file="${azure-mgmt-redis-jar}" todir="${release-dir}/lib" />
+        <copy file="${azure-mgmt-resources-jar}" todir="${release-dir}/lib" />
+        <copy file="${azure-mgmt-search-jar}" todir="${release-dir}/lib" />
+        <copy file="${azure-mgmt-servicebus-jar}" todir="${release-dir}/lib" />
+        <copy file="${azure-mgmt-sql-jar}" todir="${release-dir}/lib" />
+        <copy file="${azure-mgmt-storage-jar}" todir="${release-dir}/lib" />
+        <copy file="${azure-mgmt-trafficmanager-jar}" todir="${release-dir}/lib" />
+        <copy file="${azure-storage-jar}" todir="${release-dir}/lib" />
         <copy file="${bcel-jar}" todir="${release-dir}/lib" />
         <copy file="${bcprov-jar}" todir="${release-dir}/lib" />
         <copy file="${bsf-jar}" todir="${release-dir}/lib" />
         <copy file="${bsh-jar}" todir="${release-dir}/lib" />
+        <copy file="${client-runtime-jar}" todir="${release-dir}/lib" />
         <copy file="${commons-cli-jar}" todir="${release-dir}/lib" />
         <copy file="${commons-codec-jar}" todir="${release-dir}/lib" />
         <copy file="${commons-collections4-jar}" todir="${release-dir}/lib" />

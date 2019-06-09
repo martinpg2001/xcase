@@ -1,79 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" output="build" path="src/java">
-		<attributes>
-			<attribute name="optional" value="true"/>
-			<attribute name="maven.pomderived" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
-		<attributes>
-			<attribute name="test" value="true"/>
-			<attribute name="optional" value="true"/>
-			<attribute name="maven.pomderived" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
-		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/activation-1.1.jar"/>
-	<classpathentry kind="lib" path="lib/auth-2.5.58.jar"/>
-	<classpathentry kind="lib" path="lib/aws-core-2.5.58.jar"/>
-	<classpathentry kind="lib" path="lib/aws-sdk-java-2.5.58.jar"/>
-	<classpathentry kind="lib" path="lib/aws-sdk-java-apache-client-2.5.58.jar"/>
-	<classpathentry kind="lib" path="lib/aws-sdk-java-aws-query-protocol-2.5.58.jar"/>
-	<classpathentry kind="lib" path="lib/aws-sdk-java-rds-2.5.58.jar"/>
-	<classpathentry kind="lib" path="lib/aws-sdk-java-s3-2.5.58.jar"/>
-	<classpathentry kind="lib" path="lib/aws-xml-protocol-2.5.58.jar"/>
-	<classpathentry kind="lib" path="lib/commons-cli-1.4.jar"/>
-	<classpathentry kind="lib" path="lib/commons-logging-1.1.2.jar"/>
-	<classpathentry kind="lib" path="lib/http-client-spi-2.5.58.jar"/>
-	<classpathentry kind="lib" path="lib/java-client-7.0.0.jar"/>
-	<classpathentry kind="lib" path="lib/jaxb-api-2.3.0.jar"/>
-	<classpathentry kind="lib" path="lib/junit-4.12.jar"/>
-	<classpathentry kind="lib" path="lib/log4j.jar"/>
-	<classpathentry kind="lib" path="lib/log4j-api-2.11.2.jar"/>
-	<classpathentry kind="lib" path="lib/log4j-core-2.11.2.jar"/>
-	<classpathentry kind="lib" path="lib/mail-1.4.7.jar"/>
-	<classpathentry kind="lib" path="lib/protocol-core-2.5.58.jar"/>
-	<classpathentry kind="lib" path="lib/reactive-streams-1.0.2.jar"/>
-	<classpathentry kind="lib" path="lib/regions-2.5.58.jar"/>
-	<classpathentry kind="lib" path="lib/sdk-core-2.5.58.jar"/>
-	<classpathentry kind="lib" path="lib/selenium-server-standalone-3.141.59.jar"/>
-	<classpathentry kind="lib" path="lib/slf4j-api-1.7.26.jar"/>
-	<classpathentry kind="lib" path="lib/slf4j-simple-1.7.26.jar"/>
-	<classpathentry kind="lib" path="lib/utils-2.5.58.jar"/>
-	<classpathentry kind="src" path=".apt_generated">
-		<attributes>
-			<attribute name="optional" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="src" output="target/test-classes" path=".apt_generated_tests">
-		<attributes>
-			<attribute name="test" value="true"/>
-			<attribute name="optional" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="src" path="target/generated-sources/annotations">
-		<attributes>
-			<attribute name="optional" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="src" output="target/test-classes" path="target/generated-test-sources/test-annotations">
-		<attributes>
-			<attribute name="test" value="true"/>
-			<attribute name="optional" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/azure-1.22.0.jar"/>
-	<classpathentry kind="lib" path="lib/azure-storage-8.3.0.jar"/>
-	<classpathentry kind="lib" path="lib/azure-client-authentication-1.6.8.jar"/>
-	<classpathentry kind="output" path="build"/>
+    <classpathentry kind="src" output="build" path="src/java">
+        <attributes>
+            <attribute name="optional" value="true"/>
+            <attribute name="maven.pomderived" value="true"/>
+        </attributes>
+    </classpathentry>
+    <classpathentry kind="src" output="target/test-classes" path="src/test/java">
+        <attributes>
+            <attribute name="test" value="true"/>
+            <attribute name="optional" value="true"/>
+            <attribute name="maven.pomderived" value="true"/>
+        </attributes>
+    </classpathentry>
+    <classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+        <attributes>
+            <attribute name="maven.pomderived" value="true"/>
+        </attributes>
+    </classpathentry>
+    <classpathentry kind="lib" path="lib/abbot.jar"/>
+    <classpathentry kind="lib" path="lib/activation-1.1.jar"/>
+    <classpathentry kind="lib" path="lib/ant-1.7.0.jar"/>
+    <classpathentry kind="lib" path="lib/ant-launcher-1.7.0.jar"/>
+    <classpathentry kind="lib" path="lib/ant-jsch.jar antlr-2.7.7.jar"/>
+    <classpathentry kind="lib" path="lib/asm-3.2.jar"/>
+    <classpathentry kind="lib" path="lib/auth-2.5.58.jar"/>
+    <classpathentry kind="lib" path="lib/aws-core-2.5.58.jar"/>
+    <classpathentry kind="lib" path="lib/aws-sdk-java-2.5.58.jar"/>
+    <classpathentry kind="lib" path="lib/aws-sdk-java-apache-client-2.5.58.jar"/>
+    <classpathentry kind="lib" path="lib/aws-sdk-java-aws-query-protocol-2.5.58.jar"/>
+    <classpathentry kind="lib" path="lib/aws-sdk-java-rds-2.5.58.jar"/>
+    <classpathentry kind="lib" path="lib/aws-sdk-java-s3-2.5.58.jar"/>
+    <classpathentry kind="lib" path="lib/aws-xml-protocol-2.5.58.jar"/>
+    <classpathentry kind="lib" path="lib/axiom-api-1.2.14.jar"/>
+    <classpathentry kind="lib" path="lib/axiom-compat-1.2.14.jar"/>
+    <classpathentry kind="lib" path="lib/axiom-dom-1.2.14.jar"/>
+    <classpathentry kind="lib" path="lib/axiom-impl-1.2.14.jar"/>
+    <classpathentry kind="lib" path="lib/axis2-adb-1.6.3.jar"/>
+    <classpathentry kind="lib" path="lib/axis2-kernel-1.6.3.jar"/>
+    <classpathentry kind="lib" path="lib/axis2-transport-base-1.6.3.jar"/>
+    <classpathentry kind="lib" path="lib/axis2-transport-http-1.6.3.jar"/>
+    <classpathentry kind="lib" path="lib/axis2-transport-local-1.6.3.jar"/>
+    <classpathentry kind="lib" path="lib/azure-1.22.0.jar"/>
+    <classpathentry kind="lib" path="lib/azure-storage-8.3.0.jar"/>
+    <classpathentry kind="lib" path="lib/azure-client-authentication-1.6.8.jar"/>
+    <classpathentry kind="lib" path="lib/commons-cli-1.4.jar"/>
+    <classpathentry kind="lib" path="lib/commons-logging-1.1.2.jar"/>
+    <classpathentry kind="lib" path="lib/http-client-spi-2.5.58.jar"/>
+    <classpathentry kind="lib" path="lib/java-client-7.0.0.jar"/>
+    <classpathentry kind="lib" path="lib/jaxb-api-2.3.0.jar"/>
+    <classpathentry kind="lib" path="lib/junit-4.12.jar"/>
+    <classpathentry kind="lib" path="lib/log4j.jar"/>
+    <classpathentry kind="lib" path="lib/log4j-api-2.11.2.jar"/>
+    <classpathentry kind="lib" path="lib/log4j-core-2.11.2.jar"/>
+    <classpathentry kind="lib" path="lib/mail-1.4.7.jar"/>
+    <classpathentry kind="lib" path="lib/protocol-core-2.5.58.jar"/>
+    <classpathentry kind="lib" path="lib/reactive-streams-1.0.2.jar"/>
+    <classpathentry kind="lib" path="lib/regions-2.5.58.jar"/>
+    <classpathentry kind="lib" path="lib/sdk-core-2.5.58.jar"/>
+    <classpathentry kind="lib" path="lib/selenium-server-standalone-3.141.59.jar"/>
+    <classpathentry kind="lib" path="lib/slf4j-api-1.7.26.jar"/>
+    <classpathentry kind="lib" path="lib/slf4j-simple-1.7.26.jar"/>
+    <classpathentry kind="lib" path="lib/utils-2.5.58.jar"/>
+    <classpathentry kind="src" path=".apt_generated">
+        <attributes>
+            <attribute name="optional" value="true"/>
+        </attributes>
+    </classpathentry>
+    <classpathentry kind="src" output="target/test-classes" path=".apt_generated_tests">
+        <attributes>
+            <attribute name="test" value="true"/>
+            <attribute name="optional" value="true"/>
+        </attributes>
+    </classpathentry>
+    <classpathentry kind="src" path="target/generated-sources/annotations">
+        <attributes>
+            <attribute name="optional" value="true"/>
+        </attributes>
+    </classpathentry>
+    <classpathentry kind="src" output="target/test-classes" path="target/generated-test-sources/test-annotations">
+        <attributes>
+            <attribute name="test" value="true"/>
+            <attribute name="optional" value="true"/>
+        </attributes>
+    </classpathentry>
+    <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+        <attributes>
+            <attribute name="module" value="true"/>
+        </attributes>
+    </classpathentry>
+    <classpathentry kind="output" path="build"/>
 </classpath>
