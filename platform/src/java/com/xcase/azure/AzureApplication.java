@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.Azure;
+import com.microsoft.azure.management.resources.Subscription;
 import com.microsoft.rest.LogLevel;
 import com.xcase.azure.constant.AzureConstant;
 import com.xcase.azure.impl.simple.core.AzureConfigurationManager;
@@ -31,6 +32,8 @@ public class AzureApplication {
             ApplicationTokenCredentials applicationTokenCredentials = new ApplicationTokenCredentials(client, tenant, key, AzureEnvironment.AZURE);
             Azure azure = Azure.configure().withLogLevel(LogLevel.BASIC).authenticate(applicationTokenCredentials).withDefaultSubscription();
             LOGGER.debug("authenticated Azure");
+            String subscriptionId = azure.subscriptionId();
+            LOGGER.debug("subscriptionId is " + subscriptionId);
         } catch (Exception e) {
             LOGGER.warn("exception executing Azure operations: " + e.getMessage());
         }
