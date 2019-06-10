@@ -45,11 +45,12 @@ public class AzureApplication {
             ActivityLogs activityLogs = azure.activityLogs();
             LOGGER.debug("activityLogs event catgeories list size is " + activityLogs.listEventCategories().size());
             ActivityLogsInner activityLogsInner = activityLogs.inner();
-            PagedList<EventDataInner> eventInnerPageList = activityLogsInner.list();
+            LOGGER.debug("got activityLogsInner");
+            PagedList<EventDataInner> eventInnerPageList = activityLogsInner.list("eventTimestamp ge '2019-06-01T00:00:00Z'", "eventName,id");
             LOGGER.debug("got paginated list of events");
-            Iterator eventInnerIterator = eventInnerPageList.iterator();
+            Iterator<EventDataInner> eventInnerIterator = eventInnerPageList.iterator();
             while (eventInnerIterator.hasNext()) {
-                LOGGER.debug("next eventInner is " + eventInnerIterator.next().toString());
+                LOGGER.debug("next eventInner is " + ((EventDataInner) eventInnerIterator.next()).eventName().localizedValue());
             }
             
             LOGGER.debug("completed Azure operations");
