@@ -3,10 +3,8 @@ package com.xcase.azure;
 import java.lang.invoke.MethodHandles;
 import java.util.Iterator;
 import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
@@ -18,7 +16,10 @@ import com.microsoft.azure.management.monitor.implementation.EventDataInner;
 import com.microsoft.azure.management.resources.Subscription;
 import com.microsoft.rest.LogLevel;
 import com.xcase.azure.constant.AzureConstant;
+import com.xcase.azure.factories.AzureRequestFactory;
 import com.xcase.azure.impl.simple.core.AzureConfigurationManager;
+import com.xcase.azure.transputs.GetEventsRequest;
+import com.xcase.azure.transputs.GetEventsResponse;
 
 public class AzureApplication {
     /**
@@ -29,6 +30,8 @@ public class AzureApplication {
     public static void main(String[] args) {
         try {
             LOGGER.debug("starting main()");
+            AzureExternalAPI azureExternalAPI = new SimpleAzureImpl();
+            LOGGER.debug("created boxExternalAPI");
             String client = AzureConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(AzureConstant.LOCAL_AZURE_CLIENT);
             LOGGER.debug("client is " + client);
             String subscription = AzureConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(AzureConstant.LOCAL_AZURE_SUBSCRIPTION);
@@ -42,6 +45,12 @@ public class AzureApplication {
             LOGGER.debug("authenticated Azure");
             String subscriptionId = azure.subscriptionId();
             LOGGER.debug("subscriptionId is " + subscriptionId);
+            GetEventsRequest getEventsRequest = AzureRequestFactory.createGetEventsRequest();
+            getEventsRequest.setAzure(azure);
+            getEventsRequest.setFilter("eventTimestamp ge '2019-06-01T00:00:00Z'");
+            getEventsRequest.setSelect("eventName,id");
+            GetEventsResponse getEventsResponse = azureExternalAPI.getEvents(getEventsRequest);
+            /*
             ActivityLogs activityLogs = azure.activityLogs();
             LOGGER.debug("activityLogs event catgeories list size is " + activityLogs.listEventCategories().size());
             ActivityLogsInner activityLogsInner = activityLogs.inner();
@@ -52,6 +61,7 @@ public class AzureApplication {
             while (eventInnerIterator.hasNext()) {
                 LOGGER.debug("next eventInner is " + ((EventDataInner) eventInnerIterator.next()).eventName().localizedValue());
             }
+            */
             
             LOGGER.debug("completed Azure operations");
         } catch (Exception e) {

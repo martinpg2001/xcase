@@ -187,6 +187,7 @@ public class SimpleBoxImpl implements BoxExternalAPI {
      * log4j logger.
      */
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
+    
     /**
      * configuration manager
      */
