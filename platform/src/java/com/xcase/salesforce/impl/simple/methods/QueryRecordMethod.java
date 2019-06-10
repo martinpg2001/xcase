@@ -33,7 +33,7 @@ public class QueryRecordMethod extends BaseSalesforceMethod {
 
     /**
      *
-     * @param queryRecordRequest
+     * @param request
      * @return response
      * @throws IOException
      * @throws SalesforceException

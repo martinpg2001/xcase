@@ -24,6 +24,11 @@ public class RevokeAccessTokenMethod extends BaseSalesforceMethod {
      */
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
     
+    /**
+     * This method revokes an access token.
+     * @param request
+     * @return
+     */
     public RevokeAccessTokenResponse revokeAccessToken(RevokeAccessTokenRequest request) {
         LOGGER.debug("starting revokeAccessToken()");
         RevokeAccessTokenResponse response = SalesforceResponseFactory.createRevokeAccessTokenResponse();

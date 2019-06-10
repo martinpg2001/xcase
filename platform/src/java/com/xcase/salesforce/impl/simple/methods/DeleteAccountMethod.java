@@ -33,7 +33,7 @@ public class DeleteAccountMethod extends BaseSalesforceMethod {
 
     /**
      *
-     * @param deleteAccountRequest
+     * @param request
      * @return response
      * @throws IOException
      * @throws SalesforceException

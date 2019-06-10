@@ -28,6 +28,13 @@ public class GetUserMethod extends BaseSalesforceMethod {
      */
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
+    /**
+     * This method gets information about a user.
+     * @param request
+     * @return
+     * @throws IOException
+     * @throws SalesforceException
+     */
     public GetUserResponse getUser(GetUserRequest request) throws IOException, SalesforceException {
         LOGGER.debug("starting getUser()");
         GetUserResponse response = SalesforceResponseFactory.createGetUserResponse();

@@ -34,7 +34,7 @@ public class GetAccessTokenMethod extends BaseSalesforceMethod {
 
     /**
      *
-     * @param getAccessTokenRequest
+     * @param request
      * @return response
      * @throws IOException
      * @throws SalesforceException
