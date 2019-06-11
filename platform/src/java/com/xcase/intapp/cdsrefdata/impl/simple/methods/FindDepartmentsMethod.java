@@ -10,7 +10,6 @@ import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.intapp.cdsrefdata.factories.CDSRefDataResponseFactory;
 import com.xcase.intapp.cdsrefdata.transputs.FindDepartmentsRequest;
 import com.xcase.intapp.cdsrefdata.transputs.FindDepartmentsResponse;
-import com.xcase.intapp.cdsrefdata.transputs.GetClientStatusesResponse;
 
 public class FindDepartmentsMethod extends BaseCDSRefDataMethod {
     /**

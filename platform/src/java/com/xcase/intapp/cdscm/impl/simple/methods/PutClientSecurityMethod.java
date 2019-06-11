@@ -3,13 +3,11 @@ package com.xcase.intapp.cdscm.impl.simple.methods;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicHeader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -18,8 +16,6 @@ import com.google.gson.JsonObject;
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.common.utils.ConverterUtils;
 import com.xcase.intapp.cdscm.factories.CDSCMResponseFactory;
-import com.xcase.intapp.cdscm.transputs.GetClientSecurityRequest;
-import com.xcase.intapp.cdscm.transputs.GetClientSecurityResponse;
 import com.xcase.intapp.cdscm.transputs.PutClientSecurityRequest;
 import com.xcase.intapp.cdscm.transputs.PutClientSecurityResponse;
 

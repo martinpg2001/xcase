@@ -5,15 +5,12 @@ import java.lang.invoke.MethodHandles;
 import org.apache.http.Header;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.common.utils.ConverterUtils;
 import com.xcase.intapp.cdsrefdata.factories.CDSRefDataResponseFactory;
-import com.xcase.intapp.cdsrefdata.transputs.GetClientStatusesRequest;
-import com.xcase.intapp.cdsrefdata.transputs.GetClientStatusesResponse;
 import com.xcase.intapp.cdsrefdata.transputs.GetMatterStatusesRequest;
 import com.xcase.intapp.cdsrefdata.transputs.GetMatterStatusesResponse;
 

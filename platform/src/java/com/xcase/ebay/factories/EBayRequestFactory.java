@@ -3,7 +3,6 @@ package com.xcase.ebay.factories;
 import com.xcase.ebay.transputs.CreateApplicationAccessTokenRequest;
 import com.xcase.ebay.transputs.CreateApplicationAuthorizationCodeRequest;
 import com.xcase.ebay.transputs.InvokeAdvancedActionRequest;
-import com.xcase.integrate.transputs.CreateAccessTokenRequest;
 
 public class EBayRequestFactory extends BaseEBayFactory {
 

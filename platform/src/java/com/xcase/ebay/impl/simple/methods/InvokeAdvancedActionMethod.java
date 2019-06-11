@@ -6,7 +6,6 @@ import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.common.utils.ConverterUtils;
 import com.xcase.ebay.constant.EBayConstant;
 import com.xcase.ebay.factories.EBayResponseFactory;
-import com.xcase.ebay.impl.simple.core.EBayConfigurationManager;
 import com.xcase.ebay.objects.EBayException;
 import com.xcase.ebay.transputs.*;
 import java.lang.invoke.MethodHandles;

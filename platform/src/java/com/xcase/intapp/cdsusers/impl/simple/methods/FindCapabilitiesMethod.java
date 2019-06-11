@@ -15,7 +15,6 @@ import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.intapp.cdsusers.factories.CDSUsersResponseFactory;
 import com.xcase.intapp.cdsusers.transputs.FindCapabilitiesRequest;
 import com.xcase.intapp.cdsusers.transputs.FindCapabilitiesResponse;
-import com.xcase.intapp.cdsusers.transputs.FindRolesResponse;
 
 public class FindCapabilitiesMethod extends BaseCDSUsersMethod {
     /**

@@ -15,7 +15,6 @@ import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.intapp.cdsusers.factories.CDSUsersResponseFactory;
 import com.xcase.intapp.cdsusers.transputs.FindUsersRequest;
 import com.xcase.intapp.cdsusers.transputs.FindUsersResponse;
-import com.xcase.intapp.cdsusers.transputs.GetPersonsResponse;
 
 public class FindUsersMethod extends BaseCDSUsersMethod {
     /**

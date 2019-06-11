@@ -2,13 +2,11 @@ package com.xcase.intapp.cdsusers.impl.simple.methods;
 
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.intapp.cdsusers.factories.CDSUsersResponseFactory;
-import com.xcase.intapp.cdsusers.transputs.CreatePersonResponse;
 import com.xcase.intapp.cdsusers.transputs.SetRoleUsersRequest;
 import com.xcase.intapp.cdsusers.transputs.SetRoleUsersResponse;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicHeader;

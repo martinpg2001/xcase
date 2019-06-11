@@ -12,8 +12,6 @@ import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.intapp.cdsusers.factories.CDSUsersResponseFactory;
 import com.xcase.intapp.cdsusers.transputs.GetServiceUserRequest;
 import com.xcase.intapp.cdsusers.transputs.GetServiceUserResponse;
-import com.xcase.intapp.cdsusers.transputs.GetUserRequest;
-import com.xcase.intapp.cdsusers.transputs.GetUserResponse;
 
 public class GetServiceUserMethod extends BaseCDSUsersMethod {
     /**

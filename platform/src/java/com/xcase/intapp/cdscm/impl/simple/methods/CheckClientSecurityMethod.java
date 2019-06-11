@@ -3,18 +3,15 @@ package com.xcase.intapp.cdscm.impl.simple.methods;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicHeader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.intapp.cdscm.factories.CDSCMResponseFactory;
 import com.xcase.intapp.cdscm.transputs.CheckClientSecurityRequest;
 import com.xcase.intapp.cdscm.transputs.CheckClientSecurityResponse;
-import com.xcase.intapp.cdscm.transputs.GetClientSecurityResponse;
 
 public class CheckClientSecurityMethod extends BaseCDSCMMethod {
     /**

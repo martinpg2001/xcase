@@ -3,18 +3,14 @@ package com.xcase.intapp.cdsusers.impl.simple.methods;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.intapp.cdsusers.factories.CDSUsersResponseFactory;
-import com.xcase.intapp.cdsusers.transputs.PartiallyUpdateUserRequest;
-import com.xcase.intapp.cdsusers.transputs.PartiallyUpdateUserResponse;
 import com.xcase.intapp.cdsusers.transputs.PutUserRequest;
 import com.xcase.intapp.cdsusers.transputs.PutUserResponse;
 

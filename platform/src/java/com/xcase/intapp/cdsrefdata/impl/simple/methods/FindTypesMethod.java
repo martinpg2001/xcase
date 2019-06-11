@@ -2,12 +2,10 @@ package com.xcase.intapp.cdsrefdata.impl.simple.methods;
 
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.intapp.cdsrefdata.factories.CDSRefDataResponseFactory;
-import com.xcase.intapp.cdsrefdata.transputs.FindDepartmentsResponse;
 import com.xcase.intapp.cdsrefdata.transputs.FindTypesRequest;
 import com.xcase.intapp.cdsrefdata.transputs.FindTypesResponse;
 import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
-
 import org.apache.http.Header;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

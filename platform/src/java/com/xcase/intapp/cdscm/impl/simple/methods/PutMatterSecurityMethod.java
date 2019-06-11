@@ -9,7 +9,6 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicHeader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -20,7 +19,6 @@ import com.xcase.common.utils.ConverterUtils;
 import com.xcase.intapp.cdscm.factories.CDSCMResponseFactory;
 import com.xcase.intapp.cdscm.transputs.PutMatterSecurityResponse;
 import com.xcase.intapp.cdscm.transputs.PutMatterSecurityRequest;
-import com.xcase.intapp.cdscm.transputs.PutMatterSecurityResponse;
 
 public class PutMatterSecurityMethod extends BaseCDSCMMethod {
     /**

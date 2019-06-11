@@ -4,12 +4,9 @@ import java.lang.invoke.MethodHandles;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import com.xcase.common.IConfigurationManager;
 import com.xcase.common.impl.simple.core.AbstractConfigurationManager;
 import com.xcase.ebay.constant.EBayConstant;
-import com.xcase.integrate.constant.IntegrateConstant;
-import com.xcase.integrate.impl.simple.core.IntegrateConfigurationManager;
 
 public class EBayConfigurationManager extends AbstractConfigurationManager implements IConfigurationManager {
 

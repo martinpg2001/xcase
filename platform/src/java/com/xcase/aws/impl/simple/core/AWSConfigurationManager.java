@@ -4,12 +4,9 @@ import java.lang.invoke.MethodHandles;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import com.xcase.aws.constant.AWSConstant;
 import com.xcase.common.IConfigurationManager;
 import com.xcase.common.impl.simple.core.AbstractConfigurationManager;
-import com.xcase.intapp.advanced.constant.AdvancedConstant;
-import com.xcase.intapp.advanced.impl.simple.core.AdvancedConfigurationManager;
 
 public class AWSConfigurationManager extends AbstractConfigurationManager implements IConfigurationManager {
 

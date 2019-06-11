@@ -21,7 +21,6 @@ import com.xcase.common.utils.ConverterUtils;
 import com.xcase.intapp.cdscm.factories.CDSCMResponseFactory;
 import com.xcase.intapp.cdscm.transputs.GetMattersModifiedSinceDateResponse;
 import com.xcase.intapp.cdscm.transputs.GetMattersModifiedSinceDateRequest;
-import com.xcase.intapp.cdscm.transputs.GetMattersModifiedSinceDateResponse;
 
 public class GetMattersModifiedSinceDateMethod extends BaseCDSCMMethod {
     /**

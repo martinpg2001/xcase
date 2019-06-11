@@ -9,19 +9,10 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicHeader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
-import com.xcase.common.utils.ConverterUtils;
 import com.xcase.intapp.cdscm.factories.CDSCMResponseFactory;
 import com.xcase.intapp.cdscm.transputs.GetClientRequest;
 import com.xcase.intapp.cdscm.transputs.GetClientResponse;
-import com.xcase.intapp.cdscm.transputs.GetClientSecurityRequest;
-import com.xcase.intapp.cdscm.transputs.GetClientSecurityResponse;
 
 public class GetClientMethod extends BaseCDSCMMethod {
     /**

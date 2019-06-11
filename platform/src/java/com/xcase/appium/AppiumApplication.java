@@ -2,23 +2,14 @@ package com.xcase.appium;
 
 import com.xcase.appium.constant.AppiumConstant;
 import com.xcase.appium.impl.simple.core.AppiumConfigurationManager;
-import com.xcase.appium.impl.simple.pages.CalculatorHomePage;
-import com.xcase.appium.impl.simple.pages.MathCalculatorsPage;
-import com.xcase.appium.impl.simple.pages.PercentageCalculatorPage;
 import io.appium.java_client.android.AndroidDriver;
 import java.io.File;
 import java.lang.invoke.MethodHandles;
-import java.net.URI;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class AppiumApplication {

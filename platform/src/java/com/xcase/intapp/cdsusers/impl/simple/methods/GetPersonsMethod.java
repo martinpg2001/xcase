@@ -10,10 +10,8 @@ import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.intapp.cdsusers.factories.CDSUsersResponseFactory;
-import com.xcase.intapp.cdsusers.transputs.CreatePersonResponse;
 import com.xcase.intapp.cdsusers.transputs.GetPersonsRequest;
 import com.xcase.intapp.cdsusers.transputs.GetPersonsResponse;
 

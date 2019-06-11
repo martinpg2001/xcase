@@ -6,7 +6,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.xcase.ebay.transputs.CreateApplicationAccessTokenResponse;
 import com.xcase.ebay.transputs.InvokeAdvancedActionResponse;
-import com.xcase.integrate.factories.BaseIntegrateFactory;
 
 public class EBayResponseFactory extends BaseEBayFactory {
     /**

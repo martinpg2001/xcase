@@ -20,7 +20,6 @@ import com.xcase.common.utils.ConverterUtils;
 import com.xcase.intapp.cdscm.factories.CDSCMResponseFactory;
 import com.xcase.intapp.cdscm.transputs.DeleteMatterResponse;
 import com.xcase.intapp.cdscm.transputs.DeleteMatterRequest;
-import com.xcase.intapp.cdscm.transputs.DeleteMatterResponse;
 
 public class DeleteMatterMethod  extends BaseCDSCMMethod {
     /**

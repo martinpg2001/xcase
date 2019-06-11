@@ -20,7 +20,6 @@ import com.xcase.common.utils.ConverterUtils;
 import com.xcase.intapp.cdscm.factories.CDSCMResponseFactory;
 import com.xcase.intapp.cdscm.transputs.GetMatterSecurityResponse;
 import com.xcase.intapp.cdscm.transputs.GetMatterSecurityRequest;
-import com.xcase.intapp.cdscm.transputs.GetMatterSecurityResponse;
 
 public class GetMatterSecurityMethod extends BaseCDSCMMethod {
     /**

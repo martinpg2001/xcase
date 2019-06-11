@@ -14,8 +14,6 @@ import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.intapp.cdscm.factories.CDSCMResponseFactory;
 import com.xcase.intapp.cdscm.transputs.GetClientsRequest;
 import com.xcase.intapp.cdscm.transputs.GetClientsResponse;
-import com.xcase.intapp.cdscm.transputs.GetClientsRequest;
-import com.xcase.intapp.cdscm.transputs.GetClientsResponse;
 
 public class GetClientsMethod extends BaseCDSCMMethod {
 	/**

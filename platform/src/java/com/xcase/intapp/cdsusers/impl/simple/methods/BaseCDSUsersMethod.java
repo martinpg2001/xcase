@@ -8,7 +8,6 @@ import com.google.gson.JsonObject;
 import com.xcase.common.impl.simple.core.CommonHTTPManager;
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.common.utils.ConverterUtils;
-import com.xcase.intapp.cdsrefdata.transputs.CDSRefDataResponse;
 import com.xcase.intapp.cdsusers.constant.CDSUsersConstant;
 import com.xcase.intapp.cdsusers.impl.simple.core.CDSUsersConfigurationManager;
 import com.xcase.intapp.cdsusers.transputs.CDSUsersResponse;
