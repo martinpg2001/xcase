@@ -1,10 +1,5 @@
 package com.xcase.azure;
 
-import java.lang.invoke.MethodHandles;
-import java.util.Iterator;
-import java.util.List;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
@@ -18,8 +13,12 @@ import com.microsoft.rest.LogLevel;
 import com.xcase.azure.constant.AzureConstant;
 import com.xcase.azure.factories.AzureRequestFactory;
 import com.xcase.azure.impl.simple.core.AzureConfigurationManager;
-import com.xcase.azure.transputs.GetEventsRequest;
-import com.xcase.azure.transputs.GetEventsResponse;
+import com.xcase.azure.transputs.*;
+import java.lang.invoke.MethodHandles;
+import java.util.Iterator;
+import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class AzureApplication {
     /**
@@ -50,19 +49,22 @@ public class AzureApplication {
             getEventsRequest.setFilter("eventTimestamp ge '2019-06-01T00:00:00Z'");
             getEventsRequest.setSelect("eventName,id");
             GetEventsResponse getEventsResponse = azureExternalAPI.getEvents(getEventsRequest);
-            /*
-            ActivityLogs activityLogs = azure.activityLogs();
-            LOGGER.debug("activityLogs event catgeories list size is " + activityLogs.listEventCategories().size());
-            ActivityLogsInner activityLogsInner = activityLogs.inner();
-            LOGGER.debug("got activityLogsInner");
-            PagedList<EventDataInner> eventInnerPageList = activityLogsInner.list("eventTimestamp ge '2019-06-01T00:00:00Z'", "eventName,id");
-            LOGGER.debug("got paginated list of events");
-            Iterator<EventDataInner> eventInnerIterator = eventInnerPageList.iterator();
-            while (eventInnerIterator.hasNext()) {
-                LOGGER.debug("next eventInner is " + ((EventDataInner) eventInnerIterator.next()).eventName().localizedValue());
-            }
-            */
-            
+            GetContainerServicesRequest getContainerServicesRequest = AzureRequestFactory.createGetContainerServicesRequest();
+            getContainerServicesRequest.setAzure(azure);
+            /* TODO: Set necessary parameters */
+            GetContainerServicesResponse getContainerServicesResponse = azureExternalAPI.getContainerServices(getContainerServicesRequest);
+            GetDNSZonesRequest getDNSZonesRequest = AzureRequestFactory.createGetDNSZonesRequest();
+            getDNSZonesRequest.setAzure(azure);
+            /* TODO: Set necessary parameters */
+            GetDNSZonesResponse getDNSZonesResponse = azureExternalAPI.getDNSZones(getDNSZonesRequest);
+            GetGalleriesRequest getGalleriesRequest = AzureRequestFactory.createGetGalleriesRequest();
+            getGalleriesRequest.setAzure(azure);
+            /* TODO: Set necessary parameters */
+            GetGalleriesResponse getGalleriesResponse = azureExternalAPI.getGalleries(getGalleriesRequest);
+            GetSqlServersRequest getSqlServersRequest = AzureRequestFactory.createGetSqlServersRequest();
+            getSqlServersRequest.setAzure(azure);
+            /* TODO: Set necessary parameters */
+            GetSqlServersResponse getSqlServersResponse = azureExternalAPI.getSqlServers(getSqlServersRequest);
             LOGGER.debug("completed Azure operations");
         } catch (Exception e) {
             LOGGER.warn("exception executing Azure operations: " + e.getMessage());
