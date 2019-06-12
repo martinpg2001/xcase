@@ -37,6 +37,8 @@ public class SeleniumJUnitTest {
     
     @BeforeClass
     public static void navigateToCalculator() {
+        System.setProperty("webdriver.chrome.driver", "C:\\xcase\\platform\\lib\\chromedriver.exe");
+        System.setProperty("webdriver.gecko.driver", "C:\\xcase\\platform\\lib\\geckodriver.exe");
         driver = null;
         String webDriver = SeleniumConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(SeleniumConstant.LOCAL_WEBDRIVER);
         LOGGER.debug("webDriver is " + webDriver);
