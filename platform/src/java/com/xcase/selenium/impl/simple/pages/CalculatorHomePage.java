@@ -6,14 +6,14 @@ import org.openqa.selenium.WebDriver;
 public class CalculatorHomePage {
     WebDriver driver;
 
-    By mathCalulatorsLink = By.linkText("Math Calculators");
+    By mathCalculatorsLink = By.linkText("Math Calculators");
 
     public CalculatorHomePage(WebDriver driver) {
         this.driver = driver;
     }
 
     public void clickMathCalculatorsLink() {
-        driver.findElement(mathCalulatorsLink).click();
+        driver.findElement(mathCalculatorsLink).click();
     }
     
     public void navigateToMathCalculatorsPage() {
