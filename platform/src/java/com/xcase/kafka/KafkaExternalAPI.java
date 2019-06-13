@@ -6,4 +6,6 @@ public interface KafkaExternalAPI {
 
     ProduceMessageResponse produceMessage(ProduceMessageRequest produceMessageRequest);
 
+    ConsumeMessageResponse consumeMessage(ConsumeMessageRequest consumeMessageRequest);
+
 }
