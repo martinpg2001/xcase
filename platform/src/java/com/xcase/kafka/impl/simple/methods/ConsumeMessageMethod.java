@@ -8,24 +8,20 @@ import java.lang.invoke.MethodHandles;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Properties;
-
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.Producer;
-import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class ConsumeResponseMethod extends BaseKafkaMethod {
+public class ConsumeMessageMethod extends BaseKafkaMethod {
     /**
      * log4j object.
      */
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
     
     public ConsumeMessageResponse consumeMessage(ConsumeMessageRequest request) {
-        LOGGER.debug("starting produceResponse()");
+        LOGGER.debug("starting consumeMessage()");
         ConsumeMessageResponse response = KafkaResponseFactory.createConsumeMessageResponse();
         LOGGER.debug("created response");
         try {

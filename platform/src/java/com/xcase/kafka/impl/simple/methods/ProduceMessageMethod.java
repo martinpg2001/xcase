@@ -12,14 +12,14 @@ import org.apache.kafka.common.serialization.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class ProduceResponseMethod extends BaseKafkaMethod {
+public class ProduceMessageMethod extends BaseKafkaMethod {
     /**
      * log4j object.
      */
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
     
-    public ProduceMessageResponse produceResponse(ProduceMessageRequest request) {
-        LOGGER.debug("starting produceResponse()");
+    public ProduceMessageResponse produceMessage(ProduceMessageRequest request) {
+        LOGGER.debug("starting produceMessage()");
         ProduceMessageResponse response = KafkaResponseFactory.createProduceMessageResponse();
         LOGGER.debug("created response");
         try {

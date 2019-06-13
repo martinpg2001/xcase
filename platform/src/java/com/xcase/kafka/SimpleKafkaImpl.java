@@ -12,18 +12,18 @@ public class SimpleKafkaImpl implements KafkaExternalAPI {
      */
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
     
-    ConsumeResponseMethod consumeResponseMethod = new ConsumeResponseMethod();
+    ConsumeMessageMethod consumeMessageMethod = new ConsumeMessageMethod();
     
-    ProduceResponseMethod produceResponseMethod = new ProduceResponseMethod();
+    ProduceMessageMethod produceMessageMethod = new ProduceMessageMethod();
     
     @Override
     public ProduceMessageResponse produceMessage(ProduceMessageRequest produceMessageRequest) {
-        return this.produceResponseMethod.produceResponse(produceMessageRequest);
+        return this.produceMessageMethod.produceMessage(produceMessageRequest);
     }
 
     @Override
     public ConsumeMessageResponse consumeMessage(ConsumeMessageRequest consumeMessageRequest) {
-        return this.consumeResponseMethod.consumeMessage(consumeMessageRequest);
+        return this.consumeMessageMethod.consumeMessage(consumeMessageRequest);
     }
 
 }
