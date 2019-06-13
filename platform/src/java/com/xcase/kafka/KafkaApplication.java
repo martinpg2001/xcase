@@ -1,5 +1,7 @@
 package com.xcase.kafka;
 
+import com.xcase.kafka.KafkaExternalAPI;
+import com.xcase.kafka.SimpleKafkaImpl;
 import com.xcase.kafka.constant.KafkaConstant;
 import com.xcase.kafka.factories.KafkaRequestFactory;
 import com.xcase.kafka.impl.simple.core.KafkaConfigurationManager;
