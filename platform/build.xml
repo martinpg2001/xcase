@@ -11,6 +11,7 @@
     <property name="src-xcase-azure" value="src/java/com/xcase/azure"/>
     <property name="src-xcase-box" value="src/java/com/xcase/box"/>
     <property name="src-xcase-common" value="src/java/com/xcase/common"/>
+	<property name="src-xcase-cucumber" value="src/java/com/xcase/cucumber"/>
     <property name="src-xcase-intapp" value="src/java/com/xcase/intapp"/>
     <property name="src-xcase-integrate" value="src/java/com/xcase/integrate"/>
 	<property name="src-xcase-kafka" value="src/java/com/xcase/kafka"/>
@@ -87,6 +88,9 @@
     <property name="commons-io-jar" value="lib/commons-io-2.4.jar" />
     <property name="commons-lang3-jar" value="lib/commons-lang3-3.4.jar" />
     <property name="commons-logging-jar" value="lib/commons-logging-1.1.2.jar" />
+	<property name="cucumber-core-jar" value="lib/cucumber-core-4.3.1.jar" />
+	<property name="cucumber-java-jar" value="lib/cucumber-java-4.3.1.jar" />
+	<property name="cucumber-junit-jar" value="lib/cucumber-junit-4.3.1.jar" />
     <property name="data-jar" value="lib/data.jar" />
     <property name="db2jcc-jar" value="lib/db2jcc.jar" />
     <property name="db2jcc_license-cisuz-jar" value="lib/db2jcc_license_cisuz.jar" />
@@ -223,6 +227,9 @@
         <pathelement location="${commons-io-jar}" /> 
         <pathelement location="${commons-lang3-jar}" />
         <pathelement location="${commons-logging-jar}" />
+    	<pathelement location="${cucumber-core-jar}" />
+    	<pathelement location="${cucumber-java-jar}" />
+    	<pathelement location="${cucumber-junit-jar}" />
         <pathelement location="${dom4j-jar}" />
         <pathelement location="${ganymed-ssh2-jar}" />
         <pathelement location="${gson-jar}" />
@@ -342,6 +349,9 @@
         <pathelement location="${commons-io-jar}" /> 
         <pathelement location="${commons-lang3-jar}" />
         <pathelement location="${commons-logging-jar}" />
+    	<pathelement location="${cucumber-core-jar}" />
+    	<pathelement location="${cucumber-java-jar}" />
+    	<pathelement location="${cucumber-junit-jar}" />
         <pathelement location="${dom4j-jar}" />
         <pathelement location="${ganymed-ssh2-jar}" />
         <pathelement location="${gson-jar}" />
@@ -454,7 +464,7 @@
             <compilerarg value="-Xlint:unchecked"/>
         </javac>
     </target>
-    <target name="compile-xcase" depends="compile-xcase-common,compile-xcase-appium,compile-xcase-aws,compile-xcase-azure,compile-xcase-box,compile-xcase-intapp,compile-xcase-integrate,compile-xcase-kafka,compile-xcase-mail,compile-xcase-msgraph,compile-xcase-open,compile-xcase-salesforce,compile-xcase-selenium,compile-xcase-sharepoint,compile-xcase-webservice,compile-xcase-platform" />
+    <target name="compile-xcase" depends="compile-xcase-common,compile-xcase-appium,compile-xcase-aws,compile-xcase-azure,compile-xcase-box,compile-xcase-cucumber,compile-xcase-intapp,compile-xcase-integrate,compile-xcase-kafka,compile-xcase-mail,compile-xcase-msgraph,compile-xcase-open,compile-xcase-salesforce,compile-xcase-selenium,compile-xcase-sharepoint,compile-xcase-webservice,compile-xcase-platform" />
     <target name="compile-xcase-appium">
         <javac srcdir="${src-xcase-appium}" destdir="${build}" debug="on">
             <classpath refid="classpath.base" />
@@ -481,6 +491,12 @@
     </target>
     <target name="compile-xcase-common">
         <javac srcdir="${src-xcase-common}" destdir="${build}" debug="on">
+            <classpath refid="classpath.base" />
+            <compilerarg value="-Xlint:-unchecked"/>
+        </javac>
+    </target>
+    <target name="compile-xcase-cucumber" depends="compile-xcase-common">
+        <javac srcdir="${src-xcase-cucumber}" destdir="${build}" debug="on">
             <classpath refid="classpath.base" />
             <compilerarg value="-Xlint:-unchecked"/>
         </javac>
@@ -768,6 +784,9 @@
         <copy file="${commons-io-jar}" todir="${release-dir}/lib" /> 
         <copy file="${commons-lang3-jar}" todir="${release-dir}/lib" />
         <copy file="${commons-logging-jar}" todir="${release-dir}/lib" />
+    	<copy file="${cucumber-core-jar}" todir="${release-dir}/lib" />
+    	<copy file="${cucumber-java-jar}" todir="${release-dir}/lib" />
+    	<copy file="${cucumber-junit-jar}" todir="${release-dir}/lib" />
         <copy file="${data-jar}" todir="${release-dir}/lib" />
         <copy file="${db2jcc-jar}" todir="${release-dir}/lib" />
         <copy file="${db2jcc_license-cisuz-jar}" todir="${release-dir}/lib" />
