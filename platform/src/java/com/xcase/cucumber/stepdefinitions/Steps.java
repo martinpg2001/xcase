@@ -1,7 +1,7 @@
 package com.xcase.cucumber.stepdefinitions;
 
 import static org.junit.Assert.assertEquals;
-import static org.testng.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import java.lang.invoke.MethodHandles;
 import org.apache.logging.log4j.LogManager;
