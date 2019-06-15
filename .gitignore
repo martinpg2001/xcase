@@ -248,3 +248,4 @@ platform/appium-local-config.properties
 platform/aws-local-config.properties
 platform/azure-local-config.properties
 platform/kafka-local-config.properties
+platform/cucumber-local-config.properties

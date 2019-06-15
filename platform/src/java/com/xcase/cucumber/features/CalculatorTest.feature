@@ -28,10 +28,10 @@ Feature: Check percentage calculator functionality
     When I enter the first field value <firstvalue>
     And Enter the second field value <secondvalue>
     And Click Calculate button
-    Then Verify the result <result>
+    Then Verify the result <result> <compare>
 
     Examples: 
-      | name  | firstvalue | secondvalue | result |
-      | name1 |     "5"    | "50"        | "2.5"  |
-      | name2 |     "7"    | "60"        | "4.2"  |
-      | name2 |     "7"    | "60"        | "5.2"  |
+      | name  | firstvalue | secondvalue | result | compare |
+      | name1 |     "5"    | "50"        | "2.5"  | "true"    |
+      | name2 |     "7"    | "60"        | "4.2"  | "true"    |
+      | name2 |     "7"    | "60"        | "5.2"  | "false"   |

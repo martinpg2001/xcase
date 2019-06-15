@@ -1,18 +1,21 @@
 package com.xcase.cucumber.stepdefinitions;
 
 import static org.junit.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
 
 import java.lang.invoke.MethodHandles;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;      
-import org.openqa.selenium.WebDriver;       
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-
+import com.xcase.cucumber.constant.CucumberConstant;
+import com.xcase.cucumber.impl.simple.core.CucumberConfigurationManager;
 import com.xcase.cucumber.impl.simple.pages.CalculatorHomePage;
 import com.xcase.cucumber.impl.simple.pages.MathCalculatorsPage;
 import com.xcase.cucumber.impl.simple.pages.PercentageCalculatorPage;
-
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;      
 import cucumber.api.java.en.Then;       
@@ -28,8 +31,24 @@ public class Steps {
     
     @Given("^Open the Firefox browser and access the main Calculators page$")                 
     public void open_the_Firefox_browser_and_access_the_main_Calculators_page() throws Throwable {   
-       System.setProperty("webdriver.gecko.driver", "D:\\xcase\\xcase\\platform\\lib\\geckodriver.exe");                    
-       driver= new FirefoxDriver();                 
+       String webDriver = CucumberConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(CucumberConstant.LOCAL_WEBDRIVER);
+       LOGGER.debug("webDriver is " + webDriver);
+       switch(webDriver) {
+           case "ChromeDriver":
+               System.setProperty("webdriver.chrome.driver", CucumberConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(CucumberConstant.LOCAL_WEBDRIVER_LOCATION));
+               driver = new ChromeDriver();
+               break;
+           case "FirefoxDriver":
+               System.setProperty("webdriver.gecko.driver", CucumberConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(CucumberConstant.LOCAL_WEBDRIVER_LOCATION));
+               driver = new FirefoxDriver();
+               break;
+           case "MSEdgeDriver":
+               driver = new EdgeDriver();
+               break;
+           default:
+               LOGGER.warn("unrecognized webDriver " + webDriver);
+       }
+       
        driver.manage().window().maximize();         
        driver.get("http://www.calculator.net/");
        CalculatorHomePage calculatorHomePage = new CalculatorHomePage(driver);
@@ -64,11 +83,15 @@ public class Steps {
         percentageCalculatorPage.clickCalculate();        
     }
     
-    @Then("Verify the result {string}")
-    public void verify_the_result(String result) throws Throwable {       
+    @Then("Verify the result {string} {string}")
+    public void verify_the_result(String result, String compare) throws Throwable {       
         PercentageCalculatorPage percentageCalculatorPage = new PercentageCalculatorPage(driver);
         String actualResult = percentageCalculatorPage.getResult();
-        assertEquals("Result is not expected value", actualResult, result);
         driver.close();
+        if (compare == null || "true".equals(compare)) {
+            assertEquals("Result is not expected value", actualResult, result);
+        } else {
+            assertNotEquals("Result is expected value", actualResult, result);
+        }
     }
 }
