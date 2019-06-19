@@ -1,7 +1,7 @@
-package com.xcase.appium;
+package com.xcase.test.appium;
 
-import com.xcase.appium.constant.AppiumConstant;
-import com.xcase.appium.impl.simple.core.AppiumConfigurationManager;
+import com.xcase.test.appium.constant.AppiumConstant;
+import com.xcase.test.appium.impl.simple.core.AppiumConfigurationManager;
 import io.appium.java_client.android.AndroidDriver;
 import java.io.File;
 import java.lang.invoke.MethodHandles;

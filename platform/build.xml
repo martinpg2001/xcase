@@ -6,12 +6,12 @@
     <property name="junitjar" value="lib/junit-4.12.jar"/>
     <property name="release-dir" value="harness-release"/>
     <property name="src" value="src/java"/>
-    <property name="src-xcase-appium" value="src/java/com/xcase/appium"/>
+    <property name="src-xcase-appium" value="src/test/java/com/xcase/test/appium"/>
     <property name="src-xcase-aws" value="src/java/com/xcase/aws"/>
     <property name="src-xcase-azure" value="src/java/com/xcase/azure"/>
     <property name="src-xcase-box" value="src/java/com/xcase/box"/>
     <property name="src-xcase-common" value="src/java/com/xcase/common"/>
-	<property name="src-xcase-cucumber" value="src/java/com/xcase/cucumber"/>
+	<property name="src-xcase-cucumber" value="src/test/java/com/xcase/test/cucumber"/>
     <property name="src-xcase-intapp" value="src/java/com/xcase/intapp"/>
     <property name="src-xcase-integrate" value="src/java/com/xcase/integrate"/>
 	<property name="src-xcase-kafka" value="src/java/com/xcase/kafka"/>
@@ -20,7 +20,7 @@
     <property name="src-xcase-open" value="src/java/com/xcase/open"/>
     <property name="src-xcase-platform" value="src/java/com/xcase/platform"/>
     <property name="src-xcase-salesforce" value="src/java/com/xcase/salesforce"/>
-    <property name="src-xcase-selenium" value="src/java/com/xcase/selenium"/>
+    <property name="src-xcase-selenium" value="src/test/java/com/xcase/test/selenium"/>
     <property name="src-xcase-sharepoint" value="src/java/com/xcase/sharepoint"/>
     <property name="src-xcase-webservice" value="src/java/com/xcase/webservice"/>
     <property name="abbot-jar" value="lib/abbot.jar" />

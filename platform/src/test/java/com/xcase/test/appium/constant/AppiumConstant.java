@@ -1,4 +1,4 @@
-package com.xcase.appium.constant;
+package com.xcase.test.appium.constant;
 
 public class AppiumConstant {
     public static final String CONFIG_FILE_NAME = "appium-config.properties";

@@ -1,6 +1,6 @@
-package com.xcase.appium.impl.simple.core;
+package com.xcase.test.appium.impl.simple.core;
 
-import com.xcase.appium.constant.AppiumConstant;
+import com.xcase.test.appium.constant.AppiumConstant;
 import com.xcase.common.IConfigurationManager;
 import com.xcase.common.impl.simple.core.AbstractConfigurationManager;
 import java.lang.invoke.MethodHandles;
