@@ -249,4 +249,4 @@ platform/aws-local-config.properties
 platform/azure-local-config.properties
 platform/kafka-local-config.properties
 platform/cucumber-local-config.properties
-platform/klearexpress-local-config.properties.txt
+platform/klearexpress-local-config.properties
