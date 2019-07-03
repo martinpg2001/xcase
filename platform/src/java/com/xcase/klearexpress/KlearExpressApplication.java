@@ -8,7 +8,15 @@ import com.xcase.common.impl.simple.core.CommonHTTPManager;
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.common.utils.ConverterUtils;
 import com.xcase.klearexpress.constant.*;
+import com.xcase.klearexpress.factories.KlearExpressRequestFactory;
 import com.xcase.klearexpress.impl.simple.core.KlearExpressConfigurationManager;
+import com.xcase.klearexpress.transputs.SendMessageRequest;
+import com.xcase.klearexpress.transputs.SendMessageResponse;
+import com.xcase.mail.constant.MailConstant;
+import com.xcase.mail.factories.MailRequestFactory;
+import com.xcase.mail.transputs.SendEmailRequest;
+import com.xcase.mail.transputs.SendEmailResponse;
+
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 
@@ -26,6 +34,7 @@ public class KlearExpressApplication {
     public static void main(String[] args) {
         try {
             LOGGER.debug("starting main()");
+            KlearExpressExternalAPI klearExpressExternalAPI = new SimpleKlearExpressImpl();
             String userEmail = KlearExpressConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(KlearExpressConstant.LOCAL_USER_EMAIL);
             LOGGER.debug("userEmail is " + userEmail);
             String userPassword = KlearExpressConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(KlearExpressConstant.LOCAL_USER_PASSWORD);
@@ -87,34 +96,16 @@ public class KlearExpressApplication {
             }
 
             /* Get vessel information */
-            Header accessTokenHeader = createAccessTokenHeader(accessToken);
-            headerArrayList.add(accessTokenHeader);
-            headers = headerArrayList.toArray(new Header[0]);
-            String vesselDetailsRequest = " {\n" + 
-                "\"eventMessage\": {\n" + 
-                "\"carrierId\": \"36\",\n" + 
-                "\"carrierType\": \"VESSEL\"\n" + 
-                "},\n" + 
-                "\"eventType\": \"GET_VESSEL_DTL\",\n" + 
-                "\"eventTime\": 1554999583589\n" + 
-                "}";
-            commonHttpResponse = httpManager.doCommonHttpResponseMethod("POST", apiEventsURL, headers, null, vesselDetailsRequest, null);
-            responseCode = commonHttpResponse.getResponseCode();
-            if (responseCode == 200) {
-                try {
-                    LOGGER.debug("responseCode is 200");
-                    JsonElement responseEntityJsonElement = ConverterUtils.parseStringToJson(commonHttpResponse.getResponseEntityString());
-                    if (!responseEntityJsonElement.isJsonNull()) {
-                        LOGGER.debug("responseEntityJsonElement is not null");
-                        JsonObject responseEntityJsonObject = (JsonObject) responseEntityJsonElement;
-                        LOGGER.debug("got responseEntityJsonObject");
-                        JsonObject eventMessageJsonObject = responseEntityJsonObject.getAsJsonObject("eventMessage");
-                        LOGGER.debug("got eventMessageJsonObject " + eventMessageJsonObject.toString());                        
-                    }
-                } catch (Exception e) {
-                    LOGGER.warn("exception getting vessel details: " + e.getMessage());
-                }
-            }
+            SendMessageRequest sendMessageRequest = KlearExpressRequestFactory.createSendMessageRequest(accessToken);
+            sendMessageRequest.setMessage(" {\n" + 
+                    "\"eventMessage\": {\n" + 
+                    "\"carrierId\": \"36\",\n" + 
+                    "\"carrierType\": \"VESSEL\"\n" + 
+                    "},\n" + 
+                    "\"eventType\": \"GET_VESSEL_DTL\",\n" + 
+                    "\"eventTime\": 1554999583589\n" + 
+                    "}");
+            SendMessageResponse sendMessageResponse = klearExpressExternalAPI.sendMessage(sendMessageRequest);   
         } catch (Exception e) {
             LOGGER.warn("exception invoking events API: " + e.getMessage());
         }

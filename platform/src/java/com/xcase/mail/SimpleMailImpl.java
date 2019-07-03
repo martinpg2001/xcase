@@ -13,6 +13,7 @@ public class SimpleMailImpl implements MailExternalAPI {
      * log4j logger.
      */
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
+    
     /**
      * configuration manager
      */
