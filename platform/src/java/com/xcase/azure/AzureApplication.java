@@ -30,7 +30,7 @@ public class AzureApplication {
         try {
             LOGGER.debug("starting main()");
             AzureExternalAPI azureExternalAPI = new SimpleAzureImpl();
-            LOGGER.debug("created boxExternalAPI");
+            LOGGER.debug("created azureExternalAPI");
             String client = AzureConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(AzureConstant.LOCAL_AZURE_CLIENT);
             LOGGER.debug("client is " + client);
             String subscription = AzureConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(AzureConstant.LOCAL_AZURE_SUBSCRIPTION);
