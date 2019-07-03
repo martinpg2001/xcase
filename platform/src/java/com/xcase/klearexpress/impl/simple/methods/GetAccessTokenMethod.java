@@ -9,34 +9,30 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.xcase.common.constant.CommonConstant;
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.common.utils.ConverterUtils;
 import com.xcase.klearexpress.factories.KlearExpressResponseFactory;
-import com.xcase.klearexpress.transputs.SendMessageRequest;
+import com.xcase.klearexpress.transputs.GetAccessTokenRequest;
+import com.xcase.klearexpress.transputs.GetAccessTokenResponse;
 import com.xcase.klearexpress.transputs.SendMessageResponse;
 
-public class SendMessageMethod extends BaseKlearExpressMethod {
+public class GetAccessTokenMethod extends BaseKlearExpressMethod {
     /**
      * log4j object.
      */
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
     
-    public SendMessageResponse sendMessage(SendMessageRequest request) {
-        LOGGER.debug("starting sendMessage()");
+    public GetAccessTokenResponse getAccessToken(GetAccessTokenRequest request) {
+        LOGGER.debug("starting getAccessToken()");
         try {
-            SendMessageResponse response = KlearExpressResponseFactory.createSendMessageResponse();
+            GetAccessTokenResponse response = KlearExpressResponseFactory.createGetAccessTokenResponse();
             String baseVersionUrl = super.apiUrl;
             LOGGER.debug("baseVersionUrl is " + baseVersionUrl);
             String endPoint = baseVersionUrl;
             LOGGER.debug("endPoint is " + endPoint);
-            String accessToken = request.getAccessToken();
-            LOGGER.debug("accessToken is " + accessToken);
-            Header accessTokenHeader = createAccessTokenHeader(accessToken);
-            LOGGER.debug("created accessTokenHeader");
             Header contentTypeHeader = createContentTypeHeader();
-            Header[] headers = {accessTokenHeader, contentTypeHeader};
-            String entityMessage = request.getMessage();
+            Header[] headers = {contentTypeHeader};
+            String entityMessage = request.getEntityRequest();
             LOGGER.debug("entityMessage is " + entityMessage);
             CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponsePost(endPoint, headers, null, entityMessage, null);
             int responseCode = commonHttpResponse.getResponseCode();

@@ -22,4 +22,9 @@ public class KlearExpressRequestFactory extends BaseKlearExpressFactory {
         sendMessageRequest.setAccessToken(accessToken);
         return sendMessageRequest;
     }
+
+    public static GetAccessTokenRequest createGetAccessTokenRequest() {
+        Object obj = newInstanceOf("klearexpress.config.requestfactory.GetAccessTokenRequest");
+        return (GetAccessTokenRequest) obj;
+    }
 }

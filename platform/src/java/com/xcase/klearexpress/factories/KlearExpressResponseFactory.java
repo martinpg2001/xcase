@@ -24,4 +24,9 @@ public class KlearExpressResponseFactory extends BaseKlearExpressFactory {
         return (SendMessageResponse) obj;
     }
 
+    public static GetAccessTokenResponse createGetAccessTokenResponse() {
+        Object obj = newInstanceOf("klearexpress.config.responsefactory.GetAccessTokenResponse");
+        return (GetAccessTokenResponse) obj;
+    }
+
 }

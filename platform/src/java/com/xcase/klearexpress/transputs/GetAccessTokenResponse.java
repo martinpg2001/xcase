@@ -2,12 +2,18 @@ package com.xcase.klearexpress.transputs;
 
 import com.google.gson.JsonObject;
 
-public interface SendMessageResponse extends KlearExpressResponse {
+public interface GetAccessTokenResponse extends KlearExpressResponse {
+
     String getEventId();
+    
     JsonObject getEventMessage();
+    
     String getEventType();
-    void setEventId(String eventId);
+    
+    void setEventId(String asString);
+
+    void setEventType(String asString);
+
     void setEventMessage(JsonObject eventMessageJsonObject);
-    void setEventType(String eventType);
 
 }

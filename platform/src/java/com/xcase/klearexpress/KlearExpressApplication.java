@@ -10,6 +10,8 @@ import com.xcase.common.utils.ConverterUtils;
 import com.xcase.klearexpress.constant.*;
 import com.xcase.klearexpress.factories.KlearExpressRequestFactory;
 import com.xcase.klearexpress.impl.simple.core.KlearExpressConfigurationManager;
+import com.xcase.klearexpress.transputs.GetAccessTokenRequest;
+import com.xcase.klearexpress.transputs.GetAccessTokenResponse;
 import com.xcase.klearexpress.transputs.SendMessageRequest;
 import com.xcase.klearexpress.transputs.SendMessageResponse;
 import com.xcase.mail.constant.MailConstant;
@@ -40,61 +42,39 @@ public class KlearExpressApplication {
             String userPassword = KlearExpressConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(KlearExpressConstant.LOCAL_USER_PASSWORD);
             LOGGER.debug("userPassword is " + userPassword);
             String apiEventsURL = "https://api.klearexpress.com/staging/v1/events";
-    		/* First get token */
+            /* First, get access token */
             String accessToken = null;
-    		String entityString = "{\n" + 
-    				"\"eventMessage\": {\n" + 
-    				"\"email\" : \"" + userEmail + "\",\n" + 
-    				"\"hashedPassword\": \"" + userPassword + "\",\n" + 
-    				"\"typeOfUser\" : \"CUSTOMER_USER\"\n" + 
-    				"},\n" + 
-    				"\"eventType\": \"KXUSER_LOGIN\",\n" + 
-    				"\"eventTime\": 1234\n" + 
-    				"}\n" + 
-    				"";
-            LOGGER.debug("entityString is " + entityString);
-            Header contentTypeHeader = createContentTypeHeader();
-            ArrayList<Header> headerArrayList = new ArrayList<Header>();
-            headerArrayList.add(contentTypeHeader);
-            Header[] headers = headerArrayList.toArray(new Header[0]);
-            CommonHTTPManager httpManager = CommonHTTPManager.refreshCommonHTTPManager();
-            CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponseMethod("POST", apiEventsURL, headers, null, entityString, null);
-            int responseCode = commonHttpResponse.getResponseCode();
-            if (responseCode == 200) {
-               try { 
-                    JsonElement responseEntityJsonElement = ConverterUtils.parseStringToJson(commonHttpResponse.getResponseEntityString());;
-                    if (!responseEntityJsonElement.isJsonNull()) {
-                        LOGGER.debug("responseEntityJsonElement is not null");
-                        JsonObject responseEntityJsonObject = (JsonObject) responseEntityJsonElement;
-                        LOGGER.debug("got responseEntityJsonObject");
-                        JsonObject eventMessageJsonObject = responseEntityJsonObject.getAsJsonObject("eventMessage");
-                        LOGGER.debug("got eventMessageJsonObject");
-                        JsonObject userJsonObject = eventMessageJsonObject.getAsJsonObject("user");
-                        LOGGER.debug("got userJsonObject");
-                        JsonPrimitive kxTokenJsonPrimitive = userJsonObject.getAsJsonPrimitive("kxToken");
-                        LOGGER.debug("kxTokenJsonPrimitive is " + kxTokenJsonPrimitive);
-                        if (kxTokenJsonPrimitive != null && !kxTokenJsonPrimitive.isJsonNull()) {
-                            LOGGER.debug("kxTokenJsonPrimitive is not null");
-                            accessToken = kxTokenJsonPrimitive.getAsString();
-                            LOGGER.debug("accessToken is " + accessToken);
-                            KlearExpressConfigurationManager.getConfigurationManager().getLocalConfig().setProperty(KlearExpressConstant.LOCAL_ACCESS_TOKEN, accessToken);
-                            KlearExpressConfigurationManager.getConfigurationManager().storeLocalConfigProperties();
-                            LOGGER.debug("stored local config properties");
-                        } else {
-                            JsonElement errorElement = responseEntityJsonObject.get("error");
-                            JsonElement errorDescriptionElement = responseEntityJsonObject.get("error_description");
-                            LOGGER.debug("error description is " + errorDescriptionElement.getAsString());
-                        }
-                    } else {
-
-                    }
-                } catch (Exception e) {
-                    throw new Exception("Failed to parse to a document.", e);
-                }
+            GetAccessTokenRequest getAccessTokenRequest = KlearExpressRequestFactory.createGetAccessTokenRequest();
+            getAccessTokenRequest.setEntityRequest("{\n" + 
+                    "\"eventMessage\": {\n" + 
+                    "\"email\" : \"" + userEmail + "\",\n" + 
+                    "\"hashedPassword\": \"" + userPassword + "\",\n" + 
+                    "\"typeOfUser\" : \"CUSTOMER_USER\"\n" + 
+                    "},\n" + 
+                    "\"eventType\": \"KXUSER_LOGIN\",\n" + 
+                    "\"eventTime\": 1234\n" + 
+                    "}\n" + 
+                    "");
+            GetAccessTokenResponse getAccessTokenResponse = klearExpressExternalAPI.getAccessToken(getAccessTokenRequest);   
+            JsonObject eventMessageJsonObject = getAccessTokenResponse.getEventMessage();
+            LOGGER.debug("got eventMessageJsonObject");
+            JsonObject userJsonObject = eventMessageJsonObject.getAsJsonObject("user");
+            LOGGER.debug("got userJsonObject");
+            JsonPrimitive kxTokenJsonPrimitive = userJsonObject.getAsJsonPrimitive("kxToken");
+            LOGGER.debug("kxTokenJsonPrimitive is " + kxTokenJsonPrimitive);
+            if (kxTokenJsonPrimitive != null && !kxTokenJsonPrimitive.isJsonNull()) {
+                LOGGER.debug("kxTokenJsonPrimitive is not null");
+                accessToken = kxTokenJsonPrimitive.getAsString();
+                LOGGER.debug("accessToken is " + accessToken);
+                KlearExpressConfigurationManager.getConfigurationManager().getLocalConfig().setProperty(KlearExpressConstant.LOCAL_ACCESS_TOKEN, accessToken);
+                KlearExpressConfigurationManager.getConfigurationManager().storeLocalConfigProperties();
+                LOGGER.debug("stored local config properties");
             } else {
-                LOGGER.debug("apiRequestFormat is unrecognized");
+                JsonElement errorElement = eventMessageJsonObject.get("error");
+                JsonElement errorDescriptionElement = eventMessageJsonObject.get("error_description");
+                LOGGER.debug("error description is " + errorDescriptionElement.getAsString());
             }
-
+            
             /* Get vessel information */
             SendMessageRequest sendMessageRequest = KlearExpressRequestFactory.createSendMessageRequest(accessToken);
             sendMessageRequest.setMessage(" {\n" + 
@@ -110,12 +90,4 @@ public class KlearExpressApplication {
             LOGGER.warn("exception invoking events API: " + e.getMessage());
         }
     }
-
-	private static Header createAccessTokenHeader(String accessToken) {
-	    return new BasicHeader("kxToken", accessToken);
-    }
-
-    private static Header createContentTypeHeader() {
-        return new BasicHeader("Content-Type", "application/json");
-	}
 }

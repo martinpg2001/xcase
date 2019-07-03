@@ -6,4 +6,6 @@ public interface KlearExpressExternalAPI {
 
     SendMessageResponse sendMessage(SendMessageRequest sendMessageRequest);
 
+    GetAccessTokenResponse getAccessToken(GetAccessTokenRequest getAccessTokenRequest);
+
 }
