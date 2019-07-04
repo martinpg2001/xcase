@@ -26,9 +26,7 @@ public class SendMessageMethod extends BaseKlearExpressMethod {
         LOGGER.debug("starting sendMessage()");
         try {
             SendMessageResponse response = KlearExpressResponseFactory.createSendMessageResponse();
-            String baseVersionUrl = super.apiUrl;
-            LOGGER.debug("baseVersionUrl is " + baseVersionUrl);
-            String endPoint = baseVersionUrl;
+            String endPoint = request.getAPIUrl();
             LOGGER.debug("endPoint is " + endPoint);
             String accessToken = request.getAccessToken();
             LOGGER.debug("accessToken is " + accessToken);

@@ -5,6 +5,7 @@ import com.xcase.klearexpress.transputs.KlearExpressRequest;
 
 public class KlearExpressRequestImpl extends CommonRequestImpl implements KlearExpressRequest {
     private String accessToken;
+    private String apiUrl;
     
     @Override
     public String getAccessToken() {
@@ -14,6 +15,16 @@ public class KlearExpressRequestImpl extends CommonRequestImpl implements KlearE
     @Override
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
+    }
+
+    @Override
+    public String getAPIUrl() {
+        return apiUrl;
+    }
+
+    @Override
+    public void setAPIUrl(String apiUrl) {
+        this.apiUrl = apiUrl;
     }
 
 }

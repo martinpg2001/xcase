@@ -26,9 +26,7 @@ public class GetAccessTokenMethod extends BaseKlearExpressMethod {
         LOGGER.debug("starting getAccessToken()");
         try {
             GetAccessTokenResponse response = KlearExpressResponseFactory.createGetAccessTokenResponse();
-            String baseVersionUrl = super.apiUrl;
-            LOGGER.debug("baseVersionUrl is " + baseVersionUrl);
-            String endPoint = baseVersionUrl;
+            String endPoint = request.getAPIUrl();
             LOGGER.debug("endPoint is " + endPoint);
             Header contentTypeHeader = createContentTypeHeader();
             Header[] headers = {contentTypeHeader};

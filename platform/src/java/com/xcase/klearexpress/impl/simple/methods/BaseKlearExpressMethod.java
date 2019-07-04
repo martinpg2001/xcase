@@ -19,10 +19,7 @@ public class BaseKlearExpressMethod {
      * core http manager.
      */
     protected CommonHTTPManager httpManager = CommonHTTPManager.refreshCommonHTTPManager();
-
-    public String apiUrl = "https://api.klearexpress.com/staging/v1/events";
     
-
     public Header createContentTypeHeader() {
         return new BasicHeader("Content-Type", "application/json");
     }

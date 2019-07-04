@@ -32,6 +32,8 @@ public class KlearExpressJUnitTest {
     
     @BeforeClass
     public static void getAccessToken() {
+        String apiUrl = KlearExpressConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(KlearExpressConstant.LOCAL_API_URL);
+        LOGGER.debug("apiUrl is " + apiUrl);        
         String userEmail = KlearExpressConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(KlearExpressConstant.LOCAL_USER_EMAIL);
         LOGGER.debug("userEmail is " + userEmail);
         String userPassword = KlearExpressConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(KlearExpressConstant.LOCAL_USER_PASSWORD);
@@ -39,6 +41,7 @@ public class KlearExpressJUnitTest {
         /* First, get access token */
         String accessToken = null;
         GetAccessTokenRequest getAccessTokenRequest = KlearExpressRequestFactory.createGetAccessTokenRequest();
+        getAccessTokenRequest.setAPIUrl(apiUrl);
         getAccessTokenRequest.setEntityRequest("{\n" + 
                 "\"eventMessage\": {\n" + 
                 "\"email\" : \"" + userEmail + "\",\n" + 
@@ -73,8 +76,11 @@ public class KlearExpressJUnitTest {
     @Test
     public void test1() {
         LOGGER.debug("starting test1()");
+        String apiUrl = KlearExpressConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(KlearExpressConstant.LOCAL_API_URL);
+        LOGGER.debug("apiUrl is " + apiUrl); 
         String accessToken = KlearExpressConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(KlearExpressConstant.LOCAL_ACCESS_TOKEN);
         SendMessageRequest sendMessageRequest = KlearExpressRequestFactory.createSendMessageRequest(accessToken);
+        sendMessageRequest.setAPIUrl(apiUrl);
         sendMessageRequest.setMessage(" {\n" + 
                 "\"eventMessage\": {\n" + 
                 "\"carrierId\": \"36\",\n" + 
@@ -89,8 +95,11 @@ public class KlearExpressJUnitTest {
     @Test
     public void test2() {
         LOGGER.debug("starting test2()");
+        String apiUrl = KlearExpressConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(KlearExpressConstant.LOCAL_API_URL);
+        LOGGER.debug("apiUrl is " + apiUrl); 
         String accessToken = KlearExpressConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(KlearExpressConstant.LOCAL_ACCESS_TOKEN);
         SendMessageRequest sendMessageRequest = KlearExpressRequestFactory.createSendMessageRequest(accessToken);
+        sendMessageRequest.setAPIUrl(apiUrl);
         sendMessageRequest.setMessage("{\n" + 
         		"  \"eventMessage\": {\n" + 
         		"    \"searchType\": \"SEARCH_TYPE_CUSTOMER\",\n" + 
@@ -126,8 +135,11 @@ public class KlearExpressJUnitTest {
     @Test
     public void test3() {
         LOGGER.debug("starting test3()");
+        String apiUrl = KlearExpressConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(KlearExpressConstant.LOCAL_API_URL);
+        LOGGER.debug("apiUrl is " + apiUrl);
         String accessToken = KlearExpressConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(KlearExpressConstant.LOCAL_ACCESS_TOKEN);
         SendMessageRequest sendMessageRequest = KlearExpressRequestFactory.createSendMessageRequest(accessToken);
+        sendMessageRequest.setAPIUrl(apiUrl);
         sendMessageRequest.setMessage("{\n" + 
         		"  \"eventMessage\": {\n" + 
         		"    \"searchType\": \"SEARCH_TYPE_CUSTOMER\",\n" + 
@@ -159,7 +171,7 @@ public class KlearExpressJUnitTest {
         	JsonObject headerObject = eventMessageJsonObject.getAsJsonObject("header");
         	if (headerObject != null) {
         		LOGGER.debug("headerObject is not null");
-        		assertEquals("Unexpected response code.", 200, headerObject.getAsJsonPrimitive("code").getAsInt());
+        		assertEquals("Unexpected response code.", 400, headerObject.getAsJsonPrimitive("code").getAsInt());
         	} else {
         		assertNotNull(headerObject);
         	}

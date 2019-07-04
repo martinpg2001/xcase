@@ -25,14 +25,16 @@ public class KlearExpressApplication {
         try {
             LOGGER.debug("starting main()");
             KlearExpressExternalAPI klearExpressExternalAPI = new SimpleKlearExpressImpl();
+            String apiEventsURL = KlearExpressConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(KlearExpressConstant.LOCAL_API_URL);
+            LOGGER.debug("apiEventsURL is " + apiEventsURL);
             String userEmail = KlearExpressConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(KlearExpressConstant.LOCAL_USER_EMAIL);
             LOGGER.debug("userEmail is " + userEmail);
             String userPassword = KlearExpressConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(KlearExpressConstant.LOCAL_USER_PASSWORD);
             LOGGER.debug("userPassword is " + userPassword);
-            String apiEventsURL = "https://api.klearexpress.com/staging/v1/events";
             /* First, get access token */
             String accessToken = null;
             GetAccessTokenRequest getAccessTokenRequest = KlearExpressRequestFactory.createGetAccessTokenRequest();
+            getAccessTokenRequest.setAPIUrl(apiEventsURL);
             getAccessTokenRequest.setEntityRequest("{\n" + 
                     "\"eventMessage\": {\n" + 
                     "\"email\" : \"" + userEmail + "\",\n" + 
@@ -65,6 +67,7 @@ public class KlearExpressApplication {
             
             /* Get vessel information */
             SendMessageRequest sendMessageRequest = KlearExpressRequestFactory.createSendMessageRequest(accessToken);
+            sendMessageRequest.setAPIUrl(apiEventsURL);
             sendMessageRequest.setMessage(" {\n" + 
                     "\"eventMessage\": {\n" + 
                     "\"carrierId\": \"36\",\n" + 

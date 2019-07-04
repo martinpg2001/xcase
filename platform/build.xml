@@ -15,6 +15,7 @@
     <property name="src-xcase-intapp" value="src/java/com/xcase/intapp"/>
     <property name="src-xcase-integrate" value="src/java/com/xcase/integrate"/>
 	<property name="src-xcase-kafka" value="src/java/com/xcase/kafka"/>
+	<property name="src-xcase-klearexpress" value="src/java/com/xcase/klearexpress"/>
     <property name="src-xcase-mail" value="src/java/com/xcase/mail"/>
     <property name="src-xcase-msgraph" value="src/java/com/xcase/msgraph"/>
     <property name="src-xcase-open" value="src/java/com/xcase/open"/>
@@ -464,7 +465,7 @@
             <compilerarg value="-Xlint:unchecked"/>
         </javac>
     </target>
-    <target name="compile-xcase" depends="compile-xcase-common,compile-xcase-appium,compile-xcase-aws,compile-xcase-azure,compile-xcase-box,compile-xcase-cucumber,compile-xcase-intapp,compile-xcase-integrate,compile-xcase-kafka,compile-xcase-mail,compile-xcase-msgraph,compile-xcase-open,compile-xcase-salesforce,compile-xcase-selenium,compile-xcase-sharepoint,compile-xcase-webservice,compile-xcase-platform" />
+    <target name="compile-xcase" depends="compile-xcase-common,compile-xcase-appium,compile-xcase-aws,compile-xcase-azure,compile-xcase-box,compile-xcase-cucumber,compile-xcase-intapp,compile-xcase-integrate,compile-xcase-kafka,compile-xcase-klearexpress,compile-xcase-mail,compile-xcase-msgraph,compile-xcase-open,compile-xcase-salesforce,compile-xcase-selenium,compile-xcase-sharepoint,compile-xcase-webservice,compile-xcase-platform" />
     <target name="compile-xcase-appium">
         <javac srcdir="${src-xcase-appium}" destdir="${build}" debug="on">
             <classpath refid="classpath.base" />
@@ -515,6 +516,12 @@
     </target>
     <target name="compile-xcase-kafka" depends="compile-xcase-common">
         <javac srcdir="${src-xcase-kafka}" destdir="${build}" debug="on">
+            <classpath refid="classpath.base" />
+            <compilerarg value="-Xlint:-unchecked"/>
+        </javac>
+    </target>
+    <target name="compile-xcase-klearexpress" depends="compile-xcase-common">
+        <javac srcdir="${src-xcase-klearexpress}" destdir="${build}" debug="on">
             <classpath refid="classpath.base" />
             <compilerarg value="-Xlint:-unchecked"/>
         </javac>
@@ -642,7 +649,7 @@
         </jar>
     </target>
     <target name="jar-intapp" depends="init,clean,compile-xcase-intapp" description="Builds platform jar for Intapp library without a clean compile" >
-        <delete file="lib/xcase-intapp-${version}.jar"/>
+        <delete file="target/xcase-intapp-${version}.jar"/>
         <copy overwrite="true" todir="${build}" >
             <fileset file="intapp-*.properties" >
                 <exclude name="*local*.properties"/>
@@ -657,7 +664,7 @@
         </jar>
     </target>
     <target name="jar-kafka" depends="init,clean,compile-xcase-kafka" description="Builds platform jar for Kafka library without a clean compile" >
-        <delete file="lib/xcase-kafka-${version}.jar"/>
+        <delete file="target/xcase-kafka-${version}.jar"/>
         <copy overwrite="true" todir="${build}" >
             <fileset file="intapp-*.properties" >
                 <exclude name="*local*.properties"/>
@@ -668,6 +675,21 @@
         </copy>
         <copy file="${src}/log4j2.xml" todir="${build}" />
         <jar basedir="${build}" duplicate="preserve" jarfile="target/xcase-kafka-${version}.jar" manifest="mainClass">
+            <fileset dir="${build}"/>
+        </jar>
+    </target>
+    <target name="jar-klearexpress" depends="init,clean,compile-xcase-klearexpress" description="Builds platform jar for KlearExpress library without a clean compile" >
+        <delete file="target/xcase-klearexpress-${version}.jar"/>
+        <copy overwrite="true" todir="${build}" >
+            <fileset file="intapp-*.properties" >
+                <exclude name="*local*.properties"/>
+            </fileset>
+            <fileset file="common-*.properties" >
+                <exclude name="*local*.properties"/>
+            </fileset>
+        </copy>
+        <copy file="${src}/log4j2.xml" todir="${build}" />
+        <jar basedir="${build}" duplicate="preserve" jarfile="target/xcase-klearexpress-${version}.jar" manifest="mainClass">
             <fileset dir="${build}"/>
         </jar>
     </target>
