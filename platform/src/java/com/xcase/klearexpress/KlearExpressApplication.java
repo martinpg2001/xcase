@@ -4,9 +4,6 @@ package com.xcase.klearexpress;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.xcase.common.impl.simple.core.CommonHTTPManager;
-import com.xcase.common.impl.simple.core.CommonHttpResponse;
-import com.xcase.common.utils.ConverterUtils;
 import com.xcase.klearexpress.constant.*;
 import com.xcase.klearexpress.factories.KlearExpressRequestFactory;
 import com.xcase.klearexpress.impl.simple.core.KlearExpressConfigurationManager;
@@ -14,16 +11,7 @@ import com.xcase.klearexpress.transputs.GetAccessTokenRequest;
 import com.xcase.klearexpress.transputs.GetAccessTokenResponse;
 import com.xcase.klearexpress.transputs.SendMessageRequest;
 import com.xcase.klearexpress.transputs.SendMessageResponse;
-import com.xcase.mail.constant.MailConstant;
-import com.xcase.mail.factories.MailRequestFactory;
-import com.xcase.mail.transputs.SendEmailRequest;
-import com.xcase.mail.transputs.SendEmailResponse;
-
 import java.lang.invoke.MethodHandles;
-import java.util.ArrayList;
-
-import org.apache.http.Header;
-import org.apache.http.message.BasicHeader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
