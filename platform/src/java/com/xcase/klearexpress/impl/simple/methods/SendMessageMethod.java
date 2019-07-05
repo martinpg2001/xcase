@@ -41,25 +41,10 @@ public class SendMessageMethod extends BaseKlearExpressMethod {
             LOGGER.debug("responseCode is " + responseCode);
             response.setResponseCode(responseCode);
             if (responseCode == 200) {
-                String responseEntityString = commonHttpResponse.getResponseEntityString();
-                LOGGER.debug("responseEntityString is " + responseEntityString);
-                JsonElement responseEntityJsonElement = ConverterUtils.parseStringToJson(commonHttpResponse.getResponseEntityString());
-                if (!responseEntityJsonElement.isJsonNull()) {
-                    LOGGER.debug("responseEntityJsonElement is not null");
-                    JsonObject responseEntityJsonObject = (JsonObject) responseEntityJsonElement;
-                    LOGGER.debug("got responseEntityJsonObject");
-                    JsonPrimitive eventIdJsonPrimitive = responseEntityJsonObject.getAsJsonPrimitive("eventId");
-                    response.setEventId(eventIdJsonPrimitive.getAsString());
-                    JsonPrimitive eventTypeJsonPrimitive = responseEntityJsonObject.getAsJsonPrimitive("eventType");
-                    response.setEventType(eventTypeJsonPrimitive.getAsString());
-                    JsonObject eventMessageJsonObject = responseEntityJsonObject.getAsJsonObject("eventMessage");
-                    LOGGER.debug("got eventMessageJsonObject");
-                    response.setEventMessage(eventMessageJsonObject);
-                } else {
-                    LOGGER.debug("responseEntityJsonElement is JsonNull");
-                }
+                processExpectedResponseCode(response, commonHttpResponse);
             } else {
                 LOGGER.warn("unexpected response code " + responseCode);
+                processUnexpectedResponseCode(response, commonHttpResponse);
             }
 
             return response;
