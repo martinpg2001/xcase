@@ -63,10 +63,10 @@ public class AbstractConfigurationManager {
     }
     
     /**
-     * @param config the config to set
+     * @param localConfig the config to set
      */
-    public void setLocalConfig(Properties config) {
-        this.localConfig = config;
+    public void setLocalConfig(Properties localConfig) {
+        this.localConfig = localConfig;
     }
     
     public String getLocalProperty(String name) {
@@ -96,29 +96,39 @@ public class AbstractConfigurationManager {
         this.localConfig = new Properties();
         try {
             String userDir = System.getProperty("user.dir");
-            InputStream in = getClass().getResourceAsStream("/" + configFile);
-            this.config.load(in);
-            LOGGER.debug("loaded config from InputStream");
+            propertyPath = "/" + configFile;
+            LOGGER.debug("propertyPath is " + propertyPath);
+            InputStream configInputStream = getClass().getResourceAsStream(propertyPath);
+            this.config.load(configInputStream);
+            LOGGER.debug("loaded config from " + propertyPath);
             localPropertyPath = userDir + File.separator + localConfigFile;
             LOGGER.debug("localPropertyPath is " + localPropertyPath);
             try {
-                InputStream localIn = new FileInputStream(new File(localPropertyPath));
-                this.localConfig.load(localIn);
-                LOGGER.debug("loaded local config");
+                InputStream localConfigInputStream = new FileInputStream(new File(localPropertyPath));
+                this.localConfig.load(localConfigInputStream);
+                LOGGER.debug("loaded local config from " + localPropertyPath);
             } catch (FileNotFoundException fnfe) {
-                LOGGER.warn("FileNotFoundException happened when reading " + localPropertyPath);
+                LOGGER.warn("FileNotFoundException happened when loading " + localPropertyPath, fnfe);
+            } catch (Exception e) {
+                LOGGER.warn("Exception happened when loading " + localPropertyPath, e);
             }
         } catch (FileNotFoundException fnfe) {
-            LOGGER.debug("FileNotFoundException happened when reading " + propertyPath);
-            LOGGER.warn("common-config.properties not found in classpath, use default-common-config.properties.");
-            InputStream in = this.getClass().getResourceAsStream(defaultConfigFile);
+            LOGGER.debug("FileNotFoundException happened when loading " + propertyPath);
+            LOGGER.warn(propertyPath + " not found in classpath, use default properties", fnfe);
+            InputStream defaultConfigInputStream = this.getClass().getResourceAsStream(defaultConfigFile);
             try {
-                this.config.load(in);
+                this.config.load(defaultConfigInputStream);
+            } catch (FileNotFoundException subfnfe) {
+                LOGGER.fatal("FileNotFoundException happened when loading default properties " + defaultConfigFile, subfnfe);
             } catch (IOException ioe) {
-                LOGGER.fatal("IOException happened when loading default-common-config.properties", ioe);
+                LOGGER.fatal("IOException happened when loading default properties " + defaultConfigFile, ioe);
+            } catch (Exception e) {
+                LOGGER.fatal("Exception happened when loading default properties " + defaultConfigFile, e);
             }
         } catch (IOException ioe) {
-            LOGGER.fatal("IOException occurred when reading common-config.properties", ioe);
+            LOGGER.fatal("IOException happened when loading properties " + propertyPath, ioe);
+        } catch (Exception e) {
+            LOGGER.fatal("Exception happened when loading properties " + propertyPath, e);
         }
 
         LOGGER.debug("finishing loadConfigProperties()");
