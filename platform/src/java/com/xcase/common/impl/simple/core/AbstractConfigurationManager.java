@@ -120,10 +120,10 @@ public class AbstractConfigurationManager {
                 this.config.load(defaultConfigInputStream);
             } catch (FileNotFoundException subfnfe) {
                 LOGGER.fatal("FileNotFoundException happened when loading default properties " + defaultConfigFile, subfnfe);
-            } catch (IOException ioe) {
-                LOGGER.fatal("IOException happened when loading default properties " + defaultConfigFile, ioe);
-            } catch (Exception e) {
-                LOGGER.fatal("Exception happened when loading default properties " + defaultConfigFile, e);
+            } catch (IOException subioe) {
+                LOGGER.fatal("IOException happened when loading default properties " + defaultConfigFile, subioe);
+            } catch (Exception sube) {
+                LOGGER.fatal("Exception happened when loading default properties " + defaultConfigFile, sube);
             }
         } catch (IOException ioe) {
             LOGGER.fatal("IOException happened when loading properties " + propertyPath, ioe);
@@ -145,13 +145,16 @@ public class AbstractConfigurationManager {
             String userDir = System.getProperty("user.dir");
             propertyPath = userDir + File.separator + defaultConfigFile;
             LOGGER.debug("propertyPath is " + propertyPath);
-            InputStream in = getClass().getResourceAsStream("/" + defaultConfigFile);
-            this.config.load(in);
-            LOGGER.debug("loaded inputstream");
-        } catch (Exception e) {
-            LOGGER.debug("FileNotFoundException happened when reading " + propertyPath);
-            LOGGER.warn("common-config.properties not found in classpath, use common-config-default.properties.");
-            LOGGER.fatal("Exception occurred when reading common-config-default.properties.properties", e);
+            InputStream defaultConfigInputStream = getClass().getResourceAsStream("/" + defaultConfigFile);
+            this.config.load(defaultConfigInputStream);
+            LOGGER.debug("loaded config from " + propertyPath);
+        } catch (FileNotFoundException fnfe) {
+            LOGGER.warn("FileNotFoundException happened when loading " + propertyPath, fnfe);
+        } catch (IOException ioe) {
+            LOGGER.fatal("IOException happened when loading " + propertyPath, ioe);
+        }  catch (Exception e) {
+            LOGGER.warn(propertyPath + " not found in classpath");
+            LOGGER.fatal("Exception happened when loading " + propertyPath, e);
         }
 
         LOGGER.debug("finishing loadDefaultConfig()");
@@ -168,20 +171,26 @@ public class AbstractConfigurationManager {
             String userDir = System.getProperty("user.dir");
             localPropertyPath = userDir + File.separator + localConfigFile;
             LOGGER.debug("localPropertyPath is " + localPropertyPath);
-            InputStream localIn = new FileInputStream(new File(localPropertyPath));
-            this.localConfig.load(localIn);
-            LOGGER.debug("loaded local config");
+            InputStream localConfigInputStream = new FileInputStream(new File(localPropertyPath));
+            this.localConfig.load(localConfigInputStream);
+            LOGGER.debug("loaded local config from " + localPropertyPath);
         } catch (FileNotFoundException fnfe) {
-            LOGGER.warn("FileNotFoundException happened when reading " + localPropertyPath);
-            LOGGER.debug("webservice-config.properties not found in classpath, use common-config-default.properties.");
-            InputStream in = this.getClass().getResourceAsStream(defaultConfigFile);
+            LOGGER.warn("FileNotFoundException happened when loading " + localPropertyPath, fnfe);
+            LOGGER.debug(localPropertyPath + " not found in classpath, use " + defaultConfigFile);
+            InputStream defaultConfigInputStream = this.getClass().getResourceAsStream(defaultConfigFile);
             try {
-                this.config.load(in);
-            } catch (IOException ioe) {
-                LOGGER.fatal("IOException happened when loading common-config-default.properties", ioe);
+                this.config.load(defaultConfigInputStream);
+            } catch (FileNotFoundException subfnfe) {
+                LOGGER.fatal("FileNotFoundException happened when loading " + defaultConfigFile, subfnfe);
+            } catch (IOException subioe) {
+                LOGGER.fatal("IOException happened when loading " + defaultConfigFile, subioe);
+            } catch (Exception sube) {
+                LOGGER.fatal("Exception happened when loading " + defaultConfigFile, sube);
             }
         } catch (IOException ioe) {
-            LOGGER.fatal("IOException occurred when reading common-local-config.properties", ioe);
+            LOGGER.fatal("IOException happened when loading " + localPropertyPath, ioe);
+        } catch (Exception e) {
+            LOGGER.fatal("Exception happened when loading " + localPropertyPath, e);
         }
     }
     
@@ -215,14 +224,15 @@ public class AbstractConfigurationManager {
         try {
             String userDir = System.getProperty("user.dir");
             propertyPath = userDir + File.separator + localConfigFile;
-            OutputStream outputStream = new FileOutputStream(new File(propertyPath));
-            this.config.store(outputStream, "Storing new config");
-            outputStream.close();
+            OutputStream configOutputStream = new FileOutputStream(new File(propertyPath));
+            this.config.store(configOutputStream, "Storing new config");
+            configOutputStream.close();
         } catch (FileNotFoundException fnfe) {
-            LOGGER.debug("FileNotFoundException happened when writing: " + propertyPath);
+            LOGGER.debug("FileNotFoundException happened when storing " + propertyPath, fnfe);
         } catch (IOException ioe) {
-            LOGGER.debug("IOException happened when writing: " + ioe.getMessage());
-            LOGGER.fatal("IOException occurred when writing local-common-config.properties", ioe);
+            LOGGER.debug("IOException happened when storing " + propertyPath, ioe);
+        } catch (Exception e) {
+            LOGGER.fatal("Exception happened when storing " + propertyPath, e);
         } finally {
             LOGGER.debug("finally");
         }
