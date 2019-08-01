@@ -66,7 +66,7 @@ public class CDSCMApplication {
             String[] clientsArray = clientsList.toArray(new String[0]);
             createClientsUsingPatchRequest.setClients(clientsArray);
             CreateClientsUsingPatchResponse createClientsUsingPatchResponse = cdscmExternalAPI.createClientsUsingPatch(createClientsUsingPatchRequest);
-            LOGGER.debug("created clients using patch"); 
+            LOGGER.debug("created clients using patch");
             /* Get client */
             clientId = "66666";
             LOGGER.debug("about to get client");
@@ -80,7 +80,7 @@ public class CDSCMApplication {
             PutClientSecurityRequest putClientSecurityRequest = CDSCMRequestFactory.createPutClientSecurityRequest(accessToken);
             LOGGER.debug("created putClientSecurityRequest");
             putClientSecurityRequest.setClientId(clientId);
-            putClientSecurityRequest.setClientSecurity("{\"defaultAccess\":255,\"users\":[{\"userId\":\"ADMIN\",\"access\":255},{\"userId\":\"martin.gilchrist@intapp.com\",\"access\":254}]}");
+            putClientSecurityRequest.setClientSecurity("{\"defaultAccess\":255,\"users\":[{\"userId\":\"ADMIN\",\"access\":255},{\"userId\":\"martin.gilchrist@xcase.com\",\"access\":254}]}");
             PutClientSecurityResponse putClientSecurityResponse = cdscmExternalAPI.putClientSecurity(putClientSecurityRequest);
             LOGGER.debug("put client security");
             /* Get client security */
@@ -119,7 +119,7 @@ public class CDSCMApplication {
             Date date = new Date(new Date().getTime() - 24*3600*1000);
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
             String since = formatter.format(date);
-            LOGGER.debug("since is " + since); 
+            LOGGER.debug("since is " + since);
             getClientsModifiedSinceDateRequest.setSince(since);
             GetClientsModifiedSinceDateResponse getClientsModifiedSinceDateResponse = cdscmExternalAPI.getClientsModifiedSinceDate(getClientsModifiedSinceDateRequest);
             LOGGER.debug("got clients modified since yesterday");
@@ -132,7 +132,7 @@ public class CDSCMApplication {
             publishClientsRequest.setClientsArray(publishClientsArray);
             publishClientsRequest.setTopicName(topicName);
             PublishClientsResponse publishClientsResponse = cdscmExternalAPI.publishClients(publishClientsRequest);
-            LOGGER.debug("published clients"); 
+            LOGGER.debug("published clients");
             /* Create matter */
             String matterId = "0001";
             LOGGER.debug("about to create matter");
@@ -167,14 +167,14 @@ public class CDSCMApplication {
             String[] mattersArray = mattersList.toArray(new String[0]);
             createMattersUsingPatchRequest.setMatters(mattersArray);
             CreateMattersUsingPatchResponse createMattersUsingPatchResponse = cdscmExternalAPI.createMattersUsingPatch(createMattersUsingPatchRequest);
-            LOGGER.debug("created matters using patch");            
+            LOGGER.debug("created matters using patch");
             /* Get matters */
             LOGGER.debug("about to get matters");
             GetMattersRequest getMattersRequest = CDSCMRequestFactory.createGetMattersRequest(accessToken);
             LOGGER.debug("created getMattersRequest");
             getMattersRequest.setClientId(clientId);
             GetMattersResponse getMattersResponse = cdscmExternalAPI.getMatters(getMattersRequest);
-            LOGGER.debug("got matters");      
+            LOGGER.debug("got matters");
             /* Get matter */
             matterId = "0001";
             LOGGER.debug("about to get matter");
@@ -212,7 +212,7 @@ public class CDSCMApplication {
             LOGGER.debug("created getClientSecurityRequest");
             putMatterSecurityRequest.setClientId(clientId);
             putMatterSecurityRequest.setMatterId(matterId);
-            putMatterSecurityRequest.setMatterSecurity("{\"defaultAccess\":255,\"users\":[{\"userId\":\"ADMIN\",\"access\":255},{\"userId\":\"xmartin.gilchrist@intapp.com\",\"access\":254}]}");
+            putMatterSecurityRequest.setMatterSecurity("{\"defaultAccess\":255,\"users\":[{\"userId\":\"ADMIN\",\"access\":255},{\"userId\":\"xmartin.gilchrist@xcase.com\",\"access\":254}]}");
             PutMatterSecurityResponse putMatterSecurityResponse = cdscmExternalAPI.putMatterSecurity(putMatterSecurityRequest);
             LOGGER.debug("put matter security");
             /* Get matter security */
@@ -237,10 +237,10 @@ public class CDSCMApplication {
             /* Get matters modified since yesterday */
             LOGGER.debug("about to get matters modified since yesterday");
             GetMattersModifiedSinceDateRequest getMattersModifiedSinceDateRequest = CDSCMRequestFactory.createGetMattersModifiedSinceDateRequest(accessToken);
-            LOGGER.debug("created getMattersModifiedSinceDateRequest"); 
+            LOGGER.debug("created getMattersModifiedSinceDateRequest");
             getMattersModifiedSinceDateRequest.setSince(since);
             GetMattersModifiedSinceDateResponse getMattersModifiedSinceDateResponse = cdscmExternalAPI.getMattersModifiedSinceDate(getMattersModifiedSinceDateRequest);
-            LOGGER.debug("got matters modified since yesterday"); 
+            LOGGER.debug("got matters modified since yesterday");
             /* Delete matters */
             LOGGER.debug("about to delete matters");
             DeleteMatterRequest deleteMatterRequest = CDSCMRequestFactory.createDeleteMatterRequest(accessToken);

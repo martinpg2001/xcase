@@ -27,12 +27,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class AWSApplication {
-    
+
     /**
      * log4j logger.
      */
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
-    
+
     public static void main(String[] args) {
         try {
             LOGGER.debug("starting main()");
@@ -57,7 +57,7 @@ public class AWSApplication {
             } else {
                 LOGGER.debug("bucketList is null");
             }
-            
+
             String bucketName = "com.xcase.testbucket";
             CreateBucketRequest createBucketRequest = CreateBucketRequest.builder().bucket(bucketName).build();
             CreateBucketResponse createBucketResponse = s3Client.createBucket(createBucketRequest);
@@ -69,7 +69,7 @@ public class AWSApplication {
             } else {
                 LOGGER.debug("bucketList is null");
             }
-            
+
             DeleteBucketRequest deleteBucketRequest = DeleteBucketRequest.builder().bucket(bucketName).build();
             DeleteBucketResponse deleteBucketResponse = s3Client.deleteBucket(deleteBucketRequest);
             listBucketsResponse = s3Client.listBuckets();
@@ -80,14 +80,14 @@ public class AWSApplication {
             } else {
                 LOGGER.debug("bucketList is null");
             }
-            
+
             /* Database operations */
             RdsClientBuilder rdsClientBuilder = RdsClient.builder().httpClient(apacheSdkHttpClient).region(region).credentialsProvider(awsCredentialsProvider);
             RdsClient rdsClient = rdsClientBuilder.build();
             LOGGER.debug("created rdsClient");
             String dbInstanceIdentifier = "com-xcase-testdatabase";
             String dbName = "TestDatabase";
-            CreateDbInstanceRequest createDbInstanceRequest = CreateDbInstanceRequest.builder().dbInstanceClass("db.t2.micro").engine("postgres").dbInstanceIdentifier(dbInstanceIdentifier).dbName(dbName).masterUsername("sa").masterUserPassword("Tsunami9").allocatedStorage(20).build();
+            CreateDbInstanceRequest createDbInstanceRequest = CreateDbInstanceRequest.builder().dbInstanceClass("db.t2.micro").engine("postgres").dbInstanceIdentifier(dbInstanceIdentifier).dbName(dbName).masterUsername("sa").masterUserPassword("password").allocatedStorage(20).build();
             CreateDbInstanceResponse createDbInstanceResponse = rdsClient.createDBInstance(createDbInstanceRequest);
             LOGGER.debug("created dbInstance");
             DeleteDbInstanceRequest deleteDbInstanceRequest = DeleteDbInstanceRequest.builder().dbInstanceIdentifier(dbInstanceIdentifier).build();

@@ -30,7 +30,7 @@ namespace XCaseGeneric
         /// <summary>
         /// This method deletes an LDAP entry. The XML file should be of this form:
         /// <operation id="Delete an LDAP entry" class="XCaseGeneric.ActionLDAPDeleteEntry">
-        ///     <ldap base="cn=Users,dc=xcase-auk,dc=com" server="Auk" username="Administrator" password="tsunami" entryname="cn=martin" />
+        ///     <ldap base="cn=Users,dc=xcase-auk,dc=com" server="Auk" username="Administrator" password="password" entryname="cn=martin" />
         /// </operation>
         /// The ssl attribute is optional.
         /// </summary>

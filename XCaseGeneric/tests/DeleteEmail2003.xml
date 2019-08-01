@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <operation id="Check email" class="XCaseGeneric.ActionDeleteEmail2003">
-  <exchange domain="DODSON" url="http://mvubu/Exchange" username="Administrator" password="Tsunami9" />
+  <exchange domain="XCASE" url="http://exchangeserver/Exchange" username="Administrator" password="password" />
   <email folder="Inbox" mailbox="Administrator" subject=""/>
 </operation>
 

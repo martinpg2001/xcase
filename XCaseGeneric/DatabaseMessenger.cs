@@ -287,9 +287,9 @@ namespace XCaseGeneric
         /// <summary>
         /// Populates the database connection information. Note that the form of the connection
         /// string can come in different flavours, such as:
-        /// server=Krish;database=QAWallsTestResults;Integrated Security=SSPI
-        /// Data Source=Krish;Initial Catalog=QAWallsTestResults;User Id=sa;Password=;Integrated Security=SSPI
-        /// dbHost=Krish;dbDatabase=QAWallsTestResults;dbUsername=IAINTERNAL\Administrator;dbPassword=tsunami;dbIntegratedSecurity=SSPI
+        /// server=dbHost;database=QAWallsTestResults;Integrated Security=SSPI
+        /// Data Source=dbHost;Initial Catalog=QAWallsTestResults;User Id=sa;Password=;Integrated Security=SSPI
+        /// dbHost=dbHost;dbDatabase=QAWallsTestResults;dbUsername=XCASE\Administrator;dbPassword=passsword;dbIntegratedSecurity=SSPI
         /// Please add other names if you discover a problem.
         /// </summary>
         /// <param name="configString">The configString parameter.</param>

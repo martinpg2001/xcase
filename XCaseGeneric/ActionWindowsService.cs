@@ -29,7 +29,7 @@ namespace XCaseGeneric
         /// <summary>
         /// This is the password string.
         /// </summary>
-        protected string Password = "tsunami";
+        protected string Password = "password";
 
         /// <summary>
         /// This is the appPoolsStringArray string array.

@@ -39,7 +39,7 @@ namespace XCase.REST.ProxyGenerator.Generator
                     AppendAsyncToMethodName = false;
                     break;
                 case "Java":
-                    //Namespace = "com.intapp.harness.actions.integrate.objects";
+                    //Namespace = "com.xcase.harness.actions.integrate.objects";
                     ProxyConstructorSuffix = "(Uri baseUrl) extends base(baseUrl)";
                     ParseOperationIdForProxyName = true;
                     AppendAsyncToMethodName = false;

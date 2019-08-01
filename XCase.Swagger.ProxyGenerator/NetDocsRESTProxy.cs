@@ -77,7 +77,7 @@
         public override string GetAccessToken(HttpClient client, string clientId = "admin", string clientSecret = "", string authorizationCode = null)
         {
             Log.DebugFormat("starting GetAccessToken()");
-            string redirectURL = "https://www.intapp.com/auth/netdocuments-auth?region=US";
+            string redirectURL = "https://www.xcase.com/auth/netdocuments-auth?region=US";
             string tokenURL = _baseUrl + "v1/OAuth";
             Log.DebugFormat("tokenURL is {0}", tokenURL);
             Log.DebugFormat("clientId is {0}", clientId);

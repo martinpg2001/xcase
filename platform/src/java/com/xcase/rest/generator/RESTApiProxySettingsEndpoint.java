@@ -38,7 +38,7 @@ public class RESTApiProxySettingsEndpoint implements IAPIProxySettingsEndpoint
                 AppendAsyncToMethodName = false;
                 break;
             case "Java":
-                //Namespace = "com.intapp.harness.actions.integrate.objects";
+                //Namespace = "com.xcase.harness.actions.integrate.objects";
                 ProxyConstructorSuffix = "(Uri baseUrl) extends base(baseUrl)";
                 ParseOperationIdForProxyName = true;
                 AppendAsyncToMethodName = false;
@@ -54,7 +54,7 @@ public class RESTApiProxySettingsEndpoint implements IAPIProxySettingsEndpoint
     public RESTApiProxySettingsEndpoint(String language) {
         BaseProxyClass = "OpenCloudSwaggerProxy";
         Id = "SwaggerProxy";
-        Namespace = "com.intapp.open.actions.objects";
+        Namespace = "com.xcase.open.actions.objects";
         switch (language) {
             case "CSharp":
                 ProxyConstructorSuffix = "(Uri baseUrl) : base(baseUrl)";

@@ -21,7 +21,7 @@ namespace TestClientBase
     /// <summary>
     /// This action class moves an LDAP entry. The XML file should be of this form:
     /// <operation id="Move an LDAP entry" class="XCaseGeneric.ActionLDAPMoveEntry">
-    ///     <ldap base="cn=Users,dc=xcase-auk,dc=com" server="Auk" username="Administrator" password="tsunami" entryname="cn=martin" newbase="" />
+    ///     <ldap base="cn=Users,dc=xcase-auk,dc=com" server="Auk" username="Administrator" password="password" entryname="cn=martin" newbase="" />
     /// </operation>
     /// The base attribute is required.
     /// </summary>
@@ -30,7 +30,7 @@ namespace TestClientBase
         /// <summary>
         /// This method moves an LDAP entry. The XML file should be of this form:
         /// <operation id="Move an LDAP entry" class="XCaseGeneric.ActionLDAPMoveEntry">
-        ///     <ldap base="cn=Users,dc=xcase-auk,dc=com" server="Auk" username="Administrator" password="tsunami" entryname="cn=martin" newbase="" />
+        ///     <ldap base="cn=Users,dc=xcase-auk,dc=com" server="Auk" username="Administrator" password="password" entryname="cn=martin" newbase="" />
         /// </operation>
         /// The base attribute is required.
         /// </summary>

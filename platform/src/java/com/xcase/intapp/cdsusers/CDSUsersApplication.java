@@ -42,7 +42,7 @@ public class CDSUsersApplication {
         try {
             generateTokenPair();
             String accessToken = CDSUsersConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(CDSUsersConstant.ACCESS_TOKEN);
-            String personId = "gilian.gilchrist@intapp.com";
+            String personId = "gilian.gilchrist@xcase.com";
             LOGGER.debug("personId is " + personId);
             /* Create person */
             LOGGER.debug("about to create person");
@@ -50,7 +50,7 @@ public class CDSUsersApplication {
             LOGGER.debug("created createPersonRequest");
             PersonPostDTO personPostDTO = new PersonPostDTO();
             personPostDTO.costPoolId = "TRV";
-            personPostDTO.email = "kevin.gilchrist@intapp.com";
+            personPostDTO.email = "kevin.gilchrist@xcase.com";
             personPostDTO.firstName = "Kevin";
             personPostDTO.middleName = "Philip";
             personPostDTO.lastName = "Gilchrist";
@@ -90,9 +90,9 @@ public class CDSUsersApplication {
             workCommunicationDTO.type = CommunicationDTO.typeValues.Work;
             communicationDTOList.add(workCommunicationDTO);
             CommunicationDTO[] communicationDTOArray = communicationDTOList.toArray(new CommunicationDTO[0]);
-            personPostDTO.communications = communicationDTOArray;            
+            personPostDTO.communications = communicationDTOArray;
             createPersonRequest.setPerson(personPostDTO);
-            createPersonRequest.setPersonString("{\"personId\":null,\"firstName\":\"Imogen\",\"middleName\":\"Philippa\",\"lastName\":\"Gilchrist\",\"name\":\"Imogen Gilchrist\",\"titles\":[],\"email\":\"imogen.gilchrist@intapp.com\",\"costPoolId\":\"ACC\",\"addresses\":[{\"type\":\"Home\",\"country\":\"US\",\"state\":\"UT\",\"city\":\"Salt Lake City\",\"streetAddress\":\"1 Park Avenue\",\"postalCode\":\"09876\"},{\"type\":\"Work\",\"country\":\"US\",\"state\":\"UT\",\"city\":\"Salt Lake City\",\"streetAddress\":\"2 Park Avenue\",\"postalCode\":\"09875\"}],\"communications\":[{\"type\":\"Mobile\",\"areaCode\":\"408\",\"number\":\"5551212\"},{\"type\":\"Work\",\"areaCode\":\"408\",\"number\":\"6661212\"}],\"employee\":true,\"department\":{\"key\":\"QA\"},\"office\":{\"key\":\"LND\"},\"practiceAreas\":[{\"key\":\"LIT\"}],\"externalIds\":[]}");
+            createPersonRequest.setPersonString("{\"personId\":null,\"firstName\":\"Imogen\",\"middleName\":\"Philippa\",\"lastName\":\"Gilchrist\",\"name\":\"Imogen Gilchrist\",\"titles\":[],\"email\":\"imogen.gilchrist@xcase.com\",\"costPoolId\":\"ACC\",\"addresses\":[{\"type\":\"Home\",\"country\":\"US\",\"state\":\"UT\",\"city\":\"Salt Lake City\",\"streetAddress\":\"1 Park Avenue\",\"postalCode\":\"09876\"},{\"type\":\"Work\",\"country\":\"US\",\"state\":\"UT\",\"city\":\"Salt Lake City\",\"streetAddress\":\"2 Park Avenue\",\"postalCode\":\"09875\"}],\"communications\":[{\"type\":\"Mobile\",\"areaCode\":\"408\",\"number\":\"5551212\"},{\"type\":\"Work\",\"areaCode\":\"408\",\"number\":\"6661212\"}],\"employee\":true,\"department\":{\"key\":\"QA\"},\"office\":{\"key\":\"LND\"},\"practiceAreas\":[{\"key\":\"LIT\"}],\"externalIds\":[]}");
             CreatePersonResponse createPersonResponse = cdsUsersExternalAPI.createPerson(createPersonRequest);
             LOGGER.debug("created person");
             /* Get persons */
@@ -115,14 +115,14 @@ public class CDSUsersApplication {
             CreateUserRequest createUserRequest = CDSUsersRequestFactory.createCreateUserRequest(accessToken);
             LOGGER.debug("created createUserRequest");
             UserPostDTO userPostDTO = new UserPostDTO();
-            userPostDTO.userId = "john.gilchrist@intapp.com";
-            userPostDTO.email = "john.gilchrist@intapp.com";
+            userPostDTO.userId = "john.gilchrist@xcase.com";
+            userPostDTO.email = "john.gilchrist@xcase.com";
             userPostDTO.enabled = true;
             userPostDTO.name = "John Gilchrist";
             userPostDTO.personKey = "-vGpeSugaRv20cCo";
             userPostDTO.timekeeper = true;
             createUserRequest.setUser(userPostDTO);
-            createUserRequest.setUserString("{\"userId\":\"dennis.gilchrist@intapp.com\",\"email\":\"dennis.gilchrist@intapp.com\",\"enabled\":true,\"name\":\"Dennis Gilchrist\",\"personKey\":\"-vGpeSugaRv20cCo\",\"timeZoneId\":null,\"locale\":null,\"roles\":[],\"enableOtp\":null,\"timekeeper\":true,\"exchangeUsername\":\"\",\"exchangeHost\":\"\",\"emailAliases\":[],\"timeLinks\":{}}");
+            createUserRequest.setUserString("{\"userId\":\"dennis.gilchrist@xcase.com\",\"email\":\"dennis.gilchrist@xcase.com\",\"enabled\":true,\"name\":\"Dennis Gilchrist\",\"personKey\":\"-vGpeSugaRv20cCo\",\"timeZoneId\":null,\"locale\":null,\"roles\":[],\"enableOtp\":null,\"timekeeper\":true,\"exchangeUsername\":\"\",\"exchangeHost\":\"\",\"emailAliases\":[],\"timeLinks\":{}}");
             CreateUserResponse createUserResponse = cdsUsersExternalAPI.createUser(createUserRequest);
             LOGGER.debug("created user");
             /* Find users */
@@ -150,7 +150,7 @@ public class CDSUsersApplication {
             PutUserRequest putUserRequest = CDSUsersRequestFactory.createPutUserRequest(accessToken);
             LOGGER.debug("created putUserRequest");
             putUserRequest.setKey("j_GC6SvZOxsM9sC2");
-            putUserRequest.setUserString("{\"userId\" : \"dennis.gilchrist@intapp.com\",\"email\" : \"dennis.gilchrist@intapp.com\",\"enabled\" : true,\"name\" : \"Dennis Gilchrist\",\"firstName\" : \"Dennis\",\"lastName\" : \"Gilchrist\",\"personKey\" : \"-vGpeSugaRv20cCo\",\"external\" : true,\"userOrigin\" : \"REGULAR\",\"providerAlias\" : \"saml\",\"enableOtp\" : false,\"timekeeper\" : false,\"exchangeUsername\" : \"\",\"exchangeHost\" : \"\",\"readonly\" : false}");
+            putUserRequest.setUserString("{\"userId\" : \"dennis.gilchrist@xcase.com\",\"email\" : \"dennis.gilchrist@xcase.com\",\"enabled\" : true,\"name\" : \"Dennis Gilchrist\",\"firstName\" : \"Dennis\",\"lastName\" : \"Gilchrist\",\"personKey\" : \"-vGpeSugaRv20cCo\",\"external\" : true,\"userOrigin\" : \"REGULAR\",\"providerAlias\" : \"saml\",\"enableOtp\" : false,\"timekeeper\" : false,\"exchangeUsername\" : \"\",\"exchangeHost\" : \"\",\"readonly\" : false}");
             PutUserResponse putUserResponse = cdsUsersExternalAPI.putUser(putUserRequest);
             LOGGER.debug("put user");
             /* Get user */
@@ -212,7 +212,7 @@ public class CDSUsersApplication {
             LOGGER.debug("created getUserRolesRequest");
             getUserRolesRequest.setKey("j_GC6SvZOxsM9sC2");
             GetUserRolesResponse getUserRolesResponse = cdsUsersExternalAPI.getUserRoles(getUserRolesRequest);
-            LOGGER.debug("got roles assigned to user");   
+            LOGGER.debug("got roles assigned to user");
             /* Delete role */
             LOGGER.debug("about to delete role");
             DeleteRoleRequest deleteRoleRequest = CDSUsersRequestFactory.createDeleteRoleRequest(accessToken);
@@ -249,9 +249,9 @@ public class CDSUsersApplication {
             UploadEntitiesRequest uploadPersonEntitiesRequest = CDSUsersRequestFactory.createUploadEntitiesRequest(accessToken);
             LOGGER.debug("created uploadPersonEntitiesRequest");
             uploadPersonEntitiesRequest.setEntity("Person");
-            uploadPersonEntitiesRequest.setEntityString("[{\"firstName\":\"Ellen\",\"middleName\":\"Philippa\",\"lastName\":\"Gilchrist\",\"name\":\"Ellen Gilchrist\",\"titles\":[],\"email\":\"ellen.gilchrist@intapp.com\",\"costPoolId\":null,\"addresses\":[],\"communications\":[],\"employee\":true,\"department\":null,\"office\":null,\"practiceAreas\":[],\"externalIds\":[]},{\"firstName\":\"Frank\",\"middleName\":\"Philippa\",\"lastName\":\"Gilchrist\",\"name\":\"Frank Gilchrist\",\"titles\":[],\"email\":\"frank.gilchrist@intapp.com\",\"costPoolId\":null,\"addresses\":[],\"communications\":[],\"employee\":false,\"department\":null,\"office\":null,\"practiceAreas\":[],\"externalIds\":[]}]");
+            uploadPersonEntitiesRequest.setEntityString("[{\"firstName\":\"Ellen\",\"middleName\":\"Philippa\",\"lastName\":\"Gilchrist\",\"name\":\"Ellen Gilchrist\",\"titles\":[],\"email\":\"ellen.gilchrist@xcase.com\",\"costPoolId\":null,\"addresses\":[],\"communications\":[],\"employee\":true,\"department\":null,\"office\":null,\"practiceAreas\":[],\"externalIds\":[]},{\"firstName\":\"Frank\",\"middleName\":\"Philippa\",\"lastName\":\"Gilchrist\",\"name\":\"Frank Gilchrist\",\"titles\":[],\"email\":\"frank.gilchrist@xcase.com\",\"costPoolId\":null,\"addresses\":[],\"communications\":[],\"employee\":false,\"department\":null,\"office\":null,\"practiceAreas\":[],\"externalIds\":[]}]");
             UploadEntitiesResponse uploadPersonEntitiesResponse = cdsUsersExternalAPI.uploadEntities(uploadPersonEntitiesRequest);
-            LOGGER.debug("uploaded person entities");  
+            LOGGER.debug("uploaded person entities");
             UploadEntitiesRequest uploadRoleEntitiesRequest = CDSUsersRequestFactory.createUploadEntitiesRequest(accessToken);
             LOGGER.debug("created uploadRoleEntitiesRequest");
             uploadRoleEntitiesRequest.setEntity("Role");
@@ -261,9 +261,9 @@ public class CDSUsersApplication {
             UploadEntitiesRequest uploadUserEntitiesRequest = CDSUsersRequestFactory.createUploadEntitiesRequest(accessToken);
             LOGGER.debug("created uploadUserEntitiesRequest");
             uploadUserEntitiesRequest.setEntity("User");
-            uploadUserEntitiesRequest.setEntityString("[{\"userId\":\"ellen.gilchrist@intapp.com\",\"email\":\"ellen.gilchrist@intapp.com\",\"enabled\":true,\"name\":\"Ellen Gilchrist\",\"personKey\":\"-vGpeSugaRv20cCo\",\"timeZoneId\":null,\"locale\":null,\"roles\":[],\"enableOtp\":null,\"timekeeper\":true,\"exchangeUsername\":\"\",\"exchangeHost\":\"\",\"emailAliases\":[],\"timeLinks\":{}},{\"userId\":\"frank.gilchrist@intapp.com\",\"email\":\"frank.gilchrist@intapp.com\",\"enabled\":true,\"name\":\"Frank Gilchrist\",\"personKey\":\"7vHDVCunIRuXfsDq\",\"timeZoneId\":null,\"locale\":null,\"roles\":[],\"enableOtp\":null,\"timekeeper\":true,\"exchangeUsername\":\"\",\"exchangeHost\":\"\",\"emailAliases\":[],\"timeLinks\":{}}]");
+            uploadUserEntitiesRequest.setEntityString("[{\"userId\":\"ellen.gilchrist@xcase.com\",\"email\":\"ellen.gilchrist@xcase.com\",\"enabled\":true,\"name\":\"Ellen Gilchrist\",\"personKey\":\"-vGpeSugaRv20cCo\",\"timeZoneId\":null,\"locale\":null,\"roles\":[],\"enableOtp\":null,\"timekeeper\":true,\"exchangeUsername\":\"\",\"exchangeHost\":\"\",\"emailAliases\":[],\"timeLinks\":{}},{\"userId\":\"frank.gilchrist@intapp.com\",\"email\":\"frank.gilchrist@xcase.com\",\"enabled\":true,\"name\":\"Frank Gilchrist\",\"personKey\":\"7vHDVCunIRuXfsDq\",\"timeZoneId\":null,\"locale\":null,\"roles\":[],\"enableOtp\":null,\"timekeeper\":true,\"exchangeUsername\":\"\",\"exchangeHost\":\"\",\"emailAliases\":[],\"timeLinks\":{}}]");
             UploadEntitiesResponse uploadUserEntitiesResponse = cdsUsersExternalAPI.uploadEntities(uploadUserEntitiesRequest);
-            LOGGER.debug("uploaded user entities"); 
+            LOGGER.debug("uploaded user entities");
         } catch (Exception e) {
             LOGGER.warn("exception executing methods: " + e.getMessage());
         }

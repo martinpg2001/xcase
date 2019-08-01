@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <operation id="Executes a remote command" class="XCaseGeneric.ActionRemoteExecution">
-    <remoteexecution domain="IAINTERNAL" server="Karna" username="Administrator" password="tsunami" command="dir" arguments="" />
+    <remoteexecution domain="XCASE" server="wsmanserver" username="Administrator" password="password" command="dir" arguments="" />
 </operation>

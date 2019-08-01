@@ -15,7 +15,7 @@ namespace XCaseGeneric
         /// This method stops Windows services specified by the services
         /// element. The XML document should be of this form:
         /// <operation class="XCaseGeneric.ActionRestartWindowsService">
-        ///     <windowsconnectionstring>server=krish.internal.xcase.net;username=Administrator;password=tsunami;domain=IAINTERNAL</windowsconnectionstring>
+        ///     <windowsconnectionstring>server=krish.internal.xcase.net;username=Administrator;password=password;domain=XCASE</windowsconnectionstring>
         ///     <services>WBExtensionService,WBSchedulerService</services>
         /// </operation>
         /// You must be able to access the Windows server to use this class.

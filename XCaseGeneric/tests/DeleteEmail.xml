@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <operation id="Delete all amydev email at start of test case" class="XCaseGeneric.ActionDeleteEmail">
-    <exchange domain="DODSON" url="https://steepways/EWS/Exchange.asmx" username="amydev" password="Tsunami9" />
-    <email folder="Inbox" mailbox="amydev@dodsonfogg.xcase.net" deletemode="Hard"/>
+    <exchange domain="XCASE" url="https://exchangeserver/EWS/Exchange.asmx" username="userdev" password="password" />
+    <email folder="Inbox" mailbox="userdev@internal.xcase.net" deletemode="Hard"/>
 </operation>

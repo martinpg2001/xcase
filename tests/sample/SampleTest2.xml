@@ -6,7 +6,7 @@
         </dummy>
     </operation>
     <operation id="Send HTTP request to web server" class="XCaseGeneric.ActionHTTPRequest">
-        <credentials authentication="NTLM" username="Administrator" password="tsunami" domain="$envsample1" />
+        <credentials authentication="NTLM" username="Administrator" password="password" domain="$envsample1" />
         <url host="www.google.com" method="GET" path="" querystring="$envsample2" saveresponse="false" scheme="http" />
         <expected>
             <response code="OK" />

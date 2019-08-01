@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <operation id="Check email" class="XCaseGeneric.ActionCheckEmail">
-    <exchange url="http://balrog/EWS/Exchange.asmx" username="IAINTERNAL\Administrator" password="tsunami" />
+    <exchange url="http://balrog/EWS/Exchange.asmx" username="XCASE\Administrator" password="password" />
     <email mailbox="" subject="">
         This is the body of the email message.
     </email>

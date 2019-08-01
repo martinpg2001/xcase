@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <operation id="Check email" class="XCaseGeneric.ActionCheckEmail2003">
-  <exchange domain="DODSON" url="http://mvubu/Exchange" username="Administrator" password="Tsunami9" />
+  <exchange domain="XCASE" url="http://emailserver/Exchange" username="Administrator" password="password" />
   <email folder="Inbox" mailbox="Administrator" subject="Testing WebDav email" />
   <expected>
-    <email to="&quot;Administrator&quot; &lt;Administrator@dodsonfogg.xcase.net&gt;" from="&quot;Administrator&quot; &lt;Administrator@dodsonfogg.xcase.net&gt;" subject="Testing WebDav email" >This is another test.
+    <email to="&quot;Administrator&quot; &lt;Administrator@internal.xcase.net&gt;" from="&quot;Administrator&quot; &lt;Administrator@internal.xcase.net&gt;" subject="Testing WebDav email" >This is another test.
 </email>    
   </expected>
 </operation>

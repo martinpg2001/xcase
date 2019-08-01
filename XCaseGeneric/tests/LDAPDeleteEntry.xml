@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <operation id="Delete an LDAP entry" class="XCaseGeneric.ActionLDAPDeleteEntry">
-    <ldap base="cn=Users,dc=xcase-auk,dc=com" server="Auk" username="Administrator" password="tsunami" entryname="cn=martin" />
+    <ldap base="cn=Users,dc=xcase-ldapserver,dc=com" server="ldapserver" username="Administrator" password="password" entryname="cn=martin" />
 </operation>

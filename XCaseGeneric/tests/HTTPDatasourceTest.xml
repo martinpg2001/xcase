@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <operations>
   <operation id="Create HTTP datasource" class="XCaseGeneric.ActionCreateDatasource">
-    <datasource name="TimeMobileDatasource" type="http" server="mulefa" username="IAINTERNAL\mdev" password="tsunami" />
+    <datasource name="TimeMobileDatasource" type="http" server="timemobile" username="XCASE\username" password="password" />
   </operation>
   <operation id="Execute HTTP requests" class="XCaseGeneric.ActionHTTPRequest">
     <url datasource="TimeMobileDatasource" method="GET" path="timemobile" />

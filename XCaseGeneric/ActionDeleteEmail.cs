@@ -25,7 +25,7 @@ namespace XCaseGeneric
         /// <summary>
         /// This method deletes email. The XmlDocument must be of this form:
         /// <operation id="Check an email" class="XCaseGeneric.ActionDeleteEmail">
-        ///     <exchange url="http://balrog/EWS/Exchange.asmx" username="IAINTERNAL\Administrator" password="tsunami" />
+        ///     <exchange url="http://exchangeserver/EWS/Exchange.asmx" username="XCASE\Administrator" password="password" />
         ///     <email mailbox="mdev@xcase.com" subject="Email sent from Test Tools" />
         /// </operation>
         /// Use the ssl attribute to specify an SSL connection to the Exchange server.
@@ -137,7 +137,7 @@ namespace XCaseGeneric
         /// <returns>The ExchangeService object.</returns>
         public ExchangeService GetBinding()
         {
-            return this.GetBinding("http://balrog/EWS/Exchange.asmx", "IAINTERNAL\\Administrator", "tsunami", string.Empty);
+            return this.GetBinding("http://exchangeserver/EWS/Exchange.asmx", "XCASE\\Administrator", "password", string.Empty);
         }
 
         /// <summary>

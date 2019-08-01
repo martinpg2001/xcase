@@ -122,7 +122,7 @@
                     this.Port = "1521";
                     this.Driver = "oracle.jdbc.driver.OracleDriver";
                     this.Username = "system";
-                    this.Password = "tsunami";
+                    this.Password = "password";
                     break;
                 case MYSQL3OR4:
                 case MYSQL5:
@@ -273,7 +273,7 @@
                     this.Port = "1521";
                     this.Driver = "oracle.jdbc.driver.OracleDriver";
                     this.Username = "system";
-                    this.Password = "tsunami";
+                    this.Password = "password";
                     break;
                 case MYSQL3OR4:
                 case MYSQL5:

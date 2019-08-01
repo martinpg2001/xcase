@@ -13,7 +13,7 @@ public interface CreatePersonRequest extends CDSUsersRequest {
      * @return the operation URL
      */
     public String getOperationPath();
-    
+
     /**
      * Returns the PersonPostDTO object.
      * @return the operation URL
@@ -21,8 +21,8 @@ public interface CreatePersonRequest extends CDSUsersRequest {
     public PersonPostDTO getPerson();
 
     /**
-     * Returns the entity string used to create the person. For example: 
-     * {"firstName":"Dennis","middleName":"Philip","lastName":"Gilchrist","name":"Dennis Gilchrist","titles":[],"email":"dennis.gilchrist@intapp.com","costPoolId":null,"addresses":[],"communications":[],"employee":true,"department":null,"office":null,"practiceAreas":[],"externalIds":[]}
+     * Returns the entity string used to create the person. For example:
+     * {"firstName":"Dennis","middleName":"Philip","lastName":"Gilchrist","name":"Dennis Gilchrist","titles":[],"email":"dennis.gilchrist@xcase.com","costPoolId":null,"addresses":[],"communications":[],"employee":true,"department":null,"office":null,"practiceAreas":[],"externalIds":[]}
      * @return the entity string
      */
 	public String getPersonString();

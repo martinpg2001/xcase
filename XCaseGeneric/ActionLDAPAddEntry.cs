@@ -21,7 +21,7 @@ namespace XCaseGeneric
     /// <summary>
     /// This action class adds an LDAP entry. The XML file should be of this form:
     /// <operation id="Add an LDAP entry" class="XCaseGeneric.ActionLDAPAddEntry">
-    ///     <ldap base="cn=Users,dc=xcase-auk,dc=com" server="Auk" username="Administrator" password="tsunami" newentryname="" newentryschemaclassname="" >
+    ///     <ldap base="cn=Users,dc=xcase-auk,dc=com" server="ldapserver" username="Administrator" password="password" newentryname="" newentryschemaclassname="" >
     ///         <property name="" value="" />
     ///         <property name="" value="" />
     ///     </ldap>
@@ -33,7 +33,7 @@ namespace XCaseGeneric
         /// <summary>
         /// This method adds an LDAP entry. The XML file should be of this form:
         /// <operation id="Add an LDAP entry" class="XCaseGeneric.ActionLDAPAddEntry">
-        ///     <ldap base="cn=Users,dc=xcase-auk,dc=com" server="Auk" username="Administrator" password="tsunami" newentryname="cn=martin" newentryschemaclassname="user" >
+        ///     <ldap base="cn=Users,dc=xcase-auk,dc=com" server="Auk" username="Administrator" password="password" newentryname="cn=martin" newentryschemaclassname="user" >
         ///         <property name="cn" value="martin" />
         ///         <property name="sn" value="philip" />
         ///     </ldap>

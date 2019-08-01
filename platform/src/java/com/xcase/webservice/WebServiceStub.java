@@ -100,7 +100,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
         __operation = new org.apache.axis2.description.OutInAxisOperation();
 
         __operation.setName(new javax.xml.namespace.QName(
-                "http://www.intapp.com/WSEngine/SOAP", "login"));
+                "http://www.xcase.com/WSEngine/SOAP", "login"));
         _service.addOperation(__operation);
 
         _operations[0] = __operation;
@@ -108,7 +108,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
         __operation = new org.apache.axis2.description.OutInAxisOperation();
 
         __operation.setName(new javax.xml.namespace.QName(
-                "http://www.intapp.com/WSEngine/SOAP", "getStatus"));
+                "http://www.xcase.com/WSEngine/SOAP", "getStatus"));
         _service.addOperation(__operation);
 
         _operations[1] = __operation;
@@ -116,7 +116,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
         __operation = new org.apache.axis2.description.OutInAxisOperation();
 
         __operation.setName(new javax.xml.namespace.QName(
-                "http://www.intapp.com/WSEngine/SOAP", "invokeAsyncWebService"));
+                "http://www.xcase.com/WSEngine/SOAP", "invokeAsyncWebService"));
         _service.addOperation(__operation);
 
         _operations[2] = __operation;
@@ -124,7 +124,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
         __operation = new org.apache.axis2.description.OutInAxisOperation();
 
         __operation.setName(new javax.xml.namespace.QName(
-                "http://www.intapp.com/WSEngine/SOAP", "getResultForWebService"));
+                "http://www.xcase.com/WSEngine/SOAP", "getResultForWebService"));
         _service.addOperation(__operation);
 
         _operations[3] = __operation;
@@ -132,7 +132,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
         __operation = new org.apache.axis2.description.OutOnlyAxisOperation();
 
         __operation.setName(new javax.xml.namespace.QName(
-                "http://www.intapp.com/WSEngine/SOAP", "cancel"));
+                "http://www.xcase.com/WSEngine/SOAP", "cancel"));
         _service.addOperation(__operation);
 
         _operations[4] = __operation;
@@ -140,7 +140,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
         __operation = new org.apache.axis2.description.OutOnlyAxisOperation();
 
         __operation.setName(new javax.xml.namespace.QName(
-                "http://www.intapp.com/WSEngine/SOAP", "logout"));
+                "http://www.xcase.com/WSEngine/SOAP", "logout"));
         _service.addOperation(__operation);
 
         _operations[5] = __operation;
@@ -148,7 +148,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
         __operation = new org.apache.axis2.description.OutInAxisOperation();
 
         __operation.setName(new javax.xml.namespace.QName(
-                "http://www.intapp.com/WSEngine/SOAP", "invokeSyncWebService"));
+                "http://www.xcase.com/WSEngine/SOAP", "invokeSyncWebService"));
         _service.addOperation(__operation);
 
         _operations[6] = __operation;
@@ -171,7 +171,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
         try {
             org.apache.axis2.client.OperationClient _operationClient = _serviceClient.createClient(_operations[0].getName());
             _operationClient.getOptions()
-                    .setAction("http://www.intapp.com/WSEngine/SOAP#login");
+                    .setAction("http://www.xcase.com/WSEngine/SOAP#login");
             _operationClient.getOptions().setExceptionToBeThrownOnSOAPFault(true);
 
             addPropertyToOperationClient(_operationClient,
@@ -189,9 +189,9 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
                     login,
                     optimizeContent(
                             new javax.xml.namespace.QName(
-                                    "http://www.intapp.com/WSEngine/SOAP", "login")),
+                                    "http://www.xcase.com/WSEngine/SOAP", "login")),
                     new javax.xml.namespace.QName(
-                            "http://www.intapp.com/WSEngine/SOAP", "login"));
+                            "http://www.xcase.com/WSEngine/SOAP", "login"));
 
             //adding SOAP soap_headers
             _serviceClient.addHeadersToEnvelope(env);
@@ -285,7 +285,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
         try {
             org.apache.axis2.client.OperationClient _operationClient = _serviceClient.createClient(_operations[1].getName());
             _operationClient.getOptions()
-                    .setAction("http://www.intapp.com/WSEngine/SOAP#getStatus");
+                    .setAction("http://www.xcase.com/WSEngine/SOAP#getStatus");
             _operationClient.getOptions().setExceptionToBeThrownOnSOAPFault(true);
 
             addPropertyToOperationClient(_operationClient,
@@ -303,9 +303,9 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
                     getStatus,
                     optimizeContent(
                             new javax.xml.namespace.QName(
-                                    "http://www.intapp.com/WSEngine/SOAP", "getStatus")),
+                                    "http://www.xcase.com/WSEngine/SOAP", "getStatus")),
                     new javax.xml.namespace.QName(
-                            "http://www.intapp.com/WSEngine/SOAP", "getStatus"));
+                            "http://www.xcase.com/WSEngine/SOAP", "getStatus"));
 
             //adding SOAP soap_headers
             _serviceClient.addHeadersToEnvelope(env);
@@ -400,7 +400,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
         try {
             org.apache.axis2.client.OperationClient _operationClient = _serviceClient.createClient(_operations[2].getName());
             _operationClient.getOptions()
-                    .setAction("http://www.intapp.com/WSEngine/SOAP#invokeAsyncWebService");
+                    .setAction("http://www.xcase.com/WSEngine/SOAP#invokeAsyncWebService");
             _operationClient.getOptions().setExceptionToBeThrownOnSOAPFault(true);
 
             addPropertyToOperationClient(_operationClient,
@@ -418,10 +418,10 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
                     invokeAsyncWebService,
                     optimizeContent(
                             new javax.xml.namespace.QName(
-                                    "http://www.intapp.com/WSEngine/SOAP",
+                                    "http://www.xcase.com/WSEngine/SOAP",
                                     "invokeAsyncWebService")),
                     new javax.xml.namespace.QName(
-                            "http://www.intapp.com/WSEngine/SOAP",
+                            "http://www.xcase.com/WSEngine/SOAP",
                             "invokeAsyncWebService"));
 
             //adding SOAP soap_headers
@@ -517,7 +517,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
         try {
             org.apache.axis2.client.OperationClient _operationClient = _serviceClient.createClient(_operations[3].getName());
             _operationClient.getOptions()
-                    .setAction("http://www.intapp.com/WSEngine/SOAP#getResultForWebService");
+                    .setAction("http://www.xcase.com/WSEngine/SOAP#getResultForWebService");
             _operationClient.getOptions().setExceptionToBeThrownOnSOAPFault(true);
 
             addPropertyToOperationClient(_operationClient,
@@ -535,10 +535,10 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
                     getResultForWebService,
                     optimizeContent(
                             new javax.xml.namespace.QName(
-                                    "http://www.intapp.com/WSEngine/SOAP",
+                                    "http://www.xcase.com/WSEngine/SOAP",
                                     "getResultForWebService")),
                     new javax.xml.namespace.QName(
-                            "http://www.intapp.com/WSEngine/SOAP",
+                            "http://www.xcase.com/WSEngine/SOAP",
                             "getResultForWebService"));
 
             //adding SOAP soap_headers
@@ -632,7 +632,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
         org.apache.axis2.client.OperationClient _operationClient = _serviceClient.createClient(_operations[4].getName());
         _operationClient.getOptions()
-                .setAction("http://www.intapp.com/WSEngine/SOAP#cancel");
+                .setAction("http://www.xcase.com/WSEngine/SOAP#cancel");
         _operationClient.getOptions().setExceptionToBeThrownOnSOAPFault(true);
 
         addPropertyToOperationClient(_operationClient,
@@ -648,9 +648,9 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
                 cancel,
                 optimizeContent(
                         new javax.xml.namespace.QName(
-                                "http://www.intapp.com/WSEngine/SOAP", "cancel")),
+                                "http://www.xcase.com/WSEngine/SOAP", "cancel")),
                 new javax.xml.namespace.QName(
-                        "http://www.intapp.com/WSEngine/SOAP", "cancel"));
+                        "http://www.xcase.com/WSEngine/SOAP", "cancel"));
 
         //adding SOAP soap_headers
         _serviceClient.addHeadersToEnvelope(env);
@@ -678,7 +678,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
         org.apache.axis2.client.OperationClient _operationClient = _serviceClient.createClient(_operations[5].getName());
         _operationClient.getOptions()
-                .setAction("http://www.intapp.com/WSEngine/SOAP#logout");
+                .setAction("http://www.xcase.com/WSEngine/SOAP#logout");
         _operationClient.getOptions().setExceptionToBeThrownOnSOAPFault(true);
 
         addPropertyToOperationClient(_operationClient,
@@ -694,9 +694,9 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
                 logout,
                 optimizeContent(
                         new javax.xml.namespace.QName(
-                                "http://www.intapp.com/WSEngine/SOAP", "logout")),
+                                "http://www.xcase.com/WSEngine/SOAP", "logout")),
                 new javax.xml.namespace.QName(
-                        "http://www.intapp.com/WSEngine/SOAP", "logout"));
+                        "http://www.xcase.com/WSEngine/SOAP", "logout"));
 
         //adding SOAP soap_headers
         _serviceClient.addHeadersToEnvelope(env);
@@ -729,7 +729,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
         try {
             org.apache.axis2.client.OperationClient _operationClient = _serviceClient.createClient(_operations[6].getName());
             _operationClient.getOptions()
-                    .setAction("http://www.intapp.com/WSEngine/SOAP#invokeSyncWebService");
+                    .setAction("http://www.xcase.com/WSEngine/SOAP#invokeSyncWebService");
             _operationClient.getOptions().setExceptionToBeThrownOnSOAPFault(true);
 
             addPropertyToOperationClient(_operationClient,
@@ -747,10 +747,10 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
                     invokeSyncWebService,
                     optimizeContent(
                             new javax.xml.namespace.QName(
-                                    "http://www.intapp.com/WSEngine/SOAP",
+                                    "http://www.xcase.com/WSEngine/SOAP",
                                     "invokeSyncWebService")),
                     new javax.xml.namespace.QName(
-                            "http://www.intapp.com/WSEngine/SOAP",
+                            "http://www.xcase.com/WSEngine/SOAP",
                             "invokeSyncWebService"));
 
             //adding SOAP soap_headers
@@ -1192,12 +1192,12 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
     public static class GetResultForWebServiceResponse implements org.apache.axis2.databinding.ADBBean {
 
-        public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName("http://www.intapp.com/WSEngine/SOAP",
+        public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName("http://www.xcase.com/WSEngine/SOAP",
                 "getResultForWebServiceResponse", "ns1");
 
         private static java.lang.String generatePrefix(
                 java.lang.String namespace) {
-            if (namespace.equals("http://www.intapp.com/WSEngine/SOAP")) {
+            if (namespace.equals("http://www.xcase.com/WSEngine/SOAP")) {
                 return "ns1";
             }
 
@@ -1310,7 +1310,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
             if (serializeType) {
                 java.lang.String namespacePrefix = registerPrefix(xmlWriter,
-                        "http://www.intapp.com/WSEngine/SOAP");
+                        "http://www.xcase.com/WSEngine/SOAP");
 
                 if ((namespacePrefix != null)
                         && (namespacePrefix.trim().length() > 0)) {
@@ -1331,7 +1331,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             }
 
             localResultStatus.serialize(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "resultStatus"),
+                    "http://www.xcase.com/WSEngine/SOAP", "resultStatus"),
                     xmlWriter);
 
             if (localExecutionState == null) {
@@ -1340,7 +1340,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             }
 
             localExecutionState.serialize(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "executionState"),
+                    "http://www.xcase.com/WSEngine/SOAP", "executionState"),
                     xmlWriter);
 
             if (localOutput == null) {
@@ -1349,7 +1349,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             }
 
             localOutput.serialize(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "output"), xmlWriter);
+                    "http://www.xcase.com/WSEngine/SOAP", "output"), xmlWriter);
 
             xmlWriter.writeEndElement();
         }
@@ -1556,7 +1556,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             java.util.ArrayList attribList = new java.util.ArrayList();
 
             elementList.add(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "resultStatus"));
+                    "http://www.xcase.com/WSEngine/SOAP", "resultStatus"));
 
             if (localResultStatus == null) {
                 throw new org.apache.axis2.databinding.ADBException(
@@ -1566,7 +1566,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             elementList.add(localResultStatus);
 
             elementList.add(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "executionState"));
+                    "http://www.xcase.com/WSEngine/SOAP", "executionState"));
 
             if (localExecutionState == null) {
                 throw new org.apache.axis2.databinding.ADBException(
@@ -1576,7 +1576,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             elementList.add(localExecutionState);
 
             elementList.add(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "output"));
+                    "http://www.xcase.com/WSEngine/SOAP", "output"));
 
             if (localOutput == null) {
                 throw new org.apache.axis2.databinding.ADBException(
@@ -1661,7 +1661,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
                     if (reader.isStartElement()
                             && new javax.xml.namespace.QName(
-                                    "http://www.intapp.com/WSEngine/SOAP",
+                                    "http://www.xcase.com/WSEngine/SOAP",
                                     "resultStatus").equals(reader.getName())) {
                         object.setResultStatus(ResultStatusType.Factory.parse(
                                 reader));
@@ -1680,7 +1680,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
                     if (reader.isStartElement()
                             && new javax.xml.namespace.QName(
-                                    "http://www.intapp.com/WSEngine/SOAP",
+                                    "http://www.xcase.com/WSEngine/SOAP",
                                     "executionState").equals(reader.getName())) {
                         object.setExecutionState(ExecutionStateType.Factory.parse(
                                 reader));
@@ -1699,7 +1699,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
                     if (reader.isStartElement()
                             && new javax.xml.namespace.QName(
-                                    "http://www.intapp.com/WSEngine/SOAP", "output").equals(
+                                    "http://www.xcase.com/WSEngine/SOAP", "output").equals(
                                     reader.getName())) {
                         object.setOutput(Output_WebService.Factory.parse(reader));
 
@@ -1737,17 +1737,17 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
         public static java.lang.Object getTypeObject(
                 java.lang.String namespaceURI, java.lang.String typeName,
                 javax.xml.stream.XMLStreamReader reader) throws java.lang.Exception {
-            if ("http://www.intapp.com/WSEngine/SOAP".equals(namespaceURI)
+            if ("http://www.xcase.com/WSEngine/SOAP".equals(namespaceURI)
                     && "ExecutionStateType".equals(typeName)) {
                 return ExecutionStateType.Factory.parse(reader);
             }
 
-            if ("http://www.intapp.com/WSEngine/SOAP".equals(namespaceURI)
+            if ("http://www.xcase.com/WSEngine/SOAP".equals(namespaceURI)
                     && "output_WebService".equals(typeName)) {
                 return Output_WebService.Factory.parse(reader);
             }
 
-            if ("http://www.intapp.com/WSEngine/SOAP".equals(namespaceURI)
+            if ("http://www.xcase.com/WSEngine/SOAP".equals(namespaceURI)
                     && "ResultStatusType".equals(typeName)) {
                 return ResultStatusType.Factory.parse(reader);
             }
@@ -1762,12 +1762,12 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
     public static class InvokeAsyncWebService implements org.apache.axis2.databinding.ADBBean {
 
-        public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName("http://www.intapp.com/WSEngine/SOAP",
+        public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName("http://www.xcase.com/WSEngine/SOAP",
                 "invokeAsyncWebService", "ns1");
 
         private static java.lang.String generatePrefix(
                 java.lang.String namespace) {
-            if (namespace.equals("http://www.intapp.com/WSEngine/SOAP")) {
+            if (namespace.equals("http://www.xcase.com/WSEngine/SOAP")) {
                 return "ns1";
             }
 
@@ -1834,7 +1834,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
             if (serializeType) {
                 java.lang.String namespacePrefix = registerPrefix(xmlWriter,
-                        "http://www.intapp.com/WSEngine/SOAP");
+                        "http://www.xcase.com/WSEngine/SOAP");
 
                 if ((namespacePrefix != null)
                         && (namespacePrefix.trim().length() > 0)) {
@@ -1848,7 +1848,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
                 }
             }
 
-            namespace = "http://www.intapp.com/WSEngine/SOAP";
+            namespace = "http://www.xcase.com/WSEngine/SOAP";
             writeStartElement(null, namespace, "sessionID", xmlWriter);
 
             if (localSessionID == null) {
@@ -2067,7 +2067,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             java.util.ArrayList attribList = new java.util.ArrayList();
 
             elementList.add(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "sessionID"));
+                    "http://www.xcase.com/WSEngine/SOAP", "sessionID"));
 
             if (localSessionID != null) {
                 elementList.add(org.apache.axis2.databinding.utils.ConverterUtil.convertToString(
@@ -2153,7 +2153,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
                     if (reader.isStartElement()
                             && new javax.xml.namespace.QName(
-                                    "http://www.intapp.com/WSEngine/SOAP",
+                                    "http://www.xcase.com/WSEngine/SOAP",
                                     "sessionID").equals(reader.getName())) {
                         nillableValue = reader.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance",
                                 "nil");
@@ -2201,12 +2201,12 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
     public static class Login implements org.apache.axis2.databinding.ADBBean {
 
-        public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName("http://www.intapp.com/WSEngine/SOAP",
+        public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName("http://www.xcase.com/WSEngine/SOAP",
                 "login", "ns1");
 
         private static java.lang.String generatePrefix(
                 java.lang.String namespace) {
-            if (namespace.equals("http://www.intapp.com/WSEngine/SOAP")) {
+            if (namespace.equals("http://www.xcase.com/WSEngine/SOAP")) {
                 return "ns1";
             }
 
@@ -2296,7 +2296,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
             if (serializeType) {
                 java.lang.String namespacePrefix = registerPrefix(xmlWriter,
-                        "http://www.intapp.com/WSEngine/SOAP");
+                        "http://www.xcase.com/WSEngine/SOAP");
 
                 if ((namespacePrefix != null)
                         && (namespacePrefix.trim().length() > 0)) {
@@ -2310,7 +2310,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
                 }
             }
 
-            namespace = "http://www.intapp.com/WSEngine/SOAP";
+            namespace = "http://www.xcase.com/WSEngine/SOAP";
             writeStartElement(null, namespace, "username", xmlWriter);
 
             if (localUsername == null) {
@@ -2323,7 +2323,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
             xmlWriter.writeEndElement();
 
-            namespace = "http://www.intapp.com/WSEngine/SOAP";
+            namespace = "http://www.xcase.com/WSEngine/SOAP";
             writeStartElement(null, namespace, "password", xmlWriter);
 
             if (localPassword == null) {
@@ -2542,7 +2542,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             java.util.ArrayList attribList = new java.util.ArrayList();
 
             elementList.add(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "username"));
+                    "http://www.xcase.com/WSEngine/SOAP", "username"));
 
             if (localUsername != null) {
                 elementList.add(org.apache.axis2.databinding.utils.ConverterUtil.convertToString(
@@ -2553,7 +2553,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             }
 
             elementList.add(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "password"));
+                    "http://www.xcase.com/WSEngine/SOAP", "password"));
 
             if (localPassword != null) {
                 elementList.add(org.apache.axis2.databinding.utils.ConverterUtil.convertToString(
@@ -2638,7 +2638,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
                     if (reader.isStartElement()
                             && new javax.xml.namespace.QName(
-                                    "http://www.intapp.com/WSEngine/SOAP",
+                                    "http://www.xcase.com/WSEngine/SOAP",
                                     "username").equals(reader.getName())) {
                         nillableValue = reader.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance",
                                 "nil");
@@ -2669,7 +2669,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
                     if (reader.isStartElement()
                             && new javax.xml.namespace.QName(
-                                    "http://www.intapp.com/WSEngine/SOAP",
+                                    "http://www.xcase.com/WSEngine/SOAP",
                                     "password").equals(reader.getName())) {
                         nillableValue = reader.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance",
                                 "nil");
@@ -2717,12 +2717,12 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
     public static class GetStatusResponse implements org.apache.axis2.databinding.ADBBean {
 
-        public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName("http://www.intapp.com/WSEngine/SOAP",
+        public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName("http://www.xcase.com/WSEngine/SOAP",
                 "getStatusResponse", "ns1");
 
         private static java.lang.String generatePrefix(
                 java.lang.String namespace) {
-            if (namespace.equals("http://www.intapp.com/WSEngine/SOAP")) {
+            if (namespace.equals("http://www.xcase.com/WSEngine/SOAP")) {
                 return "ns1";
             }
 
@@ -2812,7 +2812,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
             if (serializeType) {
                 java.lang.String namespacePrefix = registerPrefix(xmlWriter,
-                        "http://www.intapp.com/WSEngine/SOAP");
+                        "http://www.xcase.com/WSEngine/SOAP");
 
                 if ((namespacePrefix != null)
                         && (namespacePrefix.trim().length() > 0)) {
@@ -2832,7 +2832,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             }
 
             localResultStatus.serialize(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "resultStatus"),
+                    "http://www.xcase.com/WSEngine/SOAP", "resultStatus"),
                     xmlWriter);
 
             if (localExecutionState == null) {
@@ -2841,7 +2841,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             }
 
             localExecutionState.serialize(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "executionState"),
+                    "http://www.xcase.com/WSEngine/SOAP", "executionState"),
                     xmlWriter);
 
             xmlWriter.writeEndElement();
@@ -3050,7 +3050,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             java.util.ArrayList attribList = new java.util.ArrayList();
 
             elementList.add(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "resultStatus"));
+                    "http://www.xcase.com/WSEngine/SOAP", "resultStatus"));
 
             if (localResultStatus == null) {
                 throw new org.apache.axis2.databinding.ADBException(
@@ -3060,7 +3060,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             elementList.add(localResultStatus);
 
             elementList.add(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "executionState"));
+                    "http://www.xcase.com/WSEngine/SOAP", "executionState"));
 
             if (localExecutionState == null) {
                 throw new org.apache.axis2.databinding.ADBException(
@@ -3145,7 +3145,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
                     if (reader.isStartElement()
                             && new javax.xml.namespace.QName(
-                                    "http://www.intapp.com/WSEngine/SOAP",
+                                    "http://www.xcase.com/WSEngine/SOAP",
                                     "resultStatus").equals(reader.getName())) {
                         object.setResultStatus(ResultStatusType.Factory.parse(
                                 reader));
@@ -3164,7 +3164,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
                     if (reader.isStartElement()
                             && new javax.xml.namespace.QName(
-                                    "http://www.intapp.com/WSEngine/SOAP",
+                                    "http://www.xcase.com/WSEngine/SOAP",
                                     "executionState").equals(reader.getName())) {
                         object.setExecutionState(ExecutionStateType.Factory.parse(
                                 reader));
@@ -3200,12 +3200,12 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
     public static class Cancel implements org.apache.axis2.databinding.ADBBean {
 
-        public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName("http://www.intapp.com/WSEngine/SOAP",
+        public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName("http://www.xcase.com/WSEngine/SOAP",
                 "cancel", "ns1");
 
         private static java.lang.String generatePrefix(
                 java.lang.String namespace) {
-            if (namespace.equals("http://www.intapp.com/WSEngine/SOAP")) {
+            if (namespace.equals("http://www.xcase.com/WSEngine/SOAP")) {
                 return "ns1";
             }
 
@@ -3295,7 +3295,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
             if (serializeType) {
                 java.lang.String namespacePrefix = registerPrefix(xmlWriter,
-                        "http://www.intapp.com/WSEngine/SOAP");
+                        "http://www.xcase.com/WSEngine/SOAP");
 
                 if ((namespacePrefix != null)
                         && (namespacePrefix.trim().length() > 0)) {
@@ -3309,7 +3309,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
                 }
             }
 
-            namespace = "http://www.intapp.com/WSEngine/SOAP";
+            namespace = "http://www.xcase.com/WSEngine/SOAP";
             writeStartElement(null, namespace, "sessionID", xmlWriter);
 
             if (localSessionID == null) {
@@ -3322,7 +3322,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
             xmlWriter.writeEndElement();
 
-            namespace = "http://www.intapp.com/WSEngine/SOAP";
+            namespace = "http://www.xcase.com/WSEngine/SOAP";
             writeStartElement(null, namespace, "correlationID", xmlWriter);
 
             if (localCorrelationID == null) {
@@ -3541,7 +3541,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             java.util.ArrayList attribList = new java.util.ArrayList();
 
             elementList.add(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "sessionID"));
+                    "http://www.xcase.com/WSEngine/SOAP", "sessionID"));
 
             if (localSessionID != null) {
                 elementList.add(org.apache.axis2.databinding.utils.ConverterUtil.convertToString(
@@ -3552,7 +3552,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             }
 
             elementList.add(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "correlationID"));
+                    "http://www.xcase.com/WSEngine/SOAP", "correlationID"));
 
             if (localCorrelationID != null) {
                 elementList.add(org.apache.axis2.databinding.utils.ConverterUtil.convertToString(
@@ -3637,7 +3637,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
                     if (reader.isStartElement()
                             && new javax.xml.namespace.QName(
-                                    "http://www.intapp.com/WSEngine/SOAP",
+                                    "http://www.xcase.com/WSEngine/SOAP",
                                     "sessionID").equals(reader.getName())) {
                         nillableValue = reader.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance",
                                 "nil");
@@ -3668,7 +3668,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
                     if (reader.isStartElement()
                             && new javax.xml.namespace.QName(
-                                    "http://www.intapp.com/WSEngine/SOAP",
+                                    "http://www.xcase.com/WSEngine/SOAP",
                                     "correlationID").equals(reader.getName())) {
                         nillableValue = reader.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance",
                                 "nil");
@@ -3716,12 +3716,12 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
     public static class LoginResponse implements org.apache.axis2.databinding.ADBBean {
 
-        public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName("http://www.intapp.com/WSEngine/SOAP",
+        public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName("http://www.xcase.com/WSEngine/SOAP",
                 "loginResponse", "ns1");
 
         private static java.lang.String generatePrefix(
                 java.lang.String namespace) {
-            if (namespace.equals("http://www.intapp.com/WSEngine/SOAP")) {
+            if (namespace.equals("http://www.xcase.com/WSEngine/SOAP")) {
                 return "ns1";
             }
 
@@ -3788,7 +3788,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
             if (serializeType) {
                 java.lang.String namespacePrefix = registerPrefix(xmlWriter,
-                        "http://www.intapp.com/WSEngine/SOAP");
+                        "http://www.xcase.com/WSEngine/SOAP");
 
                 if ((namespacePrefix != null)
                         && (namespacePrefix.trim().length() > 0)) {
@@ -3802,7 +3802,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
                 }
             }
 
-            namespace = "http://www.intapp.com/WSEngine/SOAP";
+            namespace = "http://www.xcase.com/WSEngine/SOAP";
             writeStartElement(null, namespace, "sessionID", xmlWriter);
 
             if (localSessionID == null) {
@@ -4021,7 +4021,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             java.util.ArrayList attribList = new java.util.ArrayList();
 
             elementList.add(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "sessionID"));
+                    "http://www.xcase.com/WSEngine/SOAP", "sessionID"));
 
             if (localSessionID != null) {
                 elementList.add(org.apache.axis2.databinding.utils.ConverterUtil.convertToString(
@@ -4107,7 +4107,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
                     if (reader.isStartElement()
                             && new javax.xml.namespace.QName(
-                                    "http://www.intapp.com/WSEngine/SOAP",
+                                    "http://www.xcase.com/WSEngine/SOAP",
                                     "sessionID").equals(reader.getName())) {
                         nillableValue = reader.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance",
                                 "nil");
@@ -4155,12 +4155,12 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
     public static class InvokeAsyncWebServiceResponse implements org.apache.axis2.databinding.ADBBean {
 
-        public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName("http://www.intapp.com/WSEngine/SOAP",
+        public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName("http://www.xcase.com/WSEngine/SOAP",
                 "invokeAsyncWebServiceResponse", "ns1");
 
         private static java.lang.String generatePrefix(
                 java.lang.String namespace) {
-            if (namespace.equals("http://www.intapp.com/WSEngine/SOAP")) {
+            if (namespace.equals("http://www.xcase.com/WSEngine/SOAP")) {
                 return "ns1";
             }
 
@@ -4227,7 +4227,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
             if (serializeType) {
                 java.lang.String namespacePrefix = registerPrefix(xmlWriter,
-                        "http://www.intapp.com/WSEngine/SOAP");
+                        "http://www.xcase.com/WSEngine/SOAP");
 
                 if ((namespacePrefix != null)
                         && (namespacePrefix.trim().length() > 0)) {
@@ -4242,7 +4242,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
                 }
             }
 
-            namespace = "http://www.intapp.com/WSEngine/SOAP";
+            namespace = "http://www.xcase.com/WSEngine/SOAP";
             writeStartElement(null, namespace, "correlationID", xmlWriter);
 
             if (localCorrelationID == null) {
@@ -4461,7 +4461,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             java.util.ArrayList attribList = new java.util.ArrayList();
 
             elementList.add(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "correlationID"));
+                    "http://www.xcase.com/WSEngine/SOAP", "correlationID"));
 
             if (localCorrelationID != null) {
                 elementList.add(org.apache.axis2.databinding.utils.ConverterUtil.convertToString(
@@ -4547,7 +4547,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
                     if (reader.isStartElement()
                             && new javax.xml.namespace.QName(
-                                    "http://www.intapp.com/WSEngine/SOAP",
+                                    "http://www.xcase.com/WSEngine/SOAP",
                                     "correlationID").equals(reader.getName())) {
                         nillableValue = reader.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance",
                                 "nil");
@@ -4595,12 +4595,12 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
     public static class GetStatus implements org.apache.axis2.databinding.ADBBean {
 
-        public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName("http://www.intapp.com/WSEngine/SOAP",
+        public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName("http://www.xcase.com/WSEngine/SOAP",
                 "getStatus", "ns1");
 
         private static java.lang.String generatePrefix(
                 java.lang.String namespace) {
-            if (namespace.equals("http://www.intapp.com/WSEngine/SOAP")) {
+            if (namespace.equals("http://www.xcase.com/WSEngine/SOAP")) {
                 return "ns1";
             }
 
@@ -4690,7 +4690,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
             if (serializeType) {
                 java.lang.String namespacePrefix = registerPrefix(xmlWriter,
-                        "http://www.intapp.com/WSEngine/SOAP");
+                        "http://www.xcase.com/WSEngine/SOAP");
 
                 if ((namespacePrefix != null)
                         && (namespacePrefix.trim().length() > 0)) {
@@ -4704,7 +4704,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
                 }
             }
 
-            namespace = "http://www.intapp.com/WSEngine/SOAP";
+            namespace = "http://www.xcase.com/WSEngine/SOAP";
             writeStartElement(null, namespace, "sessionID", xmlWriter);
 
             if (localSessionID == null) {
@@ -4717,7 +4717,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
             xmlWriter.writeEndElement();
 
-            namespace = "http://www.intapp.com/WSEngine/SOAP";
+            namespace = "http://www.xcase.com/WSEngine/SOAP";
             writeStartElement(null, namespace, "correlationID", xmlWriter);
 
             if (localCorrelationID == null) {
@@ -4936,7 +4936,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             java.util.ArrayList attribList = new java.util.ArrayList();
 
             elementList.add(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "sessionID"));
+                    "http://www.xcase.com/WSEngine/SOAP", "sessionID"));
 
             if (localSessionID != null) {
                 elementList.add(org.apache.axis2.databinding.utils.ConverterUtil.convertToString(
@@ -4947,7 +4947,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             }
 
             elementList.add(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "correlationID"));
+                    "http://www.xcase.com/WSEngine/SOAP", "correlationID"));
 
             if (localCorrelationID != null) {
                 elementList.add(org.apache.axis2.databinding.utils.ConverterUtil.convertToString(
@@ -5033,7 +5033,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
                     if (reader.isStartElement()
                             && new javax.xml.namespace.QName(
-                                    "http://www.intapp.com/WSEngine/SOAP",
+                                    "http://www.xcase.com/WSEngine/SOAP",
                                     "sessionID").equals(reader.getName())) {
                         nillableValue = reader.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance",
                                 "nil");
@@ -5064,7 +5064,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
                     if (reader.isStartElement()
                             && new javax.xml.namespace.QName(
-                                    "http://www.intapp.com/WSEngine/SOAP",
+                                    "http://www.xcase.com/WSEngine/SOAP",
                                     "correlationID").equals(reader.getName())) {
                         nillableValue = reader.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance",
                                 "nil");
@@ -5112,12 +5112,12 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
     public static class InvokeSyncWebService implements org.apache.axis2.databinding.ADBBean {
 
-        public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName("http://www.intapp.com/WSEngine/SOAP",
+        public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName("http://www.xcase.com/WSEngine/SOAP",
                 "invokeSyncWebService", "ns1");
 
         private static java.lang.String generatePrefix(
                 java.lang.String namespace) {
-            if (namespace.equals("http://www.intapp.com/WSEngine/SOAP")) {
+            if (namespace.equals("http://www.xcase.com/WSEngine/SOAP")) {
                 return "ns1";
             }
 
@@ -5184,7 +5184,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
             if (serializeType) {
                 java.lang.String namespacePrefix = registerPrefix(xmlWriter,
-                        "http://www.intapp.com/WSEngine/SOAP");
+                        "http://www.xcase.com/WSEngine/SOAP");
 
                 if ((namespacePrefix != null)
                         && (namespacePrefix.trim().length() > 0)) {
@@ -5198,7 +5198,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
                 }
             }
 
-            namespace = "http://www.intapp.com/WSEngine/SOAP";
+            namespace = "http://www.xcase.com/WSEngine/SOAP";
             writeStartElement(null, namespace, "sessionID", xmlWriter);
 
             if (localSessionID == null) {
@@ -5417,7 +5417,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             java.util.ArrayList attribList = new java.util.ArrayList();
 
             elementList.add(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "sessionID"));
+                    "http://www.xcase.com/WSEngine/SOAP", "sessionID"));
 
             if (localSessionID != null) {
                 elementList.add(org.apache.axis2.databinding.utils.ConverterUtil.convertToString(
@@ -5503,7 +5503,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
                     if (reader.isStartElement()
                             && new javax.xml.namespace.QName(
-                                    "http://www.intapp.com/WSEngine/SOAP",
+                                    "http://www.xcase.com/WSEngine/SOAP",
                                     "sessionID").equals(reader.getName())) {
                         nillableValue = reader.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance",
                                 "nil");
@@ -5551,12 +5551,12 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
     public static class InvokeSyncWebServiceResponse implements org.apache.axis2.databinding.ADBBean {
 
-        public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName("http://www.intapp.com/WSEngine/SOAP",
+        public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName("http://www.xcase.com/WSEngine/SOAP",
                 "invokeSyncWebServiceResponse", "ns1");
 
         private static java.lang.String generatePrefix(
                 java.lang.String namespace) {
-            if (namespace.equals("http://www.intapp.com/WSEngine/SOAP")) {
+            if (namespace.equals("http://www.xcase.com/WSEngine/SOAP")) {
                 return "ns1";
             }
 
@@ -5692,7 +5692,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
             if (serializeType) {
                 java.lang.String namespacePrefix = registerPrefix(xmlWriter,
-                        "http://www.intapp.com/WSEngine/SOAP");
+                        "http://www.xcase.com/WSEngine/SOAP");
 
                 if ((namespacePrefix != null)
                         && (namespacePrefix.trim().length() > 0)) {
@@ -5713,7 +5713,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             }
 
             localResultStatus.serialize(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "resultStatus"),
+                    "http://www.xcase.com/WSEngine/SOAP", "resultStatus"),
                     xmlWriter);
 
             if (localExecutionState == null) {
@@ -5722,10 +5722,10 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             }
 
             localExecutionState.serialize(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "executionState"),
+                    "http://www.xcase.com/WSEngine/SOAP", "executionState"),
                     xmlWriter);
 
-            namespace = "http://www.intapp.com/WSEngine/SOAP";
+            namespace = "http://www.xcase.com/WSEngine/SOAP";
             writeStartElement(null, namespace, "correlationID", xmlWriter);
 
             if (localCorrelationID == null) {
@@ -5744,7 +5744,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             }
 
             localOutput.serialize(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "output"), xmlWriter);
+                    "http://www.xcase.com/WSEngine/SOAP", "output"), xmlWriter);
 
             xmlWriter.writeEndElement();
         }
@@ -5952,7 +5952,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             java.util.ArrayList attribList = new java.util.ArrayList();
 
             elementList.add(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "resultStatus"));
+                    "http://www.xcase.com/WSEngine/SOAP", "resultStatus"));
 
             if (localResultStatus == null) {
                 throw new org.apache.axis2.databinding.ADBException(
@@ -5962,7 +5962,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             elementList.add(localResultStatus);
 
             elementList.add(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "executionState"));
+                    "http://www.xcase.com/WSEngine/SOAP", "executionState"));
 
             if (localExecutionState == null) {
                 throw new org.apache.axis2.databinding.ADBException(
@@ -5972,7 +5972,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             elementList.add(localExecutionState);
 
             elementList.add(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "correlationID"));
+                    "http://www.xcase.com/WSEngine/SOAP", "correlationID"));
 
             if (localCorrelationID != null) {
                 elementList.add(org.apache.axis2.databinding.utils.ConverterUtil.convertToString(
@@ -5983,7 +5983,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             }
 
             elementList.add(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "output"));
+                    "http://www.xcase.com/WSEngine/SOAP", "output"));
 
             if (localOutput == null) {
                 throw new org.apache.axis2.databinding.ADBException(
@@ -6068,7 +6068,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
                     if (reader.isStartElement()
                             && new javax.xml.namespace.QName(
-                                    "http://www.intapp.com/WSEngine/SOAP",
+                                    "http://www.xcase.com/WSEngine/SOAP",
                                     "resultStatus").equals(reader.getName())) {
                         object.setResultStatus(ResultStatusType.Factory.parse(
                                 reader));
@@ -6087,7 +6087,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
                     if (reader.isStartElement()
                             && new javax.xml.namespace.QName(
-                                    "http://www.intapp.com/WSEngine/SOAP",
+                                    "http://www.xcase.com/WSEngine/SOAP",
                                     "executionState").equals(reader.getName())) {
                         object.setExecutionState(ExecutionStateType.Factory.parse(
                                 reader));
@@ -6106,7 +6106,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
                     if (reader.isStartElement()
                             && new javax.xml.namespace.QName(
-                                    "http://www.intapp.com/WSEngine/SOAP",
+                                    "http://www.xcase.com/WSEngine/SOAP",
                                     "correlationID").equals(reader.getName())) {
                         nillableValue = reader.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance",
                                 "nil");
@@ -6137,7 +6137,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
                     if (reader.isStartElement()
                             && new javax.xml.namespace.QName(
-                                    "http://www.intapp.com/WSEngine/SOAP", "output").equals(
+                                    "http://www.xcase.com/WSEngine/SOAP", "output").equals(
                                     reader.getName())) {
                         object.setOutput(Output_WebService.Factory.parse(reader));
 
@@ -6172,7 +6172,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
     public static class ExecutionStateType implements org.apache.axis2.databinding.ADBBean {
 
-        public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName("http://www.intapp.com/WSEngine/SOAP",
+        public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName("http://www.xcase.com/WSEngine/SOAP",
                 "ExecutionStateType", "ns1");
         private static java.util.HashMap _table_ = new java.util.HashMap();
         public static final java.lang.String _EXECUTING = org.apache.axis2.databinding.utils.ConverterUtil.convertToString(
@@ -6190,7 +6190,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
         private static java.lang.String generatePrefix(
                 java.lang.String namespace) {
-            if (namespace.equals("http://www.intapp.com/WSEngine/SOAP")) {
+            if (namespace.equals("http://www.xcase.com/WSEngine/SOAP")) {
                 return "ns1";
             }
 
@@ -6264,7 +6264,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             // add the type details if this is used in a simple type
             if (serializeType) {
                 java.lang.String namespacePrefix = registerPrefix(xmlWriter,
-                        "http://www.intapp.com/WSEngine/SOAP");
+                        "http://www.xcase.com/WSEngine/SOAP");
 
                 if ((namespacePrefix != null)
                         && (namespacePrefix.trim().length() > 0)) {
@@ -6618,12 +6618,12 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
     public static class Logout implements org.apache.axis2.databinding.ADBBean {
 
-        public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName("http://www.intapp.com/WSEngine/SOAP",
+        public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName("http://www.xcase.com/WSEngine/SOAP",
                 "logout", "ns1");
 
         private static java.lang.String generatePrefix(
                 java.lang.String namespace) {
-            if (namespace.equals("http://www.intapp.com/WSEngine/SOAP")) {
+            if (namespace.equals("http://www.xcase.com/WSEngine/SOAP")) {
                 return "ns1";
             }
 
@@ -6690,7 +6690,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
             if (serializeType) {
                 java.lang.String namespacePrefix = registerPrefix(xmlWriter,
-                        "http://www.intapp.com/WSEngine/SOAP");
+                        "http://www.xcase.com/WSEngine/SOAP");
 
                 if ((namespacePrefix != null)
                         && (namespacePrefix.trim().length() > 0)) {
@@ -6704,7 +6704,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
                 }
             }
 
-            namespace = "http://www.intapp.com/WSEngine/SOAP";
+            namespace = "http://www.xcase.com/WSEngine/SOAP";
             writeStartElement(null, namespace, "sessionID", xmlWriter);
 
             if (localSessionID == null) {
@@ -6923,7 +6923,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             java.util.ArrayList attribList = new java.util.ArrayList();
 
             elementList.add(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "sessionID"));
+                    "http://www.xcase.com/WSEngine/SOAP", "sessionID"));
 
             if (localSessionID != null) {
                 elementList.add(org.apache.axis2.databinding.utils.ConverterUtil.convertToString(
@@ -7008,7 +7008,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
                     if (reader.isStartElement()
                             && new javax.xml.namespace.QName(
-                                    "http://www.intapp.com/WSEngine/SOAP",
+                                    "http://www.xcase.com/WSEngine/SOAP",
                                     "sessionID").equals(reader.getName())) {
                         nillableValue = reader.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance",
                                 "nil");
@@ -7058,7 +7058,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
         private static java.lang.String generatePrefix(
                 java.lang.String namespace) {
-            if (namespace.equals("http://www.intapp.com/WSEngine/SOAP")) {
+            if (namespace.equals("http://www.xcase.com/WSEngine/SOAP")) {
                 return "ns1";
             }
 
@@ -7066,7 +7066,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
         }
         /* This type was generated from the piece of schema that had
            name = output_WebService
-           Namespace URI = http://www.intapp.com/WSEngine/SOAP
+           Namespace URI = http://www.xcase.com/WSEngine/SOAP
            Namespace Prefix = ns1
          */
 
@@ -7142,7 +7142,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
             if (serializeType) {
                 java.lang.String namespacePrefix = registerPrefix(xmlWriter,
-                        "http://www.intapp.com/WSEngine/SOAP");
+                        "http://www.xcase.com/WSEngine/SOAP");
 
                 if ((namespacePrefix != null)
                         && (namespacePrefix.trim().length() > 0)) {
@@ -7157,7 +7157,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             }
 
             if (localOutputTracker) {
-                namespace = "http://www.intapp.com/WSEngine/SOAP";
+                namespace = "http://www.xcase.com/WSEngine/SOAP";
                 writeStartElement(null, namespace, "output", xmlWriter);
 
                 if (localOutput == null) {
@@ -7378,7 +7378,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
             if (localOutputTracker) {
                 elementList.add(new javax.xml.namespace.QName(
-                        "http://www.intapp.com/WSEngine/SOAP", "output"));
+                        "http://www.xcase.com/WSEngine/SOAP", "output"));
 
                 if (localOutput != null) {
                     elementList.add(org.apache.axis2.databinding.utils.ConverterUtil.convertToString(
@@ -7465,7 +7465,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
                     if (reader.isStartElement()
                             && new javax.xml.namespace.QName(
-                                    "http://www.intapp.com/WSEngine/SOAP", "output").equals(
+                                    "http://www.xcase.com/WSEngine/SOAP", "output").equals(
                                     reader.getName())) {
                         nillableValue = reader.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance",
                                 "nil");
@@ -7510,12 +7510,12 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
     public static class GetResultForWebService implements org.apache.axis2.databinding.ADBBean {
 
-        public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName("http://www.intapp.com/WSEngine/SOAP",
+        public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName("http://www.xcase.com/WSEngine/SOAP",
                 "getResultForWebService", "ns1");
 
         private static java.lang.String generatePrefix(
                 java.lang.String namespace) {
-            if (namespace.equals("http://www.intapp.com/WSEngine/SOAP")) {
+            if (namespace.equals("http://www.xcase.com/WSEngine/SOAP")) {
                 return "ns1";
             }
 
@@ -7605,7 +7605,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
             if (serializeType) {
                 java.lang.String namespacePrefix = registerPrefix(xmlWriter,
-                        "http://www.intapp.com/WSEngine/SOAP");
+                        "http://www.xcase.com/WSEngine/SOAP");
 
                 if ((namespacePrefix != null)
                         && (namespacePrefix.trim().length() > 0)) {
@@ -7619,7 +7619,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
                 }
             }
 
-            namespace = "http://www.intapp.com/WSEngine/SOAP";
+            namespace = "http://www.xcase.com/WSEngine/SOAP";
             writeStartElement(null, namespace, "sessionID", xmlWriter);
 
             if (localSessionID == null) {
@@ -7632,7 +7632,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
             xmlWriter.writeEndElement();
 
-            namespace = "http://www.intapp.com/WSEngine/SOAP";
+            namespace = "http://www.xcase.com/WSEngine/SOAP";
             writeStartElement(null, namespace, "correlationID", xmlWriter);
 
             if (localCorrelationID == null) {
@@ -7851,7 +7851,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             java.util.ArrayList attribList = new java.util.ArrayList();
 
             elementList.add(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "sessionID"));
+                    "http://www.xcase.com/WSEngine/SOAP", "sessionID"));
 
             if (localSessionID != null) {
                 elementList.add(org.apache.axis2.databinding.utils.ConverterUtil.convertToString(
@@ -7862,7 +7862,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             }
 
             elementList.add(new javax.xml.namespace.QName(
-                    "http://www.intapp.com/WSEngine/SOAP", "correlationID"));
+                    "http://www.xcase.com/WSEngine/SOAP", "correlationID"));
 
             if (localCorrelationID != null) {
                 elementList.add(org.apache.axis2.databinding.utils.ConverterUtil.convertToString(
@@ -7948,7 +7948,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
                     if (reader.isStartElement()
                             && new javax.xml.namespace.QName(
-                                    "http://www.intapp.com/WSEngine/SOAP",
+                                    "http://www.xcase.com/WSEngine/SOAP",
                                     "sessionID").equals(reader.getName())) {
                         nillableValue = reader.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance",
                                 "nil");
@@ -7979,7 +7979,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
                     if (reader.isStartElement()
                             && new javax.xml.namespace.QName(
-                                    "http://www.intapp.com/WSEngine/SOAP",
+                                    "http://www.xcase.com/WSEngine/SOAP",
                                     "correlationID").equals(reader.getName())) {
                         nillableValue = reader.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance",
                                 "nil");
@@ -8027,7 +8027,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
     public static class ResultStatusType implements org.apache.axis2.databinding.ADBBean {
 
-        public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName("http://www.intapp.com/WSEngine/SOAP",
+        public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName("http://www.xcase.com/WSEngine/SOAP",
                 "ResultStatusType", "ns1");
         private static java.util.HashMap _table_ = new java.util.HashMap();
         public static final java.lang.String _OK = org.apache.axis2.databinding.utils.ConverterUtil.convertToString(
@@ -8044,7 +8044,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
 
         private static java.lang.String generatePrefix(
                 java.lang.String namespace) {
-            if (namespace.equals("http://www.intapp.com/WSEngine/SOAP")) {
+            if (namespace.equals("http://www.xcase.com/WSEngine/SOAP")) {
                 return "ns1";
             }
 
@@ -8118,7 +8118,7 @@ public class WebServiceStub extends org.apache.axis2.client.Stub {
             // add the type details if this is used in a simple type
             if (serializeType) {
                 java.lang.String namespacePrefix = registerPrefix(xmlWriter,
-                        "http://www.intapp.com/WSEngine/SOAP");
+                        "http://www.xcase.com/WSEngine/SOAP");
 
                 if ((namespacePrefix != null)
                         && (namespacePrefix.trim().length() > 0)) {

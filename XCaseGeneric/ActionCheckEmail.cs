@@ -287,7 +287,7 @@ namespace XCaseGeneric
         /// <returns>The ExchangeService object.</returns>
         public ExchangeService GetBinding()
         {
-            return this.GetBinding("http://balrog/EWS/Exchange.asmx", "IAINTERNAL\\Administrator", "tsunami", string.Empty);
+            return this.GetBinding("http://exchangeserver/EWS/Exchange.asmx", "XCASE\\Administrator", "password", string.Empty);
         }
 
         /// <summary>

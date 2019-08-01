@@ -24,8 +24,8 @@ namespace XCaseGeneric
         /// <summary>
         /// This method checks for an email. The XmlDocument must be of this form:
         /// <operation id="Check an email" class="XCaseGeneric.ActionCheckEmail2003">
-        ///     <exchange domain="DODSON" url="http://mvubu/Exchange" username="Administrator" password="Tsunami9" />
-        ///     <email folder="Inbox" mailbox="llawyer" subject="Email sent from Test Tools" />
+        ///     <exchange domain="XCASE" url="http://exchangeserver/Exchange" username="Administrator" password="password" />
+        ///     <email folder="Inbox" mailbox="mailbox" subject="Email sent from Test Tools" />
         ///     <expected>
         ///         <email>
         ///             This is the body of the email.

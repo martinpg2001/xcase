@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <operation id="Get file" class="XCaseGeneric.ActionFTPGet">
-  <ftp server="Vayu" username="xcase" password="tsunami" port="322" sourcepath="test" file="Sample.txt" targetpath="/" binary="false" ssl="true" />
+  <ftp server="Vayu" username="xcase" password="password" port="322" sourcepath="test" file="Sample.txt" targetpath="/" binary="false" ssl="true" />
 </operation>

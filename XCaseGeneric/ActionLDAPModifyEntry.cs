@@ -21,7 +21,7 @@ namespace XCaseGeneric
     /// <summary>
     /// This action class modifies an LDAP entry. The XML file should be of this form:
     /// <operation id="Modify an LDAP entry" class="XCaseGeneric.ActionLDAPModifyEntry">
-    ///     <ldap base="cn=Users,dc=xcase-auk,dc=com" server="Auk" username="Administrator" password="tsunami" entryname="" >
+    ///     <ldap base="cn=Users,dc=xcase-auk,dc=com" server="Auk" username="Administrator" password="password" entryname="" >
     ///         <property name="" value="" />
     ///         <property name="" value="" />
     ///     </ldap>
@@ -33,7 +33,7 @@ namespace XCaseGeneric
         /// <summary>
         /// This method modifies an LDAP entry. The XML file should be of this form:
         /// <operation id="Modify an LDAP entry" class="XCaseGeneric.ActionLDAPModifyEntry">
-        ///     <ldap base="cn=Users,dc=xcase-auk,dc=com" server="Auk" username="Administrator" password="tsunami" entryname="cn=martin" >
+        ///     <ldap base="cn=Users,dc=xcase-auk,dc=com" server="Auk" username="Administrator" password="password" entryname="cn=martin" >
         ///         <property name="" value="" />
         ///         <property name="" value="" />
         ///     </ldap>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <operations>
     <operation id="Update Config Property" class="XCaseGeneric.ActionSQLQuery">
-        <connectionstring>Data Source=Krish;Initial Catalog=walls416;User Id=IAINTERNAL\Administrator;Password=tsunami;integrated security=true;</connectionstring>
+        <connectionstring>Data Source=databaseserver;Initial Catalog=catalog;User Id=XCASE\Administrator;Password=password;integrated security=true;</connectionstring>
         <commandstring>UPDATE Config SET ConfigValue1 = 'Classic' WHERE ConfigVariable = 'ConflictResolutionModel'</commandstring>
     </operation>    
     <operation id="Restart IIS" class="XCaseGeneric.ActionRestartIIS">
-        <iisconnectionstring>iisserver=Krish;domain=IAINTERNAL;username=Administrator;password=tsunami</iisconnectionstring>
+        <iisconnectionstring>iisserver=iisserver;domain=XCASE;username=Administrator;password=password</iisconnectionstring>
         <apppools>APIServiceAppPool,ExtensionServiceAppPool,WallsAppPool</apppools>
     </operation>
 </operations>

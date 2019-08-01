@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <operations>
     <operation id="Restart IIS" class="XCaseGeneric.ActionRestartIIS">
-        <iisconnectionstring>iisserver=catford.dodsonfogg.xcase.net;username=Administrator;password=Tsunami9;domain=DODSON</iisconnectionstring>
+        <iisconnectionstring>iisserver=iisserver.internal.xcase.net;username=Administrator;password=password;domain=XCASE</iisconnectionstring>
         <apppools iispath="WebAdministration" apppoolpathprefix="ApplicationPool.Name">OpenAppPool,APIServiceAppPool,WallsAppPool</apppools>
     </operation>
 </operations>

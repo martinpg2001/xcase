@@ -23,7 +23,7 @@ namespace XCaseGeneric
         /// This method tests the connection to a SQL Server database. The XmlDocument must be of this form:
         /// <operation id="Execute SQL queries to update CM_RECENTLY_USED table" class="XCaseGeneric.ActionSQLTestConnection">
         ///     <databasedatasource name="" />
-        ///     <connectionstring>Data Source=Krish;Initial Catalog=walls416;User Id=IAINTERNAL\Administrator;Password=tsunami;integrated security=true;</connectionstring>
+        ///     <connectionstring>Data Source=Krish;Initial Catalog=walls416;User Id=XCASE\Administrator;Password=password;integrated security=true;</connectionstring>
         /// </operation>
         /// You can specify the database either as a databasedatasource or as a connection string. If both are specified, then
         /// the databasedatasource takes precedence.

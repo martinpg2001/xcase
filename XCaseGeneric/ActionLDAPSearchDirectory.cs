@@ -21,7 +21,7 @@ namespace XCaseGeneric
     /// <summary>
     /// This action class searches an LDAP directory. The XML file should be of this form:
     /// <operation id="Search LDAP directory" class="XCaseGeneric.ActionLDAPSearchDirectory">
-    ///     <ldap server="auk" username="Administrator" password="tsunami" base="OU=LDAPTest1,dc=xcase-auk,dc=com" searchfilter="(objectClass=user)" sortoption="" />
+    ///     <ldap server="auk" username="Administrator" password="password" base="OU=LDAPTest1,dc=xcase-auk,dc=com" searchfilter="(objectClass=user)" sortoption="" />
     /// </operation>
     /// The sortoption attribute is optional.
     /// </summary>
@@ -30,7 +30,7 @@ namespace XCaseGeneric
         /// <summary>
         /// This method searches an LDAP directory. The XML file should be of this form:
         /// <operation id="Search LDAP directory" class="XCaseGeneric.ActionLDAPSearchDirectory">
-        ///     <ldap server="auk" username="Administrator" password="tsunami" base="OU=LDAPTest1,dc=xcase-auk,dc=com" searchfilter="(objectClass=user)" sortoption="" />
+        ///     <ldap server="auk" username="Administrator" password="password" base="OU=LDAPTest1,dc=xcase-auk,dc=com" searchfilter="(objectClass=user)" sortoption="" />
         /// </operation>
         /// The sortoption attribute is optional.
         /// </summary>

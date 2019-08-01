@@ -37,7 +37,7 @@ namespace XCaseGeneric
         /// <summary>
         /// This is the password string.
         /// </summary>
-        private string password = "tsunami";
+        private string password = "password";
 
         /// <summary>
         /// This is the appPoolsStringArray string array.
@@ -48,7 +48,7 @@ namespace XCaseGeneric
         /// This method recycles the IIS app pools specified by the apppools
         /// element. The XML document should be of this form:
         /// <operation class="WebServiceClientWalls.ActionRestartIIS">
-        ///   <iisconnectionstring>iisserver=krish.internal.xcase.net;username=Administrator;password=tsunami;domain=IAINTERNAL</iisconnectionstring>
+        ///   <iisconnectionstring>iisserver=krish.internal.xcase.net;username=Administrator;password=password;domain=XCASE</iisconnectionstring>
         ///   <apppools>APIServiceAppPool,ExtensionServiceAppPool,WallsAppPool</apppools>
         /// </operation>
         /// You must be able to access the IIS server manager to use this class.
@@ -61,7 +61,7 @@ namespace XCaseGeneric
             OperationResult operationResult = new OperationResult(true, "Successfully restarted IIS");
             try
             {
-                string iisConnectionString = "iisserver=Auk;domain=xcase-auk;username=Administrator;password=tsunami";
+                string iisConnectionString = "iisserver=Auk;domain=xcase-auk;username=Administrator;password=password";
                 XmlNode iisConnectionstringNode = document.SelectSingleNode("operation/iisconnectionstring");
                 if (iisConnectionstringNode != null)
                 {

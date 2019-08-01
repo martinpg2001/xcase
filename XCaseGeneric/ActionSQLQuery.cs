@@ -24,7 +24,7 @@ namespace XCaseGeneric
         /// This method executes SQL queries. The XmlDocument must be of this form:
         /// <operation id="Execute SQL queries to update CM_RECENTLY_USED table" class="XCaseGeneric.ActionSQLQuery">
         ///     <databasedatasource name="" />
-        ///     <connectionstring>Data Source=Krish;Initial Catalog=walls416;User Id=IAINTERNAL\Administrator;Password=tsunami;integrated security=true;</connectionstring>
+        ///     <connectionstring>Data Source=Krish;Initial Catalog=walls416;User Id=XCASE\Administrator;Password=password;integrated security=true;</connectionstring>
         ///     <commandstring>INSERT INTO dbo.CM_RECENTLY_USED (TimekeeperID, ClientRemoteSystemID, MatterRemoteSystemID) VALUES (3, 25757000, NULL)</commandstring>
         ///     <commandstring>INSERT INTO dbo.CM_RECENTLY_USED (TimekeeperID, ClientRemoteSystemID, MatterRemoteSystemID) VALUES (4, 25757001, NULL)</commandstring>
         /// </operation>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <operation id="Execute SQL script" class="XCaseGeneric.ActionSQLScript">
-    <connectionstring>Data Source=Cheapside;Initial Catalog=QAFriday;User Id=sa;Password=Tsunami9;integrated security=false;</connectionstring>
+    <connectionstring>Data Source=Cheapside;Initial Catalog=QAFriday;User Id=sa;Password=password;integrated security=false;</connectionstring>
     <scriptlocation>../../../../../hg-time/documentation/TestPlans/TestFiles/CreateReferenceData</scriptlocation>
     <scriptname>FirstScript.sql</scriptname>
 </operation>
