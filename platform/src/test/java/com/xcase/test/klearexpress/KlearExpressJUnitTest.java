@@ -73,7 +73,6 @@ public class KlearExpressJUnitTest {
         }
     }
     
-    @Test
     public void test1() {
         LOGGER.debug("starting test1()");
         String apiUrl = KlearExpressConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(KlearExpressConstant.LOCAL_API_URL);
@@ -92,7 +91,6 @@ public class KlearExpressJUnitTest {
         SendMessageResponse sendMessageResponse = klearExpressExternalAPI.sendMessage(sendMessageRequest);
     }
     
-    @Test
     public void test2() {
         LOGGER.debug("starting test2()");
         String apiUrl = KlearExpressConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(KlearExpressConstant.LOCAL_API_URL);
@@ -132,7 +130,6 @@ public class KlearExpressJUnitTest {
         }
     }
     
-    @Test
     public void test3() {
         LOGGER.debug("starting test3()");
         String apiUrl = KlearExpressConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(KlearExpressConstant.LOCAL_API_URL);

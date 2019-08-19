@@ -73,7 +73,6 @@ public class SeleniumJUnitTest {
         percentageCalculatorPage = new PercentageCalculatorPage(driver);
     }
     
-    @Test
     public void test1() {
         LOGGER.debug("starting test1()");
         percentageCalculatorPage.clearFirstField();
@@ -83,7 +82,6 @@ public class SeleniumJUnitTest {
         assertEquals("Result is not expected value", result, "5.28");
     }
     
-    @Test
     public void test2() {
         LOGGER.debug("starting test2()");
         percentageCalculatorPage.clearFirstField();
@@ -93,7 +91,6 @@ public class SeleniumJUnitTest {
         assertEquals("Result is not expected value", result, "4.8");
     }
     
-    @Test
     public void test3() {
         LOGGER.debug("starting test3()");
         percentageCalculatorPage.clearFirstField();

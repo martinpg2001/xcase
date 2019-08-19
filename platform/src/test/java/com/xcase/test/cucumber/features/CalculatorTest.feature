@@ -32,6 +32,6 @@ Feature: Check percentage calculator functionality
 
     Examples: 
       | name  | firstvalue | secondvalue | result | compare |
-      | name1 |     "5"    | "50"        | "2.5"  | "true"    |
-      | name2 |     "7"    | "60"        | "4.2"  | "true"    |
-      | name2 |     "7"    | "60"        | "5.2"  | "false"   |
+#      | name1 |     "5"    | "50"        | "2.5"  | "true"    |
+#      | name2 |     "7"    | "60"        | "4.2"  | "true"    |
+#      | name2 |     "7"    | "60"        | "5.2"  | "false"   |

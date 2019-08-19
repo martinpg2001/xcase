@@ -264,13 +264,13 @@ public class CommonHTTPManager implements AutoCloseable {
 
             this.httpClient = this.httpClientBuilder.build();
         } catch (KeyManagementException kme) {
-            LOGGER.warn("KeyManagementException thrown building HttpClient: " + kme.getMessage());
+            LOGGER.warn("KeyManagementException thrown building HttpClient", kme);
         } catch (KeyStoreException kse) {
-            LOGGER.warn("KeyStoreException thrown building HttpClient: " + kse.getMessage());
+            LOGGER.warn("KeyStoreException thrown building HttpClient", kse);
         } catch (NoSuchAlgorithmException nsae) {
-            LOGGER.warn("NoSuchAlgorithmException thrown building HttpClient: " + nsae.getMessage());
+            LOGGER.warn("NoSuchAlgorithmException thrown building HttpClient", nsae);
         } catch (Exception e) {
-            LOGGER.warn("Exception thrown building HttpClient: " + e.getMessage());
+            LOGGER.warn("Exception thrown building HttpClient", e);
         }
 
 //        LOGGER.debug("finishing CommonHttpManager()");
@@ -362,13 +362,13 @@ public class CommonHTTPManager implements AutoCloseable {
 
             this.httpClient = this.httpClientBuilder.build();
         } catch (KeyManagementException kme) {
-            LOGGER.warn("KeyManagementException thrown building HttpClient: " + kme.getMessage());
+            LOGGER.warn("KeyManagementException thrown building HttpClient", kme);
         } catch (KeyStoreException kse) {
-            LOGGER.warn("KeyStoreException thrown building HttpClient: " + kse.getMessage());
+            LOGGER.warn("KeyStoreException thrown building HttpClient", kse);
         } catch (NoSuchAlgorithmException nsae) {
-            LOGGER.warn("NoSuchAlgorithmException thrown building HttpClient: " + nsae.getMessage());
+            LOGGER.warn("NoSuchAlgorithmException thrown building HttpClient", nsae);
         } catch (Exception e) {
-            LOGGER.warn("Exception thrown building HttpClient: " + e.getMessage());
+            LOGGER.warn("Exception thrown building HttpClient", e);
         }
 
 //        LOGGER.debug("finishing CommonHttpManager()");
@@ -404,7 +404,7 @@ public class CommonHTTPManager implements AutoCloseable {
             }
         } catch (FileNotFoundException fnfe) {
             LOGGER.warn("FileNotFoundException happened when reading " + propertyPath);
-            LOGGER.debug("box4j-config.properties not found in classpath, use common-config-default.properties.");
+            LOGGER.debug(propertyPath + " not found in classpath, use common-config-default.properties");
             InputStream in = this.getClass().getResourceAsStream(CommonConstant.CONFIG_FILE_DEFAULT_NAME);
             try {
                 this.config.load(in);
@@ -445,7 +445,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	        LOGGER.debug("created commonHttpResponse");
 	        return commonHttpResponse;
 	    } catch (Exception e) {
-	        LOGGER.warn("exception doing " + method + ": " + e.getMessage());
+	        LOGGER.warn("exception doing " + method, e);
 	        throw e;
 	    }
 	}
@@ -535,7 +535,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	        LOGGER.debug("created commonHttpResponse");
 	        return commonHttpResponse;
 	    } catch (Exception e) {
-	        LOGGER.warn("exception doing multi-part POST: " + e.getMessage());
+	        LOGGER.warn("exception doing multi-part POST", e);
 	        throw e;
 	    } finally {
 	        LOGGER.debug("finally...");
@@ -630,7 +630,7 @@ public class CommonHTTPManager implements AutoCloseable {
             LOGGER.debug("created commonHttpResponse");
             return commonHttpResponse;
         } catch (Exception e) {
-            LOGGER.warn("exception doing multi-part POST: " + e.getMessage());
+            LOGGER.warn("exception doing multi-part POST", e);
             throw e;
         } finally {
             LOGGER.debug("finally...");
@@ -709,7 +709,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	    LOGGER.debug("starting doGetFile()");
 	    long t1 = System.currentTimeMillis();
 	    if (LOGGER.isDebugEnabled()) {
-	        LOGGER.debug("##### doGetFile-start  #####, url=" + url);
+	        LOGGER.debug("##### doGetFile-start #####, url=" + url);
 	    }
 
 	    try {
@@ -787,14 +787,14 @@ public class CommonHTTPManager implements AutoCloseable {
 	        LOGGER.debug("written out file");
 	        fileOutputStream.close();
 	    } catch (Exception e) {
-	        LOGGER.warn("exception getting file: " + e.getMessage());
+	        LOGGER.warn("exception getting file", e);
 	        throw e;
 	    } finally {
 	        LOGGER.debug("finally...");
 	    }
 
 	    if (LOGGER.isDebugEnabled()) {
-	        LOGGER.debug("##### doGetFile-end    #####, used time: " + (System.currentTimeMillis() - t1) + " ms\n");
+	        LOGGER.debug("##### doGetFile-end #####, used time: " + (System.currentTimeMillis() - t1) + " ms\n");
 	    }
 
 	    return inFile;
@@ -845,7 +845,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	        LOGGER.debug("starting doHttpResponseMethod()");
 	        long t1 = System.currentTimeMillis();
 	        if (LOGGER.isDebugEnabled()) {
-	            LOGGER.debug("##### doHttpResponseMethod-start  #####, url=" + url);
+	            LOGGER.debug("##### doHttpResponseMethod-start #####, url=" + url);
 	        }
 
 	        HttpResponse httpResponse = null;
@@ -964,14 +964,14 @@ public class CommonHTTPManager implements AutoCloseable {
 
 	            LOGGER.debug("executed httpRequestBase");
 	        } catch (Exception e) {
-	            LOGGER.warn("exception doing " + method + ": " + e.getMessage());
+	            LOGGER.warn("exception doing " + method, e);
 	            throw e;
 	        } finally {
 	            LOGGER.debug("finally...");
 	        }
 
 	        if (LOGGER.isDebugEnabled()) {
-	            LOGGER.debug("##### doHttpResponseMethod-end    #####, used time: " + (System.currentTimeMillis() - t1) + " ms\n");
+	            LOGGER.debug("##### doHttpResponseMethod-end #####, used time: " + (System.currentTimeMillis() - t1) + " ms\n");
 	        }
 
 	        return httpResponse;
@@ -1020,7 +1020,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	        String responseBodyString = doStringDelete(url, headers, parameters, entityString, credentials);
 	        jsonElement = ConverterUtils.parseStringToJson(responseBodyString);
 	    } catch (Exception e) {
-	        LOGGER.warn("exception doing DELETE: " + e.getMessage());
+	        LOGGER.warn("exception doing DELETE", e);
 	        throw e;
 	    } finally {
 	        LOGGER.debug("finally...");
@@ -1036,7 +1036,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	        String responseBodyString = doStringDelete(url, headers, parameters, entityString, null);
 	        jsonElement = ConverterUtils.parseStringToJson(responseBodyString);
 	    } catch (Exception e) {
-	        LOGGER.warn("exception doing DELETE: " + e.getMessage());
+	        LOGGER.warn("exception doing DELETE", e);
 	        throw e;
 	    } finally {
 	        LOGGER.debug("finally...");
@@ -1054,7 +1054,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	        LOGGER.debug("finishing doJsonGet()");
 	        return jsonElement;
 	    } catch (Exception e) {
-	        LOGGER.warn("exception doing GET: " + e.getMessage());
+	        LOGGER.warn("exception doing GET", e);
 	        throw e;
 	    } finally {
 	        LOGGER.debug("finally...");
@@ -1068,7 +1068,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	        JsonElement jsonElement = ConverterUtils.parseStringToJson(responseEntityString);
 	        return jsonElement;
 	    } catch (Exception e) {
-	        LOGGER.warn("exception doing PATCH: " + e.getMessage());
+	        LOGGER.warn("exception doing PATCH", e);
 	        throw e;
 	    } finally {
 	        LOGGER.debug("finally...");
@@ -1080,7 +1080,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	    try {
 	        return doJsonPatch(url, headers, parameters, entityString, null);
 	    } catch (Exception e) {
-	        LOGGER.warn("exception doing PATCH: " + e.getMessage());
+	        LOGGER.warn("exception doing PATCH", e);
 	        throw e;
 	    } finally {
 	        LOGGER.debug("finally...");
@@ -1094,7 +1094,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	        JsonElement jsonElement = ConverterUtils.parseStringToJson(responseEntityString);
 	        return jsonElement;
 	    } catch (Exception e) {
-	        LOGGER.warn("exception doing POST: " + e.getMessage());
+	        LOGGER.warn("exception doing POST", e);
 	        throw e;
 	    } finally {
 	        LOGGER.debug("finally...");
@@ -1114,7 +1114,7 @@ public class CommonHTTPManager implements AutoCloseable {
 
 	        return jsonElement;
 	    } catch (Exception e) {
-	        LOGGER.warn("exception doing POST: " + e.getMessage());
+	        LOGGER.warn("exception doing POST", e);
 	        throw e;
 	    } finally {
 	        LOGGER.debug("finally...");
@@ -1133,7 +1133,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	        JsonElement jsonElement = ConverterUtils.parseStringToJson(responseEntityString);
 	        return jsonElement;
 	    } catch (Exception e) {
-	        LOGGER.warn("exception doing PUT: " + e.getMessage());
+	        LOGGER.warn("exception doing PUT", e);
 	        throw e;
 	    } finally {
 	        LOGGER.debug("finally...");
@@ -1155,7 +1155,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	    LOGGER.debug("starting doMultipartPost()");
 	    long t1 = System.currentTimeMillis();
 	    if (LOGGER.isDebugEnabled()) {
-	        LOGGER.debug("##### doHttpResponseMethod-start  #####, url=" + url);
+	        LOGGER.debug("##### doHttpResponseMethod-start #####, url=" + url);
 	    }
 
 	    String response = null;
@@ -1227,14 +1227,14 @@ public class CommonHTTPManager implements AutoCloseable {
 	        response = new String(responseBody);
 	        LOGGER.debug("response is " + response);
 	    } catch (Exception e) {
-	        LOGGER.warn("exception doing multi-part POST: " + e.getMessage());
+	        LOGGER.warn("exception doing multi-part POST", e);
 	        throw e;
 	    } finally {
 	        LOGGER.debug("finally...");
 	    }
 
 	    if (LOGGER.isDebugEnabled()) {
-	        LOGGER.debug("##### doHttpResponseMethod-end    #####, used time: " + (System.currentTimeMillis() - t1) + " ms\n");
+	        LOGGER.debug("##### doHttpResponseMethod-end #####, used time: " + (System.currentTimeMillis() - t1) + " ms\n");
 	    }
 
 	    return response;
@@ -1276,7 +1276,7 @@ public class CommonHTTPManager implements AutoCloseable {
 	    LOGGER.debug("starting doMultipartPost()");
 	    long t1 = System.currentTimeMillis();
 	    if (LOGGER.isDebugEnabled()) {
-	        LOGGER.debug("##### doHttpResponseMethod-start  #####, url=" + url);
+	        LOGGER.debug("##### doHttpResponseMethod-start #####, url=" + url);
 	    }
 
 	    String response = null;
@@ -1330,14 +1330,14 @@ public class CommonHTTPManager implements AutoCloseable {
 	        response = new String(responseBody);
 	        LOGGER.debug("executed postMethod");
 	    } catch (Exception e) {
-	        LOGGER.warn("exception doing multi-part POST: " + e.getMessage());
+	        LOGGER.warn("exception doing multi-part POST", e);
 	        throw e;
 	    } finally {
 	        LOGGER.debug("finally...");
 	    }
 
 	    if (LOGGER.isDebugEnabled()) {
-	        LOGGER.debug("##### doHttpResponseMethod-end    #####, used time: " + (System.currentTimeMillis() - t1) + " ms\n");
+	        LOGGER.debug("##### doHttpResponseMethod-end #####, used time: " + (System.currentTimeMillis() - t1) + " ms\n");
 	    }
 
 	    return response;
@@ -1435,7 +1435,7 @@ public class CommonHTTPManager implements AutoCloseable {
 
 	        return null;
 	    } catch (Exception e) {
-	        LOGGER.warn("exception doing GET: " + e.getMessage());
+	        LOGGER.warn("exception doing GET", e);
 	        throw e;
 	    } finally {
 	        LOGGER.debug("finally...");
@@ -1473,7 +1473,7 @@ public class CommonHTTPManager implements AutoCloseable {
 
 	        return null;
 	    } catch (Exception e) {
-	        LOGGER.warn("exception doing PATCH: " + e.getMessage());
+	        LOGGER.warn("exception doing PATCH", e);
 	        throw e;
 	    } finally {
 	        LOGGER.debug("finally...");
@@ -1501,7 +1501,7 @@ public class CommonHTTPManager implements AutoCloseable {
 
             return null;
         } catch (Exception e) {
-            LOGGER.warn("exception doing POST: " + e.getMessage());
+            LOGGER.warn("exception doing POST", e);
             throw e;
         } finally {
             LOGGER.debug("finally...");
@@ -1553,7 +1553,7 @@ public class CommonHTTPManager implements AutoCloseable {
 
 	        return null;
 	    } catch (Exception e) {
-	        LOGGER.warn("exception doing PUT: " + e.getMessage());
+	        LOGGER.warn("exception doing PUT", e);
 	        throw e;
 	    }
 	}
