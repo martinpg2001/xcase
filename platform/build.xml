@@ -11,11 +11,11 @@
     <property name="src-xcase-azure" value="src/java/com/xcase/azure"/>
     <property name="src-xcase-box" value="src/java/com/xcase/box"/>
     <property name="src-xcase-common" value="src/java/com/xcase/common"/>
-	<property name="src-xcase-cucumber" value="src/test/java/com/xcase/test/cucumber"/>
+    <property name="src-xcase-cucumber" value="src/test/java/com/xcase/test/cucumber"/>
     <property name="src-xcase-intapp" value="src/java/com/xcase/intapp"/>
     <property name="src-xcase-integrate" value="src/java/com/xcase/integrate"/>
-	<property name="src-xcase-kafka" value="src/java/com/xcase/kafka"/>
-	<property name="src-xcase-klearexpress" value="src/java/com/xcase/klearexpress"/>
+    <property name="src-xcase-kafka" value="src/java/com/xcase/kafka"/>
+    <property name="src-xcase-klearexpress" value="src/java/com/xcase/klearexpress"/>
     <property name="src-xcase-mail" value="src/java/com/xcase/mail"/>
     <property name="src-xcase-msgraph" value="src/java/com/xcase/msgraph"/>
     <property name="src-xcase-open" value="src/java/com/xcase/open"/>
@@ -89,9 +89,9 @@
     <property name="commons-io-jar" value="lib/commons-io-2.4.jar" />
     <property name="commons-lang3-jar" value="lib/commons-lang3-3.4.jar" />
     <property name="commons-logging-jar" value="lib/commons-logging-1.1.2.jar" />
-	<property name="cucumber-core-jar" value="lib/cucumber-core-4.3.1.jar" />
-	<property name="cucumber-java-jar" value="lib/cucumber-java-4.3.1.jar" />
-	<property name="cucumber-junit-jar" value="lib/cucumber-junit-4.3.1.jar" />
+    <property name="cucumber-core-jar" value="lib/cucumber-core-4.3.1.jar" />
+    <property name="cucumber-java-jar" value="lib/cucumber-java-4.3.1.jar" />
+    <property name="cucumber-junit-jar" value="lib/cucumber-junit-4.3.1.jar" />
     <property name="db2jcc-jar" value="lib/db2jcc.jar" />
     <property name="db2jcc_license-cisuz-jar" value="lib/db2jcc_license_cisuz.jar" />
     <property name="dom4j-jar" value="lib/dom4j-1.6.1.jar" />
@@ -126,7 +126,7 @@
     <property name="jtds-jar" value="lib/jtds.jar" />
     <property name="jTDS3-jar" value="lib/jTDS3.jar" />
     <property name="junit-jar" value="lib/junit-4.12.jar" />
-	<property name="kafka-clients-jar" value="lib/kafka-clients-2.2.0.jar" />
+    <property name="kafka-clients-jar" value="lib/kafka-clients-2.2.0.jar" />
     <property name="log4j-api-jar" value="lib/log4j-api-2.11.2.jar" />
     <property name="log4j-core-jar" value="lib/log4j-core-2.11.2.jar" />
     <property name="log4j-jar" value="lib/log4j.jar" />
@@ -161,7 +161,7 @@
     <property name="tst.dir" location="src/testng" />
     <property name="TALK" value="false" />
     <property name="tomcat.home" value="${env.TOMCAT_HOME}"/>
-    <property name="version" value="1.0.17"/>
+    <property name="version" value="1.0.22"/>
     <path id="classpath.base">
         <pathelement location="${abbot-jar}" />
         <pathelement location="${activation-jar}" />
@@ -226,9 +226,9 @@
         <pathelement location="${commons-io-jar}" /> 
         <pathelement location="${commons-lang3-jar}" />
         <pathelement location="${commons-logging-jar}" />
-    	<pathelement location="${cucumber-core-jar}" />
-    	<pathelement location="${cucumber-java-jar}" />
-    	<pathelement location="${cucumber-junit-jar}" />
+        <pathelement location="${cucumber-core-jar}" />
+        <pathelement location="${cucumber-java-jar}" />
+        <pathelement location="${cucumber-junit-jar}" />
         <pathelement location="${dom4j-jar}" />
         <pathelement location="${ganymed-ssh2-jar}" />
         <pathelement location="${gson-jar}" />
@@ -254,7 +254,7 @@
         <pathelement location="${jsch-jar}" />
         <pathelement location="${jsoup-jar}" />
         <pathelement location="${jtds-jar}" />
-    	<pathelement location="${kafka-clients-jar}" />
+        <pathelement location="${kafka-clients-jar}" />
         <pathelement location="${junit-jar}" />
         <pathelement location="${log4j-api-jar}" />
         <pathelement location="${log4j-core-jar}" />
@@ -348,9 +348,9 @@
         <pathelement location="${commons-io-jar}" /> 
         <pathelement location="${commons-lang3-jar}" />
         <pathelement location="${commons-logging-jar}" />
-    	<pathelement location="${cucumber-core-jar}" />
-    	<pathelement location="${cucumber-java-jar}" />
-    	<pathelement location="${cucumber-junit-jar}" />
+        <pathelement location="${cucumber-core-jar}" />
+        <pathelement location="${cucumber-java-jar}" />
+        <pathelement location="${cucumber-junit-jar}" />
         <pathelement location="${dom4j-jar}" />
         <pathelement location="${ganymed-ssh2-jar}" />
         <pathelement location="${gson-jar}" />
@@ -377,7 +377,7 @@
         <pathelement location="${jsoup-jar}" />
         <pathelement location="${jtds-jar}" />
         <pathelement location="${junit-jar}" />
-    	<pathelement location="${kafka-clients-jar}" />
+        <pathelement location="${kafka-clients-jar}" />
         <pathelement location="${log4j-api-jar}" />
         <pathelement location="${log4j-core-jar}" />
         <pathelement location="${mail-jar}" />
@@ -434,7 +434,7 @@
         <delete failonerror="false" includeemptydirs="true" verbose="${TALK}" >
             <fileset dir="${build}" />
         </delete>
-    	<mkdir dir="${build}"/>
+        <mkdir dir="${build}"/>
     </target>
     <target name="clean" depends="clean-compile" />
     <target name="clean-compile-test">
@@ -645,6 +645,18 @@
             <fileset dir="${build}"/>
         </jar>
     </target>
+    <target name="jar-common" depends="init,clean,compile-xcase-common" description="Builds platform jar for the common library without a clean compile" >
+        <delete file="target/xcase-common-${version}.jar"/>
+        <copy overwrite="true" todir="${build}" >
+            <fileset file="common-*.properties" >
+                <exclude name="*local*.properties"/>
+            </fileset>
+        </copy>
+        <copy file="${src}/log4j2.xml" todir="${build}" />
+        <jar basedir="${build}" duplicate="preserve" jarfile="target/xcase-common-${version}.jar" manifest="mainClass">
+            <fileset dir="${build}"/>
+        </jar>
+    </target>
     <target name="jar-intapp" depends="init,clean,compile-xcase-intapp" description="Builds platform jar for Intapp library without a clean compile" >
         <delete file="target/xcase-intapp-${version}.jar"/>
         <copy overwrite="true" todir="${build}" >
@@ -803,9 +815,9 @@
         <copy file="${commons-io-jar}" todir="${release-dir}/lib" /> 
         <copy file="${commons-lang3-jar}" todir="${release-dir}/lib" />
         <copy file="${commons-logging-jar}" todir="${release-dir}/lib" />
-    	<copy file="${cucumber-core-jar}" todir="${release-dir}/lib" />
-    	<copy file="${cucumber-java-jar}" todir="${release-dir}/lib" />
-    	<copy file="${cucumber-junit-jar}" todir="${release-dir}/lib" />
+        <copy file="${cucumber-core-jar}" todir="${release-dir}/lib" />
+        <copy file="${cucumber-java-jar}" todir="${release-dir}/lib" />
+        <copy file="${cucumber-junit-jar}" todir="${release-dir}/lib" />
         <copy file="${db2jcc-jar}" todir="${release-dir}/lib" />
         <copy file="${db2jcc_license-cisuz-jar}" todir="${release-dir}/lib" />
         <copy file="${dom4j-jar}" todir="${release-dir}/lib" />
@@ -829,7 +841,7 @@
         <copy file="${jsch-jar}" todir="${release-dir}/lib" />
         <copy file="${jsoup-jar}" todir="${release-dir}/lib" />
         <copy file="${jtds-jar}" todir="${release-dir}/lib" />
-    	<copy file="${kafka-clients-jar}" todir="${release-dir}/lib" />
+        <copy file="${kafka-clients-jar}" todir="${release-dir}/lib" />
         <copy file="${log4j-api-jar}" todir="${release-dir}/lib" />
         <copy file="${log4j-core-jar}" todir="${release-dir}/lib" />
         <copy file="${mail-jar}" todir="${release-dir}/lib" />
