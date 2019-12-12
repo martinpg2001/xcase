@@ -1,0 +1,1418 @@
+﻿using log4net;
+using System;
+using System.CodeDom.Compiler;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Reflection;
+using System.ServiceModel;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Xml;
+using XCase.ProxyGenerator;
+using XCase.REST.ProxyGenerator;
+using XCase.REST.ProxyGenerator.Generator;
+
+namespace XCaseServiceClient
+{
+    public partial class XCaseServiceClientForm : Form
+    {
+        #region Logger Setup
+
+        /// <summary>
+        /// A log4net log instance.
+        /// </summary>
+        private static readonly ILog Log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        bool m_OnPremise = true;
+        bool m_ProxyEnable = false;
+        bool m_Starting = true;
+        public static bool multiline = true;
+        public static Color productColor = Color.LightSkyBlue;
+        public static Color labelBackgroundColor = Color.SlateGray;
+        ComboBox m_LanguageComboBox = new ComboBox();
+        ComboBox m_ServicesComboBox = new ComboBox();
+        ComboBox m_TypeComboBox = new ComboBox();
+        CompilerResults m_CompilerResults = null;
+        EndpointAddress m_ServiceEndpoint = null;
+        FontFamily m_FontFamily = new FontFamily("Arial");
+        int m_MaxArrayLength = 10;
+        int m_MethodPanelInset = 20;
+        int m_ProxyPort = -1;
+        int m_Timeout = 30;
+        int m_TabPanelBuffer = 0;
+        int m_TopPanelHeight = 60;
+        int m_TopPanelBuffer = 60;
+        int m_WindowHeight = 0;
+        int m_WindowHeightIndent = 80;
+        int m_WindowWidth = 0;
+        int m_WindowWidthIndent = 40;
+        Label m_BindingLabel = new Label();
+        Label m_SecurityLabel = new Label();
+        Label m_MessageCredentialTypeLabel = new Label();
+        Label m_ClientCredentialTypeLabel = new Label();
+        object m_RESTServiceClient = null;
+        object m_ServiceClient = null;
+        string m_Binding = "Basic";
+        string m_ClientCredentialDomain = null;
+        string m_ClientCredentialPassword = null;
+        string m_ClientCredentialType = "None";
+        string m_ClientCredentialUserName = null;
+        string m_CurrentDirectory = "";// Properties.Settings.Default.ServicesDirectory;
+        string m_Language = "CSharp";
+        string m_MessageCredentialType = "None";
+        string m_ProxyAddress = null;
+        string m_SecurityMode = "None";
+        string m_SecurityProtocol = "Tls11";
+        string m_ServiceDescriptionURL = null;
+        string m_ServiceName = "Service Name";
+        string m_Type = "SOAP";
+        string m_WindowTitle = "XCase Web Service Client";
+        string m_ServiceDescriptor = null;
+        string[] m_References = new string[] { "System.dll", "System.ComponentModel.DataAnnotations.dll", "System.Core.dll", "System.Data.dll", "System.Net.dll", "System.Net.Http.dll", "System.Runtime.Serialization.dll", "System.ServiceModel.dll", "System.Web.dll", "System.Web.Services.dll", "System.Xml.dll" };
+        string[] m_Services = new string[] { };
+        string[] m_SourceStringArray = new string[] { };
+        IProxyGenerator m_SwaggerProxyGenerator = new SwaggerCSharpProxyGenerator();
+        RESTApiProxySettingsEndPoint m_SwaggerApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("CSharp");
+        IServiceDefinition m_SwaggerServiceDefinition = null;
+        TabControl m_MethodsTabControl;
+        TableLayoutPanel m_TopTableLayoutPanel;
+        TextBox m_DomainTextBox = new TextBox();
+        TextBox m_MaxArrayLengthTextBox = new TextBox();
+        TextBox m_PasswordTextBox = new TextBox();
+        TextBox m_ServiceDescriptionURLTextBox = new TextBox();
+        TextBox m_TimeoutTextBox = new TextBox();
+        TextBox m_UsernameTextBox = new TextBox();
+        RichTextBox m_ViewRichTextBox = new RichTextBox();
+
+        #endregion
+        public XCaseServiceClientForm()
+        {
+//            log4net.Config.XmlConfigurator.ConfigureAndWatch();
+            Log.DebugFormat("no arguments constructor");
+            Initialize();
+        }
+
+        private void Initialize()
+        {
+            Log.Debug("starting Initialize()");
+            Log.Debug("about to initialize component");
+            InitializeComponent();
+            Log.Debug("initialized component");
+            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            Rectangle workingRectangle = Screen.PrimaryScreen.WorkingArea;
+            this.m_WindowWidth = workingRectangle.Width - m_WindowWidthIndent;
+            this.m_WindowHeight = workingRectangle.Height - m_WindowHeightIndent;
+            this.m_TopTableLayoutPanel = new TableLayoutPanel();
+            this.SuspendLayout();
+            this.AutoScroll = true;
+            //
+            // topTableLayoutPanel
+            //
+            this.m_TopTableLayoutPanel.Location = new Point(0, 0);
+            this.m_TopTableLayoutPanel.Name = "topTableLayoutPanel";
+            this.m_TopTableLayoutPanel.Height = m_TopPanelHeight;
+            this.m_TopTableLayoutPanel.Width = m_WindowWidth;
+            this.m_TopTableLayoutPanel.BackColor = productColor;
+            this.m_TopTableLayoutPanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
+            this.m_TopTableLayoutPanel.TabIndex = 0;
+            //
+            // Form1
+            //
+            this.ClientSize = new Size(m_WindowWidth, m_WindowHeight);
+            this.Controls.Add(this.m_TopTableLayoutPanel);
+            this.Name = "XCaseServiceClientForm";
+            this.Text = m_WindowTitle;
+            this.ResumeLayout(false);
+            StartPosition = FormStartPosition.CenterScreen;
+            /* Code to dynamically generate UI */
+            m_TopTableLayoutPanel.RowCount = 2;
+            m_TopTableLayoutPanel.ColumnCount = 10;
+            TableLayoutColumnStyleCollection tableLayoutColumnStyleCollection = m_TopTableLayoutPanel.ColumnStyles;
+            TableLayoutRowStyleCollection tableLayoutRowStyleCollection = m_TopTableLayoutPanel.RowStyles;
+            ColumnStyle urlColumnStyle = new ColumnStyle();
+            urlColumnStyle.SizeType = SizeType.AutoSize;
+            tableLayoutColumnStyleCollection.Add(urlColumnStyle);
+            for (int i = 1; i < m_TopTableLayoutPanel.ColumnCount; i++)
+            {
+                ColumnStyle columnStyle = new ColumnStyle();
+                columnStyle.SizeType = SizeType.Percent;
+                switch (i)
+                {
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                    case 6:
+                    case 9:
+                        columnStyle.Width = 9;
+                        break;
+                    case 7:
+                    case 8:
+                        columnStyle.Width = 13;
+                        break;
+                    default:
+                        break;
+                }
+
+                tableLayoutColumnStyleCollection.Add(columnStyle);
+            }
+
+            for (int i = 0; i < m_TopTableLayoutPanel.RowCount; i++)
+            {
+                RowStyle rowStyle = new RowStyle();
+                rowStyle.SizeType = SizeType.AutoSize;
+                //rowStyle.Height = 50;
+                tableLayoutRowStyleCollection.Add(rowStyle);
+            }
+
+            m_TopTableLayoutPanel.Controls.Add(m_TypeComboBox, 0, 0);
+            Log.Debug("added m_TypeComboBox");
+            m_TypeComboBox.DataSource = new string[] { "Integrate", "NetDocs", "Open", "PlatformCDS", "PlatformCDSCM", "PlatformDocument", "PlatformRefData", "PlatformSanctionLists", "PlatformTMS", "RAML", "REST", "SOAP", "Source", "Time", "View" };
+            ComboBox.ObjectCollection typeObjectCollection = m_TypeComboBox.Items;
+            if (typeObjectCollection.Contains(m_Type))
+            {
+                Log.DebugFormat("objectCollection contains {0}", m_Type);
+                int index = typeObjectCollection.IndexOf(m_Type);
+                m_TypeComboBox.SelectedIndex = index;
+            }
+            else
+            {
+                Log.DebugFormat("objectCollection does not contain {0}", m_Type);
+                int index = typeObjectCollection.IndexOf("SOAP");
+                Log.DebugFormat("index of SOAP is {0}", index);
+                m_TypeComboBox.SelectedIndex = index;
+            }
+
+            m_TypeComboBox.SelectionChangeCommitted += delegate (object o, EventArgs ev)
+            {
+                Log.Debug("m_TypeComboBox SelectionChangeCommitted");
+                m_Type = (string)m_TypeComboBox.SelectedItem;
+                Log.DebugFormat("m_Type is {0}", m_Type);
+            };
+            m_ServiceDescriptionURLTextBox.Text = m_ServiceDescriptionURL;
+            m_ServiceDescriptionURLTextBox.Width = 250;
+            m_ServiceDescriptionURLTextBox.TextChanged += delegate (object o, EventArgs ev)
+            {
+                m_ServiceDescriptionURL = m_ServiceDescriptionURLTextBox.Text;
+            };
+            m_TopTableLayoutPanel.Controls.Add(m_ServiceDescriptionURLTextBox, 0, 1);
+            Log.Debug("added m_ServiceDescriptionURLTextBox");
+            Label languageLabel = new Label();
+            languageLabel.Text = XCaseServiceClient.Properties.Resources.Language;
+            m_TopTableLayoutPanel.Controls.Add(languageLabel, 1, 0);
+            Log.Debug("added languageLabel");
+            m_TopTableLayoutPanel.Controls.Add(m_LanguageComboBox, 1, 1);
+            Log.Debug("added m_LanguageComboBox");
+            m_LanguageComboBox.DataSource = new string[] { "CSharp", "Java" };
+            ComboBox.ObjectCollection languageObjectCollection = m_LanguageComboBox.Items;
+            if (languageObjectCollection.Contains(m_Language))
+            {
+                Log.DebugFormat("languageObjectCollection contains {0}", m_Language);
+                int index = languageObjectCollection.IndexOf(m_Language);
+                m_LanguageComboBox.SelectedIndex = index;
+            }
+            else
+            {
+                Log.DebugFormat("languageObjectCollection does not contain {0}", m_Language);
+                int index = languageObjectCollection.IndexOf("CSharp");
+                Log.DebugFormat("index of CSharp is {0}", index);
+                m_LanguageComboBox.SelectedIndex = index;
+            }
+
+            m_LanguageComboBox.SelectionChangeCommitted += delegate (object o, EventArgs ev)
+            {
+                Log.Debug("m_TypeComboBox SelectionChangeCommitted");
+                m_Language = (string)m_LanguageComboBox.SelectedItem;
+                Log.DebugFormat("m_Language is {0}", m_Language);
+            };
+            Label serviceURLLabel = new Label();
+            serviceURLLabel.Text = XCaseServiceClient.Properties.Resources.ServiceName;
+            m_TopTableLayoutPanel.Controls.Add(serviceURLLabel, 2, 0);
+            Log.Debug("added serviceURLLabel");
+            m_ServicesComboBox.DataSource = m_Services;
+            if (m_Services.Contains<string>(m_ServiceName))
+            {
+                m_ServicesComboBox.SelectedItem = m_ServiceName;
+            }
+
+            m_ServicesComboBox.DataSourceChanged += delegate (object o, EventArgs ev)
+            {
+                m_ServicesComboBox.Refresh();
+            };
+            m_ServicesComboBox.SelectionChangeCommitted += delegate (object o, EventArgs ev)
+            {
+                Log.Debug("m_ServicesComboBox SelectionChangeCommitted");
+                m_ServiceName = (string)m_ServicesComboBox.SelectedItem;
+                Log.DebugFormat("m_ServiceName is {0}", m_ServiceName);
+                ProcessServicesChange();
+            };
+            m_TopTableLayoutPanel.Controls.Add(m_ServicesComboBox, 2, 1);
+            Log.Debug("added m_ServicesComboBox");
+            Label domainLabel = new Label();
+            domainLabel.Text = XCaseServiceClient.Properties.Resources.Domain;
+            m_TopTableLayoutPanel.Controls.Add(domainLabel, 3, 0);
+            Log.Debug("added domainLabel");
+            m_DomainTextBox.Text = m_ClientCredentialDomain;
+            m_TopTableLayoutPanel.Controls.Add(m_DomainTextBox, 3, 1);
+            Log.Debug("added m_DomainTextBox");
+            Label usernameLabel = new Label();
+            usernameLabel.Text = XCaseServiceClient.Properties.Resources.Username;
+            m_TopTableLayoutPanel.Controls.Add(usernameLabel, 4, 0);
+            Log.Debug("added usernameLabel");
+            m_UsernameTextBox.Text = m_ClientCredentialUserName;
+            m_TopTableLayoutPanel.Controls.Add(m_UsernameTextBox, 4, 1);
+            Log.Debug("added m_UsernameTextBox");
+            Label passwordLabel = new Label();
+            passwordLabel.Text = XCaseServiceClient.Properties.Resources.Password;
+            m_TopTableLayoutPanel.Controls.Add(passwordLabel, 5, 0);
+            Log.Debug("added passwordLabel");
+            m_PasswordTextBox.PasswordChar = '*';
+            m_PasswordTextBox.Text = m_ClientCredentialPassword;
+            m_TopTableLayoutPanel.Controls.Add(m_PasswordTextBox, 5, 1);
+            Log.Debug("added m_PasswordTextBox");
+            /* Array length control */
+            Label m_MaxArrayLengthLabel = new Label();
+            m_MaxArrayLengthLabel.Text = XCaseServiceClient.Properties.Resources.ArrayLength;
+            m_TopTableLayoutPanel.Controls.Add(m_MaxArrayLengthLabel, 6, 0);
+            Log.Debug("added m_MaxArrayLengthLabel");
+            m_MaxArrayLengthTextBox.Text = m_MaxArrayLength.ToString();
+            m_MaxArrayLengthTextBox.Visible = true;
+            m_TopTableLayoutPanel.Controls.Add(m_MaxArrayLengthTextBox, 6, 1);
+            Log.Debug("added m_MaxArrayLengthTextBox");
+            m_MaxArrayLengthTextBox.TextChanged += delegate (object o, EventArgs ev)
+            {
+                try
+                {
+                    m_MaxArrayLength = Convert.ToInt32(m_MaxArrayLengthTextBox.Text);
+                }
+                catch (Exception e)
+                {
+                    Log.DebugFormat("max array length format incorrect {0}", e.Message);
+                }
+            };
+            /* Binding settings */
+            m_BindingLabel.AutoEllipsis = true;
+            m_BindingLabel.AutoSize = true;
+            m_BindingLabel.Text = string.Format("Binding: {0}", m_Binding);
+            m_TopTableLayoutPanel.Controls.Add(m_BindingLabel, 7, 0);
+            m_SecurityLabel.AutoEllipsis = true;
+            m_SecurityLabel.AutoSize = true;
+            m_SecurityLabel.Text = string.Format("Security: {0}", m_SecurityMode);
+            m_TopTableLayoutPanel.Controls.Add(m_SecurityLabel, 7, 1);
+            m_MessageCredentialTypeLabel.AutoEllipsis = true;
+            m_MessageCredentialTypeLabel.AutoSize = true;
+            m_MessageCredentialTypeLabel.Text = string.Format("Message: {0}", m_MessageCredentialType);
+            m_TopTableLayoutPanel.Controls.Add(m_MessageCredentialTypeLabel, 8, 0);
+            Log.Debug("added m_MessageCredentialTypeLabel");
+            m_ClientCredentialTypeLabel.AutoEllipsis = true;
+            m_ClientCredentialTypeLabel.AutoSize = true;
+            m_ClientCredentialTypeLabel.Text = string.Format("Client: {0}", m_ClientCredentialType);
+            m_TopTableLayoutPanel.Controls.Add(m_ClientCredentialTypeLabel, 8, 1);
+            Log.Debug("added m_ClientCredentialTypeLabel");
+            /* Buttons */
+            Button goButton = new Button();
+            goButton.Anchor = AnchorStyles.None;
+            goButton.Text = XCaseServiceClient.Properties.Resources.Go;
+            m_TopTableLayoutPanel.Controls.Add(goButton, 9, 0);
+            Log.Debug("added goButton");
+            goButton.MouseClick += delegate (object o, MouseEventArgs mev)
+            {
+                Log.Debug("Go clicked");
+                ProcessGoClicked();
+            };
+            Button fileButton = new Button();
+            fileButton.Anchor = AnchorStyles.None;
+            fileButton.Text = XCaseServiceClient.Properties.Resources.File;
+            fileButton.MouseClick += delegate (object o, MouseEventArgs mev)
+            {
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                Log.Debug("service name is " + m_ServiceName);
+                if (m_CurrentDirectory == null)
+                {
+                    m_CurrentDirectory = Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()));
+                }
+
+                openFileDialog.InitialDirectory = m_CurrentDirectory;
+                openFileDialog.Filter = "WSDL Files (*.wsdl)|*.WSDL";
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string fileName = openFileDialog.FileName;
+                    Log.DebugFormat("fileName is {0}", fileName);
+                    //ProcessWSDLFile(fileName);
+                }
+            };
+            m_TopTableLayoutPanel.Controls.Add(fileButton, 9, 1);
+            Log.Debug("added fileButton");
+            /* Top panel rendered. */
+            RenderServiceControl(m_ServiceClient);
+            this.Controls.Add(m_MethodsTabControl);
+            Log.Debug("added m_MethodsTabControl");
+            this.ResumeLayout(true);
+            m_Starting = false;
+            Log.Debug("finishing Initialize()");
+        }
+
+        private void ProcessServicesChange()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ProcessGoClicked()
+        {
+            Log.Debug("starting ProcessGoClicked()");
+            Log.DebugFormat("m_Language is {0}", m_Language);
+            Log.DebugFormat("m_Type is {0}", m_Type);
+            if (string.IsNullOrEmpty(m_Type))
+            {
+                ProcessSOAPType();
+            }
+            else
+            {
+                switch (m_Type)
+                {
+                    case "Integrate":
+                        m_TypeComboBox.Text = "Integrate";
+                        ProcessIntegrateType();
+                        break;
+                    case "NetDocs":
+                        m_TypeComboBox.Text = "NetDocs";
+                        ProcessNetDocsType();
+                        break;
+                    case "Open":
+                        m_TypeComboBox.Text = "Open";
+                        ProcessOpenType();
+                        break;
+                    case "PlatformCDS":
+                        m_TypeComboBox.Text = "PlatformCDS";
+                        ProcessPlatformCDSType();
+                        break;
+                    case "PlatformCDSCM":
+                        m_TypeComboBox.Text = "PlatformCDSCM";
+                        ProcessPlatformCDSCMType();
+                        break;
+                    case "PlatformDocument":
+                        m_TypeComboBox.Text = "PlatformDocument";
+                        ProcessPlatformDocumentType();
+                        break;
+                    case "PlatformRefData":
+                        m_TypeComboBox.Text = "PlatformRefData";
+                        ProcessPlatformRefDataType();
+                        break;
+                    case "PlatformSanctionLists":
+                        m_TypeComboBox.Text = "PlatformSanctionLists";
+                        ProcessPlatformSanctionListsType();
+                        break;
+                    case "PlatformTMS":
+                        m_TypeComboBox.Text = "PlatformTMS";
+                        ProcessPlatformTMSType();
+                        break;
+                    case "RAML":
+                        m_TypeComboBox.Text = "RAML";
+                        ProcessRAMLType(true);
+                        break;
+                    case "REST":
+                        m_TypeComboBox.Text = "REST";
+                        ProcessSwaggerType(true);
+                        break;
+                    case "SOAP":
+                        m_TypeComboBox.Text = "SOAP";
+                        ProcessSOAPType();
+                        break;
+                    case "Source":
+                        m_TypeComboBox.Text = "Source";
+                        ProcessSourceType();
+                        break;
+                    case "Time":
+                        m_TypeComboBox.Text = "Time";
+                        ProcessTimeType();
+                        break;
+                    case "View":
+                        m_TypeComboBox.Text = "View";
+                        ProcessViewType();
+                        break;
+                    default:
+                        m_TypeComboBox.Text = "SOAP";
+                        ProcessSOAPType();
+                        break;
+                }
+            }
+        }
+
+        private void ProcessIntegrateType()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ProcessNetDocsType()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ProcessOpenType()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ProcessPlatformCDSType()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ProcessPlatformCDSCMType()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ProcessPlatformDocumentType()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ProcessPlatformRefDataType()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ProcessPlatformSanctionListsType()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ProcessPlatformTMSType()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ProcessRAMLType(bool v)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ProcessSwaggerType(bool v)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ProcessSourceType()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ProcessTimeType()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ProcessViewType()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ProcessSOAPType()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RenderServiceControl(object client)
+        {
+            Log.Debug("starting RenderServiceControl()");
+            if (client == null)
+            {
+                Log.Debug("client is null");
+                return;
+            }
+
+            if (client != null)
+            {
+                Type clientType = client.GetType();
+                Log.Debug("client type is " + clientType);
+                Type baseClientType = clientType.BaseType;
+                Log.Debug("base client type is " + baseClientType);
+                if (baseClientType != null)
+                {
+                    Type baseBaseClientType = baseClientType.BaseType;
+                    Log.Debug("base base client type is " + baseBaseClientType);
+                }
+
+                Type[] clientInterfaceTypes = clientType.GetInterfaces();
+                foreach (Type clientInterfaceType in clientInterfaceTypes)
+                {
+                    Log.Debug("client interface type is " + clientInterfaceType);
+                }
+
+                this.Controls.Remove(m_MethodsTabControl);
+                m_MethodsTabControl = new TabControl();
+                this.Controls.Add(m_MethodsTabControl);
+                m_MethodsTabControl.Location = new Point(0, m_TopPanelHeight);
+                m_MethodsTabControl.Multiline = multiline;
+                m_MethodsTabControl.Name = "MethodsTabControl";
+                m_MethodsTabControl.Size = new Size(m_WindowWidth, m_WindowHeight - (m_TopPanelHeight + m_TabPanelBuffer));
+                m_MethodsTabControl.BackColor = Color.LightSteelBlue;
+                /* Get public methods of Web service */
+                MethodInfo[] allPublicMethodInfoArray = clientType.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+                IEnumerable<MethodInfo> methodArray = allPublicMethodInfoArray.Where(m => !m.IsConstructor).OrderBy(m => m.Name);
+                foreach (MethodInfo methodInfo in methodArray)
+                {
+                    Log.DebugFormat("** Method is " + methodInfo.Name + " **");
+                    this.Text = m_WindowTitle + " - rendering " + methodInfo.Name;
+                    TabPage methodTabPage = CreateXCaseTabPageForMethod(client, methodInfo);
+                    Log.DebugFormat("created methodTabPage");
+                    m_MethodsTabControl.Controls.Add(methodTabPage);
+                    Log.DebugFormat("added methodTabPage");
+                    methodTabPage.Select();
+                    Log.DebugFormat("selected methodTabPage");
+                    this.Text = m_WindowTitle + " - rendered " + methodInfo.Name;
+                }
+
+                m_MethodsTabControl.ResumeLayout(true);
+            }
+
+            this.Text = m_WindowTitle;
+            Log.Debug("finishing RenderServiceControl()");
+        }
+
+        private TabPage CreateXCaseTabPageForMethod(object client, MethodInfo methodInfo)
+        {
+            XCaseTabPage methodXCaseTabPage = new XCaseTabPage(methodInfo.Name);
+            methodXCaseTabPage.client = client;
+            methodXCaseTabPage.methodInfo = methodInfo;
+            methodXCaseTabPage.Size = new Size(m_WindowWidth, m_WindowHeight - (m_TopPanelHeight + m_TopPanelBuffer + m_TabPanelBuffer));
+            methodXCaseTabPage.AutoScroll = true;
+            methodXCaseTabPage.Enter += new EventHandler(MethodTab_Entered);
+            return methodXCaseTabPage;
+        }
+
+        private void MethodTab_Entered(object sender, EventArgs e)
+        {
+            Log.Debug("starting MethodTab_Entered()");
+            TableLayoutPanel methodTableLayoutPanel = CreateTableLayoutPanelForMethod(((XCaseTabPage)sender));
+            ((XCaseTabPage)sender).Controls.Add(methodTableLayoutPanel);
+        }
+
+        private TableLayoutPanel CreateTableLayoutPanelForMethod(XCaseTabPage xcaseTabPage)
+        {
+            TableLayoutPanel methodTableLayoutPanel = new TableLayoutPanel();
+            object client = xcaseTabPage.client;
+            MethodInfo methodInfo = xcaseTabPage.methodInfo;
+            methodTableLayoutPanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Inset;
+            methodTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
+            methodTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
+            methodTableLayoutPanel.Size = new Size(xcaseTabPage.Width - m_MethodPanelInset, xcaseTabPage.Height - m_MethodPanelInset);
+            methodTableLayoutPanel.RowCount = 1;
+            methodTableLayoutPanel.ColumnCount = 2;
+            methodTableLayoutPanel.AutoScroll = true;
+            TableLayoutPanel requestTableLayoutPanel = new TableLayoutPanel();
+            TableLayoutPanel resultTableLayoutPanel = new TableLayoutPanel();
+            requestTableLayoutPanel.AutoSize = true;
+            requestTableLayoutPanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
+            ParameterInfo[] parameterInfoArray = methodInfo.GetParameters();
+            object[] parameterValueArray = new object[parameterInfoArray.Length];
+            requestTableLayoutPanel.RowCount = parameterInfoArray.Length + 3;
+            requestTableLayoutPanel.ColumnCount = 3;
+            requestTableLayoutPanel.AutoScroll = true;
+            requestTableLayoutPanel.ControlRemoved += delegate (object sender, ControlEventArgs cea)
+            {
+                requestTableLayoutPanel.PerformLayout();
+            };
+            Label headerLabel = new Label();
+            headerLabel.Text = "Enter data here:";
+            requestTableLayoutPanel.Controls.Add(headerLabel, 0, 0);
+            Type returnType = methodInfo.ReturnType;
+            Log.DebugFormat("returnType is {0}", returnType);
+            Log.DebugFormat("returnType name is {0}", returnType.Name);
+            Label returnLabel = new Label();
+            returnLabel.AutoSize = true;
+            string returnLabelText = "Returns: " + returnType.Name;
+            Log.DebugFormat("returnLabelText is {0}", returnLabelText);
+            returnLabel.Text = returnLabelText;
+            requestTableLayoutPanel.Controls.Add(returnLabel, 1, 0);
+            for (int i = 0; i < parameterInfoArray.Length; i++)
+            {
+                ParameterInfo parameterInfo = parameterInfoArray[i];
+                Log.DebugFormat("parameter name is {0}", parameterInfo.Name);
+                if (parameterInfo.IsOut)
+                {
+                    continue;
+                }
+
+                /* For each input parameter, create a parameter object */
+                Log.DebugFormat("parameter type is {0}", parameterInfo.ParameterType);
+                object parameterObject = ObjectFactory.CreateDefaultObject(parameterInfo.ParameterType);
+                if (parameterObject != null)
+                {
+                    Log.DebugFormat("parameter object type is {0}", parameterObject.GetType());
+                }
+
+                parameterValueArray[i] = parameterObject;
+                /* Created a parameter object and added to parameter value array. */
+                RenderParameterObject(i, requestTableLayoutPanel, parameterInfo, parameterInfoArray, parameterObject, parameterValueArray);
+            }
+
+            Log.Debug("finished laying out parameter");
+            TextBox resultTextBox = new TextBox();
+            resultTextBox.Size = new Size(100, 100);
+            resultTextBox.Multiline = true;
+            resultTextBox.ScrollBars = ScrollBars.Both;
+            resultTextBox.Lines = new string[10];
+            resultTextBox.WordWrap = true;
+            resultTextBox.Dock = DockStyle.Fill;
+            XCaseButton submitButton = new XCaseButton();
+            submitButton.Text = XCaseServiceClient.Properties.Resources.Submit;
+            submitButton.Method = methodInfo;
+            submitButton.MouseClick += delegate (object o, MouseEventArgs mev)
+            {
+                Log.Debug("Submit button clicked");
+                this.Text = m_WindowTitle + " - invoking " + methodInfo.Name;
+                Cursor.Current = Cursors.WaitCursor;
+                Log.DebugFormat("parameter value array length is {0}", parameterValueArray.Length);
+                for (int i = 0; i < parameterValueArray.Length; i++)
+                {
+                    UpdateParameterValue(parameterValueArray[i]);
+                    if (parameterValueArray[i] is XCaseDateTime)
+                    {
+                        parameterValueArray[i] = ((XCaseDateTime)parameterValueArray[i]).GetDateTime();
+                    }
+                }
+
+                Log.Debug("finished assembling parameter value array");
+                LogParameterValueArray(parameterValueArray);
+                try
+                {
+                    string methodName = submitButton.Method.Name;
+                    Log.Debug("methodName is " + methodName);
+                    MethodInfo clientMethodInfo = null;
+                    if (!parameterValueArray.Any<object>(parameter => parameter == null))
+                    {
+                        /* If the parameterValueArray does not contain nulls, then can use parameterValueArray to get method signature */
+                        Type[] typeArray = GetTypeArrayFromObjectArray(parameterValueArray);
+                        Log.Debug("got Type array");
+                        clientMethodInfo = client.GetType().GetMethod(methodName, typeArray);
+                    }
+                    else
+                    {
+                        /* parameterValueArray does contain nulls, so use name to get method */
+                        clientMethodInfo = client.GetType().GetMethod(methodName);
+                    }
+
+                    Log.Debug("method is " + clientMethodInfo.Name);
+                    ServicePointManager.Expect100Continue = false;
+                    Log.Debug("about to invoke method " + methodName);
+                    object resultObject = submitButton.Method.Invoke(client, parameterValueArray);
+                    Log.Debug("invoked method " + methodName);
+                    resultTextBox.Text = string.Format("Success invoking {0}!", methodName);
+                    if (resultObject != null)
+                    {
+                        Log.DebugFormat("result object type is {0}", resultObject.GetType());
+                    }
+                    else
+                    {
+                        Log.Debug("result object is null");
+                        if (HasOutParameter(parameterInfoArray))
+                        {
+                            resultObject = GetOutParameter(parameterInfoArray, parameterValueArray);
+                            if (resultObject != null)
+                            {
+                                Log.DebugFormat("result object type is {0}", resultObject.GetType());
+                            }
+                        }
+                    }
+
+                    resultTableLayoutPanel = ObjectRenderer.RenderResultObject(resultObject, m_MaxArrayLength);
+                    Log.Debug("rendered result object");
+                    Cursor.Current = Cursors.Default;
+                    resultTableLayoutPanel.AutoScroll = true;
+                    resultTableLayoutPanel.AutoSize = true;
+                    resultTableLayoutPanel.Dock = DockStyle.Fill;
+                    resultTableLayoutPanel.PerformLayout();
+                    resultTableLayoutPanel.Visible = true;
+                    Log.Debug("finished displaying result table panel layout");
+                    methodTableLayoutPanel.Controls.Clear();
+                    methodTableLayoutPanel.Controls.Add(requestTableLayoutPanel, 0, 0);
+                    methodTableLayoutPanel.Controls.Add(resultTableLayoutPanel, 1, 0);
+                    methodTableLayoutPanel.AutoSize = true;
+                    methodTableLayoutPanel.PerformLayout();
+                    methodTableLayoutPanel.Visible = true;
+                    this.Text = m_WindowTitle + " - invoked " + methodInfo.Name;
+                    Log.Debug("finished try block of Submit button mouse click");
+                }
+                catch (Exception e)
+                {
+                    resultTextBox.Text = e.Message + "\n" + e.InnerException;
+                    Log.Debug("method invoked with exception " + e.Message);
+                }
+
+                Log.Debug("finishing Submit button mouse click");
+            };
+            requestTableLayoutPanel.Controls.Add(submitButton, 0, parameterInfoArray.Length + 1);
+            requestTableLayoutPanel.SetColumnSpan(submitButton, 3);
+            submitButton.Dock = DockStyle.Fill;
+            /* Added button to panel */
+            requestTableLayoutPanel.Controls.Add(resultTextBox, 0, parameterInfoArray.Length + 2);
+            requestTableLayoutPanel.SetColumnSpan(resultTextBox, 3);
+            requestTableLayoutPanel.PerformLayout();
+            requestTableLayoutPanel.Visible = true;
+            methodTableLayoutPanel.Controls.Add(requestTableLayoutPanel, 0, 0);
+            requestTableLayoutPanel.Dock = DockStyle.Fill;
+            methodTableLayoutPanel.Controls.Add(resultTableLayoutPanel, 1, 0);
+            methodTableLayoutPanel.AutoSize = true;
+            methodTableLayoutPanel.PerformLayout();
+            methodTableLayoutPanel.Visible = true;
+            return methodTableLayoutPanel;
+        }
+
+        private static object GetOutParameter(ParameterInfo[] parameterInfoArray, object[] parameterValueArray)
+        {
+            Log.Debug("starting GetOutParameter()");
+            int index = 0;
+            foreach (ParameterInfo parameterInfo in parameterInfoArray)
+            {
+                if (parameterInfo.IsOut)
+                {
+                    return parameterValueArray[index];
+                }
+
+                index++;
+            }
+
+            return null;
+        }
+
+        private bool HasOutParameter(ParameterInfo[] parameterInfoArray)
+        {
+            Log.Debug("starting HasOutParameter()");
+            foreach (ParameterInfo parameterInfo in parameterInfoArray)
+            {
+                if (parameterInfo.IsOut)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private Type[] GetTypeArrayFromObjectArray(object[] objectArray)
+        {
+            Log.Debug("starting GetTypeArrayFromObjectArray()");
+            List<Type> typeList = new List<Type>();
+            foreach (object objectObject in objectArray)
+            {
+                if (objectObject != null)
+                {
+                    Type type = objectObject.GetType();
+                    typeList.Add(type);
+                }
+                else
+                {
+                    typeList.Add(null);
+                }
+            }
+
+            return typeList.ToArray<Type>();
+        }
+
+        private static void LogParameterValueArray(object[] parameterValueArray)
+        {
+            Log.Debug("starting LogParameterValueArray()");
+            Log.DebugFormat("parameterValueArray length is {0}", parameterValueArray.Length);
+            for (int i = 0; i < parameterValueArray.Length; i++)
+            {
+                object parameterValue = parameterValueArray[i];
+                if (parameterValue != null)
+                {
+                    Log.Debug("parameterValue is not null");
+                    Log.DebugFormat("parameterValue type is {0}", parameterValue.GetType());
+                    if (ObjectFactory.IsArrayType(parameterValue.GetType()))
+                    {
+                        Log.DebugFormat("parameterValue type is array");
+                        if (((Array)parameterValue).Length > 0)
+                        {
+                            object firstArrayValue = (parameterValue as Array).GetValue(0);
+                            if (firstArrayValue != null)
+                            {
+                                Log.DebugFormat("firstArrayValue type is {0}", firstArrayValue.GetType());
+                                Log.DebugFormat("firstArrayValue is {0}", firstArrayValue);
+                            }
+                        }
+                    }
+                    else if (ObjectFactory.IsListType(parameterValue.GetType()))
+                    {
+                        Log.DebugFormat("parameterValue type is list");
+                        if ((parameterValue as IList).Count > 0)
+                        {
+                            object firstListValue = (parameterValue as IList)[0];
+                            if (firstListValue != null)
+                            {
+                                Log.DebugFormat("firstListValue type is {0}", firstListValue.GetType());
+                                Log.DebugFormat("firstListValue is {0}", firstListValue);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Log.DebugFormat("parameterValue is {0}", parameterValue);
+                    }
+                }
+                else
+                {
+                    Log.Debug("parameterValue is null");
+                }
+            }
+
+            Log.Debug("finishing LogParameterValueArray()");
+        }
+
+        private void UpdateParameterValue(object parameterValue)
+        {
+            Log.Debug("starting UpdateParameterValue()");
+            if (parameterValue != null)
+            {
+                Log.DebugFormat("parameter type is {0}", parameterValue.GetType());
+                if (parameterValue.GetType() == typeof(XmlDocument))
+                {
+                    /* Just print it out to check it is the right document */
+                    Log.Debug("parameter type is XmlDocument");
+                    Log.Debug(((XmlDocument)parameterValue).OuterXml);
+                }
+
+                if (parameterValue.GetType() == typeof(XmlElement))
+                {
+                    /* Just print it out to check it is the right element */
+                    Log.Debug("parameter type is XmlElement");
+                    Log.Debug(((XmlElement)parameterValue).InnerXml);
+                }
+
+                if (parameterValue.GetType() != null && parameterValue.GetType().IsArray)
+                {
+                    Log.Debug("parameter is array");
+                    ArrayList tempArrayList = new ArrayList(0);
+                    Log.DebugFormat("parameter value array length is {0}", ((Array)parameterValue).Length);
+                    for (int j = 0; j < ((Array)parameterValue).Length; j++)
+                    {
+                        Log.Debug(j + " value: " + ((Array)parameterValue).GetValue(j));
+                        if (((Array)parameterValue).GetValue(j) != null)
+                        {
+                            Log.Debug("parameter value is not null at " + j);
+                            tempArrayList.Add(((Array)parameterValue).GetValue(j));
+                        }
+                    }
+
+                    Log.Debug("length of array list is " + tempArrayList.Count);
+                    Array truncatedArray = Array.CreateInstance(parameterValue.GetType().GetElementType(), tempArrayList.Count);
+                    for (int k = 0; k < tempArrayList.Count; k++)
+                    {
+                        truncatedArray.SetValue(tempArrayList[k], k);
+                    }
+
+                    parameterValue = truncatedArray;
+                    Log.Debug("set parameter to truncated array");
+                }
+            }
+            else
+            {
+                Log.DebugFormat("parameterValue is null");
+            }
+        }
+
+        private void RenderParameterObject(int i, TableLayoutPanel requestTableLayoutPanel, ParameterInfo parameterInfo, ParameterInfo[] parameterInfoArray, object parameterObject, object[] parameterValueArray)
+        {
+            Log.DebugFormat("starting RenderParameterObject()");
+            Label parameterLabel = new Label();
+            parameterLabel.AutoSize = true;
+            parameterLabel.Text = string.Format("{0} ({1})", parameterInfoArray[i].Name, parameterInfo.ParameterType.Name);
+            requestTableLayoutPanel.Controls.Add(parameterLabel, 0, i + 1);
+            if (ObjectFactory.IsArrayType(parameterInfo.ParameterType))
+            {
+                /* Parameter is array type */
+                Log.Debug("parameter is array type");
+                ObjectRenderer.RenderArray(requestTableLayoutPanel, parameterValueArray, parameterObject, i);
+            }
+            else if (ObjectFactory.IsListType(parameterInfo.ParameterType))
+            {
+                /* Parameter is list type */
+                Log.Debug("parameter is list type");
+                ObjectRenderer.RenderList(requestTableLayoutPanel, parameterValueArray, parameterObject, i);
+            }
+            else if (ObjectFactory.IsBooleanType(parameterInfo.ParameterType))
+            {
+                /* Parameter is boolean type */
+                Log.Debug("parameter is boolean type");
+                if (parameterObject != null)
+                {
+                    ((bool)parameterObject).RenderBoolean(requestTableLayoutPanel, parameterValueArray, i);
+                }
+                else
+                {
+                    (false).RenderBoolean(requestTableLayoutPanel, parameterValueArray, i);
+                }
+            }
+            else if (ObjectFactory.IsByteType(parameterInfo.ParameterType))
+            {
+                /* Parameter is Byte type */
+                Log.Debug("parameter is Byte type");
+                if (parameterObject != null)
+                {
+                    ((Byte)parameterObject).RenderByte(requestTableLayoutPanel, parameterValueArray, i);
+                }
+                else
+                {
+                    ((Byte)Byte.MinValue).RenderByte(requestTableLayoutPanel, parameterValueArray, i);
+                }
+            }
+            else if (ObjectFactory.IsCharType(parameterInfo.ParameterType))
+            {
+                /* Parameter is Char type */
+                Log.Debug("parameter is Char type");
+                if (parameterObject != null)
+                {
+                    ((Char)parameterObject).RenderChar(requestTableLayoutPanel, parameterValueArray, i);
+                }
+                else
+                {
+                    ((Char)Char.MinValue).RenderChar(requestTableLayoutPanel, parameterValueArray, i);
+                }
+            }
+            else if (ObjectFactory.IsDateTimeType(parameterInfo.ParameterType))
+            {
+                /* Parameter is datetime type */
+                Log.Debug("parameter is datetime type");
+                if (parameterObject != null)
+                {
+                    if (parameterObject is DateTime)
+                    {
+                        ((DateTime)parameterObject).RenderDateTime(requestTableLayoutPanel, parameterValueArray, i);
+                    }
+                    else if (parameterObject is XCaseDateTime)
+                    {
+                        ((XCaseDateTime)parameterObject).date.RenderDateTime(requestTableLayoutPanel, parameterValueArray, i);
+                    }
+                }
+                else
+                {
+                    ((DateTime)DateTime.MinValue).RenderDateTime(requestTableLayoutPanel, parameterValueArray, i);
+                }
+            }
+            else if (ObjectFactory.IsDecimalType(parameterInfo.ParameterType))
+            {
+                /* Parameter is Decimal type */
+                Log.Debug("parameter is Decimal type");
+                if (parameterObject != null)
+                {
+                    ((Decimal)parameterObject).RenderDecimal(requestTableLayoutPanel, parameterValueArray, i);
+                }
+                else
+                {
+                    ((Decimal)Decimal.MinValue).RenderDecimal(requestTableLayoutPanel, parameterValueArray, i);
+                }
+            }
+            else if (ObjectFactory.IsDoubleType(parameterInfo.ParameterType))
+            {
+                /* Parameter is Double type */
+                Log.Debug("parameter is Double type");
+                if (parameterObject != null)
+                {
+                    ((Double)parameterObject).RenderDouble(requestTableLayoutPanel, parameterValueArray, i);
+                }
+                else
+                {
+                    ((Double)Double.MinValue).RenderDouble(requestTableLayoutPanel, parameterValueArray, i);
+                }
+            }
+            else if (ObjectFactory.IsEnumType(parameterInfo.ParameterType))
+            {
+                /* Parameter is enum type */
+                Log.Debug("parameter is enum type");
+                ((System.Enum)parameterObject).RenderEnum(requestTableLayoutPanel, parameterValueArray, i);
+            }
+            else if (ObjectFactory.IsIntegerType(parameterInfo.ParameterType))
+            {
+                /* Parameter is integer type */
+                Log.Debug("parameter is integer type");
+                if (parameterObject != null)
+                {
+                    ((int)parameterObject).RenderInteger(requestTableLayoutPanel, parameterValueArray, i);
+                }
+                else
+                {
+                    ((int)Int32.MinValue).RenderInteger(requestTableLayoutPanel, parameterValueArray, i);
+                }
+            }
+            else if (ObjectFactory.IsSingleType(parameterInfo.ParameterType))
+            {
+                /* Parameter is Single type */
+                Log.Debug("parameter is Single type");
+                if (parameterObject != null)
+                {
+                    ((Single)parameterObject).RenderSingle(requestTableLayoutPanel, parameterValueArray, i);
+                }
+                else
+                {
+                    ((Single)Single.MinValue).RenderSingle(requestTableLayoutPanel, parameterValueArray, i);
+                }
+            }
+            else if (ObjectFactory.IsStringType(parameterInfo.ParameterType))
+            {
+                /* Parameter is string type */
+                Log.Debug("parameter is string type");
+                ((string)parameterObject).RenderString(requestTableLayoutPanel, parameterValueArray, i);
+            }
+            else if (ObjectFactory.IsTimeSpanType(parameterInfo.ParameterType))
+            {
+                /* Parameter is TimeSpan type */
+                Log.Debug("parameter is TimeSpan type");
+                ((TimeSpan)parameterObject).RenderTimeSpan(requestTableLayoutPanel, parameterValueArray, i);
+            }
+            else if (ObjectFactory.IsXmlDocumentType(parameterInfo.ParameterType))
+            {
+                /* Parameter is XML document type */
+                Log.Debug("parameter is XML document type");
+                ObjectRenderer.RenderXmlDocument(requestTableLayoutPanel, parameterValueArray, parameterObject, i);
+            }
+            else if (ObjectFactory.IsXmlNodeType(parameterInfo.ParameterType))
+            {
+                Log.Debug("parameter is XML node type");
+                ObjectRenderer.RenderXmlNode(requestTableLayoutPanel, parameterValueArray, parameterObject, i);
+            }
+            else
+            {
+                /* Parameter is not standard type */
+                Log.Debug("parameter is not standard type");
+                if (ObjectFactory.IsNullableType(parameterInfo.ParameterType))
+                {
+                    /* Parameter is not array and is nullable type */
+                    Log.Debug("parameter is not array and is nullable type");
+                    Type parameterUnderlyingFieldType = Nullable.GetUnderlyingType(parameterInfo.ParameterType);
+                    if (parameterInfo.IsOut)
+                    {
+                        parameterUnderlyingFieldType = parameterInfo.ParameterType.GetElementType();
+                    }
+
+                    if (ObjectFactory.IsStringType(parameterUnderlyingFieldType))
+                    {
+                        /* Parameter is not array and is nullable type and underlying type is string */
+                        //Log.Debug("parameter is not array and is nullable type and underlying type is string");
+                        XCaseTextBox textBox = new XCaseTextBox();
+                        textBox.Index = i;
+                        textBox.FieldType = parameterInfo.ParameterType;
+                        requestTableLayoutPanel.Controls.Add(textBox, 1, i + 1);
+                        textBox.TextChanged += delegate (object sender, EventArgs e)
+                        {
+                            string value = textBox.Text;
+                            int index = textBox.Index;
+                            Type fieldType = textBox.FieldType;
+                            Type underlyingFieldType = Nullable.GetUnderlyingType(fieldType);
+                            //Log.Debug("about to create object for underlying string");
+                            object underlyingParameterObject = ObjectFactory.CreateObjectFromTypeAndValue(underlyingFieldType, value);
+                            parameterObject = Activator.CreateInstance(fieldType, underlyingParameterObject);
+                            parameterValueArray[index] = parameterObject;
+                        };
+                    }
+                    else if (ObjectFactory.IsIntegerType(parameterUnderlyingFieldType))
+                    {
+                        /* Parameter is not array and is nullable type and underlying type is integer */
+                        //Log.Debug("parameter is not array and is nullable type and underlying type is integer");
+                        XCaseTextBox textBox = new XCaseTextBox();
+                        textBox.Index = i;
+                        textBox.FieldType = parameterInfo.ParameterType;
+                        requestTableLayoutPanel.Controls.Add(textBox, 1, i + 1);
+                        textBox.TextChanged += delegate (object sender, EventArgs e)
+                        {
+                            string value = textBox.Text;
+                            int index = textBox.Index;
+                            Type fieldType = textBox.FieldType;
+                            Type underlyingFieldType = Nullable.GetUnderlyingType(fieldType);
+                            //Log.Debug("about to create object for underlying string");
+                            object underlyingParameterObject = ObjectFactory.CreateObjectFromTypeAndValue(underlyingFieldType, value);
+                            parameterObject = Activator.CreateInstance(fieldType, underlyingParameterObject);
+                            parameterValueArray[index] = parameterObject;
+                        };
+                    }
+                    else if (ObjectFactory.IsBooleanType(parameterUnderlyingFieldType))
+                    {
+                        /* Parameter is not array and is nullable type and underlying type is boolean */
+                        Log.Debug("parameter is not array and is nullable type and underlying type is boolean");
+                        XCaseCheckBox checkBox = new XCaseCheckBox();
+                        checkBox.Index = i;
+                        checkBox.FieldType = parameterInfo.ParameterType;
+                        requestTableLayoutPanel.Controls.Add(checkBox, 1, i + 1);
+                        checkBox.CheckedChanged += delegate (object sender, EventArgs e)
+                        {
+                            bool value = checkBox.Checked;
+                            int index = checkBox.Index;
+                            Type fieldType = checkBox.FieldType;
+                            Type underlyingFieldType = Nullable.GetUnderlyingType(fieldType);
+                            //Log.Debug("about to create object for underlying boolean");
+                            object underlyingParameterObject = ObjectFactory.CreateObjectFromTypeAndValue(underlyingFieldType, value);
+                            parameterObject = Activator.CreateInstance(fieldType, underlyingParameterObject);
+                            parameterValueArray[index] = parameterObject;
+                        };
+                    }
+                    else if (parameterUnderlyingFieldType.IsEnum)
+                    {
+                        /* Parameter is not array and is nullable type and underlying type is enum */
+                        Log.Debug("parameter is not array and is nullable type and underlying type is enum");
+                        XCaseComboBox comboBox = new XCaseComboBox();
+                        comboBox.Index = i;
+                        comboBox.FieldType = parameterInfo.ParameterType;
+                        comboBox.DataSource = System.Enum.GetValues(parameterUnderlyingFieldType);
+                        requestTableLayoutPanel.Controls.Add(comboBox, 1, i + 1);
+                        comboBox.SelectedIndexChanged += delegate (object sender, EventArgs e)
+                        {
+                            System.Enum value = (System.Enum)comboBox.SelectedValue;
+                            int index = comboBox.Index;
+                            Type fieldType = comboBox.FieldType;
+                            Type underlyingFieldType = Nullable.GetUnderlyingType(fieldType);
+                            //Log.Debug("about to create object for underlying enum");
+                            object underlyingParameterObject = ObjectFactory.CreateObjectFromTypeAndValue(underlyingFieldType, value);
+                            parameterObject = Activator.CreateInstance(fieldType, underlyingParameterObject);
+                            parameterValueArray[index] = parameterObject;
+                        };
+                    }
+                    else if (ObjectFactory.IsLongType(parameterUnderlyingFieldType))
+                    {
+                        /* Parameter is not array and is nullable type and underlying type is long */
+                        Log.Debug("parameter is not array and is nullable type and underlying type is long");
+                        XCaseTextBox textBox = new XCaseTextBox();
+                        textBox.Index = i;
+                        textBox.FieldType = parameterInfo.ParameterType;
+                        requestTableLayoutPanel.Controls.Add(textBox, 1, i + 1);
+                        textBox.TextChanged += delegate (object sender, EventArgs e)
+                        {
+                            string value = textBox.Text;
+                            int index = textBox.Index;
+                            Type fieldType = textBox.FieldType;
+                            Type underlyingFieldType = Nullable.GetUnderlyingType(fieldType);
+                            object underlyingParameterObject = ObjectFactory.CreateInt64ObjectFromTypeAndValue(underlyingFieldType, value);
+                            parameterObject = underlyingParameterObject;
+                            parameterValueArray[index] = parameterObject;
+                        };
+                    }
+                    else
+                    {
+                        /* Parameter is not array and is nullable type and underlying type is none of string, boolean, or enum */
+                        Log.Debug("parameter is not array and is nullable type and underlying type is none of string, boolean, or enum");
+                    }
+                }
+                else if (parameterInfo.ParameterType.IsEnum)
+                {
+                    /* Parameter is not array and is not nullable and is enum */
+                    //Log.Debug("parameter is not array and is not nullable and is enum");
+                    XCaseComboBox comboBox = new XCaseComboBox();
+                    comboBox.Index = i;
+                    comboBox.FieldType = parameterInfo.ParameterType;
+                    comboBox.DataSource = System.Enum.GetValues(parameterInfo.ParameterType);
+                    requestTableLayoutPanel.Controls.Add(comboBox, 1, i + 1);
+                    comboBox.SelectedIndexChanged += delegate (object sender, EventArgs e)
+                    {
+                        System.Enum value = (System.Enum)comboBox.SelectedValue;
+                        int index = comboBox.Index;
+                        Type fieldType = comboBox.FieldType;
+                        Log.Debug("about to create object for not nullable enum");
+                        parameterObject = ObjectFactory.CreateObjectFromTypeAndValue(fieldType, value);
+                        parameterValueArray[index] = parameterObject;
+                    };
+                }
+                else
+                {
+                    /* Parameter is a complex type */
+                    Log.Debug("parameter is a complex type");
+                    if (parameterObject != null)
+                    {
+                        Log.Debug("parameter object is not null");
+                        ObjectXMLRenderer.WriteXmlNodeToLog(ObjectXMLRenderer.RenderObject(null, parameterObject, parameterInfo.Name));
+                        TableLayoutPanel propertyTableLayoutPanel = ObjectRenderer.RenderParameterObject(parameterObject);
+                        requestTableLayoutPanel.Controls.Add(propertyTableLayoutPanel, 1, i + 1);
+                    }
+                    else
+                    {
+                        Log.Debug("parameter object is null");
+                    }
+                }
+            }
+
+            Button nullButton = new Button();
+            requestTableLayoutPanel.Controls.Add(nullButton, 2, i + 1);
+            nullButton.Text = XCaseServiceClient.Properties.Resources.Null;
+            nullButton.MouseClick += delegate (object o, MouseEventArgs mev)
+            {
+                parameterObject = null;
+                parameterValueArray[i] = null;
+            };
+        }
+    }
+
+    public class XCaseButton : Button
+    {
+        public int ArrayLength { get; set; }
+        public MethodInfo Method { get; set; }
+        public object propertyObject { get; set; }
+        public TableLayoutPanel ObjectTableLayoutPanel { get; set; }
+        public Type FieldType { get; set; }
+    }
+
+    public class XCaseComboBox : ComboBox
+    {
+        public int Index { get; set; }
+        public Type FieldType { get; set; }
+    }
+
+    public class XCaseDateTimePicker : DateTimePicker
+    {
+        #region Logger Setup
+
+        /// <summary>
+        /// A log4net log instance.
+        /// </summary>
+        private static readonly ILog Log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        #endregion
+
+        public XCaseDateTimePicker()
+        {
+            Format = DateTimePickerFormat.Custom;
+            CustomFormat = "MM/dd/yyyyThh:mm:ssTtt";
+            Value = DateTime.Now;
+        }
+
+        public XCaseDateTimePicker(object dateTime)
+        {
+            //Log.Debug("starting XCaseDateTimePicker()");
+            Format = DateTimePickerFormat.Custom;
+            CustomFormat = "MM/dd/yyyyThh:mm:ssTtt";
+            Log.DebugFormat("object is {0}", dateTime);
+            try
+            {
+                Value = (DateTime)dateTime;
+            }
+            catch (Exception)
+            {
+                Value = DateTime.Now;
+            }
+
+            Log.DebugFormat("value is {0}", Value);
+        }
+
+        public int Index { get; set; }
+        public Type FieldType { get; set; }
+    }
+
+    public class XCaseTimeSpanPicker : DateTimePicker
+    {
+        #region Logger Setup
+
+        /// <summary>
+        /// A log4net log instance.
+        /// </summary>
+        private static readonly ILog Log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        public new TimeSpan Value;
+
+        #endregion
+
+        public XCaseTimeSpanPicker()
+        {
+            Format = DateTimePickerFormat.Custom;
+            CustomFormat = "MM/dd/yyyyThh:mm:ssTtt";
+            Value = TimeSpan.Zero;
+        }
+
+        public XCaseTimeSpanPicker(object timeSpan)
+        {
+            //Log.Debug("starting XCaseDateTimePicker()");
+            Format = DateTimePickerFormat.Custom;
+            CustomFormat = "MM/dd/yyyyThh:mm:ssTtt";
+            Log.DebugFormat("object is {0}", timeSpan);
+            try
+            {
+                Value = (TimeSpan)timeSpan;
+            }
+            catch (Exception)
+            {
+                Value = TimeSpan.Zero;
+            }
+
+            Log.DebugFormat("value is {0}", Value);
+        }
+
+        public int Index { get; set; }
+        public Type FieldType { get; set; }
+    }
+
+    public class XCaseListBox : ListBox
+    {
+        public int Index { get; set; }
+        public Type FieldType { get; set; }
+    }
+
+    public class XCaseTableLayoutPanel : TableLayoutPanel
+    {
+        public object propertyObject { get; set; }
+        public int index { get; set; }
+    }
+
+    public class XCaseTextBox : TextBox
+    {
+        public int Index { get; set; }
+        public Type FieldType { get; set; }
+    }
+
+    public class XCaseCheckBox : CheckBox
+    {
+        public int Index { get; set; }
+        public Type FieldType { get; set; }
+    }
+
+    public class XCaseDateTime
+    {
+        public DateTime date { get; set; }
+        public TimeSpan timeOfDay { get; set; }
+
+        public XCaseDateTime()
+        {
+            date = DateTime.Now.Date;
+            timeOfDay = DateTime.Now.TimeOfDay;
+        }
+
+        public XCaseDateTime(DateTime dateTime)
+        {
+            date = dateTime.Date;
+            timeOfDay = dateTime.TimeOfDay;
+        }
+
+        public DateTime GetDateTime()
+        {
+            return new DateTime(date.Year, date.Month, date.Day, timeOfDay.Hours, timeOfDay.Minutes, timeOfDay.Seconds);
+        }
+    }
+
+    public class XCaseTabPage : TabPage
+    {
+        public object client { get; set; }
+        public MethodInfo methodInfo { get; set; }
+
+        public XCaseTabPage(string text) : base(text)
+        {
+
+        }
+    }
+
+    public enum Language
+    {
+        CSharp,
+        Java
+    }
+
+    public enum SourceType
+    {
+        SOAP,
+        Swagger
+    }
+}
