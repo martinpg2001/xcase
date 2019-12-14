@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
 using Microsoft.CSharp;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections;
@@ -55,8 +56,6 @@ namespace XCaseServiceClient
         ComboBox m_LanguageComboBox = new ComboBox();
         ComboBox m_ServicesComboBox = new ComboBox();
         ComboBox m_TypeComboBox = new ComboBox();
-        CompilerResults m_CompilerResults = null;
-        EndpointAddress m_ServiceEndpoint = null;
         FontFamily m_FontFamily = new FontFamily("Arial");
         int m_MaxArrayLength = 10;
         int m_MethodPanelInset = 20;
@@ -90,8 +89,7 @@ namespace XCaseServiceClient
         string m_ServiceName = "Service Name";
         string m_Type = "SOAP";
         string m_WindowTitle = "XCase Web Service Client";
-        string m_ServiceDescriptor = null;
-        string[] m_References = new string[] { "System.dll", "System.ComponentModel.DataAnnotations.dll", "System.Core.dll", "System.Data.dll", "System.Net.dll", "System.Net.Http.dll", "System.Runtime.Serialization.dll", "System.ServiceModel.dll", "System.Web.dll", "System.Web.Services.dll", "System.Xml.dll" };
+//        string[] m_References = new string[] { "System.dll", "System.ComponentModel.DataAnnotations.dll", "System.Core.dll", "System.Data.dll", "System.Net.dll", "System.Net.Http.dll", "System.Runtime.Serialization.dll", "System.ServiceModel.dll", "System.Web.dll", "System.Web.Services.dll", "System.Xml.dll" };
         string[] m_Services = new string[] { };
         string[] m_SourceStringArray = new string[] { };
         IProxyGenerator m_SwaggerProxyGenerator = new SwaggerCSharpProxyGenerator();
@@ -134,7 +132,7 @@ namespace XCaseServiceClient
             //
             // topTableLayoutPanel
             //
-            this.m_TopTableLayoutPanel.Location = new Point(0, 40);
+            this.m_TopTableLayoutPanel.Location = new Point(0, 30);
             this.m_TopTableLayoutPanel.Name = "topTableLayoutPanel";
             this.m_TopTableLayoutPanel.Height = m_TopPanelHeight;
             this.m_TopTableLayoutPanel.Width = m_WindowWidth;
@@ -155,13 +153,17 @@ namespace XCaseServiceClient
             m_TopTableLayoutPanel.ColumnCount = 10;
             TableLayoutColumnStyleCollection tableLayoutColumnStyleCollection = m_TopTableLayoutPanel.ColumnStyles;
             TableLayoutRowStyleCollection tableLayoutRowStyleCollection = m_TopTableLayoutPanel.RowStyles;
-            ColumnStyle urlColumnStyle = new ColumnStyle();
-            urlColumnStyle.SizeType = SizeType.AutoSize;
+            ColumnStyle urlColumnStyle = new ColumnStyle
+            {
+                SizeType = SizeType.AutoSize
+            };
             tableLayoutColumnStyleCollection.Add(urlColumnStyle);
             for (int i = 1; i < m_TopTableLayoutPanel.ColumnCount; i++)
             {
-                ColumnStyle columnStyle = new ColumnStyle();
-                columnStyle.SizeType = SizeType.Percent;
+                ColumnStyle columnStyle = new ColumnStyle
+                {
+                    SizeType = SizeType.Percent
+                };
                 switch (i)
                 {
                     case 1:
@@ -186,8 +188,10 @@ namespace XCaseServiceClient
 
             for (int i = 0; i < m_TopTableLayoutPanel.RowCount; i++)
             {
-                RowStyle rowStyle = new RowStyle();
-                rowStyle.SizeType = SizeType.AutoSize;
+                RowStyle rowStyle = new RowStyle
+                {
+                    SizeType = SizeType.AutoSize
+                };
                 //rowStyle.Height = 50;
                 tableLayoutRowStyleCollection.Add(rowStyle);
             }
@@ -461,20 +465,20 @@ namespace XCaseServiceClient
             }
         }
 
-        private static CompilerParameters CreateCompilerParameters(string[] references)
-        {
-            Log.Debug("starting CreateCompilerParameters()");
-            CompilerParameters compilerParameters = new CompilerParameters(references);
-            compilerParameters.GenerateExecutable = false;
-            string executingAssemblyLocation = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            Log.DebugFormat("executingAssemblyLocation is {0}", executingAssemblyLocation);
-            compilerParameters.ReferencedAssemblies.Add(Path.Combine(executingAssemblyLocation, "System.Net.Http.Formatting.dll"));
-            compilerParameters.ReferencedAssemblies.Add(Path.Combine(executingAssemblyLocation, "log4net.dll"));
-            compilerParameters.ReferencedAssemblies.Add(Path.Combine(executingAssemblyLocation, "Newtonsoft.Json.dll"));
-            compilerParameters.ReferencedAssemblies.Add(Path.Combine(executingAssemblyLocation, "XCase.REST.ProxyGenerator.dll"));
-            Log.DebugFormat("added reference assemblies");
-            return compilerParameters;
-        }
+        //private static CompilerParameters CreateCompilerParameters(string[] references)
+        //{
+        //    Log.Debug("starting CreateCompilerParameters()");
+        //    CompilerParameters compilerParameters = new CompilerParameters(references);
+        //    compilerParameters.GenerateExecutable = false;
+        //    string executingAssemblyLocation = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+        //    Log.DebugFormat("executingAssemblyLocation is {0}", executingAssemblyLocation);
+        //    compilerParameters.ReferencedAssemblies.Add(Path.Combine(executingAssemblyLocation, "System.Net.Http.Formatting.dll"));
+        //    compilerParameters.ReferencedAssemblies.Add(Path.Combine(executingAssemblyLocation, "log4net.dll"));
+        //    compilerParameters.ReferencedAssemblies.Add(Path.Combine(executingAssemblyLocation, "Newtonsoft.Json.dll"));
+        //    compilerParameters.ReferencedAssemblies.Add(Path.Combine(executingAssemblyLocation, "XCase.REST.ProxyGenerator.dll"));
+        //    Log.DebugFormat("added reference assemblies");
+        //    return compilerParameters;
+        //}
 
         private void ProcessGoClicked()
         {
@@ -606,9 +610,15 @@ namespace XCaseServiceClient
             throw new NotImplementedException();
         }
 
-        private void ProcessRAMLType(bool v)
+        private void ProcessRAMLType(bool refresh)
         {
-            throw new NotImplementedException();
+            if (refresh)
+            {
+                throw new NotImplementedException();
+            } else
+            {
+                throw new NotImplementedException();
+            }
         }
 
         private void ProcessSwaggerType(bool refresh)
@@ -889,8 +899,8 @@ namespace XCaseServiceClient
         private TabPage CreateXCaseTabPageForMethod(object client, MethodInfo methodInfo)
         {
             XCaseTabPage methodXCaseTabPage = new XCaseTabPage(methodInfo.Name);
-            methodXCaseTabPage.client = client;
-            methodXCaseTabPage.methodInfo = methodInfo;
+            methodXCaseTabPage.Client = client;
+            methodXCaseTabPage.MethodInfo = methodInfo;
             methodXCaseTabPage.Size = new Size(m_WindowWidth, m_WindowHeight - (m_TopPanelHeight + m_TopPanelBuffer + m_TabPanelBuffer));
             methodXCaseTabPage.AutoScroll = true;
             methodXCaseTabPage.Enter += new EventHandler(MethodTab_Entered);
@@ -907,8 +917,8 @@ namespace XCaseServiceClient
         private TableLayoutPanel CreateTableLayoutPanelForMethod(XCaseTabPage xcaseTabPage)
         {
             TableLayoutPanel methodTableLayoutPanel = new TableLayoutPanel();
-            object client = xcaseTabPage.client;
-            MethodInfo methodInfo = xcaseTabPage.methodInfo;
+            object client = xcaseTabPage.Client;
+            MethodInfo methodInfo = xcaseTabPage.MethodInfo;
             methodTableLayoutPanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Inset;
             methodTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
             methodTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
@@ -1299,7 +1309,7 @@ namespace XCaseServiceClient
                     }
                     else if (parameterObject is XCaseDateTime)
                     {
-                        ((XCaseDateTime)parameterObject).date.RenderDateTime(requestTableLayoutPanel, parameterValueArray, i);
+                        ((XCaseDateTime)parameterObject).Date.RenderDateTime(requestTableLayoutPanel, parameterValueArray, i);
                     }
                 }
                 else
@@ -1578,7 +1588,7 @@ namespace XCaseServiceClient
     {
         public int ArrayLength { get; set; }
         public MethodInfo Method { get; set; }
-        public object propertyObject { get; set; }
+        public object PropertyObject { get; set; }
         public TableLayoutPanel ObjectTableLayoutPanel { get; set; }
         public Type FieldType { get; set; }
     }
@@ -1679,8 +1689,8 @@ namespace XCaseServiceClient
 
     public class XCaseTableLayoutPanel : TableLayoutPanel
     {
-        public object propertyObject { get; set; }
-        public int index { get; set; }
+        public object PropertyObject { get; set; }
+        public int Index { get; set; }
     }
 
     public class XCaseTextBox : TextBox
@@ -1697,31 +1707,31 @@ namespace XCaseServiceClient
 
     public class XCaseDateTime
     {
-        public DateTime date { get; set; }
-        public TimeSpan timeOfDay { get; set; }
+        public DateTime Date { get; set; }
+        public TimeSpan TimeOfDay { get; set; }
 
         public XCaseDateTime()
         {
-            date = DateTime.Now.Date;
-            timeOfDay = DateTime.Now.TimeOfDay;
+            Date = DateTime.Now.Date;
+            TimeOfDay = DateTime.Now.TimeOfDay;
         }
 
         public XCaseDateTime(DateTime dateTime)
         {
-            date = dateTime.Date;
-            timeOfDay = dateTime.TimeOfDay;
+            Date = dateTime.Date;
+            TimeOfDay = dateTime.TimeOfDay;
         }
 
         public DateTime GetDateTime()
         {
-            return new DateTime(date.Year, date.Month, date.Day, timeOfDay.Hours, timeOfDay.Minutes, timeOfDay.Seconds);
+            return new DateTime(Date.Year, Date.Month, Date.Day, TimeOfDay.Hours, TimeOfDay.Minutes, TimeOfDay.Seconds);
         }
     }
 
     public class XCaseTabPage : TabPage
     {
-        public object client { get; set; }
-        public MethodInfo methodInfo { get; set; }
+        public object Client { get; set; }
+        public MethodInfo MethodInfo { get; set; }
 
         public XCaseTabPage(string text) : base(text)
         {

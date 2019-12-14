@@ -35,7 +35,7 @@
 
             Log.Debug("starting RenderParameterObject() for " + parameterObject.GetType());
             XCaseTableLayoutPanel propertyTableLayoutPanel = new XCaseTableLayoutPanel();
-            propertyTableLayoutPanel.propertyObject = parameterObject;
+            propertyTableLayoutPanel.PropertyObject = parameterObject;
             propertyTableLayoutPanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
             propertyTableLayoutPanel.AutoSize = true;
             propertyTableLayoutPanel.ColumnCount = 3;
@@ -641,7 +641,7 @@
         {
             Log.DebugFormat("starting RenderArrayObject()");
             XCaseTableLayoutPanel arrayObjectTableLayoutPanel = new XCaseTableLayoutPanel();
-            arrayObjectTableLayoutPanel.index = index;
+            arrayObjectTableLayoutPanel.Index = index;
             if (arrayObject == null)
             {
                 return arrayObjectTableLayoutPanel;
@@ -657,7 +657,7 @@
                     //Log.DebugFormat("check box changed to {0}", checkBox.Checked);
                     bool value = checkBox.Checked;
                     arrayObject = ObjectFactory.CreateObjectFromTypeAndValue(typeof(bool), value);
-                    array.SetValue(arrayObject, arrayObjectTableLayoutPanel.index);
+                    array.SetValue(arrayObject, arrayObjectTableLayoutPanel.Index);
                     //array[arrayObjectTableLayoutPanel.index] = arrayObject;
                 };
             }
@@ -671,7 +671,7 @@
                     byte value = 0;
                     Byte.TryParse(xcaseTextBox.Text, out value);
                     arrayObject = ObjectFactory.CreateObjectFromTypeAndValue(arrayObjectType, value);
-                    array.SetValue(arrayObject, arrayObjectTableLayoutPanel.index);
+                    array.SetValue(arrayObject, arrayObjectTableLayoutPanel.Index);
                     //array[arrayObjectTableLayoutPanel.index] = arrayObject;
                 };
             }
@@ -684,7 +684,7 @@
                     //Log.DebugFormat("text box changed to {0}", xcaseDateTimePicker.Value);
                     DateTime value = xcaseDateTimePicker.Value;
                     arrayObject = ObjectFactory.CreateObjectFromTypeAndValue(typeof(DateTime), value);
-                    array.SetValue(arrayObject, arrayObjectTableLayoutPanel.index);
+                    array.SetValue(arrayObject, arrayObjectTableLayoutPanel.Index);
                     //array[arrayObjectTableLayoutPanel.index] = arrayObject;
                 };
             }
@@ -698,7 +698,7 @@
                     Decimal value = Decimal.Zero;
                     Decimal.TryParse(xcaseTextBox.Text, out value);
                     arrayObject = ObjectFactory.CreateObjectFromTypeAndValue(arrayObjectType, value);
-                    array.SetValue(arrayObject, arrayObjectTableLayoutPanel.index);
+                    array.SetValue(arrayObject, arrayObjectTableLayoutPanel.Index);
                     //array[arrayObjectTableLayoutPanel.index] = arrayObject;
                 };
             }
@@ -712,7 +712,7 @@
                     Double value = 0.0;
                     Double.TryParse(xcaseTextBox.Text, out value);
                     arrayObject = ObjectFactory.CreateObjectFromTypeAndValue(arrayObjectType, value);
-                    array.SetValue(arrayObject, arrayObjectTableLayoutPanel.index);
+                    array.SetValue(arrayObject, arrayObjectTableLayoutPanel.Index);
                     //array[arrayObjectTableLayoutPanel.index] = arrayObject;
                 };
             }
@@ -726,7 +726,7 @@
                     //Log.DebugFormat("combo box changed to {0}", xcaseComboBox.SelectedValue);
                     Enum value = (Enum)xcaseComboBox.SelectedValue;
                     arrayObject = ObjectFactory.CreateObjectFromTypeAndValue(arrayObjectType, value);
-                    array.SetValue(arrayObject, arrayObjectTableLayoutPanel.index);
+                    array.SetValue(arrayObject, arrayObjectTableLayoutPanel.Index);
                     //array[arrayObjectTableLayoutPanel.index] = arrayObject;
                 };
             }
@@ -740,7 +740,7 @@
                     int value = 0;
                     int.TryParse(xcaseTextBox.Text, out value);
                     arrayObject = ObjectFactory.CreateObjectFromTypeAndValue(arrayObjectType, value);
-                    array.SetValue(arrayObject, arrayObjectTableLayoutPanel.index);
+                    array.SetValue(arrayObject, arrayObjectTableLayoutPanel.Index);
                     //array[arrayObjectTableLayoutPanel.index] = arrayObject;
                 };
             }
@@ -754,7 +754,7 @@
                     Int64 value = 0;
                     Int64.TryParse(xcaseTextBox.Text, out value);
                     arrayObject = ObjectFactory.CreateInt64ObjectFromTypeAndValue(arrayObjectType, value);
-                    array.SetValue(arrayObject, arrayObjectTableLayoutPanel.index);
+                    array.SetValue(arrayObject, arrayObjectTableLayoutPanel.Index);
                     //array[arrayObjectTableLayoutPanel.index] = arrayObject;
                 };
             }
@@ -768,7 +768,7 @@
                     long value = 0;
                     long.TryParse(xcaseTextBox.Text, out value);
                     arrayObject = ObjectFactory.CreateInt64ObjectFromTypeAndValue(arrayObjectType, value);
-                    array.SetValue(arrayObject, arrayObjectTableLayoutPanel.index);
+                    array.SetValue(arrayObject, arrayObjectTableLayoutPanel.Index);
                     //array[arrayObjectTableLayoutPanel.index] = arrayObject;
                 };
             }
@@ -782,7 +782,7 @@
                     Single value = 0;
                     Single.TryParse(xcaseTextBox.Text, out value);
                     arrayObject = ObjectFactory.CreateObjectFromTypeAndValue(arrayObjectType, value);
-                    array.SetValue(arrayObject, arrayObjectTableLayoutPanel.index);
+                    array.SetValue(arrayObject, arrayObjectTableLayoutPanel.Index);
                     //array[arrayObjectTableLayoutPanel.index] = arrayObject;
                 };
             }
@@ -797,7 +797,7 @@
                     //Log.DebugFormat("index is {0}", arrayObjectTableLayoutPanel.index);
                     arrayObject = ObjectFactory.CreateObjectFromTypeAndValue(typeof(string), value);
                     Log.DebugFormat("arrayObject changed to {0}", arrayObject);
-                    array.SetValue(arrayObject, arrayObjectTableLayoutPanel.index);
+                    array.SetValue(arrayObject, arrayObjectTableLayoutPanel.Index);
                     //array[arrayObjectTableLayoutPanel.index] = arrayObject;
                 };
             }
@@ -813,7 +813,7 @@
         {
             Log.Debug("starting RenderIEnumerable()");
             XCaseTableLayoutPanel arrayTableLayoutPanel = new XCaseTableLayoutPanel();
-            arrayTableLayoutPanel.propertyObject = parameterObject;
+            arrayTableLayoutPanel.PropertyObject = parameterObject;
             arrayTableLayoutPanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
             arrayTableLayoutPanel.AutoSize = true;
             arrayTableLayoutPanel.ColumnCount = 1;
@@ -830,7 +830,7 @@
             //Log.Debug("length of array is " + arrayLength);
             XCaseButton addButton = new XCaseButton();
             addButton.Text = "Add";
-            addButton.propertyObject = parameterObject;
+            addButton.PropertyObject = parameterObject;
             addButton.FieldType = parameterObject.GetType().GetGenericArguments()[0];
             //Log.Debug("set Add button properties");
             addButton.MouseClick += delegate(object sender, MouseEventArgs mea)
@@ -866,7 +866,7 @@
         {
             Log.Debug("starting RenderArray()");
             XCaseTableLayoutPanel arrayTableLayoutPanel = new XCaseTableLayoutPanel();
-            arrayTableLayoutPanel.propertyObject = parameterObject;
+            arrayTableLayoutPanel.PropertyObject = parameterObject;
             arrayTableLayoutPanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
             arrayTableLayoutPanel.AutoSize = true;
             arrayTableLayoutPanel.ColumnCount = 1;
@@ -881,7 +881,7 @@
             //Log.Debug("length of array is " + arrayLength);
             XCaseButton addButton = new XCaseButton();
             addButton.Text = "Add";
-            addButton.propertyObject = parameterObject;
+            addButton.PropertyObject = parameterObject;
             addButton.FieldType = parameterObject.GetType().GetElementType();
             //Log.Debug("set Add button properties");
             addButton.MouseClick += delegate(object sender, MouseEventArgs mea)
@@ -925,7 +925,7 @@
         {
             //Log.Debug("starting RenderArrayProperty()");
             XCaseTableLayoutPanel arrayTableLayoutPanel = new XCaseTableLayoutPanel();
-            arrayTableLayoutPanel.propertyObject = parameterObject;
+            arrayTableLayoutPanel.PropertyObject = parameterObject;
             arrayTableLayoutPanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
             arrayTableLayoutPanel.AutoSize = true;
             arrayTableLayoutPanel.ColumnCount = 2;
@@ -940,7 +940,7 @@
             //Log.Debug("length of array is " + arrayLength);
             XCaseButton addButton = new XCaseButton();
             addButton.Text = "Add";
-            addButton.propertyObject = propertyTypeObject;
+            addButton.PropertyObject = propertyTypeObject;
             addButton.FieldType = propertyTypeObject.GetType().GetElementType();
             //Log.Debug("set Add button properties");
             addButton.MouseClick += delegate(object sender, MouseEventArgs mea)
@@ -997,7 +997,7 @@
             Type keyType = dictionaryTypes[0];
             Type valueType = dictionaryTypes[1];
             XCaseTableLayoutPanel dictionaryTableLayoutPanel = new XCaseTableLayoutPanel();
-            dictionaryTableLayoutPanel.propertyObject = parameterObject;
+            dictionaryTableLayoutPanel.PropertyObject = parameterObject;
             dictionaryTableLayoutPanel.AutoScroll = true;
             dictionaryTableLayoutPanel.AutoSize = true;
             dictionaryTableLayoutPanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
@@ -1008,7 +1008,7 @@
             //Log.Debug("length of array is " + arrayLength);
             XCaseButton addButton = new XCaseButton();
             addButton.Text = "Add";
-            addButton.propertyObject = parameterObject;
+            addButton.PropertyObject = parameterObject;
             addButton.FieldType = parameterObject.GetType().GetElementType();
             //Log.Debug("set Add button properties");
             addButton.MouseClick += delegate(object sender, MouseEventArgs mea)
@@ -1288,7 +1288,7 @@
 
             Log.Debug("starting RenderDictionaryValueObject() for " + dictionaryValueObject.GetType());
             XCaseTableLayoutPanel propertyTableLayoutPanel = new XCaseTableLayoutPanel();
-            propertyTableLayoutPanel.propertyObject = dictionaryValueObject;
+            propertyTableLayoutPanel.PropertyObject = dictionaryValueObject;
             propertyTableLayoutPanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
             propertyTableLayoutPanel.AutoSize = true;
             propertyTableLayoutPanel.ColumnCount = 2;
@@ -1782,7 +1782,7 @@
 
             Log.Debug("starting RenderDictionaryKeyObject() for " + dictionaryKeyObject.GetType());
             XCaseTableLayoutPanel propertyTableLayoutPanel = new XCaseTableLayoutPanel();
-            propertyTableLayoutPanel.propertyObject = dictionaryKeyObject;
+            propertyTableLayoutPanel.PropertyObject = dictionaryKeyObject;
             propertyTableLayoutPanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
             propertyTableLayoutPanel.AutoSize = true;
             propertyTableLayoutPanel.ColumnCount = 2;
@@ -2273,7 +2273,7 @@
             Type valueType = dictionaryTypes[1];
             Type dictionaryType = typeof(Dictionary<,>);
             XCaseTableLayoutPanel dictionaryTableLayoutPanel = new XCaseTableLayoutPanel();
-            dictionaryTableLayoutPanel.propertyObject = parameterObject;
+            dictionaryTableLayoutPanel.PropertyObject = parameterObject;
             dictionaryTableLayoutPanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
             dictionaryTableLayoutPanel.AutoSize = true;
             dictionaryTableLayoutPanel.AutoScroll = true;
@@ -3102,7 +3102,7 @@
         {
             Log.Debug("starting RenderList()");
             XCaseTableLayoutPanel listTableLayoutPanel = new XCaseTableLayoutPanel();
-            listTableLayoutPanel.propertyObject = parameterObject;
+            listTableLayoutPanel.PropertyObject = parameterObject;
             listTableLayoutPanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
             listTableLayoutPanel.AutoSize = true;
             listTableLayoutPanel.ColumnCount = 1;
@@ -3114,7 +3114,7 @@
             Log.Debug("listCount is " + listCount);
             XCaseButton addButton = new XCaseButton();
             addButton.Text = "Add";
-            addButton.propertyObject = parameterObject;
+            addButton.PropertyObject = parameterObject;
             addButton.FieldType = elementType;
             addButton.MouseClick += delegate(object sender, MouseEventArgs mea)
             {
@@ -3157,7 +3157,7 @@
         {
             Log.DebugFormat("starting RenderListObject()");
             XCaseTableLayoutPanel listObjectTableLayoutPanel = new XCaseTableLayoutPanel();
-            listObjectTableLayoutPanel.index = index;
+            listObjectTableLayoutPanel.Index = index;
             Type listObjectType = listObject.GetType();
             if (ObjectFactory.IsBooleanType(listObjectType))
             {

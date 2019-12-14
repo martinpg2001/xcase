@@ -697,12 +697,10 @@
 
         public static RESTApiProxySettings GetSettings(string path)
         {
-            using (FileStream settingStream = File.OpenRead(path))
-            {
-                StreamReader streamReader = new StreamReader(settingStream);
-                string value = streamReader.ReadToEnd();
-                return JsonConvert.DeserializeObject<RESTApiProxySettings>(value);
-            }
+            using FileStream settingStream = File.OpenRead(path);
+            StreamReader streamReader = new StreamReader(settingStream);
+            string value = streamReader.ReadToEnd();
+            return JsonConvert.DeserializeObject<RESTApiProxySettings>(value);
         }
     }
 }

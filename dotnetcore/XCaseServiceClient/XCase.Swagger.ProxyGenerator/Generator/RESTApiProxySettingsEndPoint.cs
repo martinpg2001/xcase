@@ -1,12 +1,16 @@
 namespace XCase.REST.ProxyGenerator.Generator
 {
+    using Microsoft.Extensions.Configuration;
     using System;
+    using System.Collections.Generic;
     using System.Configuration;
     using System.Net;
     using XCase.ProxyGenerator;
 
     public class RESTApiProxySettingsEndPoint : IAPIProxySettingsEndpoint
     {
+        public static IConfigurationRoot iConfigurationRoot = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+
         public string Id { get; set; }
         public string Url { get; set; }
         public string Namespace { get; set; }
@@ -20,7 +24,7 @@ namespace XCase.REST.ProxyGenerator.Generator
         {
             BaseProxyClass = ConfigurationManager.AppSettings["SwaggerProxy"];
             Id = "SwaggerProxy";
-            Namespace = "XCaseServiceClient";// ConfigurationManager.AppSettings["Namespace"];
+            Namespace = iConfigurationRoot.GetSection("AppSettings").GetSection("Namespace").Value;// "XCaseServiceClient";// ConfigurationManager.AppSettings["Namespace"];
             ProxyConstructorSuffix = "(Uri baseUrl) : base(baseUrl)";
             ParseOperationIdForProxyName = true;
             AppendAsyncToMethodName = true;
@@ -30,7 +34,7 @@ namespace XCase.REST.ProxyGenerator.Generator
         {
             BaseProxyClass = baseProxyClass;
             Id = "RESTProxy";
-            Namespace = "XCaseServiceClient";// ConfigurationManager.AppSettings["Namespace"];
+            Namespace = Namespace = iConfigurationRoot.GetSection("AppSettings").GetSection("Namespace").Value;// ConfigurationManager.AppSettings["Namespace"];
             switch (language)
             {
                 case "CSharp":
@@ -56,7 +60,7 @@ namespace XCase.REST.ProxyGenerator.Generator
         {
             BaseProxyClass = "OpenCloudSwaggerProxy";
             Id = "SwaggerProxy";
-            Namespace = "XCaseServiceClient";// ConfigurationManager.AppSettings["Namespace"];
+            Namespace = Namespace = iConfigurationRoot.GetSection("AppSettings").GetSection("Namespace").Value;// ConfigurationManager.AppSettings["Namespace"];
             switch (language)
             {
                 case "CSharp":

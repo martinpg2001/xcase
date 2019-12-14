@@ -49,27 +49,25 @@
             Log.Debug("starting GetSwaggerDocument()");
             string url = "api/swagger/docs/v1";
             Log.DebugFormat("url is {0}", url);
-            using (HttpClient apiClient = BuildHttpClient(_username, _password, _tenantId))
-            {
-                Log.DebugFormat("about to invoke method using url {0}", url);
-                Log.DebugFormat("method is GET");
-                string requestURL = string.Format("{0}{1}", apiClient.BaseAddress, url);
-                Log.DebugFormat("requestURL is {0}", requestURL);
-                HttpRequestMessage request = CreateRequestMessageForSwaggerDocument(requestURL, token);
-                Log.DebugFormat("about to send request for Swagger document");
-                HttpResponseMessage response = apiClient.SendAsync(request).Result;
-                Log.DebugFormat("response StatusCode is {0}", response.StatusCode.ToString());
-                string content = response.Content.ReadAsStringAsync().Result;
-                Log.DebugFormat("content is {0}", content);
-                return content;
-            }
+            using HttpClient apiClient = BuildHttpClient(_username, _password, _tenantId);
+            Log.DebugFormat("about to invoke method using url {0}", url);
+            Log.DebugFormat("method is GET");
+            string requestURL = string.Format("{0}{1}", apiClient.BaseAddress, url);
+            Log.DebugFormat("requestURL is {0}", requestURL);
+            HttpRequestMessage request = CreateRequestMessageForSwaggerDocument(requestURL, token);
+            Log.DebugFormat("about to send request for Swagger document");
+            HttpResponseMessage response = apiClient.SendAsync(request).Result;
+            Log.DebugFormat("response StatusCode is {0}", response.StatusCode.ToString());
+            string content = response.Content.ReadAsStringAsync().Result;
+            Log.DebugFormat("content is {0}", content);
+            return content;
         }
 
         public override string GetAccessToken(HttpClient client, string userName = "admin", string password = "", string tenantId = null)
         {
             Log.DebugFormat("starting GetAccessToken()");
             string baseUrl = _baseUrl.AbsoluteUri;
-            string truncatedBaseUrl = baseUrl.Substring(0, baseUrl.Length - 4);
+            string truncatedBaseUrl = baseUrl[0..^4];
             string tokenURL = string.Format("{0}auth/oauth/token", truncatedBaseUrl);
             Log.DebugFormat("tokenURL is {0}", tokenURL);
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, tokenURL);
@@ -101,14 +99,12 @@
             try
             {
                 stringReader = new StringReader(content);
-                using (JsonTextReader jsonReader = new JsonTextReader(stringReader))
-                {
-                    stringReader = null;
-                    JObject json = (JObject)JsonSerializer.CreateDefault().Deserialize(jsonReader);
-                    string token = json["access_token"].Value<string>();
-                    Log.DebugFormat("token is {0}", token);
-                    return token;
-                }
+                using JsonTextReader jsonReader = new JsonTextReader(stringReader);
+                stringReader = null;
+                JObject json = (JObject)JsonSerializer.CreateDefault().Deserialize(jsonReader);
+                string token = json["access_token"].Value<string>();
+                Log.DebugFormat("token is {0}", token);
+                return token;
             }
             finally
             {
