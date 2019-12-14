@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29609.76
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XCaseServiceClient", "XCaseServiceClient\XCaseServiceClient.csproj", "{1075780B-F228-4A22-B895-FD5B0340F9C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XCaseServiceClient", "XCaseServiceClient\XCaseServiceClient.csproj", "{1075780B-F228-4A22-B895-FD5B0340F9C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XCase.ProxyGenerator", "XCase.ProxyGenerator\XCase.ProxyGenerator.csproj", "{FEF6A33C-35B3-4194-B816-80EC55839EE3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XCase.ProxyGenerator", "XCase.ProxyGenerator\XCase.ProxyGenerator.csproj", "{FEF6A33C-35B3-4194-B816-80EC55839EE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XCase.Swagger.ProxyGenerator", "XCase.Swagger.ProxyGenerator\XCase.Swagger.ProxyGenerator.csproj", "{16F57462-0FEA-4970-85AB-057382039CC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XCase.Swagger.ProxyGenerator", "XCase.Swagger.ProxyGenerator\XCase.Swagger.ProxyGenerator.csproj", "{16F57462-0FEA-4970-85AB-057382039CC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneratedCode", "GeneratedCode\GeneratedCode.csproj", "{1432661A-BEBF-4AE0-BB6F-65F58C1C564B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{16F57462-0FEA-4970-85AB-057382039CC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16F57462-0FEA-4970-85AB-057382039CC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16F57462-0FEA-4970-85AB-057382039CC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1432661A-BEBF-4AE0-BB6F-65F58C1C564B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1432661A-BEBF-4AE0-BB6F-65F58C1C564B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1432661A-BEBF-4AE0-BB6F-65F58C1C564B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1432661A-BEBF-4AE0-BB6F-65F58C1C564B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

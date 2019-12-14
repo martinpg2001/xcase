@@ -653,7 +653,7 @@
             WriteLine(stringBuilder, "using System.Threading.Tasks;");
             WriteLine(stringBuilder, "using System.Net;");
             WriteLine(stringBuilder, "using System.Net.Http;");
-            WriteLine(stringBuilder, "using System.Net.Http.Formatting;");
+//            WriteLine(stringBuilder, "using System.Net.Http.Formatting;");
             WriteLine(stringBuilder, "using System.Net.Http.Headers;");
             WriteLine(stringBuilder, "using System.Reflection;");
             WriteLine(stringBuilder, "using System.Runtime.Serialization;");

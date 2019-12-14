@@ -20,7 +20,7 @@ namespace XCase.REST.ProxyGenerator.Generator
         {
             BaseProxyClass = ConfigurationManager.AppSettings["SwaggerProxy"];
             Id = "SwaggerProxy";
-            Namespace = ConfigurationManager.AppSettings["Namespace"];
+            Namespace = "XCaseServiceClient";// ConfigurationManager.AppSettings["Namespace"];
             ProxyConstructorSuffix = "(Uri baseUrl) : base(baseUrl)";
             ParseOperationIdForProxyName = true;
             AppendAsyncToMethodName = true;
@@ -30,7 +30,7 @@ namespace XCase.REST.ProxyGenerator.Generator
         {
             BaseProxyClass = baseProxyClass;
             Id = "RESTProxy";
-            Namespace = ConfigurationManager.AppSettings["Namespace"];
+            Namespace = "XCaseServiceClient";// ConfigurationManager.AppSettings["Namespace"];
             switch (language)
             {
                 case "CSharp":
@@ -56,7 +56,7 @@ namespace XCase.REST.ProxyGenerator.Generator
         {
             BaseProxyClass = "OpenCloudSwaggerProxy";
             Id = "SwaggerProxy";
-            Namespace = ConfigurationManager.AppSettings["Namespace"];
+            Namespace = "XCaseServiceClient";// ConfigurationManager.AppSettings["Namespace"];
             switch (language)
             {
                 case "CSharp":

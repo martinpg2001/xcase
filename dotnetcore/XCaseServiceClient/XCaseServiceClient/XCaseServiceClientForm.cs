@@ -4,6 +4,9 @@ using log4net.Config;
 using log4net.Core;
 using log4net.Layout;
 using log4net.Repository;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Emit;
 using Microsoft.CSharp;
 using System;
 using System.CodeDom.Compiler;
@@ -38,6 +41,11 @@ namespace XCaseServiceClient
         /// </summary>
         private static readonly ILog Log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        #endregion
+
+        #region Properties Setup
+
+        Assembly m_Assembly = null;
         bool m_OnPremise = true;
         bool m_ProxyEnable = false;
         bool m_Starting = true;
@@ -100,6 +108,7 @@ namespace XCaseServiceClient
         RichTextBox m_ViewRichTextBox = new RichTextBox();
 
         #endregion
+
         public XCaseServiceClientForm()
         {
             ILoggerRepository repository = log4net.LogManager.GetRepository(Assembly.GetCallingAssembly());
@@ -372,7 +381,84 @@ namespace XCaseServiceClient
 
         private void ProcessServicesChange()
         {
-            throw new NotImplementedException();
+            Log.Debug("starting ProcessServicesChange()");
+            Log.DebugFormat("m_Language is {0}", m_Language);
+            Log.DebugFormat("m_Type is {0}", m_Type);
+            if (string.IsNullOrEmpty(m_Type) || m_Type == "SOAP")
+            {
+                m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
+                Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
+                if (string.IsNullOrEmpty(m_ServiceName))
+                {
+                    Log.Debug("service name is empty");
+                }
+                else
+                {
+                    Log.Debug("about to get service contract client from WSDL");
+                    //m_ServiceClient = GetServiceContractClientFromWSDL(m_ServiceName);
+                    Log.Debug("got service contract client from WSDL");
+                }
+            }
+            else if (m_Type == "Integrate")
+            {
+                m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
+                Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
+                //ProcessIntegrateType(false);
+            }
+            else if (m_Type == "Open")
+            {
+                m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
+                Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
+                ProcessSwaggerType(false);
+            }
+            else if (m_Type == "PlatformCDS")
+            {
+                m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
+                Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
+                //ProcessPlatformCDSType(false);
+            }
+            else if (m_Type == "PlatformDocument")
+            {
+                m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
+                Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
+                //ProcessPlatformDocumentType(false);
+            }
+            else if (m_Type == "PlatformRefData")
+            {
+                m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
+                Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
+                //ProcessPlatformRefDataType(false);
+            }
+            else if (m_Type == "PlatformSanctionLists")
+            {
+                m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
+                Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
+                //ProcessPlatformSanctionListsType(false);
+            }
+            else if (m_Type == "PlatformTMS")
+            {
+                m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
+                Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
+                //ProcessPlatformTMSType(false);
+            }
+            else if (m_Type == "REST")
+            {
+                m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
+                Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
+                ProcessSwaggerType(false);
+            }
+            else if (m_Type == "Swagger")
+            {
+                m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
+                Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
+                ProcessSwaggerType(false);
+            }
+            else if (m_Type == "Time")
+            {
+                m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
+                Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
+                //ProcessTimeType(false);
+            }
         }
 
         private static CompilerParameters CreateCompilerParameters(string[] references)
@@ -584,28 +670,71 @@ namespace XCaseServiceClient
 
                     if (string.IsNullOrEmpty(m_Language) || m_Language == "CSharp")
                     {
-                        CodeDomProvider codeProvider = CodeDomProvider.CreateProvider("CSharp");
-                        //CSharpCodeProvider codeProvider = new CSharpCodeProvider();
-                        //ICodeCompiler iCodeCompiler = codeProvider.CreateCompiler();
-                        CompilerParameters compilerParameters = CreateCompilerParameters(m_References);
-                        Log.DebugFormat("created compilerParameters");
-                        m_CompilerResults = codeProvider.CompileAssemblyFromSource(compilerParameters, m_SourceStringArray);
-                        Log.DebugFormat("compiled assembly from source");
-                        if (!m_CompilerResults.Errors.HasErrors)
+                        m_ServicesComboBox.DataSource = m_SwaggerServiceDefinition.GetProxyClasses();
+                        List<SyntaxTree> syntaxTreeList = new List<SyntaxTree>();
+                        if (m_SourceStringArray != null)
                         {
-                            m_ServicesComboBox.DataSource = m_SwaggerServiceDefinition.GetProxyClasses();
-                        }
-                        else
-                        {
-                            foreach (CompilerError error in m_CompilerResults.Errors)
+                            foreach (string sourceString in m_SourceStringArray)
                             {
-                                Log.DebugFormat("compiler error {0}", error.ErrorText);
+                                Log.DebugFormat("sourceString is {0}", sourceString);
+                                SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(sourceString);
+                                syntaxTreeList.Add(syntaxTree);
                             }
                         }
 
+                        string assemblyName = Path.GetRandomFileName();
+                        Log.DebugFormat("assemblyName is {0}", assemblyName);
+                        AppDomain currentDomain = AppDomain.CurrentDomain;
+                        List<MetadataReference> metadataReferenceList = new List<MetadataReference>();
+                        Assembly[] assemblyArray = currentDomain.GetAssemblies();
+                        foreach (Assembly domainAssembly in assemblyArray)
+                        {
+                            Log.DebugFormat("next domainAssembly {0}", domainAssembly.GetName());
+                            try
+                            {
+                                AssemblyMetadata assemblyMetadata = AssemblyMetadata.CreateFromFile(domainAssembly.Location);
+                                Log.DebugFormat("got assemblyMetadata {0}", domainAssembly.GetName());
+                                MetadataReference metadataReference = assemblyMetadata.GetReference();
+                                Log.DebugFormat("got metadataReference {0}", domainAssembly.GetName());
+                                metadataReferenceList.Add(metadataReference);
+                                Log.DebugFormat("added reference {0}", domainAssembly.GetName());
+                            }
+                            catch (Exception e)
+                            {
+                                Log.DebugFormat("failed to get MetadataReference {0}", e.Message);
+                            }
+                        }
+
+                        Log.DebugFormat("created metadataReferenceList");
+                        CSharpCompilation compilation = CSharpCompilation.Create(
+                            assemblyName,
+                            syntaxTrees: syntaxTreeList,
+                            references: metadataReferenceList,
+                            options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+                        Log.DebugFormat("created compilation");
+                        using (var ms = new MemoryStream())
+                        {
+                            EmitResult result = compilation.Emit(ms);
+                            if (!result.Success)
+                            {
+                                Log.WarnFormat("result is {0}", result.Success);
+                                IEnumerable<Diagnostic> failures = result.Diagnostics.Where(diagnostic => diagnostic.IsWarningAsError || diagnostic.Severity == DiagnosticSeverity.Error);
+                                foreach (Diagnostic diagnostic in failures)
+                                {
+                                    Log.WarnFormat("{0}: {1}", diagnostic.Id, diagnostic.GetMessage());
+                                }
+                            }
+                            else
+                            {
+                                ms.Seek(0, SeekOrigin.Begin);
+                                m_Assembly = Assembly.Load(ms.ToArray());
+                            }
+                        }
+
+                        Log.DebugFormat("created assembly");
                         object[] args = new object[] { new Uri(m_SwaggerServiceDefinition.GetEndPoint()) };
                         string proxyClass = string.Format("{0}.{1}", m_SwaggerApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
-                        m_RESTServiceClient = m_CompilerResults.CompiledAssembly.CreateInstance(proxyClass, false, BindingFlags.CreateInstance, null, args, null, null);
+                        m_RESTServiceClient = m_Assembly.CreateInstance(proxyClass, false, BindingFlags.CreateInstance, null, args, null, null);
                         if (m_RESTServiceClient != null)
                         {
                             NetworkCredential networkCredential = new NetworkCredential(m_ClientCredentialUserName, m_ClientCredentialPassword, m_ClientCredentialDomain);
@@ -638,26 +767,9 @@ namespace XCaseServiceClient
                     Log.DebugFormat("refresh is false");
                     if (string.IsNullOrEmpty(m_Language) || m_Language == "CSharp")
                     {
-                        CSharpCodeProvider codeProvider = new CSharpCodeProvider();
-                        CompilerParameters compilerParameters = CreateCompilerParameters(m_References);
-                        Log.DebugFormat("created compilerParameters");
-                        m_CompilerResults = codeProvider.CompileAssemblyFromSource(compilerParameters, m_SourceStringArray);
-                        Log.DebugFormat("compiled assembly from source");
-                        if (!m_CompilerResults.Errors.HasErrors)
-                        {
-                            m_ServicesComboBox.DataSource = m_SwaggerServiceDefinition.GetProxyClasses();
-                        }
-                        else
-                        {
-                            foreach (CompilerError error in m_CompilerResults.Errors)
-                            {
-                                Log.DebugFormat("compiler error {0}", error.ErrorText);
-                            }
-                        }
-
                         object[] args = new object[] { new Uri(m_SwaggerServiceDefinition.GetEndPoint()) };
                         string proxyClass = string.Format("{0}.{1}", m_SwaggerApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
-                        m_RESTServiceClient = m_CompilerResults.CompiledAssembly.CreateInstance(proxyClass, false, BindingFlags.CreateInstance, null, args, null, null);
+                        m_RESTServiceClient = m_Assembly.CreateInstance(proxyClass, false, BindingFlags.CreateInstance, null, args, null, null);
                         if (m_RESTServiceClient != null)
                         {
                             NetworkCredential networkCredential = new NetworkCredential(m_ClientCredentialUserName, m_ClientCredentialPassword, m_ClientCredentialDomain);
@@ -746,7 +858,7 @@ namespace XCaseServiceClient
                 this.Controls.Remove(m_MethodsTabControl);
                 m_MethodsTabControl = new TabControl();
                 this.Controls.Add(m_MethodsTabControl);
-                m_MethodsTabControl.Location = new Point(0, m_TopPanelHeight);
+                m_MethodsTabControl.Location = new Point(0, m_TopPanelHeight + m_TabPanelBuffer);
                 m_MethodsTabControl.Multiline = multiline;
                 m_MethodsTabControl.Name = "MethodsTabControl";
                 m_MethodsTabControl.Size = new Size(m_WindowWidth, m_WindowHeight - (m_TopPanelHeight + m_TabPanelBuffer));
