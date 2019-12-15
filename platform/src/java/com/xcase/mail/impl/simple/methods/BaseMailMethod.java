@@ -76,7 +76,7 @@ public class BaseMailMethod {
             String username = request.getUsername();
             LOGGER.debug("username is " + username);
             String password = request.getPassword();
-            LOGGER.debug("password is " + hostname);
+            LOGGER.debug("password is " + password);
             java.security.Security.setProperty("ssl.SocketFactory.provider", "com.xcase.common.impl.simple.core.DummySSLSocketFactory");
             java.util.Properties imapProperties = new java.util.Properties();
             imapProperties.setProperty("mail.imap.socketFactory.class", "javax.net.ssl.SSLSocketFactory");

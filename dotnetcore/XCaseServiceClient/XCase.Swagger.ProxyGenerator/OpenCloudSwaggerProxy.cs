@@ -98,13 +98,13 @@
             StringReader stringReader = null;
             try
             {
-                stringReader = new StringReader(content);
-                using JsonTextReader jsonReader = new JsonTextReader(stringReader);
-                stringReader = null;
-                JObject json = (JObject)JsonSerializer.CreateDefault().Deserialize(jsonReader);
-                string token = json["access_token"].Value<string>();
-                Log.DebugFormat("token is {0}", token);
-                return token;
+                //stringReader = new StringReader(content);
+                //using JsonTextReader jsonReader = new JsonTextReader(stringReader);
+                //stringReader = null;
+                //JObject json = (JObject)JsonSerializer.CreateDefault().Deserialize(jsonReader);
+                //string token = json["access_token"].Value<string>();
+                //Log.DebugFormat("token is {0}", token);
+                return null;
             }
             finally
             {
