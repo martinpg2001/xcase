@@ -84,17 +84,17 @@
                     new KeyValuePair<string, string>("tenantId", tenantId)
                 });
 
-            HttpResponseMessage response = client.SendAsync(request).Result;
-            Log.DebugFormat("got response status code {0}", response.StatusCode.ToString());
-            if (!response.IsSuccessStatusCode)
-            {
-                Log.DebugFormat("response status code is not IsSuccessStatusCode");
-                return null;
-            }
+            //HttpResponseMessage response = client.SendAsync(request).Result;
+            //Log.DebugFormat("got response status code {0}", response.StatusCode.ToString());
+            //if (!response.IsSuccessStatusCode)
+            //{
+            //    Log.DebugFormat("response status code is not IsSuccessStatusCode");
+            //    return null;
+            //}
 
-            Log.DebugFormat("response status code is IsSuccessStatusCode");
-            string content = response.Content.ReadAsStringAsync().Result;
-            Log.DebugFormat("content is {0}", content);
+            //Log.DebugFormat("response status code is IsSuccessStatusCode");
+            //string content = response.Content.ReadAsStringAsync().Result;
+            //Log.DebugFormat("content is {0}", content);
             StringReader stringReader = null;
             try
             {

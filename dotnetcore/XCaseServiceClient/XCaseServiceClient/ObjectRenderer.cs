@@ -2971,7 +2971,15 @@
                         else if (ObjectFactory.IsIntegerType(propertyType))
                         {
                             Log.Debug("result property is Integer type");
-                            ((int)resultPropertyObject).RenderResultInteger(resultTableLayoutPanel, j + 1);
+                            try
+                            {
+                                ((int)resultPropertyObject).RenderResultInteger(resultTableLayoutPanel, j + 1);
+                            }
+                            catch (Exception e)
+                            {
+                                Log.Debug("exception casting result property as int");
+                                ((Int64)resultPropertyObject).RenderResultInt64(resultTableLayoutPanel, j + 1);
+                            }
                         }
                         else if (ObjectFactory.IsInt64Type(propertyType))
                         {

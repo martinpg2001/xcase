@@ -414,8 +414,8 @@
             Log.DebugFormat("httpRequestMessage is {0}", httpRequestMessage);
             WriteLine(proxyStringBuilder, httpRequestMessage);
             //WriteLine(proxyStringBuilder, "httpRequestMessage.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(\"application/json\"));");
-            WriteLine(proxyStringBuilder, "httpRequestMessage.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(\"application/vnd.intapp+json\"));");
-            WriteLine(proxyStringBuilder, "httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue(\"Bearer\", token);");
+            WriteLine(proxyStringBuilder, "httpRequestMessage.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(\"application/json\"));");
+            //WriteLine(proxyStringBuilder, "httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue(\"Bearer\", token);");
             //WriteLine(proxyStringBuilder, "httpRequestMessage.Headers.Add(\"IntegrateAuthenticationToken\", token);");
             Parameter bodyParameter = operation.Parameters.FirstOrDefault(p => p.ParameterIn == ParameterIn.Body);
             if (bodyParameter != null && method != "GET")

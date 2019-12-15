@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Config xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<Config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <domain />
-  <endpoint>http://petstore.swagger.io/v2/swagger.json</endpoint>
+  <endpoint>https://petstore.swagger.io/v2/swagger.json</endpoint>
   <language>CSharp</language>
+  <onpremise>false</onpremise>
   <password />
   <timeout>30</timeout>
   <type>Swagger</type>
