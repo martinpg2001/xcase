@@ -768,6 +768,14 @@
             {
                 return true;
             }
+            else if (type == typeof(Int64))
+            {
+                return true;
+            }
+            else if (GetRootElementType(type) == typeof(Int64))
+            {
+                return true;
+            }
             else if (IsNullableType(type))
             {
                 Log.Debug("type is nullable");
