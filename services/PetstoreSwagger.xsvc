@@ -6,6 +6,6 @@
   <onpremise>false</onpremise>
   <password />
   <timeout>30</timeout>
-  <type>Swagger</type>
+  <type>Custom</type>
   <username>Admin</username>
 </Config>

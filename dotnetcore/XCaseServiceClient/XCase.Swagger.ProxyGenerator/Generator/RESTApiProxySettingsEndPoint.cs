@@ -11,10 +11,12 @@ namespace XCase.REST.ProxyGenerator.Generator
     {
         public static IConfigurationRoot iConfigurationRoot = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
+        public string Accept { get; set; }
         public string Id { get; set; }
-        public string Url { get; set; }
         public string Namespace { get; set; }
         public string Suffix { get; set; }
+        public string TokenName { get; set; }
+        public string Url { get; set; }
         public string BaseProxyClass { get; set; }
         public string ProxyConstructorSuffix { get; set; }
         public bool ParseOperationIdForProxyName { get; set; }
@@ -22,12 +24,14 @@ namespace XCase.REST.ProxyGenerator.Generator
 
         public RESTApiProxySettingsEndPoint()
         {
+            Accept = "application/json";
             BaseProxyClass = ConfigurationManager.AppSettings["SwaggerProxy"];
             Id = "SwaggerProxy";
             Namespace = iConfigurationRoot.GetSection("AppSettings").GetSection("Namespace").Value;// "XCaseServiceClient";// ConfigurationManager.AppSettings["Namespace"];
             ProxyConstructorSuffix = "(Uri baseUrl) : base(baseUrl)";
             ParseOperationIdForProxyName = true;
             AppendAsyncToMethodName = true;
+            TokenName = "Bearer";
         }
 
         public RESTApiProxySettingsEndPoint(string language, string baseProxyClass)
@@ -38,20 +42,25 @@ namespace XCase.REST.ProxyGenerator.Generator
             switch (language)
             {
                 case "CSharp":
+                    Accept = "application/json";
                     ProxyConstructorSuffix = "(Uri baseUrl) : base(baseUrl)";
                     ParseOperationIdForProxyName = true;
                     AppendAsyncToMethodName = false;
+                    TokenName = "Bearer";
                     break;
                 case "Java":
-                    //Namespace = "com.xcase.harness.actions.integrate.objects";
+                    Accept = "application/json";
                     ProxyConstructorSuffix = "(Uri baseUrl) extends base(baseUrl)";
                     ParseOperationIdForProxyName = true;
                     AppendAsyncToMethodName = false;
+                    TokenName = "Bearer";
                     break;
                 default:
+                    Accept = "application/json";
                     ProxyConstructorSuffix = "(Uri baseUrl) : base(baseUrl)";
                     ParseOperationIdForProxyName = true;
                     AppendAsyncToMethodName = false;
+                    TokenName = "Bearer";
                     break;
             }
         }
@@ -64,21 +73,32 @@ namespace XCase.REST.ProxyGenerator.Generator
             switch (language)
             {
                 case "CSharp":
+                    Accept = "application/json";
+                    AppendAsyncToMethodName = false;
                     ProxyConstructorSuffix = "(Uri baseUrl) : base(baseUrl)";
                     ParseOperationIdForProxyName = true;
-                    AppendAsyncToMethodName = false;
+                    TokenName = "Bearer";
                     break;
                 case "Java":
+                    Accept = "application/json";
+                    AppendAsyncToMethodName = false;
                     ProxyConstructorSuffix = "(Uri baseUrl) extends base(baseUrl)";
                     ParseOperationIdForProxyName = true;
-                    AppendAsyncToMethodName = false;
+                    TokenName = "Bearer";
                     break;
                 default:
+                    Accept = "application/json";
+                    AppendAsyncToMethodName = false;
                     ProxyConstructorSuffix = "(Uri baseUrl) : base(baseUrl)";
                     ParseOperationIdForProxyName = true;
-                    AppendAsyncToMethodName = false;
+                    TokenName = "Bearer";
                     break;
             }
+        }
+
+        public string GetAccept()
+        {
+            return Accept;
         }
 
         public string GetBasePath()
@@ -105,6 +125,11 @@ namespace XCase.REST.ProxyGenerator.Generator
         public string GetProxyConstructorSuffix()
         {
             return ProxyConstructorSuffix;
+        }
+
+        public string GetTokenName()
+        {
+            return TokenName;
         }
 
         public string GetUrl()

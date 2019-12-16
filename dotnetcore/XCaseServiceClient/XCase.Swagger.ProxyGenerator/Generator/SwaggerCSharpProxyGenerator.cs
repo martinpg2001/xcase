@@ -267,7 +267,7 @@
             string proxyName = proxy;
             foreach (Operation operation in proxyDefinition.Operations.Where(i => i.ProxyName.Equals(proxyName)))
             {
-                WriteOperationToStringBuilder(operation, proxyStringBuilder, proxyParamEnums, methodNameAppend);
+                WriteOperationToStringBuilder(operation, proxyStringBuilder, endPoint, proxyParamEnums, methodNameAppend);
             }
 
             foreach (XCase.ProxyGenerator.REST.Enum proxyParamEnum in proxyParamEnums)
@@ -291,7 +291,7 @@
             return proxyStringBuilder;
         }
 
-        private static void WriteOperationToStringBuilder(Operation operation, StringBuilder proxyStringBuilder, List<XCase.ProxyGenerator.REST.Enum> proxyParamEnums, string methodNameAppend)
+        private static void WriteOperationToStringBuilder(Operation operation, StringBuilder proxyStringBuilder, IAPIProxySettingsEndpoint endPoint, List<XCase.ProxyGenerator.REST.Enum> proxyParamEnums, string methodNameAppend)
         {
             Log.DebugFormat("starting WriteOperationToStringBuilder()");
             string returnType = string.IsNullOrEmpty(operation.ReturnType) ? "void" : string.Format("{0}", operation.ReturnType);
@@ -372,13 +372,13 @@
             string method = operation.Method.ToUpperInvariant();
             Log.DebugFormat("method is {0}", method);
             WriteLine(proxyStringBuilder, string.Format("Log.DebugFormat(\"method is {0}\");", method));
-            WriteMethod(operation, proxyStringBuilder, method);
+            WriteMethod(operation, proxyStringBuilder, endPoint, method);
             WriteLine(proxyStringBuilder, "}"); // close up the using
             WriteLine(proxyStringBuilder, "}"); // close up the method
             WriteLine(proxyStringBuilder);
         }
 
-        private static void WriteMethod(Operation operation, StringBuilder proxyStringBuilder, string method)
+        private static void WriteMethod(Operation operation, StringBuilder proxyStringBuilder, IAPIProxySettingsEndpoint endPoint, string method)
         {
             Log.DebugFormat("starting WriteMethod()");
             string httpMethod = "System.Net.Http.HttpMethod.Post";
@@ -414,8 +414,8 @@
             Log.DebugFormat("httpRequestMessage is {0}", httpRequestMessage);
             WriteLine(proxyStringBuilder, httpRequestMessage);
             //WriteLine(proxyStringBuilder, "httpRequestMessage.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(\"application/json\"));");
-            WriteLine(proxyStringBuilder, "httpRequestMessage.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(\"application/json\"));");
-            //WriteLine(proxyStringBuilder, "httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue(\"Bearer\", token);");
+            WriteLine(proxyStringBuilder, "httpRequestMessage.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(\"" + endPoint.GetAccept() + "\"));");
+            WriteLine(proxyStringBuilder, "httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue(\"" + endPoint.GetTokenName() + "\", token);");
             //WriteLine(proxyStringBuilder, "httpRequestMessage.Headers.Add(\"IntegrateAuthenticationToken\", token);");
             Parameter bodyParameter = operation.Parameters.FirstOrDefault(p => p.ParameterIn == ParameterIn.Body);
             if (bodyParameter != null && method != "GET")
@@ -664,6 +664,7 @@
             WriteLine(stringBuilder, "using Newtonsoft.Json.Converters;");
             WriteLine(stringBuilder, "using Newtonsoft.Json.Linq;");
             WriteLine(stringBuilder, "using XCase.REST.ProxyGenerator;");
+            WriteLine(stringBuilder, "using XCase.REST.ProxyGenerator.Proxy;");
             WriteLine(stringBuilder);
         }
 

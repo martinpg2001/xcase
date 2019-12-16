@@ -8,6 +8,8 @@
 
     public interface IAPIProxySettingsEndpoint
     {
+        public string GetAccept();
+
         bool GetAppendAsyncToMethodName();
 
         string GetBasePath();
@@ -23,6 +25,8 @@
         bool GetParseOperationIdForProxyName();
 
         string GetProxyConstructorSuffix();
+
+        public string GetTokenName();
 
         string GetUrl();
     }
