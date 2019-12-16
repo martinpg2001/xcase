@@ -250,3 +250,4 @@ platform/azure-local-config.properties
 platform/kafka-local-config.properties
 platform/cucumber-local-config.properties
 platform/klearexpress-local-config.properties
+*.ide
