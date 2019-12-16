@@ -62,8 +62,8 @@ namespace XCaseServiceClient
         int m_ProxyPort = -1;
         int m_Timeout = 30;
         int m_TabPanelBuffer = 40;
-        int m_TopPanelHeight = 60;
-        int m_TopPanelBuffer = 60;
+        int m_TopPanelHeight = 100;
+        int m_TopPanelBuffer = 0;
         int m_WindowHeight = 0;
         int m_WindowHeightIndent = 80;
         int m_WindowWidth = 0;
@@ -190,9 +190,9 @@ namespace XCaseServiceClient
             {
                 RowStyle rowStyle = new RowStyle
                 {
-                    SizeType = SizeType.AutoSize
+                    SizeType = SizeType.Percent,
+                    Height = 50
                 };
-                //rowStyle.Height = 50;
                 tableLayoutRowStyleCollection.Add(rowStyle);
             }
 
@@ -342,7 +342,7 @@ namespace XCaseServiceClient
             Log.Debug("added m_ClientCredentialTypeLabel");
             /* Buttons */
             Button goButton = new Button();
-            goButton.Anchor = AnchorStyles.None;
+            goButton.Dock = DockStyle.Fill;
             goButton.Text = XCaseServiceClient.Properties.Resources.Go;
             m_TopTableLayoutPanel.Controls.Add(goButton, 9, 0);
             Log.Debug("added goButton");
@@ -352,7 +352,7 @@ namespace XCaseServiceClient
                 ProcessGoClicked();
             };
             Button fileButton = new Button();
-            fileButton.Anchor = AnchorStyles.None;
+            fileButton.Dock = DockStyle.Fill;
             fileButton.Text = XCaseServiceClient.Properties.Resources.File;
             fileButton.MouseClick += delegate (object o, MouseEventArgs mev)
             {

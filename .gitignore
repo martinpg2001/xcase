@@ -251,3 +251,10 @@ platform/kafka-local-config.properties
 platform/cucumber-local-config.properties
 platform/klearexpress-local-config.properties
 *.ide
+dotnetcore/XCaseServiceClient/.vs/XCaseServiceClient/DesignTimeBuild/.dtbcache
+dotnetcore/XCaseServiceClient/.vs/XCaseServiceClient/v16/Server/sqlite3/storage.ide
+dotnetcore/XCaseServiceClient/.vs/XCaseServiceClient/v16/Server/sqlite3/storage.ide-shm
+dotnetcore/XCaseServiceClient/.vs/XCaseServiceClient/v16/Server/sqlite3/storage.ide-wal
+*.ide
+dotnetcore/XCaseServiceClient/.vs/XCaseServiceClient/DesignTimeBuild/.dtbcache
+dotnetcore/XCaseServiceClient/.vs/XCaseServiceClient/v16/Server/sqlite3/storage.ide
