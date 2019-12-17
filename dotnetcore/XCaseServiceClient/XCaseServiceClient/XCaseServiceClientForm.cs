@@ -471,21 +471,6 @@ namespace XCaseServiceClient
             }
         }
 
-        //private static CompilerParameters CreateCompilerParameters(string[] references)
-        //{
-        //    Log.Debug("starting CreateCompilerParameters()");
-        //    CompilerParameters compilerParameters = new CompilerParameters(references);
-        //    compilerParameters.GenerateExecutable = false;
-        //    string executingAssemblyLocation = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-        //    Log.DebugFormat("executingAssemblyLocation is {0}", executingAssemblyLocation);
-        //    compilerParameters.ReferencedAssemblies.Add(Path.Combine(executingAssemblyLocation, "System.Net.Http.Formatting.dll"));
-        //    compilerParameters.ReferencedAssemblies.Add(Path.Combine(executingAssemblyLocation, "log4net.dll"));
-        //    compilerParameters.ReferencedAssemblies.Add(Path.Combine(executingAssemblyLocation, "Newtonsoft.Json.dll"));
-        //    compilerParameters.ReferencedAssemblies.Add(Path.Combine(executingAssemblyLocation, "XCase.REST.ProxyGenerator.dll"));
-        //    Log.DebugFormat("added reference assemblies");
-        //    return compilerParameters;
-        //}
-
         private void ProcessCustomType(Boolean refresh)
         {
             Log.Debug("starting ProcessCustomType()");
@@ -535,78 +520,26 @@ namespace XCaseServiceClient
                     }
 
                     Log.DebugFormat("endpoint is {0}", m_SwaggerServiceDefinition.GetEndPoint());
-                    if (m_SwaggerServiceDefinition.GetProxyClasses().Contains<string>(((string)m_ServicesComboBox.SelectedItem)))
-                    {
-                        m_ServicesComboBox.SelectedItem = m_SwaggerServiceDefinition.GetProxyClasses().First<string>(pc => pc == ((string)m_ServicesComboBox.SelectedItem));
-                    }
-                    else
-                    {
-                        m_ServicesComboBox.SelectedItem = m_SwaggerServiceDefinition.GetProxyClasses().First<string>();
-                    }
-
                     if (string.IsNullOrEmpty(m_Language) || m_Language == "CSharp")
                     {
                         m_ServicesComboBox.DataSource = m_SwaggerServiceDefinition.GetProxyClasses();
-                        List<SyntaxTree> syntaxTreeList = new List<SyntaxTree>();
-                        if (m_SourceStringArray != null)
+                        if (m_SwaggerServiceDefinition.GetProxyClasses().Contains<string>(((string)m_ServicesComboBox.SelectedItem)))
                         {
-                            foreach (string sourceString in m_SourceStringArray)
-                            {
-                                Log.DebugFormat("sourceString is {0}", sourceString);
-                                SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(sourceString);
-                                syntaxTreeList.Add(syntaxTree);
-                            }
+                            m_ServicesComboBox.SelectedItem = m_SwaggerServiceDefinition.GetProxyClasses().First<string>(pc => pc == ((string)m_ServicesComboBox.SelectedItem));
+                        }
+                        else
+                        {
+                            m_ServicesComboBox.SelectedItem = m_SwaggerServiceDefinition.GetProxyClasses().First<string>();
                         }
 
+                        List<SyntaxTree> syntaxTreeList = CreateSyntaxTreeListFromSourceStringArray();
                         string assemblyName = Path.GetRandomFileName();
                         Log.DebugFormat("assemblyName is {0}", assemblyName);
-                        AppDomain currentDomain = AppDomain.CurrentDomain;
-                        List<MetadataReference> metadataReferenceList = new List<MetadataReference>();
-                        Assembly[] assemblyArray = currentDomain.GetAssemblies();
-                        foreach (Assembly domainAssembly in assemblyArray)
-                        {
-                            Log.DebugFormat("next domainAssembly {0}", domainAssembly.GetName());
-                            try
-                            {
-                                AssemblyMetadata assemblyMetadata = AssemblyMetadata.CreateFromFile(domainAssembly.Location);
-                                Log.DebugFormat("got assemblyMetadata {0}", domainAssembly.GetName());
-                                MetadataReference metadataReference = assemblyMetadata.GetReference();
-                                Log.DebugFormat("got metadataReference {0}", domainAssembly.GetName());
-                                metadataReferenceList.Add(metadataReference);
-                                Log.DebugFormat("added reference {0}", domainAssembly.GetName());
-                            }
-                            catch (Exception e)
-                            {
-                                Log.DebugFormat("failed to get MetadataReference {0}", e.Message);
-                            }
-                        }
-
+                        List<MetadataReference> metadataReferenceList = CreateMetadataReferenceList();
                         Log.DebugFormat("created metadataReferenceList");
-                        CSharpCompilation compilation = CSharpCompilation.Create(
-                            assemblyName,
-                            syntaxTrees: syntaxTreeList,
-                            references: metadataReferenceList,
-                            options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
-                        Log.DebugFormat("created compilation");
-                        using (var ms = new MemoryStream())
-                        {
-                            EmitResult result = compilation.Emit(ms);
-                            if (!result.Success)
-                            {
-                                Log.WarnFormat("result is {0}", result.Success);
-                                IEnumerable<Diagnostic> failures = result.Diagnostics.Where(diagnostic => diagnostic.IsWarningAsError || diagnostic.Severity == DiagnosticSeverity.Error);
-                                foreach (Diagnostic diagnostic in failures)
-                                {
-                                    Log.WarnFormat("{0}: {1}", diagnostic.Id, diagnostic.GetMessage());
-                                }
-                            }
-                            else
-                            {
-                                ms.Seek(0, SeekOrigin.Begin);
-                                m_Assembly = Assembly.Load(ms.ToArray());
-                            }
-                        }
-
+                        CSharpCompilation cSharpCompilation = CSharpCompilation.Create(assemblyName, syntaxTrees: syntaxTreeList, references: metadataReferenceList, options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+                        Log.DebugFormat("created cSharpCompilation");
+                        m_Assembly = CreateAssemblyFromCSharpCompilation(cSharpCompilation);
                         Log.DebugFormat("created assembly");
                         object[] args = new object[] { new Uri(m_SwaggerServiceDefinition.GetEndPoint()) };
                         string proxyClass = string.Format("{0}.{1}", m_SwaggerApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
@@ -682,6 +615,72 @@ namespace XCaseServiceClient
                     MessageBox.Show("Exception thrown: " + e.Message);
                 }
             }
+        }
+
+        private static Assembly CreateAssemblyFromCSharpCompilation(CSharpCompilation cSharpCompilation)
+        {
+            using (var ms = new MemoryStream())
+            {
+                EmitResult result = cSharpCompilation.Emit(ms);
+                if (!result.Success)
+                {
+                    Log.WarnFormat("result is {0}", result.Success);
+                    IEnumerable<Diagnostic> failures = result.Diagnostics.Where(diagnostic => diagnostic.IsWarningAsError || diagnostic.Severity == DiagnosticSeverity.Error);
+                    foreach (Diagnostic diagnostic in failures)
+                    {
+                        Log.WarnFormat("{0}: {1}", diagnostic.Id, diagnostic.GetMessage());
+                    }
+
+                    return null;
+                }
+                else
+                {
+                    ms.Seek(0, SeekOrigin.Begin);
+                    return Assembly.Load(ms.ToArray());
+                }
+            }
+        }
+
+        private static List<MetadataReference> CreateMetadataReferenceList()
+        {
+            List<MetadataReference> metadataReferenceList = new List<MetadataReference>();
+            AppDomain currentDomain = AppDomain.CurrentDomain;
+            Assembly[] assemblyArray = currentDomain.GetAssemblies();
+            foreach (Assembly domainAssembly in assemblyArray)
+            {
+                Log.DebugFormat("next domainAssembly {0}", domainAssembly.GetName());
+                try
+                {
+                    AssemblyMetadata assemblyMetadata = AssemblyMetadata.CreateFromFile(domainAssembly.Location);
+                    Log.DebugFormat("got assemblyMetadata {0}", domainAssembly.GetName());
+                    MetadataReference metadataReference = assemblyMetadata.GetReference();
+                    Log.DebugFormat("got metadataReference {0}", domainAssembly.GetName());
+                    metadataReferenceList.Add(metadataReference);
+                    Log.DebugFormat("added reference {0}", domainAssembly.GetName());
+                }
+                catch (Exception e)
+                {
+                    Log.DebugFormat("failed to get MetadataReference {0}", e.Message);
+                }
+            }
+
+            return metadataReferenceList;
+        }
+
+        private List<SyntaxTree> CreateSyntaxTreeListFromSourceStringArray()
+        {
+            List<SyntaxTree> syntaxTreeList = new List<SyntaxTree>();
+            if (m_SourceStringArray != null)
+            {
+                foreach (string sourceString in m_SourceStringArray)
+                {
+                    Log.DebugFormat("sourceString is {0}", sourceString);
+                    SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(sourceString);
+                    syntaxTreeList.Add(syntaxTree);
+                }
+            }
+
+            return syntaxTreeList;
         }
 
         private void ProcessGoClicked()
@@ -877,79 +876,26 @@ namespace XCaseServiceClient
                         }
                     }
 
-                    Log.DebugFormat("endpoint is {0}", m_SwaggerServiceDefinition.GetEndPoint());
-                    if (m_SwaggerServiceDefinition.GetProxyClasses().Contains<string>(((string)m_ServicesComboBox.SelectedItem)))
-                    {
-                        m_ServicesComboBox.SelectedItem = m_SwaggerServiceDefinition.GetProxyClasses().First<string>(pc => pc == ((string)m_ServicesComboBox.SelectedItem));
-                    }
-                    else
-                    {
-                        m_ServicesComboBox.SelectedItem = m_SwaggerServiceDefinition.GetProxyClasses().First<string>();
-                    }
-
                     if (string.IsNullOrEmpty(m_Language) || m_Language == "CSharp")
                     {
-                        m_ServicesComboBox.DataSource = m_SwaggerServiceDefinition.GetProxyClasses();
-                        List<SyntaxTree> syntaxTreeList = new List<SyntaxTree>();
-                        if (m_SourceStringArray != null)
+                        if (m_SwaggerServiceDefinition.GetProxyClasses().Contains<string>(((string)m_ServicesComboBox.SelectedItem)))
                         {
-                            foreach (string sourceString in m_SourceStringArray)
-                            {
-                                Log.DebugFormat("sourceString is {0}", sourceString);
-                                SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(sourceString);
-                                syntaxTreeList.Add(syntaxTree);
-                            }
+                            m_ServicesComboBox.SelectedItem = m_SwaggerServiceDefinition.GetProxyClasses().First<string>(pc => pc == ((string)m_ServicesComboBox.SelectedItem));
+                        }
+                        else
+                        {
+                            m_ServicesComboBox.SelectedItem = m_SwaggerServiceDefinition.GetProxyClasses().First<string>();
                         }
 
+                        m_ServicesComboBox.DataSource = m_SwaggerServiceDefinition.GetProxyClasses();
+                        List<SyntaxTree> syntaxTreeList = CreateSyntaxTreeListFromSourceStringArray();
                         string assemblyName = Path.GetRandomFileName();
                         Log.DebugFormat("assemblyName is {0}", assemblyName);
-                        AppDomain currentDomain = AppDomain.CurrentDomain;
-                        List<MetadataReference> metadataReferenceList = new List<MetadataReference>();
-                        Assembly[] assemblyArray = currentDomain.GetAssemblies();
-                        foreach (Assembly domainAssembly in assemblyArray)
-                        {
-                            Log.DebugFormat("next domainAssembly {0}", domainAssembly.GetName());
-                            try
-                            {
-                                AssemblyMetadata assemblyMetadata = AssemblyMetadata.CreateFromFile(domainAssembly.Location);
-                                Log.DebugFormat("got assemblyMetadata {0}", domainAssembly.GetName());
-                                MetadataReference metadataReference = assemblyMetadata.GetReference();
-                                Log.DebugFormat("got metadataReference {0}", domainAssembly.GetName());
-                                metadataReferenceList.Add(metadataReference);
-                                Log.DebugFormat("added reference {0}", domainAssembly.GetName());
-                            }
-                            catch (Exception e)
-                            {
-                                Log.DebugFormat("failed to get MetadataReference {0}", e.Message);
-                            }
-                        }
-
+                        List<MetadataReference> metadataReferenceList = CreateMetadataReferenceList();
                         Log.DebugFormat("created metadataReferenceList");
-                        CSharpCompilation compilation = CSharpCompilation.Create(
-                            assemblyName,
-                            syntaxTrees: syntaxTreeList,
-                            references: metadataReferenceList,
-                            options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
-                        Log.DebugFormat("created compilation");
-                        using (var ms = new MemoryStream())
-                        {
-                            EmitResult result = compilation.Emit(ms);
-                            if (!result.Success)
-                            {
-                                Log.WarnFormat("result is {0}", result.Success);
-                                IEnumerable<Diagnostic> failures = result.Diagnostics.Where(diagnostic => diagnostic.IsWarningAsError || diagnostic.Severity == DiagnosticSeverity.Error);
-                                foreach (Diagnostic diagnostic in failures)
-                                {
-                                    Log.WarnFormat("{0}: {1}", diagnostic.Id, diagnostic.GetMessage());
-                                }
-                            }
-                            else
-                            {
-                                ms.Seek(0, SeekOrigin.Begin);
-                                m_Assembly = Assembly.Load(ms.ToArray());
-                            }
-                        }
-
+                        CSharpCompilation cSharpCompilation = CSharpCompilation.Create(assemblyName, syntaxTrees: syntaxTreeList, references: metadataReferenceList, options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+                        Log.DebugFormat("created cSharpCompilation");
+                        m_Assembly = CreateAssemblyFromCSharpCompilation(cSharpCompilation);
                         Log.DebugFormat("created assembly");
                         object[] args = new object[] { new Uri(m_SwaggerServiceDefinition.GetEndPoint()) };
                         string proxyClass = string.Format("{0}.{1}", m_SwaggerApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
@@ -1093,8 +1039,6 @@ namespace XCaseServiceClient
                 m_SwaggerApiProxySettingsEndPoint.Url = m_ServiceDescriptionURL;
                 Log.DebugFormat("m_ServiceDescriptionURL is {0}", m_ServiceDescriptionURL);
                 RESTApiProxySettingsEndPoint[] endpoints = new RESTApiProxySettingsEndPoint[] { m_SwaggerApiProxySettingsEndPoint };
-                //m_SwaggerServiceDefinition = m_SwaggerProxyGenerator.GenerateSourceString(endpoints);
-                //Log.DebugFormat("swaggerServiceDefinition EndPoint is {0}", m_SwaggerServiceDefinition.GetEndPoint());
                 this.Text = m_WindowTitle + " - got source service definition";
                 Log.DebugFormat("endpoint is {0}", m_SwaggerServiceDefinition.GetEndPoint());
                 if (string.IsNullOrEmpty(m_Language) || m_Language == "CSharp")
@@ -1109,66 +1053,14 @@ namespace XCaseServiceClient
                         m_ServicesComboBox.SelectedItem = proxyStringList.First<string>();
                     }
 
-                    List<SyntaxTree> syntaxTreeList = new List<SyntaxTree>();
-                    if (m_SourceStringArray != null)
-                    {
-                        foreach (string sourceString in m_SourceStringArray)
-                        {
-                            Log.DebugFormat("sourceString is {0}", sourceString);
-                            SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(sourceString);
-                            syntaxTreeList.Add(syntaxTree);
-                        }
-                    }
-
+                    List<SyntaxTree> syntaxTreeList = CreateSyntaxTreeListFromSourceStringArray();
                     string assemblyName = Path.GetRandomFileName();
                     Log.DebugFormat("assemblyName is {0}", assemblyName);
-                    AppDomain currentDomain = AppDomain.CurrentDomain;
-                    List<MetadataReference> metadataReferenceList = new List<MetadataReference>();
-                    Assembly[] assemblyArray = currentDomain.GetAssemblies();
-                    foreach (Assembly domainAssembly in assemblyArray)
-                    {
-                        Log.DebugFormat("next domainAssembly {0}", domainAssembly.GetName());
-                        try
-                        {
-                            AssemblyMetadata assemblyMetadata = AssemblyMetadata.CreateFromFile(domainAssembly.Location);
-                            Log.DebugFormat("got assemblyMetadata {0}", domainAssembly.GetName());
-                            MetadataReference metadataReference = assemblyMetadata.GetReference();
-                            Log.DebugFormat("got metadataReference {0}", domainAssembly.GetName());
-                            metadataReferenceList.Add(metadataReference);
-                            Log.DebugFormat("added reference {0}", domainAssembly.GetName());
-                        }
-                        catch (Exception e)
-                        {
-                            Log.DebugFormat("failed to get MetadataReference {0}", e.Message);
-                        }
-                    }
-
+                    List<MetadataReference> metadataReferenceList = CreateMetadataReferenceList();
                     Log.DebugFormat("created metadataReferenceList");
-                    CSharpCompilation compilation = CSharpCompilation.Create(
-                        assemblyName,
-                        syntaxTrees: syntaxTreeList,
-                        references: metadataReferenceList,
-                        options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
-                    Log.DebugFormat("created compilation");
-                    using (var ms = new MemoryStream())
-                    {
-                        EmitResult result = compilation.Emit(ms);
-                        if (!result.Success)
-                        {
-                            Log.WarnFormat("result is {0}", result.Success);
-                            IEnumerable<Diagnostic> failures = result.Diagnostics.Where(diagnostic => diagnostic.IsWarningAsError || diagnostic.Severity == DiagnosticSeverity.Error);
-                            foreach (Diagnostic diagnostic in failures)
-                            {
-                                Log.WarnFormat("{0}: {1}", diagnostic.Id, diagnostic.GetMessage());
-                            }
-                        }
-                        else
-                        {
-                            ms.Seek(0, SeekOrigin.Begin);
-                            m_Assembly = Assembly.Load(ms.ToArray());
-                        }
-                    }
-
+                    CSharpCompilation cSharpCompilation = CSharpCompilation.Create(assemblyName, syntaxTrees: syntaxTreeList, references: metadataReferenceList, options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+                    Log.DebugFormat("created cSharpCompilation");
+                    m_Assembly = CreateAssemblyFromCSharpCompilation(cSharpCompilation);
                     Log.DebugFormat("created assembly");
                     object[] args = argStringList.ToArray();
                     string proxyClass = string.Format("{0}.{1}", m_SwaggerApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
