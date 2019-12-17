@@ -1029,7 +1029,180 @@ namespace XCaseServiceClient
 
         private void ProcessSourceType()
         {
-            throw new NotImplementedException();
+            Log.Debug("starting ProcessSourceType()");
+            try
+            {
+                this.Text = m_WindowTitle + " - using source service definition";
+                List<string> argStringList = new List<string>();
+                List<string> dllStringList = new List<string>();
+                string package = "";
+                List<string> proxyStringList = new List<string>();
+                List<string> sourceStringList = new List<string>();
+                string[] lineList = File.ReadAllLines("Source.txt");
+                foreach (string line in lineList)
+                {
+                    if (line.StartsWith("arg:"))
+                    {
+                        argStringList.Add(line.Substring(4));
+                    }
+                    else if (line.StartsWith("dll:"))
+                    {
+                        dllStringList.Add(line.Substring(4));
+                    }
+                    else if (line.StartsWith("file:"))
+                    {
+                        string sourceString = GetStringFromFile(line.Substring(5));
+                        sourceStringList.Add(sourceString);
+                    }
+                    else if (line.StartsWith("package:"))
+                    {
+                        package = line.Substring(8);
+                    }
+                    else if (line.StartsWith("proxy:"))
+                    {
+                        proxyStringList.Add(line.Substring(6));
+                    }
+                    else
+                    {
+                        Log.Warn("unrecognized prefix");
+                    }
+                }
+
+                m_SourceStringArray = sourceStringList.ToArray<string>();
+                if (m_SourceStringArray != null)
+                {
+                    foreach (string sourceString in m_SourceStringArray)
+                    {
+                        Log.DebugFormat("sourceString is {0}", sourceString);
+                    }
+                }
+
+                this.Controls.Remove(m_MethodsTabControl);
+                if (!string.IsNullOrEmpty(m_Language) && m_Language == "Java")
+                {
+                    m_SwaggerProxyGenerator = new SwaggerJavaProxyGenerator();
+                    m_SwaggerApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("Java");
+                }
+                else
+                {
+                    m_SwaggerProxyGenerator = new SwaggerCSharpProxyGenerator();
+                    m_SwaggerApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("CSharp", "CustomBaseProxy");
+                    m_SwaggerApiProxySettingsEndPoint.Accept = "application/json";
+                }
+
+                m_SwaggerApiProxySettingsEndPoint.Url = m_ServiceDescriptionURL;
+                Log.DebugFormat("m_ServiceDescriptionURL is {0}", m_ServiceDescriptionURL);
+                RESTApiProxySettingsEndPoint[] endpoints = new RESTApiProxySettingsEndPoint[] { m_SwaggerApiProxySettingsEndPoint };
+                //m_SwaggerServiceDefinition = m_SwaggerProxyGenerator.GenerateSourceString(endpoints);
+                //Log.DebugFormat("swaggerServiceDefinition EndPoint is {0}", m_SwaggerServiceDefinition.GetEndPoint());
+                this.Text = m_WindowTitle + " - got source service definition";
+                Log.DebugFormat("endpoint is {0}", m_SwaggerServiceDefinition.GetEndPoint());
+                if (string.IsNullOrEmpty(m_Language) || m_Language == "CSharp")
+                {
+                    m_ServicesComboBox.DataSource = proxyStringList;
+                    if (proxyStringList.Contains<string>(((string)m_ServicesComboBox.SelectedItem)))
+                    {
+                        m_ServicesComboBox.SelectedItem = proxyStringList.First<string>(pc => pc == ((string)m_ServicesComboBox.SelectedItem));
+                    }
+                    else
+                    {
+                        m_ServicesComboBox.SelectedItem = proxyStringList.First<string>();
+                    }
+
+                    List<SyntaxTree> syntaxTreeList = new List<SyntaxTree>();
+                    if (m_SourceStringArray != null)
+                    {
+                        foreach (string sourceString in m_SourceStringArray)
+                        {
+                            Log.DebugFormat("sourceString is {0}", sourceString);
+                            SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(sourceString);
+                            syntaxTreeList.Add(syntaxTree);
+                        }
+                    }
+
+                    string assemblyName = Path.GetRandomFileName();
+                    Log.DebugFormat("assemblyName is {0}", assemblyName);
+                    AppDomain currentDomain = AppDomain.CurrentDomain;
+                    List<MetadataReference> metadataReferenceList = new List<MetadataReference>();
+                    Assembly[] assemblyArray = currentDomain.GetAssemblies();
+                    foreach (Assembly domainAssembly in assemblyArray)
+                    {
+                        Log.DebugFormat("next domainAssembly {0}", domainAssembly.GetName());
+                        try
+                        {
+                            AssemblyMetadata assemblyMetadata = AssemblyMetadata.CreateFromFile(domainAssembly.Location);
+                            Log.DebugFormat("got assemblyMetadata {0}", domainAssembly.GetName());
+                            MetadataReference metadataReference = assemblyMetadata.GetReference();
+                            Log.DebugFormat("got metadataReference {0}", domainAssembly.GetName());
+                            metadataReferenceList.Add(metadataReference);
+                            Log.DebugFormat("added reference {0}", domainAssembly.GetName());
+                        }
+                        catch (Exception e)
+                        {
+                            Log.DebugFormat("failed to get MetadataReference {0}", e.Message);
+                        }
+                    }
+
+                    Log.DebugFormat("created metadataReferenceList");
+                    CSharpCompilation compilation = CSharpCompilation.Create(
+                        assemblyName,
+                        syntaxTrees: syntaxTreeList,
+                        references: metadataReferenceList,
+                        options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+                    Log.DebugFormat("created compilation");
+                    using (var ms = new MemoryStream())
+                    {
+                        EmitResult result = compilation.Emit(ms);
+                        if (!result.Success)
+                        {
+                            Log.WarnFormat("result is {0}", result.Success);
+                            IEnumerable<Diagnostic> failures = result.Diagnostics.Where(diagnostic => diagnostic.IsWarningAsError || diagnostic.Severity == DiagnosticSeverity.Error);
+                            foreach (Diagnostic diagnostic in failures)
+                            {
+                                Log.WarnFormat("{0}: {1}", diagnostic.Id, diagnostic.GetMessage());
+                            }
+                        }
+                        else
+                        {
+                            ms.Seek(0, SeekOrigin.Begin);
+                            m_Assembly = Assembly.Load(ms.ToArray());
+                        }
+                    }
+
+                    Log.DebugFormat("created assembly");
+                    object[] args = argStringList.ToArray();
+                    string proxyClass = string.Format("{0}.{1}", m_SwaggerApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
+                    m_RESTServiceClient = m_Assembly.CreateInstance(proxyClass, false, BindingFlags.CreateInstance, null, args, null, null);
+                    if (m_RESTServiceClient != null)
+                    {
+                        NetworkCredential networkCredential = new NetworkCredential(m_ClientCredentialUserName, m_ClientCredentialPassword, m_ClientCredentialDomain);
+                        ((SwaggerProxy)m_RESTServiceClient).ClientCredentials = networkCredential;
+                        if (m_ProxyEnable)
+                        {
+                            ((SwaggerProxy)m_RESTServiceClient).Proxy = new WebProxy(m_ProxyAddress, m_ProxyPort);
+                        }
+
+                        Log.Debug("set client credentials");
+                    }
+                    else
+                    {
+                        Log.Debug("m_RESTServiceClient is null");
+                    }
+
+                    Log.Debug("about to re-render service control");
+                    RerenderServiceControl(m_RESTServiceClient);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.WarnFormat("exception processing source type: " + e.Message);
+                MessageBox.Show("Exception thrown: " + e.Message);
+            }
+        }
+
+        public string GetStringFromFile(string fileName)
+        {
+            return File.ReadAllText(fileName);
         }
 
         private void ProcessTimeType()
