@@ -1,4 +1,4 @@
-﻿namespace XCase.REST.ProxyGenerator
+﻿namespace XCase.REST.ProxyGenerator.Proxy
 {
     using System;
     using System.Collections.Generic;
@@ -14,14 +14,14 @@
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
-    public class PlatformCDSCMSwaggerProxy : PlatformSwaggerProxy, ISwaggerProxy
+    public class PlatformRefDataSwaggerProxy : PlatformSwaggerProxy, ISwaggerProxy
     {
-        public PlatformCDSCMSwaggerProxy(Uri baseUrl)
+        public PlatformRefDataSwaggerProxy(Uri baseUrl)
         {
             _baseUrl = baseUrl;
         }
 
-        public PlatformCDSCMSwaggerProxy(Uri baseUrl, string username, string password, string tenant)
+        public PlatformRefDataSwaggerProxy(Uri baseUrl, string username, string password, string tenant)
         {
             _baseUrl = baseUrl;
             _username = username;
@@ -32,7 +32,7 @@
         public override string GetSwaggerDocument()
         {
             Log.Debug("starting GetSwaggerDocument()");
-            return GetSwaggerDocument("admin/cdscm/v2/api-docs?group=tenant-dependent");
+            return GetSwaggerDocument("admin/refdata/v2/api-docs?group=public-tenant-dependent");
         }
     }
 }

@@ -1,4 +1,4 @@
-namespace XCase.REST.ProxyGenerator
+﻿namespace XCase.REST.ProxyGenerator.Proxy
 {
     using System;
     using System.Collections.Generic;
@@ -14,14 +14,14 @@ namespace XCase.REST.ProxyGenerator
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
-    public class TimeSwaggerProxy : PlatformSwaggerProxy, ISwaggerProxy
+    public class PlatformSanctionListsSwaggerProxy : PlatformSwaggerProxy, ISwaggerProxy
     {
-        public TimeSwaggerProxy(Uri baseUrl)
+        public PlatformSanctionListsSwaggerProxy(Uri baseUrl)
         {
             _baseUrl = baseUrl;
         }
 
-        public TimeSwaggerProxy(Uri baseUrl, string username, string password, string tenant)
+        public PlatformSanctionListsSwaggerProxy(Uri baseUrl, string username, string password, string tenant)
         {
             _baseUrl = baseUrl;
             _username = username;
@@ -32,7 +32,7 @@ namespace XCase.REST.ProxyGenerator
         public override string GetSwaggerDocument()
         {
             Log.Debug("starting GetSwaggerDocument()");
-            return GetSwaggerDocument("time/Api/time/api/swagger/docs/v1");
+            return GetSwaggerDocument("sanction-lists/v2/api-docs");
         }
     }
 }
