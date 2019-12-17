@@ -587,7 +587,7 @@
         private static RESTServiceDefinition ProcessSwaggerDocuments()
         {
             Log.Debug("starting ProcessSwaggerDocuments()");
-            return ProcessSwaggerDocuments("Admin", "1nt@ppC10ud2016", "tenant1");
+            return ProcessSwaggerDocuments("Admin", "password", "domain");
         }
 
         private static void PrintLogger(StringBuilder stringBuilder)

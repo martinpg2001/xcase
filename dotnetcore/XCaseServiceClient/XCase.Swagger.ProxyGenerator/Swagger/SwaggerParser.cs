@@ -179,7 +179,7 @@ namespace XCase.REST.ProxyGenerator.Swagger
 
         private List<Operation> CreateOperationListFromPathToken(JProperty pathToken, bool parseOperationIdForProxyName)
         {
-            Log.DebugFormat("starting CreateOperationListFromJObject()");
+            Log.DebugFormat("starting CreateOperationListFromPathToken()");
             List<Operation> pathOperationList = new List<Operation>();
             string path = pathToken.Name;
             Log.DebugFormat("path is {0}", path);
@@ -195,9 +195,15 @@ namespace XCase.REST.ProxyGenerator.Swagger
 
         private Operation CreateOperationFromOperationToken(JProperty operationToken, string path, bool parseOperationIdForProxyName)
         {
+            Log.DebugFormat("starting CreateOperationFromOperationToken()");
             string method = operationToken.Name;
             Log.DebugFormat("method is {0}", method);
-            string operationId = operationToken.First["operationId"].ToString();
+            string operationId = method + path.Substring(1);// operationToken.First["operationId"].ToString();
+            if (operationToken.First["operationId"] != null)
+            {
+                operationId = operationToken.First["operationId"].ToString();
+            }
+
             Log.DebugFormat("operationId is {0}", operationId);
             string proxyName = string.Empty;
             if (parseOperationIdForProxyName)
@@ -309,6 +315,11 @@ namespace XCase.REST.ProxyGenerator.Swagger
         private void ParseDefinitions(JObject jObject, ProxyDefinition proxyDefinition)
         {
             Log.Debug("starting ParseDefinitions()");
+            if (jObject["definitions"] == null)
+            {
+                return;
+            }
+
             foreach (JProperty definitionToken in jObject["definitions"].Where(i => i.Type == JTokenType.Property).Cast<JProperty>())
             {
                 bool addIt = true;

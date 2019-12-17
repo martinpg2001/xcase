@@ -70,7 +70,7 @@ namespace XCaseServiceClient.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ArrayLength.
+        ///   Looks up a localized string similar to Array Length.
         /// </summary>
         internal static string ArrayLength {
             get {
