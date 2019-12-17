@@ -403,6 +403,12 @@ namespace XCaseServiceClient
                     Log.Debug("got service contract client from WSDL");
                 }
             }
+            else if (m_Type == "Custom")
+            {
+                m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
+                Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
+                ProcessCustomType(false);
+            }
             else if (m_Type == "Integrate")
             {
                 m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
