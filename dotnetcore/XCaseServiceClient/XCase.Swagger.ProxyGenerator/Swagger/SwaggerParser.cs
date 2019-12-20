@@ -88,73 +88,7 @@ namespace XCase.REST.ProxyGenerator.Swagger
             return proxyDefinition;
         }
 
-        //public ProxyDefinition ParseDoc(string document, IAPIProxySettingsEndpoint endpoint)
-        //{
-        //    Log.Debug("starting ParseDoc()");
-        //    JObject jObject = JObject.Parse(document);
-        //    ProxyDefinition proxyDefinition = new ProxyDefinition();
-        //    JToken swaggerToken = jObject["swagger"];
-        //    if (swaggerToken != null)
-        //    {
-        //        proxyDefinition.REST = swaggerToken.ToString();
-        //    }
-        //    else
-        //    {
-                
-        //    }
-
-        //    Log.DebugFormat("proxyDefinition REST is {0}", proxyDefinition.REST);
-        //    JToken infoToken = jObject["info"];
-        //    if (infoToken != null)
-        //    {
-        //        JToken descriptionToken = infoToken["description"];
-        //        proxyDefinition.Description = descriptionToken != null ? descriptionToken.ToString() : null;
-        //        proxyDefinition.Title = infoToken["title"].ToString();
-        //        JToken versionToken = infoToken["version"];
-        //        proxyDefinition.Version = versionToken != null ? versionToken.ToString() : null;
-        //    }
-
-        //    Log.DebugFormat("proxyDefinition Description is {0}", proxyDefinition.Description);
-        //    Log.DebugFormat("proxyDefinition Title is {0}", proxyDefinition.Title);
-        //    Log.DebugFormat("proxyDefinition Version is {0}", proxyDefinition.Version);
-        //    JToken hostToken = jObject["host"];
-        //    if (hostToken != null)
-        //    {
-        //        proxyDefinition.Host = hostToken.ToString();
-        //    }
-        //    else
-        //    {
-        //        proxyDefinition.Host = endpoint.GetHost();
-        //    }
-
-        //    Log.DebugFormat("proxyDefinition Host is {0}", proxyDefinition.Host);
-        //    JToken basePathToken = jObject["basePath"];
-        //    if (basePathToken != null)
-        //    {
-        //        proxyDefinition.BasePath = basePathToken.ToString();
-        //    }
-        //    else
-        //    {
-        //        proxyDefinition.BasePath = endpoint.GetBasePath();
-        //    }
-
-        //    Log.DebugFormat("proxyDefinition BasePath is {0}", proxyDefinition.BasePath);
-        //    JToken schemesToken = jObject["schemes"];
-        //    if (schemesToken != null)
-        //    {
-        //        IEnumerable<JToken> schemeIJEnumerable = schemesToken.Values<JToken>();
-        //    }
-        //    else
-        //    {
-        //        Log.Debug("no schemes specified");
-        //    }
-
-        //    this.ParsePaths(jObject, proxyDefinition, endpoint.GetParseOperationIdForProxyName());
-        //    this.ParseDefinitions(jObject, proxyDefinition);
-        //    Log.Debug("finishing ParseSwaggerDoc()");
-        //    return proxyDefinition;
-        //}
-
+ 
         private void ParsePaths(JObject jObject, ProxyDefinition proxyDefinition, bool parseOperationIdForProxyName)
         {
             Log.DebugFormat("starting ParsePaths()");
@@ -183,17 +117,35 @@ namespace XCase.REST.ProxyGenerator.Swagger
             List<Operation> pathOperationList = new List<Operation>();
             string path = pathToken.Name;
             Log.DebugFormat("path is {0}", path);
-            foreach (JProperty operationToken in pathToken.First.Cast<JProperty>())
+            IEnumerable<JProperty> jPropertyEnumerable = pathToken.First.Cast<JProperty>();
+            /* Process common parameters first */
+            List<Parameter> parameterList = new List<Parameter>();
+            JToken parameterTokens = pathToken.First["parameters"];
+            if (parameterTokens != null)
             {
-                Operation operation = CreateOperationFromOperationToken(operationToken, path, parseOperationIdForProxyName);
-                Log.DebugFormat("created operation");
-                pathOperationList.Add(operation);
+                foreach (JToken paramToken in parameterTokens)
+                {
+                    Parameter parameter = CreateParameterFromJToken(paramToken);
+                    Log.DebugFormat("created parameter");
+                    parameterList.Add(parameter);
+                }
+            }
+
+            /* Now process methods, and pass common parameters in */
+            foreach (JProperty operationToken in jPropertyEnumerable)
+            {
+                if ((new string[] { "delete", "get", "patch", "post", "put" }).Contains(operationToken.Name)) {
+                    List<Parameter> operationParameterList = new List<Parameter>(parameterList);
+                    Operation operation = CreateOperationFromOperationToken(operationToken, operationParameterList, path, parseOperationIdForProxyName);
+                    Log.DebugFormat("created operation " + operationToken.Name);
+                    pathOperationList.Add(operation);
+                }
             }
 
             return pathOperationList;
         }
 
-        private Operation CreateOperationFromOperationToken(JProperty operationToken, string path, bool parseOperationIdForProxyName)
+        private Operation CreateOperationFromOperationToken(JProperty operationToken, List<Parameter> parameterList, string path, bool parseOperationIdForProxyName)
         {
             Log.DebugFormat("starting CreateOperationFromOperationToken()");
             string method = operationToken.Name;
@@ -251,7 +203,16 @@ namespace XCase.REST.ProxyGenerator.Swagger
                 returnType = null;
             }
 
-            List<Parameter> parameters = new List<Parameter>();
+            List<Parameter> parameters = null;
+            if (parameterList != null)
+            {
+                parameters = parameterList;
+            }
+            else
+            {
+                parameters = new List<Parameter>();
+            }
+
             JToken paramTokens = operationToken.First["parameters"];
             if (paramTokens != null)
             {
