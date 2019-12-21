@@ -1,4 +1,4 @@
-namespace XCase.REST.ProxyGenerator.Swagger
+namespace XCase.REST.ProxyGenerator.OpenAPI
 {
     using System;
     using System.Collections.Generic;

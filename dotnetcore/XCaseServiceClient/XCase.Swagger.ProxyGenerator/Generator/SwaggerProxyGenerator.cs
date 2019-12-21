@@ -17,7 +17,7 @@
     using Newtonsoft.Json;
     using XCase.ProxyGenerator;
     using XCase.REST.ProxyGenerator.Generator;
-    using XCase.REST.ProxyGenerator.Swagger;
+    using XCase.REST.ProxyGenerator.OpenAPI;
 
     public abstract class SwaggerProxyGenerator : RESTProxyGenerator
     {
