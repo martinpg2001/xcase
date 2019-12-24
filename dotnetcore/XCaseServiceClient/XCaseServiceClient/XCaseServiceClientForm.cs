@@ -93,8 +93,8 @@ namespace XCaseServiceClient
         string[] m_Services = new string[] { };
         string[] m_SourceStringArray = new string[] { };
         IProxyGenerator m_SwaggerProxyGenerator = new SwaggerCSharpProxyGenerator();
-        RESTApiProxySettingsEndPoint m_SwaggerApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("CSharp");
-        IServiceDefinition m_SwaggerServiceDefinition = null;
+        RESTApiProxySettingsEndPoint restApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("CSharp");
+        IServiceDefinition restServiceDefinition = null;
         TabControl m_MethodsTabControl;
         TableLayoutPanel m_TopTableLayoutPanel;
         TextBox m_DomainTextBox = new TextBox();
@@ -451,6 +451,12 @@ namespace XCaseServiceClient
                 Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
                 //ProcessPlatformTMSType(false);
             }
+            else if (m_Type == "RAML")
+            {
+                m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
+                Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
+                ProcessRAMLType(false);
+            }
             else if (m_Type == "REST")
             {
                 m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
@@ -495,22 +501,22 @@ namespace XCaseServiceClient
                     if (!string.IsNullOrEmpty(m_Language) && m_Language == "Java")
                     {
                         m_SwaggerProxyGenerator = new SwaggerJavaProxyGenerator();
-                        m_SwaggerApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("Java");
+                        restApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("Java");
                     }
                     else
                     {
                         m_SwaggerProxyGenerator = new SwaggerCSharpProxyGenerator();
-                        m_SwaggerApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("CSharp", "CustomBaseProxy");
-                        m_SwaggerApiProxySettingsEndPoint.Accept = "application/json";
+                        restApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("CSharp", "CustomBaseProxy");
+                        restApiProxySettingsEndPoint.Accept = "application/json";
                     }
 
-                    m_SwaggerApiProxySettingsEndPoint.Url = m_ServiceDescriptionURL;
+                    restApiProxySettingsEndPoint.Url = m_ServiceDescriptionURL;
                     Log.DebugFormat("m_ServiceDescriptionURL is {0}", m_ServiceDescriptionURL);
-                    RESTApiProxySettingsEndPoint[] endpoints = new RESTApiProxySettingsEndPoint[] { m_SwaggerApiProxySettingsEndPoint };
-                    m_SwaggerServiceDefinition = m_SwaggerProxyGenerator.GenerateSourceString(endpoints);
-                    Log.DebugFormat("swaggerServiceDefinition EndPoint is {0}", m_SwaggerServiceDefinition.GetEndPoint());
+                    RESTApiProxySettingsEndPoint[] endpoints = new RESTApiProxySettingsEndPoint[] { restApiProxySettingsEndPoint };
+                    restServiceDefinition = m_SwaggerProxyGenerator.GenerateSourceString(endpoints);
+                    Log.DebugFormat("swaggerServiceDefinition EndPoint is {0}", restServiceDefinition.GetEndPoint());
                     this.Text = m_WindowTitle + " - got REST service definition";
-                    m_SourceStringArray = m_SwaggerServiceDefinition.GetSourceStrings();
+                    m_SourceStringArray = restServiceDefinition.GetSourceStrings();
                     if (m_SourceStringArray != null)
                     {
                         foreach (string sourceString in m_SourceStringArray)
@@ -519,17 +525,17 @@ namespace XCaseServiceClient
                         }
                     }
 
-                    Log.DebugFormat("endpoint is {0}", m_SwaggerServiceDefinition.GetEndPoint());
+                    Log.DebugFormat("endpoint is {0}", restServiceDefinition.GetEndPoint());
                     if (string.IsNullOrEmpty(m_Language) || m_Language == "CSharp")
                     {
-                        m_ServicesComboBox.DataSource = m_SwaggerServiceDefinition.GetProxyClasses();
-                        if (m_SwaggerServiceDefinition.GetProxyClasses().Contains<string>(((string)m_ServicesComboBox.SelectedItem)))
+                        m_ServicesComboBox.DataSource = restServiceDefinition.GetProxyClasses();
+                        if (restServiceDefinition.GetProxyClasses().Contains<string>(((string)m_ServicesComboBox.SelectedItem)))
                         {
-                            m_ServicesComboBox.SelectedItem = m_SwaggerServiceDefinition.GetProxyClasses().First<string>(pc => pc == ((string)m_ServicesComboBox.SelectedItem));
+                            m_ServicesComboBox.SelectedItem = restServiceDefinition.GetProxyClasses().First<string>(pc => pc == ((string)m_ServicesComboBox.SelectedItem));
                         }
                         else
                         {
-                            m_ServicesComboBox.SelectedItem = m_SwaggerServiceDefinition.GetProxyClasses().First<string>();
+                            m_ServicesComboBox.SelectedItem = restServiceDefinition.GetProxyClasses().First<string>();
                         }
 
                         List<SyntaxTree> syntaxTreeList = CreateSyntaxTreeListFromSourceStringArray();
@@ -541,8 +547,8 @@ namespace XCaseServiceClient
                         Log.DebugFormat("created cSharpCompilation");
                         m_Assembly = CreateAssemblyFromCSharpCompilation(cSharpCompilation);
                         Log.DebugFormat("created assembly");
-                        object[] args = new object[] { new Uri(m_SwaggerServiceDefinition.GetEndPoint()) };
-                        string proxyClass = string.Format("{0}.{1}", m_SwaggerApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
+                        object[] args = new object[] { new Uri(restServiceDefinition.GetEndPoint()) };
+                        string proxyClass = string.Format("{0}.{1}", restApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
                         m_RESTServiceClient = m_Assembly.CreateInstance(proxyClass, false, BindingFlags.CreateInstance, null, args, null, null);
                         if (m_RESTServiceClient != null)
                         {
@@ -568,7 +574,7 @@ namespace XCaseServiceClient
                         MessageBox.Show("Finished generating classes.");
                     }
 
-                    Log.DebugFormat("{0}", m_SwaggerServiceDefinition.GetEndPoint());
+                    Log.DebugFormat("{0}", restServiceDefinition.GetEndPoint());
                 }
                 else
                 {
@@ -576,8 +582,8 @@ namespace XCaseServiceClient
                     Log.DebugFormat("refresh is false");
                     if (string.IsNullOrEmpty(m_Language) || m_Language == "CSharp")
                     {
-                        object[] args = new object[] { new Uri(m_SwaggerServiceDefinition.GetEndPoint()) };
-                        string proxyClass = string.Format("{0}.{1}", m_SwaggerApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
+                        object[] args = new object[] { new Uri(restServiceDefinition.GetEndPoint()) };
+                        string proxyClass = string.Format("{0}.{1}", restApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
                         m_RESTServiceClient = m_Assembly.CreateInstance(proxyClass, false, BindingFlags.CreateInstance, null, args, null, null);
                         if (m_RESTServiceClient != null)
                         {
@@ -594,7 +600,7 @@ namespace XCaseServiceClient
                         RerenderServiceControl(m_RESTServiceClient);
                     }
 
-                    Log.DebugFormat("{0}", m_SwaggerServiceDefinition.GetEndPoint());
+                    Log.DebugFormat("{0}", restServiceDefinition.GetEndPoint());
                 }
 
                 Log.Debug("finishing ProcessCustomType()");
@@ -819,13 +825,148 @@ namespace XCaseServiceClient
 
         private void ProcessRAMLType(bool refresh)
         {
-            if (refresh)
+            Log.Debug("starting ProcessCustomType()");
+            try
             {
-                throw new NotImplementedException();
+                this.Controls.Remove(m_ViewRichTextBox);
+                Log.DebugFormat("m_Language is {0}", m_Language);
+                Log.DebugFormat("m_Type is {0}", m_Type);
+                m_ClientCredentialDomain = m_DomainTextBox.Text;
+                Log.DebugFormat("m_ClientCredentialDomain is {0}", m_ClientCredentialDomain);
+                m_ClientCredentialUserName = m_UsernameTextBox.Text;
+                Log.DebugFormat("m_ClientCredentialUserName is {0}", m_ClientCredentialUserName);
+                m_ClientCredentialPassword = m_PasswordTextBox.Text;
+                Log.DebugFormat("m_ClientCredentialPassword is {0}", m_ClientCredentialPassword);
+                m_ServiceDescriptionURL = m_ServiceDescriptionURLTextBox.Text;
+                Log.Debug("about to get REST description from " + m_ServiceDescriptionURL);
+                this.Text = m_WindowTitle + " - retrieving REST description from " + m_ServiceDescriptionURL;
+                if (refresh)
+                {
+                    Log.DebugFormat("refresh is true");
+                    RESTProxyGenerator restProxyGenerator = null;
+                    this.Controls.Remove(m_MethodsTabControl);
+                    if (!string.IsNullOrEmpty(m_Language) && m_Language == "Java")
+                    {
+                        m_SwaggerProxyGenerator = new SwaggerJavaProxyGenerator();
+                        restApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("Java");
+                    }
+                    else
+                    {
+                        restProxyGenerator = new RAMLCSharpProxyGenerator();
+                        restApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("CSharp", "CustomBaseProxy");
+                        restApiProxySettingsEndPoint.Accept = "application/json";
+                    }
+
+                    restApiProxySettingsEndPoint.Url = m_ServiceDescriptionURL;
+                    Log.DebugFormat("m_ServiceDescriptionURL is {0}", m_ServiceDescriptionURL);
+                    RESTApiProxySettingsEndPoint[] endpoints = new RESTApiProxySettingsEndPoint[] { restApiProxySettingsEndPoint };
+                    restServiceDefinition = restProxyGenerator.GenerateSourceString(endpoints);
+                    Log.DebugFormat("restServiceDefinition EndPoint is {0}", restServiceDefinition.GetEndPoint());
+                    this.Text = m_WindowTitle + " - got REST service definition";
+                    m_SourceStringArray = restServiceDefinition.GetSourceStrings();
+                    if (m_SourceStringArray != null)
+                    {
+                        foreach (string sourceString in m_SourceStringArray)
+                        {
+                            Log.DebugFormat("sourceString is {0}", sourceString);
+                        }
+                    }
+
+                    Log.DebugFormat("endpoint is {0}", restServiceDefinition.GetEndPoint());
+                    if (string.IsNullOrEmpty(m_Language) || m_Language == "CSharp")
+                    {
+                        m_ServicesComboBox.DataSource = restServiceDefinition.GetProxyClasses();
+                        if (restServiceDefinition.GetProxyClasses().Contains<string>(((string)m_ServicesComboBox.SelectedItem)))
+                        {
+                            m_ServicesComboBox.SelectedItem = restServiceDefinition.GetProxyClasses().First<string>(pc => pc == ((string)m_ServicesComboBox.SelectedItem));
+                        }
+                        else
+                        {
+                            m_ServicesComboBox.SelectedItem = restServiceDefinition.GetProxyClasses().First<string>();
+                        }
+
+                        List<SyntaxTree> syntaxTreeList = CreateSyntaxTreeListFromSourceStringArray();
+                        string assemblyName = Path.GetRandomFileName();
+                        Log.DebugFormat("assemblyName is {0}", assemblyName);
+                        List<MetadataReference> metadataReferenceList = CreateMetadataReferenceList();
+                        Log.DebugFormat("created metadataReferenceList");
+                        CSharpCompilation cSharpCompilation = CSharpCompilation.Create(assemblyName, syntaxTrees: syntaxTreeList, references: metadataReferenceList, options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+                        Log.DebugFormat("created cSharpCompilation");
+                        m_Assembly = CreateAssemblyFromCSharpCompilation(cSharpCompilation);
+                        Log.DebugFormat("created assembly");
+                        object[] args = new object[] { new Uri(restServiceDefinition.GetEndPoint()) };
+                        string proxyClass = string.Format("{0}.{1}", restApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
+                        m_RESTServiceClient = m_Assembly.CreateInstance(proxyClass, false, BindingFlags.CreateInstance, null, args, null, null);
+                        if (m_RESTServiceClient != null)
+                        {
+                            NetworkCredential networkCredential = new NetworkCredential(m_ClientCredentialUserName, m_ClientCredentialPassword, m_ClientCredentialDomain);
+                            ((SwaggerProxy)m_RESTServiceClient).ClientCredentials = networkCredential;
+                            if (m_ProxyEnable)
+                            {
+                                ((SwaggerProxy)m_RESTServiceClient).Proxy = new WebProxy(m_ProxyAddress, m_ProxyPort);
+                            }
+
+                            Log.Debug("set client credentials");
+                        }
+                        else
+                        {
+                            Log.Debug("m_RESTServiceClient is null");
+                        }
+
+                        Log.Debug("about to re-render service control");
+                        RerenderServiceControl(m_RESTServiceClient);
+                    }
+                    else if (m_Language == "Java")
+                    {
+                        MessageBox.Show("Finished generating classes.");
+                    }
+
+                    Log.DebugFormat("{0}", restServiceDefinition.GetEndPoint());
+                }
+                else
+                {
+                    /* refresh is false, but service or proxy class has changed */
+                    Log.DebugFormat("refresh is false");
+                    if (string.IsNullOrEmpty(m_Language) || m_Language == "CSharp")
+                    {
+                        object[] args = new object[] { new Uri(restServiceDefinition.GetEndPoint()) };
+                        string proxyClass = string.Format("{0}.{1}", restApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
+                        m_RESTServiceClient = m_Assembly.CreateInstance(proxyClass, false, BindingFlags.CreateInstance, null, args, null, null);
+                        if (m_RESTServiceClient != null)
+                        {
+                            NetworkCredential networkCredential = new NetworkCredential(m_ClientCredentialUserName, m_ClientCredentialPassword, m_ClientCredentialDomain);
+                            ((SwaggerProxy)m_RESTServiceClient).ClientCredentials = networkCredential;
+                            Log.Debug("set client credentials");
+                        }
+                        else
+                        {
+                            Log.Debug("m_RESTServiceClient is null");
+                        }
+
+                        Log.Debug("about to re-render service control");
+                        RerenderServiceControl(m_RESTServiceClient);
+                    }
+
+                    Log.DebugFormat("{0}", restServiceDefinition.GetEndPoint());
+                }
+
+                Log.Debug("finishing ProcessCustomType()");
             }
-            else
+            catch (AggregateException ae)
             {
-                throw new NotImplementedException();
+                Log.Debug("aggregate exception thrown: " + ae.Message);
+                if (!m_Starting)
+                {
+                    MessageBox.Show("Aggregate exception thrown: " + ae.Message);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Debug("exception thrown: " + e.Message);
+                if (!m_Starting)
+                {
+                    MessageBox.Show("Exception thrown: " + e.Message);
+                }
             }
         }
 
@@ -853,21 +994,21 @@ namespace XCaseServiceClient
                     if (!string.IsNullOrEmpty(m_Language) && m_Language == "Java")
                     {
                         m_SwaggerProxyGenerator = new SwaggerJavaProxyGenerator();
-                        m_SwaggerApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("Java");
+                        restApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("Java");
                     }
                     else
                     {
                         m_SwaggerProxyGenerator = new SwaggerCSharpProxyGenerator();
-                        m_SwaggerApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("CSharp");
+                        restApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("CSharp");
                     }
 
-                    m_SwaggerApiProxySettingsEndPoint.Url = m_ServiceDescriptionURL;
+                    restApiProxySettingsEndPoint.Url = m_ServiceDescriptionURL;
                     Log.DebugFormat("m_ServiceDescriptionURL is {0}", m_ServiceDescriptionURL);
-                    RESTApiProxySettingsEndPoint[] endpoints = new RESTApiProxySettingsEndPoint[] { m_SwaggerApiProxySettingsEndPoint };
-                    m_SwaggerServiceDefinition = m_SwaggerProxyGenerator.GenerateSourceString(endpoints);
-                    Log.DebugFormat("swaggerServiceDefinition EndPoint is {0}", m_SwaggerServiceDefinition.GetEndPoint());
+                    RESTApiProxySettingsEndPoint[] endpoints = new RESTApiProxySettingsEndPoint[] { restApiProxySettingsEndPoint };
+                    restServiceDefinition = m_SwaggerProxyGenerator.GenerateSourceString(endpoints);
+                    Log.DebugFormat("swaggerServiceDefinition EndPoint is {0}", restServiceDefinition.GetEndPoint());
                     this.Text = m_WindowTitle + " - got REST service definition";
-                    m_SourceStringArray = m_SwaggerServiceDefinition.GetSourceStrings();
+                    m_SourceStringArray = restServiceDefinition.GetSourceStrings();
                     if (m_SourceStringArray != null)
                     {
                         foreach (string sourceString in m_SourceStringArray)
@@ -878,16 +1019,16 @@ namespace XCaseServiceClient
 
                     if (string.IsNullOrEmpty(m_Language) || m_Language == "CSharp")
                     {
-                        if (m_SwaggerServiceDefinition.GetProxyClasses().Contains<string>(((string)m_ServicesComboBox.SelectedItem)))
+                        if (restServiceDefinition.GetProxyClasses().Contains<string>(((string)m_ServicesComboBox.SelectedItem)))
                         {
-                            m_ServicesComboBox.SelectedItem = m_SwaggerServiceDefinition.GetProxyClasses().First<string>(pc => pc == ((string)m_ServicesComboBox.SelectedItem));
+                            m_ServicesComboBox.SelectedItem = restServiceDefinition.GetProxyClasses().First<string>(pc => pc == ((string)m_ServicesComboBox.SelectedItem));
                         }
                         else
                         {
-                            m_ServicesComboBox.SelectedItem = m_SwaggerServiceDefinition.GetProxyClasses().First<string>();
+                            m_ServicesComboBox.SelectedItem = restServiceDefinition.GetProxyClasses().First<string>();
                         }
 
-                        m_ServicesComboBox.DataSource = m_SwaggerServiceDefinition.GetProxyClasses();
+                        m_ServicesComboBox.DataSource = restServiceDefinition.GetProxyClasses();
                         List<SyntaxTree> syntaxTreeList = CreateSyntaxTreeListFromSourceStringArray();
                         string assemblyName = Path.GetRandomFileName();
                         Log.DebugFormat("assemblyName is {0}", assemblyName);
@@ -897,8 +1038,8 @@ namespace XCaseServiceClient
                         Log.DebugFormat("created cSharpCompilation");
                         m_Assembly = CreateAssemblyFromCSharpCompilation(cSharpCompilation);
                         Log.DebugFormat("created assembly");
-                        object[] args = new object[] { new Uri(m_SwaggerServiceDefinition.GetEndPoint()) };
-                        string proxyClass = string.Format("{0}.{1}", m_SwaggerApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
+                        object[] args = new object[] { new Uri(restServiceDefinition.GetEndPoint()) };
+                        string proxyClass = string.Format("{0}.{1}", restApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
                         m_RESTServiceClient = m_Assembly.CreateInstance(proxyClass, false, BindingFlags.CreateInstance, null, args, null, null);
                         if (m_RESTServiceClient != null)
                         {
@@ -924,7 +1065,7 @@ namespace XCaseServiceClient
                         MessageBox.Show("Finished generating classes.");
                     }
 
-                    Log.DebugFormat("{0}", m_SwaggerServiceDefinition.GetEndPoint());
+                    Log.DebugFormat("{0}", restServiceDefinition.GetEndPoint());
                 }
                 else
                 {
@@ -932,8 +1073,8 @@ namespace XCaseServiceClient
                     Log.DebugFormat("refresh is false");
                     if (string.IsNullOrEmpty(m_Language) || m_Language == "CSharp")
                     {
-                        object[] args = new object[] { new Uri(m_SwaggerServiceDefinition.GetEndPoint()) };
-                        string proxyClass = string.Format("{0}.{1}", m_SwaggerApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
+                        object[] args = new object[] { new Uri(restServiceDefinition.GetEndPoint()) };
+                        string proxyClass = string.Format("{0}.{1}", restApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
                         m_RESTServiceClient = m_Assembly.CreateInstance(proxyClass, false, BindingFlags.CreateInstance, null, args, null, null);
                         if (m_RESTServiceClient != null)
                         {
@@ -950,7 +1091,7 @@ namespace XCaseServiceClient
                         RerenderServiceControl(m_RESTServiceClient);
                     }
 
-                    Log.DebugFormat("{0}", m_SwaggerServiceDefinition.GetEndPoint());
+                    Log.DebugFormat("{0}", restServiceDefinition.GetEndPoint());
                 }
 
                 Log.Debug("finishing ProcessSwaggerType()");
@@ -1027,20 +1168,20 @@ namespace XCaseServiceClient
                 if (!string.IsNullOrEmpty(m_Language) && m_Language == "Java")
                 {
                     m_SwaggerProxyGenerator = new SwaggerJavaProxyGenerator();
-                    m_SwaggerApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("Java");
+                    restApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("Java");
                 }
                 else
                 {
                     m_SwaggerProxyGenerator = new SwaggerCSharpProxyGenerator();
-                    m_SwaggerApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("CSharp", "CustomBaseProxy");
-                    m_SwaggerApiProxySettingsEndPoint.Accept = "application/json";
+                    restApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("CSharp", "CustomBaseProxy");
+                    restApiProxySettingsEndPoint.Accept = "application/json";
                 }
 
-                m_SwaggerApiProxySettingsEndPoint.Url = m_ServiceDescriptionURL;
+                restApiProxySettingsEndPoint.Url = m_ServiceDescriptionURL;
                 Log.DebugFormat("m_ServiceDescriptionURL is {0}", m_ServiceDescriptionURL);
-                RESTApiProxySettingsEndPoint[] endpoints = new RESTApiProxySettingsEndPoint[] { m_SwaggerApiProxySettingsEndPoint };
+                RESTApiProxySettingsEndPoint[] endpoints = new RESTApiProxySettingsEndPoint[] { restApiProxySettingsEndPoint };
                 this.Text = m_WindowTitle + " - got source service definition";
-                Log.DebugFormat("endpoint is {0}", m_SwaggerServiceDefinition.GetEndPoint());
+                Log.DebugFormat("endpoint is {0}", restServiceDefinition.GetEndPoint());
                 if (string.IsNullOrEmpty(m_Language) || m_Language == "CSharp")
                 {
                     m_ServicesComboBox.DataSource = proxyStringList;
@@ -1063,7 +1204,7 @@ namespace XCaseServiceClient
                     m_Assembly = CreateAssemblyFromCSharpCompilation(cSharpCompilation);
                     Log.DebugFormat("created assembly");
                     object[] args = argStringList.ToArray();
-                    string proxyClass = string.Format("{0}.{1}", m_SwaggerApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
+                    string proxyClass = string.Format("{0}.{1}", restApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
                     m_RESTServiceClient = m_Assembly.CreateInstance(proxyClass, false, BindingFlags.CreateInstance, null, args, null, null);
                     if (m_RESTServiceClient != null)
                     {
