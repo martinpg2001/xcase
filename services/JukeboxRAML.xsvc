@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <binding>Basic</binding>
+  <client>None</client>
+  <endpoint>https://raw.githubusercontent.com/raml-org/raml-tutorial-200/step8/jukebox-api.raml</endpoint>
+  <language>CSharp</language>
+  <message>None</message>
+  <onpremise>false</onpremise>
+  <security>None</security>
+  <timeout>30</timeout>
+  <type>RAML</type>
+</Config>

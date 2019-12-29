@@ -105,7 +105,7 @@ namespace XCase.REST.ProxyGenerator.Generator
             Log.Debug("starting ProcessRAMLDocuments()");
             RESTServiceDefinition ramlServiceDefinition = new RESTServiceDefinition();
             List<string> sourceStringList = new List<string>();
-            RAMLParser parser = new RAMLParser();
+            OpenApiParser parser = new OpenApiParser();
             Log.DebugFormat("created RAMLParser");
             foreach (KeyValuePair<IAPIProxySettingsEndpoint, string> swaggerDocDictionaryEntry in ramlDocDictionary.OrderBy(x => x.Key.GetId()))
             {
@@ -117,7 +117,7 @@ namespace XCase.REST.ProxyGenerator.Generator
             return ramlServiceDefinition;
         }
 
-        private static void ProcessRAMLDocDictionaryEntry(RESTServiceDefinition ramlServiceDefinition, KeyValuePair<IAPIProxySettingsEndpoint, string> swaggerDocDictionaryEntry, List<string> sourceStringList, RAMLParser parser, string username, string password, string tenant)
+        private static void ProcessRAMLDocDictionaryEntry(RESTServiceDefinition ramlServiceDefinition, KeyValuePair<IAPIProxySettingsEndpoint, string> swaggerDocDictionaryEntry, List<string> sourceStringList, OpenApiParser parser, string username, string password, string tenant)
         {
             IAPIProxySettingsEndpoint endPoint = swaggerDocDictionaryEntry.Key;
             string result = swaggerDocDictionaryEntry.Value;
@@ -136,7 +136,8 @@ namespace XCase.REST.ProxyGenerator.Generator
             IProxyDefinition proxyDefinition = parser.ParseDoc(result, (RESTApiProxySettingsEndPoint)endPoint);
             string scheme = proxyDefinition.Schemes != null ? proxyDefinition.Schemes[0] : schemeFromURL;
             Log.DebugFormat("scheme is {0}", scheme);
-            string endPointString = string.Format("{0}://{1}{2}", scheme, proxyDefinition.Host, proxyDefinition.BasePath);
+            string endPointString = proxyDefinition.Host;
+            //string endPointString = string.Format("{0}://{1}{2}", scheme, proxyDefinition.Host, proxyDefinition.BasePath);
             if (!endPointString.EndsWith("/"))
             {
                 endPointString = string.Format(endPointString + "{0}", "/");
@@ -155,7 +156,7 @@ namespace XCase.REST.ProxyGenerator.Generator
             /* Main proxy classes */
             foreach (string proxy in proxies)
             {
-                string className = RAMLParser.FixTypeName(proxy) + "WebProxy";
+                string className = OpenApiParser.FixTypeName(proxy) + "WebProxy";
                 ramlServiceDefinition.ProxyClasses.Add(className);
                 Log.DebugFormat("added className {0}", className);
                 StringBuilder proxyStringBuilder = CreateProxyStringBuilderForProxy(proxyDefinition, proxy, endPoint, methodNameAppend, username, password, tenant);
@@ -192,7 +193,7 @@ namespace XCase.REST.ProxyGenerator.Generator
                 /* Arrays are not nullable */
                 typeDefinitionTypeName += (typeDefinition.IsNullableType && !typeDefinitionTypeName.EndsWith("[]")) ? "?" : string.Empty;
                 Log.DebugFormat("typeDefinitionTypeName is {0}", typeDefinitionTypeName);
-                string typeDefinitionName = RAMLParser.FixTypeName(typeDefinition.Name);
+                string typeDefinitionName = OpenApiParser.FixTypeName(typeDefinition.Name);
                 Log.DebugFormat("typeDefinitionName is {0}", typeDefinitionName);
                 WriteLine(classStringBuilder, string.Format("public {0} @{1} {{ get; set; }}", typeDefinitionTypeName, typeDefinitionName));
                 if (typeDefinition.EnumValues != null)
@@ -209,7 +210,7 @@ namespace XCase.REST.ProxyGenerator.Generator
                 foreach (string value in modelEnum.Values.Distinct())
                 {
                     WriteLine(classStringBuilder, string.Format("[EnumMember(Value=\"{0}\")]", value));
-                    WriteLine(classStringBuilder, string.Format("{0},", RAMLParser.FixTypeName(value)));
+                    WriteLine(classStringBuilder, string.Format("{0},", OpenApiParser.FixTypeName(value)));
                 }
 
                 WriteLine(classStringBuilder, "}");
@@ -231,7 +232,7 @@ namespace XCase.REST.ProxyGenerator.Generator
             WriteLine(proxyStringBuilder, "/// <summary>");
             WriteLine(proxyStringBuilder, string.Format("/// Web Proxy for {0}", proxy));
             WriteLine(proxyStringBuilder, "/// </summary>");
-            string className = RAMLParser.FixTypeName(proxy) + "WebProxy";
+            string className = OpenApiParser.FixTypeName(proxy) + "WebProxy";
             WriteLine(proxyStringBuilder, string.Format("public class {0} : {1}, I{0}", className, endPoint.GetBaseProxyClass()));
             WriteLine(proxyStringBuilder, "{");
             PrintLogger(proxyStringBuilder);
@@ -252,11 +253,11 @@ namespace XCase.REST.ProxyGenerator.Generator
 
             foreach (XCase.ProxyGenerator.REST.Enum proxyParamEnum in proxyParamEnums)
             {
-                WriteLine(proxyStringBuilder, string.Format("public enum {0}", RAMLParser.FixTypeName(proxyParamEnum.Name)));
+                WriteLine(proxyStringBuilder, string.Format("public enum {0}", OpenApiParser.FixTypeName(proxyParamEnum.Name)));
                 WriteLine(proxyStringBuilder, "{");
                 foreach (string enumValue in proxyParamEnum.Values.Distinct())
                 {
-                    WriteLine(proxyStringBuilder, string.Format("{0},", RAMLParser.FixTypeName(enumValue)));
+                    WriteLine(proxyStringBuilder, string.Format("{0},", OpenApiParser.FixTypeName(enumValue)));
                 }
 
                 WriteLine(proxyStringBuilder, "}");
@@ -313,9 +314,9 @@ namespace XCase.REST.ProxyGenerator.Generator
                 }
             }
 
-            string methodName = RAMLParser.FixMethodName(operation.OperationId);
+            string methodName = OpenApiParser.FixMethodName(operation.OperationId);
             Log.DebugFormat("methodName is {0}", methodName);
-            string returnTypeName = RAMLParser.FixTypeName(returnType);
+            string returnTypeName = OpenApiParser.FixTypeName(returnType);
             Log.DebugFormat("returnTypeName is {0}", returnTypeName);
             WriteLine(proxyStringBuilder, string.Format("public {0} {1}{2}({3})", returnTypeName, methodName, methodNameAppend, parameters));
             WriteLine(proxyStringBuilder, "{");
@@ -446,7 +447,7 @@ namespace XCase.REST.ProxyGenerator.Generator
             WriteLine(proxyStringBuilder, "{");
             WriteLine(proxyStringBuilder, "Log.DebugFormat(\"invoked method successfully\");");
             string returnType = string.IsNullOrEmpty(operation.ReturnType) ? "void" : string.Format("{0}", operation.ReturnType);
-            string returnTypeName = RAMLParser.FixTypeName(returnType);
+            string returnTypeName = OpenApiParser.FixTypeName(returnType);
             if (!string.IsNullOrEmpty(returnType) && returnType != "void")
             {
                 WriteLine(proxyStringBuilder, "string content = response.Content.ReadAsStringAsync().Result;");
@@ -517,7 +518,7 @@ namespace XCase.REST.ProxyGenerator.Generator
             StringBuilder interfaceStringBuilder = new StringBuilder();
             WriteLine(interfaceStringBuilder, string.Format("namespace {0} {{", endPoint.GetNamespace()));
             PrintHeaders(interfaceStringBuilder);
-            WriteLine(interfaceStringBuilder, string.Format("public interface {0}", string.Format("I{0}WebProxy", RAMLParser.FixTypeName(proxy))));
+            WriteLine(interfaceStringBuilder, string.Format("public interface {0}", string.Format("I{0}WebProxy", OpenApiParser.FixTypeName(proxy))));
             WriteLine(interfaceStringBuilder, "{");
             string proxy1 = proxy;
             foreach (Operation operationDef in proxyDefinition.Operations.Where(i => i.ProxyName.Equals(proxy1)))
@@ -531,7 +532,7 @@ namespace XCase.REST.ProxyGenerator.Generator
                     proxyParamEnums.Add(new XCase.ProxyGenerator.REST.Enum() { Name = enumParam.Type.TypeName, Values = enumParam.Type.EnumValues });
                 }
 
-                string className = RAMLParser.FixTypeName(proxy) + "WebProxy";
+                string className = OpenApiParser.FixTypeName(proxy) + "WebProxy";
                 /* Sort by required so that non-nullable parameters come first */
                 IEnumerable<Parameter> parameterEnumerable = operationDef.Parameters.OrderByDescending(i => i.IsRequired);
                 string parameters = string.Join(", ", parameterEnumerable.Select(p =>
@@ -552,8 +553,8 @@ namespace XCase.REST.ProxyGenerator.Generator
 
                     return parameter;
                 }));
-                string returnTypeName = RAMLParser.FixTypeName(returnType);
-                string methodLine = string.Format("{0} {1}{2}({3});", returnTypeName, RAMLParser.FixMethodName(operationDef.OperationId), methodNameAppend, parameters);
+                string returnTypeName = OpenApiParser.FixTypeName(returnType);
+                string methodLine = string.Format("{0} {1}{2}({3});", returnTypeName, OpenApiParser.FixMethodName(operationDef.OperationId), methodNameAppend, parameters);
                 WriteLine(interfaceStringBuilder, methodLine);
             }
 

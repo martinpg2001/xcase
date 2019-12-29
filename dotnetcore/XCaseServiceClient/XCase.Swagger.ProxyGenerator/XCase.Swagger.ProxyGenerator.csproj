@@ -8,8 +8,9 @@
     <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.0" />
+    <PackageReference Include="Microsoft.OpenApi" Version="1.1.4" />
+    <PackageReference Include="Microsoft.OpenApi.Readers" Version="1.1.4" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="Raml.Parser" Version="2.0.1" />
     <PackageReference Include="System.CodeDom" Version="4.7.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
   </ItemGroup>
