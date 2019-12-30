@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
 using Microsoft.CSharp;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Linq;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections;
@@ -829,6 +830,8 @@ namespace XCaseServiceClient
             Log.Debug("starting ProcessRAMLType()");
             try
             {
+                /* Force loading the Newtonsoft library */
+                JObject jObject = JObject.Parse("{}");
                 this.Controls.Remove(m_ViewRichTextBox);
                 Log.DebugFormat("m_Language is {0}", m_Language);
                 Log.DebugFormat("m_Type is {0}", m_Type);
