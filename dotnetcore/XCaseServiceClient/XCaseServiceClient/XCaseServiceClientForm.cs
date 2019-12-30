@@ -625,9 +625,10 @@ namespace XCaseServiceClient
 
         private static Assembly CreateAssemblyFromCSharpCompilation(CSharpCompilation cSharpCompilation)
         {
-            using (var ms = new MemoryStream())
+            Log.DebugFormat("starting CreateAssemblyFromCSharpCompilation()");
+            using (MemoryStream memoryStream = new MemoryStream())
             {
-                EmitResult result = cSharpCompilation.Emit(ms);
+                EmitResult result = cSharpCompilation.Emit(memoryStream);
                 if (!result.Success)
                 {
                     Log.WarnFormat("result is {0}", result.Success);
@@ -641,8 +642,8 @@ namespace XCaseServiceClient
                 }
                 else
                 {
-                    ms.Seek(0, SeekOrigin.Begin);
-                    return Assembly.Load(ms.ToArray());
+                    memoryStream.Seek(0, SeekOrigin.Begin);
+                    return Assembly.Load(memoryStream.ToArray());
                 }
             }
         }
@@ -825,7 +826,7 @@ namespace XCaseServiceClient
 
         private void ProcessRAMLType(bool refresh)
         {
-            Log.Debug("starting ProcessCustomType()");
+            Log.Debug("starting ProcessRAMLType()");
             try
             {
                 this.Controls.Remove(m_ViewRichTextBox);
@@ -950,7 +951,7 @@ namespace XCaseServiceClient
                     Log.DebugFormat("{0}", restServiceDefinition.GetEndPoint());
                 }
 
-                Log.Debug("finishing ProcessCustomType()");
+                Log.Debug("finishing ProcessRAMLType()");
             }
             catch (AggregateException ae)
             {

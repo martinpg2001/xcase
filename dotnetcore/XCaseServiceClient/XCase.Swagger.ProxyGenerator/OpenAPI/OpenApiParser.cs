@@ -68,6 +68,7 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
 
                 Log.DebugFormat("proxyDefinition BasePath is {0}", proxyDefinition.BasePath);
                 ParsePaths(openApiDocument, proxyDefinition, false);
+                ParseDefinitions(openApiDocument, proxyDefinition);
             }
             catch (Exception e)
             {
@@ -133,6 +134,21 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                     proxyName = operationId.Substring(0, underscoreLocation);
                     operationId = operationId.Substring(underscoreLocation + 1);
                 }
+                else
+                {
+                    proxyName = operationId;
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(proxyName))
+            {
+                /* Did not get the proxy name from the operation id, so take the first tag value */
+                IList<OpenApiTag> tagList = keyValuePair.Value.Tags;
+                if (tagList != null)
+                {
+                    string firstTag = tagList.First().Name;
+                    proxyName = FixTypeName(firstTag);
+                }
             }
 
             string description = keyValuePair.Value.Description;
@@ -188,8 +204,16 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                 isRequired = paramToken.Required;
             }
 
-            ParameterIn parameterIn = ParameterIn.Body;
-            parameterIn = ParameterIn.Query;
+            ParameterIn parameterIn = ParameterIn.Query;
+            ParameterLocation? parameterInLocation = paramToken.In;
+            if (parameterInLocation != null)
+            {
+                if (parameterInLocation.Equals(ParameterLocation.Path))
+                {
+                    parameterIn = ParameterIn.Path;
+                }
+            }
+
             string propDescription = string.Empty;
             if (paramToken.Description != null)
             {
@@ -201,11 +225,92 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
             return parameter;
         }
 
-        private void ParseDefinitions(OpenApiDocument model, ProxyDefinition proxyDefinition)
+        private void ParseDefinitions(OpenApiDocument openApiDocument, ProxyDefinition proxyDefinition)
         {
             Log.Debug("starting ParseDefinitions()");
-            OpenApiComponents components = model.Components;
+            OpenApiComponents components = openApiDocument.Components;
+            if (components == null)
+            {
+                return;
+            }
+
+            IDictionary<string, OpenApiSchema> schemaDictionary = components.Schemas;
+            foreach (KeyValuePair<string, OpenApiSchema> schemaKeyValuePair in schemaDictionary)
+            {
+                bool addIt = true;
+                ClassDefinition classDefinition = new ClassDefinition(schemaKeyValuePair.Key);
+                IList<OpenApiSchema> openApiSchemaList = schemaKeyValuePair.Value.AllOf;
+                if (openApiSchemaList != null)
+                {
+                    foreach (OpenApiSchema itemToken in openApiSchemaList)
+                    {
+                        OpenApiReference refType = itemToken.Reference;
+                        if (refType != null)
+                        {
+                            string inheritsType = refType.Type.Value.ToString();
+                            if (inheritsType.StartsWith("#/definitions/"))
+                            {
+                                inheritsType = inheritsType.Replace("#/definitions/", "");
+                            }
+
+                            classDefinition.Inherits = inheritsType;
+                        }
+
+                        IDictionary<string, OpenApiSchema> propertiesDictionary = itemToken.Properties;
+                        if (propertiesDictionary != null)
+                        {
+                            foreach (KeyValuePair<string, OpenApiSchema> prop in propertiesDictionary)
+                            {
+                                TypeDefinition type = ParseType(prop);
+                                classDefinition.Properties.Add(type);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    IDictionary<string, OpenApiSchema> propertiesDictionary = schemaKeyValuePair.Value.Properties;
+                    if (propertiesDictionary != null)
+                    {
+                        foreach (KeyValuePair<string, OpenApiSchema> prop in propertiesDictionary)
+                        {
+                            TypeDefinition type = ParseType(prop);
+                            classDefinition.Properties.Add(type);
+                        }
+                    }
+                    else
+                    {
+                        /* TODO: Just because no properties, can still create the class */
+                        //addIt = false;
+                    }
+                }
+
+                classDefinition.Name = FixGenericName(classDefinition.Name);
+                Log.Debug("classDefinition Name is " + classDefinition.Name);
+                /* Some classes should not be added if they exist in .Net */
+                if (classDefinition.Name.Equals("Void", StringComparison.InvariantCulture) ||
+                    classDefinition.Name.Equals("IterableOfstring", StringComparison.InvariantCulture))
+                {
+                    Log.Debug("set addIt to false");
+                    addIt = false;
+                }
+
+                if (addIt)
+                {
+                    proxyDefinition.ClassDefinitions.Add(classDefinition);
+                }
+            }
+
             Log.Debug("finishing ParseDefinitions()");
+        }
+
+        private TypeDefinition ParseType(KeyValuePair<string, OpenApiSchema> propertyKeyValuePair)
+        {
+            string name = propertyKeyValuePair.Key;
+            string typeName = propertyKeyValuePair.Value.Type;
+            bool isNullable = propertyKeyValuePair.Value.Nullable;
+            TypeDefinition type = new TypeDefinition(typeName, name, null, isNullable);
+            return type;
         }
 
         private TypeDefinition ParseType(OpenApiParameter parameter)
@@ -237,7 +342,7 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                 List<string> enumList = new List<string>();
                 IList<IOpenApiAny> enums = parameter.Schema.Enum;
                 string[] enumValues = null;
-                if (enums != null)
+                if (enums != null && enums.Count > 0)
                 {
                     bool anyRawNumbers = false;
                     foreach (IOpenApiAny enumValueToken in enums)

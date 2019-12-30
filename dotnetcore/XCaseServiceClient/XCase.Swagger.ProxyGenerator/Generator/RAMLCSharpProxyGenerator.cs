@@ -251,18 +251,18 @@ namespace XCase.REST.ProxyGenerator.Generator
                 WriteOperationToStringBuilder(operation, proxyStringBuilder, endPoint, proxyParamEnums, methodNameAppend);
             }
 
-            foreach (XCase.ProxyGenerator.REST.Enum proxyParamEnum in proxyParamEnums)
-            {
-                WriteLine(proxyStringBuilder, string.Format("public enum {0}", OpenApiParser.FixTypeName(proxyParamEnum.Name)));
-                WriteLine(proxyStringBuilder, "{");
-                foreach (string enumValue in proxyParamEnum.Values.Distinct())
-                {
-                    WriteLine(proxyStringBuilder, string.Format("{0},", OpenApiParser.FixTypeName(enumValue)));
-                }
+            //foreach (XCase.ProxyGenerator.REST.Enum proxyParamEnum in proxyParamEnums)
+            //{
+            //    WriteLine(proxyStringBuilder, string.Format("public enum {0}", OpenApiParser.FixTypeName(proxyParamEnum.Name)));
+            //    WriteLine(proxyStringBuilder, "{");
+            //    foreach (string enumValue in proxyParamEnum.Values.Distinct())
+            //    {
+            //        WriteLine(proxyStringBuilder, string.Format("{0},", OpenApiParser.FixTypeName(enumValue)));
+            //    }
 
-                WriteLine(proxyStringBuilder, "}");
-                WriteLine(proxyStringBuilder);
-            }
+            //    WriteLine(proxyStringBuilder, "}");
+            //    WriteLine(proxyStringBuilder);
+            //}
 
             // close class def
             WriteLine(proxyStringBuilder, "}");
@@ -515,6 +515,7 @@ namespace XCase.REST.ProxyGenerator.Generator
 
         private static StringBuilder CreateInterfaceStringBuilderForProxy(IProxyDefinition proxyDefinition, string proxy, IAPIProxySettingsEndpoint endPoint, string methodNameAppend)
         {
+            Log.DebugFormat("starting CreateInterfaceStringBuilderForProxy()");
             StringBuilder interfaceStringBuilder = new StringBuilder();
             WriteLine(interfaceStringBuilder, string.Format("namespace {0} {{", endPoint.GetNamespace()));
             PrintHeaders(interfaceStringBuilder);
@@ -524,13 +525,13 @@ namespace XCase.REST.ProxyGenerator.Generator
             foreach (Operation operationDef in proxyDefinition.Operations.Where(i => i.ProxyName.Equals(proxy1)))
             {
                 string returnType = string.IsNullOrEmpty(operationDef.ReturnType) ? "void" : string.Format("{0}", operationDef.ReturnType);
-                IEnumerable<Parameter> enums = operationDef.Parameters.Where(i => (i.Type != null && i.Type.EnumValues != null));
-                List<XCase.ProxyGenerator.REST.Enum> proxyParamEnums = new List<XCase.ProxyGenerator.REST.Enum>();
-                foreach (Parameter enumParam in enums)
-                {
-                    enumParam.Type.TypeName = operationDef.OperationId + enumParam.Type.Name;
-                    proxyParamEnums.Add(new XCase.ProxyGenerator.REST.Enum() { Name = enumParam.Type.TypeName, Values = enumParam.Type.EnumValues });
-                }
+                //IEnumerable<Parameter> enums = operationDef.Parameters.Where(i => (i.Type != null && i.Type.EnumValues != null));
+                //List<XCase.ProxyGenerator.REST.Enum> proxyParamEnums = new List<XCase.ProxyGenerator.REST.Enum>();
+                //foreach (Parameter enumParam in enums)
+                //{
+                //    enumParam.Type.TypeName = operationDef.OperationId + enumParam.Type.Name;
+                //    proxyParamEnums.Add(new XCase.ProxyGenerator.REST.Enum() { Name = enumParam.Type.TypeName, Values = enumParam.Type.EnumValues });
+                //}
 
                 string className = OpenApiParser.FixTypeName(proxy) + "WebProxy";
                 /* Sort by required so that non-nullable parameters come first */
@@ -572,14 +573,19 @@ namespace XCase.REST.ProxyGenerator.Generator
             WriteLine(stringBuilder);
         }
 
-        static string GetDefaultType(Parameter parameter)
+        private static string GetDefaultType(Parameter parameter)
         {
+            Log.DebugFormat("starting GetDefaultType()");
             if (parameter.Type != null)
             {
                 string typeName = parameter.Type.TypeName;
                 if (typeName == "file")
                 {
                     return "Tuple<string, byte[]>";
+                }
+                else if (typeName == "integer")
+                {
+                    return "int?";
                 }
 
                 if (!parameter.IsRequired && parameter.Type.IsNullableType)
@@ -628,7 +634,6 @@ namespace XCase.REST.ProxyGenerator.Generator
             WriteLine(stringBuilder, "using System.Threading.Tasks;");
             WriteLine(stringBuilder, "using System.Net;");
             WriteLine(stringBuilder, "using System.Net.Http;");
-            //            WriteLine(stringBuilder, "using System.Net.Http.Formatting;");
             WriteLine(stringBuilder, "using System.Net.Http.Headers;");
             WriteLine(stringBuilder, "using System.Reflection;");
             WriteLine(stringBuilder, "using System.Runtime.Serialization;");
