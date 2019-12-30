@@ -152,21 +152,36 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
             }
 
             string description = keyValuePair.Value.Description;
-            string returnType;
+            string returnType = null;
             List<KeyValuePair<string, OpenApiResponse>> responses = keyValuePair.Value.Responses.ToList();
-            string schema = responses.First<KeyValuePair<string, OpenApiResponse>>().Value.Description;
-            if (schema != null)
+            KeyValuePair<string, OpenApiResponse> firstResponse = responses.First<KeyValuePair<string, OpenApiResponse>>();
+            if (firstResponse.Key != null)
             {
-                bool dummyNullable;
-                returnType = this.GetTypeName(schema, out dummyNullable);
-                if (returnType != null && returnType.Equals("Void"))
+                Log.DebugFormat("firstResponse code is {0}", firstResponse.Key);
+                ICollection<OpenApiMediaType> openApiMediaTypeCollection = responses.First<KeyValuePair<string, OpenApiResponse>>().Value.Content.Values;
+                if (openApiMediaTypeCollection.Count > 0)
                 {
-                    returnType = null;
+                    Log.DebugFormat("openApiMediaTypeCollection Count is {0}", openApiMediaTypeCollection.Count);
+                    OpenApiMediaType firstOpenApiMediaType = openApiMediaTypeCollection.First<OpenApiMediaType>();
+                    if (firstOpenApiMediaType != null)
+                    { 
+                        OpenApiSchema schema = firstOpenApiMediaType.Schema;
+                        Log.DebugFormat("schema is {0}", schema.ToString());
+                        if (schema != null)
+                        {
+                            bool dummyNullable;
+                            returnType = this.GetTypeName(schema, out dummyNullable);
+                            if (returnType != null && returnType.Equals("Void"))
+                            {
+                                returnType = null;
+                            }
+                        }
+                        else
+                        {
+                            returnType = null;
+                        }
+                    }
                 }
-            }
-            else
-            {
-                returnType = null;
             }
 
             List<XCase.ProxyGenerator.REST.Parameter> parameters = null;
@@ -227,7 +242,7 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
 
         private void ParseDefinitions(OpenApiDocument openApiDocument, ProxyDefinition proxyDefinition)
         {
-            Log.Debug("starting ParseDefinitions()");
+            Log.DebugFormat("starting ParseDefinitions()");
             OpenApiComponents components = openApiDocument.Components;
             if (components == null)
             {
@@ -237,6 +252,7 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
             IDictionary<string, OpenApiSchema> schemaDictionary = components.Schemas;
             foreach (KeyValuePair<string, OpenApiSchema> schemaKeyValuePair in schemaDictionary)
             {
+                Log.DebugFormat("next schema {0}", schemaKeyValuePair.Key);
                 bool addIt = true;
                 ClassDefinition classDefinition = new ClassDefinition(schemaKeyValuePair.Key);
                 IList<OpenApiSchema> openApiSchemaList = schemaKeyValuePair.Value.AllOf;
@@ -244,6 +260,7 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                 {
                     foreach (OpenApiSchema itemToken in openApiSchemaList)
                     {
+                        Log.DebugFormat("next itemToken {0}", itemToken.Title);
                         OpenApiReference refType = itemToken.Reference;
                         if (refType != null)
                         {
@@ -291,7 +308,7 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                 if (classDefinition.Name.Equals("Void", StringComparison.InvariantCulture) ||
                     classDefinition.Name.Equals("IterableOfstring", StringComparison.InvariantCulture))
                 {
-                    Log.Debug("set addIt to false");
+                    Log.DebugFormat("set addIt to false");
                     addIt = false;
                 }
 
@@ -301,11 +318,12 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                 }
             }
 
-            Log.Debug("finishing ParseDefinitions()");
+            Log.DebugFormat("finishing ParseDefinitions()");
         }
 
         private TypeDefinition ParseType(KeyValuePair<string, OpenApiSchema> propertyKeyValuePair)
         {
+            Log.DebugFormat("starting ParseType()");
             string name = propertyKeyValuePair.Key;
             string typeName = propertyKeyValuePair.Value.Type;
             bool isNullable = propertyKeyValuePair.Value.Nullable;
@@ -315,6 +333,7 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
 
         private TypeDefinition ParseType(OpenApiParameter parameter)
         {
+            Log.DebugFormat("starting ParseType()");
             bool isNullable;
             //JToken workingToken;
             string name = parameter.Name;
@@ -376,17 +395,32 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
 
         private string ParseRef(string input)
         {
+            Log.DebugFormat("starting ParseRef()");
             return input.StartsWith("#/definitions/") ? input.Substring("#/definitions/".Length) : input;
         }
 
         private string GetTypeName(OpenApiParameter parameter, out bool isNullable)
         {
+            Log.DebugFormat("starting GetTypeName()");
             isNullable = true;
             return parameter.Schema.Type;
         }
 
         private string GetTypeName(string name, out bool isNullable)
         {
+            Log.DebugFormat("starting GetTypeName()");
+            isNullable = true;
+            return null;
+        }
+
+        private string GetTypeName(OpenApiSchema schema, out bool isNullable)
+        {
+            Log.DebugFormat("starting GetTypeName()");
+            if (schema.Reference != null)
+            {
+                Log.DebugFormat("schema Reference is {0}", schema.Reference.ReferenceV3);
+            }
+
             isNullable = true;
             return null;
         }
