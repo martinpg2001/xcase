@@ -330,8 +330,28 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
         {
             Log.DebugFormat("starting ParseType()");
             string name = propertyKeyValuePair.Key;
+            Log.DebugFormat("name is {0}", name);
             bool isNullable = propertyKeyValuePair.Value.Nullable;
-            string typeName = GetTypeName(propertyKeyValuePair.Value, isNullable);
+            Log.DebugFormat("isNullable is {0}", isNullable);
+            string typeName = null;
+            if ("array".Equals(propertyKeyValuePair.Value.Type))
+            {
+                OpenApiSchema itemsOpenApiSchema = propertyKeyValuePair.Value.Items;
+                if (itemsOpenApiSchema.Reference != null)
+                {
+                    Log.DebugFormat("schema Reference is {0}", itemsOpenApiSchema.Reference.ReferenceV3);
+                    if (itemsOpenApiSchema.Reference.ReferenceV3.StartsWith("#/components/schemas/"))
+                    {
+                        isNullable = false;
+                        typeName = string.Format("{0}[]", itemsOpenApiSchema.Reference.ReferenceV3.Substring("#/components/schemas/".Length));
+                    }
+                }
+            }
+            else
+            {
+                typeName = GetTypeName(propertyKeyValuePair.Value, isNullable);
+            }
+
             TypeDefinition type = new TypeDefinition(typeName, name, null, isNullable);
             return type;
         }
@@ -351,6 +371,10 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
             {
                 return "int";
             }
+            else if ("number".Equals(schema.Type))
+            {
+                return "float";
+            }
             else
             {
                 return schema.Type;
@@ -363,26 +387,7 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
         {
             Log.DebugFormat("starting ParseType()");
             bool isNullable;
-            //JToken workingToken;
             string name = parameter.Name;
-            //if (token.First is JProperty)
-            //{
-            //    workingToken = token;
-            //    name = workingToken["name"].ToString();
-            //}
-            //else
-            //{
-            //    workingToken = token.First;
-            //    if (token is JProperty)
-            //    {
-            //        name = ((JProperty)token).Name;
-            //    }
-            //    else
-            //    {
-            //        name = string.Empty;
-            //    }
-            //}
-
             if (parameter != null)
             {
                 string typeName = GetTypeName(parameter, out isNullable);
@@ -412,6 +417,7 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                 }
 
                 typeName = FixGenericName(typeName);
+                Log.DebugFormat("typeName is {0}", typeName);
                 TypeDefinition type = new TypeDefinition(typeName, name, enumValues, isNullable);
                 return type;
             }
@@ -431,7 +437,23 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
         {
             Log.DebugFormat("starting GetTypeName()");
             isNullable = true;
-            return parameter.Schema.Type;
+            string type = parameter.Schema.Type;
+            Log.DebugFormat("type is {0}", type);
+            if ("number".Equals(type))
+            {
+                string format = parameter.Schema.Format;
+                Log.DebugFormat("format is {0}", format);
+                if ("double".Equals(format))
+                {
+                    return "double";
+                }
+                else
+                {
+                    return "float";
+                }
+            }
+
+            return type;
         }
 
         private string GetTypeName(string name, out bool isNullable)
@@ -444,7 +466,7 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
         private string GetTypeName(OpenApiSchema schema, out bool isNullable)
         {
             Log.DebugFormat("starting GetTypeName()");
-            if (schema.Type.Equals("array"))
+            if (schema.Type != null && schema.Type.Equals("array"))
             {
                 isNullable = false;
                 string itemsType = GetTypeName(schema.Items, isNullable);
