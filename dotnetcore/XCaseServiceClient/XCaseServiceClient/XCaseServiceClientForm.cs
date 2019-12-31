@@ -656,15 +656,15 @@ namespace XCaseServiceClient
             Assembly[] assemblyArray = currentDomain.GetAssemblies();
             foreach (Assembly domainAssembly in assemblyArray)
             {
-                Log.DebugFormat("next domainAssembly {0}", domainAssembly.GetName());
+                //Log.DebugFormat("next domainAssembly {0}", domainAssembly.GetName());
                 try
                 {
                     AssemblyMetadata assemblyMetadata = AssemblyMetadata.CreateFromFile(domainAssembly.Location);
-                    Log.DebugFormat("got assemblyMetadata {0}", domainAssembly.GetName());
+                    //Log.DebugFormat("got assemblyMetadata {0}", domainAssembly.GetName());
                     MetadataReference metadataReference = assemblyMetadata.GetReference();
-                    Log.DebugFormat("got metadataReference {0}", domainAssembly.GetName());
+                    //Log.DebugFormat("got metadataReference {0}", domainAssembly.GetName());
                     metadataReferenceList.Add(metadataReference);
-                    Log.DebugFormat("added reference {0}", domainAssembly.GetName());
+                    //Log.DebugFormat("added reference {0}", domainAssembly.GetName());
                 }
                 catch (Exception e)
                 {

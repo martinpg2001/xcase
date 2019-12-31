@@ -255,10 +255,11 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                 Log.DebugFormat("next schema {0}", schemaKeyValuePair.Key);
                 bool addIt = true;
                 ClassDefinition classDefinition = new ClassDefinition(schemaKeyValuePair.Key);
-                IList<OpenApiSchema> openApiSchemaList = schemaKeyValuePair.Value.AllOf;
-                if (openApiSchemaList != null)
+                IList<OpenApiSchema> allOfOpenApiSchemaList = schemaKeyValuePair.Value.AllOf;
+                if (allOfOpenApiSchemaList != null && allOfOpenApiSchemaList.Count > 0)
                 {
-                    foreach (OpenApiSchema itemToken in openApiSchemaList)
+                    Log.DebugFormat("openApiSchemaList is not null or empty");
+                    foreach (OpenApiSchema itemToken in allOfOpenApiSchemaList)
                     {
                         Log.DebugFormat("next itemToken {0}", itemToken.Title);
                         OpenApiReference refType = itemToken.Reference;
@@ -286,19 +287,23 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                 }
                 else
                 {
-                    IDictionary<string, OpenApiSchema> propertiesDictionary = schemaKeyValuePair.Value.Properties;
-                    if (propertiesDictionary != null)
+                    Log.DebugFormat("allOfOpenApiSchemaList is null or has zero count");
+                    if (schemaKeyValuePair.Value.Type == null || !schemaKeyValuePair.Value.Type.Equals("array"))
                     {
-                        foreach (KeyValuePair<string, OpenApiSchema> prop in propertiesDictionary)
+                        Log.DebugFormat("schemaKeyValuePair.Value.Type is {0}", schemaKeyValuePair.Value.Type);
+                        IDictionary<string, OpenApiSchema> propertiesDictionary = schemaKeyValuePair.Value.Properties;
+                        if (propertiesDictionary != null)
                         {
-                            TypeDefinition type = ParseType(prop);
-                            classDefinition.Properties.Add(type);
+                            foreach (KeyValuePair<string, OpenApiSchema> property in propertiesDictionary)
+                            {
+                                TypeDefinition type = ParseType(property);
+                                classDefinition.Properties.Add(type);
+                            }
                         }
                     }
                     else
                     {
-                        /* TODO: Just because no properties, can still create the class */
-                        //addIt = false;
+                        Log.DebugFormat("schemaKeyValuePair.Value.Type is array");
                     }
                 }
 
@@ -325,10 +330,33 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
         {
             Log.DebugFormat("starting ParseType()");
             string name = propertyKeyValuePair.Key;
-            string typeName = propertyKeyValuePair.Value.Type;
             bool isNullable = propertyKeyValuePair.Value.Nullable;
+            string typeName = GetTypeName(propertyKeyValuePair.Value, isNullable);
             TypeDefinition type = new TypeDefinition(typeName, name, null, isNullable);
             return type;
+        }
+
+        private string GetTypeName(OpenApiSchema schema, bool isNullable)
+        {
+            Log.DebugFormat("starting GetTypeName()");
+            if (schema.Reference != null)
+            {
+                Log.DebugFormat("schema Reference is {0}", schema.Reference.ReferenceV3);
+                if (schema.Reference.ReferenceV3.StartsWith("#/components/schemas/"))
+                {
+                    return schema.Reference.ReferenceV3.Substring("#/components/schemas/".Length);
+                }
+            }
+            else if ("integer".Equals(schema.Type))
+            {
+                return "int";
+            }
+            else
+            {
+                return schema.Type;
+            }
+
+            return null;
         }
 
         private TypeDefinition ParseType(OpenApiParameter parameter)
@@ -416,9 +444,21 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
         private string GetTypeName(OpenApiSchema schema, out bool isNullable)
         {
             Log.DebugFormat("starting GetTypeName()");
+            if (schema.Type.Equals("array"))
+            {
+                isNullable = false;
+                string itemsType = GetTypeName(schema.Items, isNullable);
+                return string.Format("{0}[]", itemsType);
+            }
+
             if (schema.Reference != null)
             {
                 Log.DebugFormat("schema Reference is {0}", schema.Reference.ReferenceV3);
+                if (schema.Reference.ReferenceV3.StartsWith("#/components/schemas/"))
+                {
+                    isNullable = false;
+                    return schema.Reference.ReferenceV3.Substring("#/components/schemas/".Length);
+                }
             }
 
             isNullable = true;
