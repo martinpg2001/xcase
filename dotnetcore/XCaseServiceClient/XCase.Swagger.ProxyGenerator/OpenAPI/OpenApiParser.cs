@@ -123,32 +123,28 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
             Log.DebugFormat("starting CreateOperationFromOpenApiOperation()");
             string method = keyValuePair.Key.ToString();
             Log.DebugFormat("method is {0}", method);
-            string operationId = method + keyValuePair.Value.OperationId;// operationToken.First["operationId"].ToString();
-            Log.DebugFormat("operationId is {0}", operationId);
-            string proxyName = string.Empty;
+            string operationId = null;
+            /* We want a proxy name for each path supported by the API, and a unique operationId
+             * for each method supported by the path. Use the OperationId if possible, but fall back to using
+             * path and method if need be.
+             */
+            string proxyName = path.Replace("/", "").Replace("{", "").Replace("}", "");
             if (parseOperationIdForProxyName)
             {
+                operationId = keyValuePair.Value.OperationId ?? String.Empty;
+                Log.DebugFormat("operationId is {0}", operationId);
                 if (operationId.Contains("_"))
                 {
                     int underscoreLocation = operationId.IndexOf("_", StringComparison.OrdinalIgnoreCase);
                     proxyName = operationId.Substring(0, underscoreLocation);
                     operationId = operationId.Substring(underscoreLocation + 1);
                 }
-                else
-                {
-                    proxyName = operationId;
-                }
             }
 
-            if (string.IsNullOrWhiteSpace(proxyName))
+            if (string.IsNullOrWhiteSpace(operationId))
             {
-                /* Did not get the proxy name from the operation id, so take the first tag value */
-                IList<OpenApiTag> tagList = keyValuePair.Value.Tags;
-                if (tagList != null)
-                {
-                    string firstTag = tagList.First().Name;
-                    proxyName = FixTypeName(firstTag);
-                }
+                /* Did not get the operationId from property, so generate it from method and path */
+                operationId = method + proxyName;
             }
 
             string description = keyValuePair.Value.Description;
