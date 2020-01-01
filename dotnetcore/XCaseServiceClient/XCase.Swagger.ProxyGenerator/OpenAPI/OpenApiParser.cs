@@ -30,6 +30,7 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
         {
             Log.Debug("starting ParseDoc()");
             ProxyDefinition proxyDefinition = new ProxyDefinition();
+            Log.DebugFormat("document is {0}", document);
             try
             {
                 byte[] byteArray = Encoding.ASCII.GetBytes(document);
@@ -206,17 +207,19 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
             return operation;
         }
 
-        private Parameter CreateParameterFromOpenApiParameter(OpenApiParameter paramToken)
+        private Parameter CreateParameterFromOpenApiParameter(OpenApiParameter openApiParameter)
         {
-            TypeDefinition type = ParseType(paramToken);
+            Log.DebugFormat("starting CreateParameterFromOpenApiParameter()");
+            TypeDefinition typeDefinition = ParseType(openApiParameter);
+            Log.DebugFormat("typeDefinition TypeName is {0}", typeDefinition.TypeName);
             bool isRequired = false;
-            if (paramToken.Required)
+            if (openApiParameter.Required)
             {
-                isRequired = paramToken.Required;
+                isRequired = openApiParameter.Required;
             }
 
             ParameterIn parameterIn = ParameterIn.Query;
-            ParameterLocation? parameterInLocation = paramToken.In;
+            ParameterLocation? parameterInLocation = openApiParameter.In;
             if (parameterInLocation != null)
             {
                 if (parameterInLocation.Equals(ParameterLocation.Path))
@@ -226,13 +229,13 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
             }
 
             string propDescription = string.Empty;
-            if (paramToken.Description != null)
+            if (openApiParameter.Description != null)
             {
-                propDescription = paramToken.Description;
+                propDescription = openApiParameter.Description;
             }
 
             string collectionFormat = string.Empty;
-            XCase.ProxyGenerator.REST.Parameter parameter = new XCase.ProxyGenerator.REST.Parameter(type, parameterIn, isRequired, propDescription, collectionFormat);
+            XCase.ProxyGenerator.REST.Parameter parameter = new XCase.ProxyGenerator.REST.Parameter(typeDefinition, parameterIn, isRequired, propDescription, collectionFormat);
             return parameter;
         }
 
@@ -273,10 +276,10 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                         IDictionary<string, OpenApiSchema> propertiesDictionary = itemToken.Properties;
                         if (propertiesDictionary != null)
                         {
-                            foreach (KeyValuePair<string, OpenApiSchema> prop in propertiesDictionary)
+                            foreach (KeyValuePair<string, OpenApiSchema> propertyKeyValuePair in propertiesDictionary)
                             {
-                                TypeDefinition type = ParseType(prop);
-                                classDefinition.Properties.Add(type);
+                                TypeDefinition typeDefinition = ParseType(propertyKeyValuePair);
+                                classDefinition.Properties.Add(typeDefinition);
                             }
                         }
                     }
@@ -290,10 +293,10 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                         IDictionary<string, OpenApiSchema> propertiesDictionary = schemaKeyValuePair.Value.Properties;
                         if (propertiesDictionary != null)
                         {
-                            foreach (KeyValuePair<string, OpenApiSchema> property in propertiesDictionary)
+                            foreach (KeyValuePair<string, OpenApiSchema> propertyKeyValuePair in propertiesDictionary)
                             {
-                                TypeDefinition type = ParseType(property);
-                                classDefinition.Properties.Add(type);
+                                TypeDefinition typeDefinition = ParseType(propertyKeyValuePair);
+                                classDefinition.Properties.Add(typeDefinition);
                             }
                         }
                     }
@@ -324,14 +327,16 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
 
         private TypeDefinition ParseType(KeyValuePair<string, OpenApiSchema> propertyKeyValuePair)
         {
-            Log.DebugFormat("starting ParseType()");
+            Log.DebugFormat("starting ParseType(KeyValuePair<string, OpenApiSchema> propertyKeyValuePair)");
             string name = propertyKeyValuePair.Key;
             Log.DebugFormat("name is {0}", name);
             bool isNullable = propertyKeyValuePair.Value.Nullable;
             Log.DebugFormat("isNullable is {0}", isNullable);
+            string[] enumValues = null;
             string typeName = null;
             if ("array".Equals(propertyKeyValuePair.Value.Type))
             {
+                Log.DebugFormat("propertyKeyValuePair.Value Type is array");
                 OpenApiSchema itemsOpenApiSchema = propertyKeyValuePair.Value.Items;
                 if (itemsOpenApiSchema.Reference != null)
                 {
@@ -340,21 +345,52 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                     {
                         isNullable = false;
                         typeName = string.Format("{0}[]", itemsOpenApiSchema.Reference.ReferenceV3.Substring("#/components/schemas/".Length));
+                        Log.DebugFormat("typeName is {0}", typeName);
                     }
                 }
             }
             else
             {
+                Log.DebugFormat("propertyKeyValuePair.Value Type is not array");
                 typeName = GetTypeName(propertyKeyValuePair.Value, isNullable);
+                Log.DebugFormat("typeName is {0}", typeName);
+                List<string> enumList = new List<string>();
+                IList<IOpenApiAny> enums = propertyKeyValuePair.Value.Enum;
+                if (enums != null && enums.Count > 0)
+                {
+                    Log.DebugFormat("enums is not null and count > 0");
+                    bool anyRawNumbers = false;
+                    foreach (IOpenApiAny enumIOpenApiAny in enums)
+                    {
+                        Log.DebugFormat("next enumIOpenApiAny");
+                        string enumValue = ((OpenApiPrimitive<string>)enumIOpenApiAny).Value;
+                        Log.DebugFormat("enumValue is {0}", enumValue);
+                        decimal value;
+                        if (Decimal.TryParse(enumValue, out value))
+                        {
+                            anyRawNumbers = true;
+                        }
+
+                        enumList.Add(enumValue);
+                        Log.DebugFormat("added enumValue {0}", enumValue);
+                    }
+
+                    Log.DebugFormat("anyRawNumbers is {0}", anyRawNumbers);
+                    if (anyRawNumbers == false)
+                    {
+                        enumValues = enumList.ToArray();
+                        typeName = FixTypeName(name + "Values");
+                    }
+                }
             }
 
-            TypeDefinition type = new TypeDefinition(typeName, name, null, isNullable);
-            return type;
+            TypeDefinition typeDefinition = new TypeDefinition(typeName, name, enumValues, isNullable);
+            return typeDefinition;
         }
 
         private string GetTypeName(OpenApiSchema schema, bool isNullable)
         {
-            Log.DebugFormat("starting GetTypeName()");
+            Log.DebugFormat("starting GetTypeName(OpenApiSchema schema, bool isNullable)");
             if (schema.Reference != null)
             {
                 Log.DebugFormat("schema Reference is {0}", schema.Reference.ReferenceV3);
@@ -371,6 +407,10 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
             {
                 return "float";
             }
+            else if ("boolean".Equals(schema.Type))
+            {
+                return "bool";
+            }
             else
             {
                 return schema.Type;
@@ -379,42 +419,63 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
             return null;
         }
 
-        private TypeDefinition ParseType(OpenApiParameter parameter)
+        private TypeDefinition ParseType(OpenApiParameter openApiParameter)
         {
-            Log.DebugFormat("starting ParseType()");
-            bool isNullable;
-            string name = parameter.Name;
-            if (parameter != null)
+            Log.DebugFormat("starting ParseType(OpenApiParameter parameter)");
+            bool isArray = false;
+            bool isNullable = false;
+            string name = openApiParameter.Name;
+            Log.DebugFormat("name is {0}", name);
+            string typeName = openApiParameter.Schema.Type;
+            string[] enumValues = null;
+            if (openApiParameter != null)
             {
-                string typeName = GetTypeName(parameter, out isNullable);
-                List<string> enumList = new List<string>();
-                IList<IOpenApiAny> enums = parameter.Schema.Enum;
-                string[] enumValues = null;
-                if (enums != null && enums.Count > 0)
+                if (!"array".Equals(openApiParameter.Schema.Type))
                 {
-                    bool anyRawNumbers = false;
-                    foreach (IOpenApiAny enumValueToken in enums)
+                    Log.DebugFormat("parameter type is not array");
+                    typeName = GetTypeName(openApiParameter, out isNullable);
+                    List<string> enumList = new List<string>();
+                    IList<IOpenApiAny> enums = openApiParameter.Schema.Enum;
+                    if (enums != null && enums.Count > 0)
                     {
-                        string enumValue = enumValueToken.ToString();
-                        decimal value;
-                        if (Decimal.TryParse(enumValue, out value))
+                        Log.DebugFormat("enums is not null and count > 0");
+                        bool anyRawNumbers = false;
+                        foreach (IOpenApiAny enumIOpenApiAny in enums)
                         {
-                            anyRawNumbers = true;
+                            Log.DebugFormat("next enumIOpenApiAny");
+                            string enumValue = ((OpenApiPrimitive<string>)enumIOpenApiAny).Value;
+                            Log.DebugFormat("enumValue is {0}", enumValue);
+                            decimal value;
+                            if (Decimal.TryParse(enumValue, out value))
+                            {
+                                anyRawNumbers = true;
+                            }
+
+                            enumList.Add(enumValue);
+                            Log.DebugFormat("added enumValue {0}", enumValue);
                         }
 
-                        enumList.Add(enumValue);
+                        Log.DebugFormat("anyRawNumbers is {0}", anyRawNumbers);
+                        if (anyRawNumbers == false)
+                        {
+                            enumValues = enumList.ToArray();
+                            typeName = FixTypeName(name + "Values");
+                        }
                     }
-
-                    if (anyRawNumbers == false)
-                    {
-                        enumValues = enumList.ToArray();
-                        typeName = FixTypeName(name + "Values");
-                    }
+                }
+                else
+                {
+                    Log.DebugFormat("parameter type is array");
+                    isArray = true;
+                    OpenApiSchema itemsOpenApiSchema = openApiParameter.Schema.Items;
+                    typeName = GetTypeName(itemsOpenApiSchema, out isNullable) + "[]";
+                    Log.DebugFormat("items typeName is {0}", typeName);
                 }
 
                 typeName = FixGenericName(typeName);
                 Log.DebugFormat("typeName is {0}", typeName);
                 TypeDefinition type = new TypeDefinition(typeName, name, enumValues, isNullable);
+                type.IsArray = isArray;
                 return type;
             }
             else
@@ -461,9 +522,10 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
 
         private string GetTypeName(OpenApiSchema schema, out bool isNullable)
         {
-            Log.DebugFormat("starting GetTypeName()");
+            Log.DebugFormat("starting GetTypeName(OpenApiSchema schema, out bool isNullable)");
             if (schema.Type != null && schema.Type.Equals("array"))
             {
+                Log.DebugFormat("schema.Type is not null and schema.Type equals array");
                 isNullable = false;
                 string itemsType = GetTypeName(schema.Items, isNullable);
                 return string.Format("{0}[]", itemsType);
@@ -477,6 +539,13 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                     isNullable = false;
                     return schema.Reference.ReferenceV3.Substring("#/components/schemas/".Length);
                 }
+            }
+
+            if (schema.Type != null)
+            {
+                Log.DebugFormat("schema.Type is not null");
+                isNullable = false;
+                return schema.Type;
             }
 
             isNullable = true;

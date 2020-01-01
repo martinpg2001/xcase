@@ -19,6 +19,8 @@
         public string[] EnumValues { get; set; }
         public bool IsNullableType { get; set; }
 
+        public bool IsArray { get; set; }
+
         public string GetCleanTypeName()
         {
             /* Replace hyphenated type names with camelCase names */

@@ -898,7 +898,11 @@ namespace XCaseServiceClient
                         Log.DebugFormat("created cSharpCompilation");
                         m_Assembly = CreateAssemblyFromCSharpCompilation(cSharpCompilation);
                         Log.DebugFormat("created assembly");
-                        object[] args = new object[] { new Uri(restServiceDefinition.GetEndPoint()) };
+                        string endpoint = restServiceDefinition.GetEndPoint();
+                        Log.DebugFormat("endpoint is {0}", endpoint);
+                        Uri endpointUri = new Uri(restServiceDefinition.GetEndPoint());
+                        Log.DebugFormat("endpointUri is {0}", endpointUri);
+                        object[] args = new object[] { endpointUri };
                         string proxyClass = string.Format("{0}.{1}", restApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
                         m_RESTServiceClient = m_Assembly.CreateInstance(proxyClass, false, BindingFlags.CreateInstance, null, args, null, null);
                         if (m_RESTServiceClient != null)

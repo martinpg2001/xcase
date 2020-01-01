@@ -44,6 +44,16 @@
                 return "List<string>";
             }
 
+            if (typeName.Equals("integer"))
+            {
+                return "int";
+            }
+
+            if (typeName.Equals("boolean"))
+            {
+                return "bool";
+            }
+
             string fixedTypeName = typeName
                 .Replace(":", "_Colon_")
                 .Replace(",", "_Comma_")

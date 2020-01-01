@@ -51,7 +51,7 @@ namespace XCase.REST.ProxyGenerator.Generator
 
             Log.DebugFormat("downloaded: {0}", requestUri);
             ramlDocDictionary.GetOrAdd(endPoint, ramlString);
-            Log.Debug("finishing GetEndpointSwaggerDoc()");
+            Log.Debug("finishing GetEndpointRAMLDoc()");
         }
     }
 }

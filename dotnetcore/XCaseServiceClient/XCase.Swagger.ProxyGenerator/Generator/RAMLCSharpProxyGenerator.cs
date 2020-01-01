@@ -137,31 +137,46 @@ namespace XCase.REST.ProxyGenerator.Generator
             string scheme = proxyDefinition.Schemes != null ? proxyDefinition.Schemes[0] : schemeFromURL;
             Log.DebugFormat("scheme is {0}", scheme);
             string endPointString = proxyDefinition.Host;
+            Log.DebugFormat("proxyDefinition.Host is {0}", proxyDefinition.Host);
             //string endPointString = string.Format("{0}://{1}{2}", scheme, proxyDefinition.Host, proxyDefinition.BasePath);
             if (!endPointString.EndsWith("/"))
             {
                 endPointString = string.Format(endPointString + "{0}", "/");
             }
 
-            ramlServiceDefinition.EndPoint = endPointString;
+            Log.DebugFormat("endPointString is {0}", endPointString);
+            if (endPointString.StartsWith("http"))
+            {
+                ramlServiceDefinition.EndPoint = endPointString;
+            }
+            else
+            {
+                ramlServiceDefinition.EndPoint = "http://localhost:8080/api/v3/";
+            }
+
             List<string> proxies = proxyDefinition.Operations.Select(i => i.ProxyName).Distinct().ToList();
             /* Interface for proxy classes */
             foreach (string proxy in proxies)
             {
+                Log.DebugFormat("*** next proxy {0} ***", proxy);
                 StringBuilder interfaceStringBuilder = CreateInterfaceStringBuilderForProxy(proxyDefinition, proxy, endPoint, methodNameAppend);
                 Log.DebugFormat("created interfaceStringBuilder for {0}", proxy);
                 sourceStringList.Add(interfaceStringBuilder.ToString());
+                Log.DebugFormat("*** added interface for proxy {0} ***", proxy);
+                string className = OpenApiParser.FixTypeName(proxy) + "WebProxy";
+                ramlServiceDefinition.ProxyClasses.Add(className);
+                //Log.DebugFormat("added className {0}", className);
+                //Log.DebugFormat("*** added className for proxy {0} ***", proxy);
+                StringBuilder proxyStringBuilder = CreateProxyStringBuilderForProxy(proxyDefinition, proxy, endPoint, methodNameAppend, username, password, tenant);
+                Log.DebugFormat("created proxyStringBuilder for {0}", proxy);
+                sourceStringList.Add(proxyStringBuilder.ToString());
+                Log.DebugFormat("*** finished proxy {0} ***", proxy);
             }
 
             /* Main proxy classes */
             foreach (string proxy in proxies)
             {
-                string className = OpenApiParser.FixTypeName(proxy) + "WebProxy";
-                ramlServiceDefinition.ProxyClasses.Add(className);
-                Log.DebugFormat("added className {0}", className);
-                StringBuilder proxyStringBuilder = CreateProxyStringBuilderForProxy(proxyDefinition, proxy, endPoint, methodNameAppend, username, password, tenant);
-                Log.DebugFormat("created proxyStringBuilder for {0}", proxy);
-                sourceStringList.Add(proxyStringBuilder.ToString());
+
             }
 
             /* Model Classes */
@@ -248,21 +263,35 @@ namespace XCase.REST.ProxyGenerator.Generator
             string proxyName = proxy;
             foreach (Operation operation in proxyDefinition.Operations.Where(i => i.ProxyName.Equals(proxyName)))
             {
+                Log.DebugFormat("next operation");
+                IOrderedEnumerable<Parameter> parameterEnumerable = operation.Parameters.OrderByDescending(i => i.IsRequired);
+                foreach (Parameter parameter in parameterEnumerable)
+                {
+                    Log.DebugFormat("* parameter.Type.TypeName is {0} *", parameter.Type.TypeName);
+                    Log.DebugFormat("* default type is {0} *", GetDefaultType(parameter));
+                }
+
                 WriteOperationToStringBuilder(operation, proxyStringBuilder, endPoint, proxyParamEnums, methodNameAppend);
+                Log.DebugFormat("finished writing operation to proxyStringBuilder");
             }
 
-            //foreach (XCase.ProxyGenerator.REST.Enum proxyParamEnum in proxyParamEnums)
-            //{
-            //    WriteLine(proxyStringBuilder, string.Format("public enum {0}", OpenApiParser.FixTypeName(proxyParamEnum.Name)));
-            //    WriteLine(proxyStringBuilder, "{");
-            //    foreach (string enumValue in proxyParamEnum.Values.Distinct())
-            //    {
-            //        WriteLine(proxyStringBuilder, string.Format("{0},", OpenApiParser.FixTypeName(enumValue)));
-            //    }
+            Log.DebugFormat("proxyParamEnums Count is {0}", proxyParamEnums.Count);
+            foreach (XCase.ProxyGenerator.REST.Enum proxyParamEnum in proxyParamEnums)
+            {
+                Log.DebugFormat("next proxyParamEnum");
+                string proxyParamEnumName = OpenApiParser.FixTypeName(proxyParamEnum.Name);
+                Log.DebugFormat("proxyParamEnumName is {0}", proxyParamEnumName);
+                WriteLine(proxyStringBuilder, string.Format("public enum {0}", proxyParamEnumName));
+                WriteLine(proxyStringBuilder, "{");
+                foreach (string enumValue in proxyParamEnum.Values.Distinct())
+                {
+                    WriteLine(proxyStringBuilder, string.Format("{0},", OpenApiParser.FixTypeName(enumValue)));
+                }
 
-            //    WriteLine(proxyStringBuilder, "}");
-            //    WriteLine(proxyStringBuilder);
-            //}
+                WriteLine(proxyStringBuilder, "}");
+                WriteLine(proxyStringBuilder);
+                Log.DebugFormat("finished writing proxyParamEnum to proxyStringBuilder");
+            }
 
             // close class def
             WriteLine(proxyStringBuilder, "}");
@@ -277,23 +306,32 @@ namespace XCase.REST.ProxyGenerator.Generator
             Log.DebugFormat("starting WriteOperationToStringBuilder()");
             string returnType = string.IsNullOrEmpty(operation.ReturnType) ? "void" : string.Format("{0}", operation.ReturnType);
             Log.DebugFormat("returnType is {0}", returnType);
-            IEnumerable<Parameter> enums = operation.Parameters.Where(i => (i.Type != null && i.Type.EnumValues != null));
-            foreach (Parameter enumParam in enums)
+            IEnumerable<Parameter> enumParameters = operation.Parameters.Where(i => (i.Type != null && i.Type.EnumValues != null));
+            foreach (Parameter enumParameter in enumParameters)
             {
-                enumParam.Type.TypeName = operation.OperationId + enumParam.Type.Name;
-                proxyParamEnums.Add(new XCase.ProxyGenerator.REST.Enum() { Name = enumParam.Type.TypeName, Values = enumParam.Type.EnumValues });
+                Log.DebugFormat("next enumParameter {0}", enumParameter.Type.Name);
+                enumParameter.Type.TypeName = operation.OperationId + enumParameter.Type.Name;
+                proxyParamEnums.Add(new XCase.ProxyGenerator.REST.Enum() { Name = enumParameter.Type.TypeName, Values = enumParameter.Type.EnumValues });
             }
 
             string parameters = string.Empty;
+            IOrderedEnumerable<Parameter> parameterEnumerable = operation.Parameters.OrderByDescending(i => i.IsRequired);
+            foreach (Parameter parameter in parameterEnumerable)
+            {
+                Log.DebugFormat("parameter.Type.TypeName is {0}", parameter.Type.TypeName);
+                Log.DebugFormat("default type is {0}", GetDefaultType(parameter));
+            }
+
             try
             {
-                parameters = string.Join(", ", operation.Parameters.OrderByDescending(i => i.IsRequired).Select(x => (x.IsRequired == false) ? string.Format("{0} {1} = {2}", GetDefaultType(x), x.Type.GetCleanTypeName(), GetDefaultValue(x)) : string.Format("{0} {1}", GetDefaultType(x), x.Type.GetCleanTypeName())));
+                parameters = string.Join(", ", operation.Parameters.OrderByDescending(i => i.IsRequired).Select(p => (p.IsRequired == false) ? string.Format("{0} {1} = {2}", GetDefaultType(p), p.Type.GetCleanTypeName(), GetDefaultValue(p)) : string.Format("{0} {1}", GetDefaultType(p), p.Type.GetCleanTypeName())));
             }
             catch (Exception e)
             {
                 Log.Warn("exception setting parameters: " + e.Message);
             }
 
+            Log.DebugFormat("parameters is {0}", parameters);
             WriteLine(proxyStringBuilder, "/// <summary>");
             string summary = (SecurityElement.Escape(operation.Description) ?? "").Replace("\n", "\n///");
             if (string.IsNullOrWhiteSpace(summary))
@@ -521,27 +559,38 @@ namespace XCase.REST.ProxyGenerator.Generator
             PrintHeaders(interfaceStringBuilder);
             WriteLine(interfaceStringBuilder, string.Format("public interface {0}", string.Format("I{0}WebProxy", OpenApiParser.FixTypeName(proxy))));
             WriteLine(interfaceStringBuilder, "{");
-            string proxy1 = proxy;
-            foreach (Operation operationDef in proxyDefinition.Operations.Where(i => i.ProxyName.Equals(proxy1)))
+            Log.DebugFormat("proxy is {0}", proxy);
+            string className = OpenApiParser.FixTypeName(proxy) + "WebProxy";
+            Log.DebugFormat("className is {0}", className);
+            string proxyName = proxy;
+            foreach (Operation operation in proxyDefinition.Operations.Where(i => i.ProxyName.Equals(proxyName)))
             {
-                string returnType = string.IsNullOrEmpty(operationDef.ReturnType) ? "void" : string.Format("{0}", operationDef.ReturnType);
-                //IEnumerable<Parameter> enums = operationDef.Parameters.Where(i => (i.Type != null && i.Type.EnumValues != null));
-                //List<XCase.ProxyGenerator.REST.Enum> proxyParamEnums = new List<XCase.ProxyGenerator.REST.Enum>();
-                //foreach (Parameter enumParam in enums)
-                //{
-                //    enumParam.Type.TypeName = operationDef.OperationId + enumParam.Type.Name;
-                //    proxyParamEnums.Add(new XCase.ProxyGenerator.REST.Enum() { Name = enumParam.Type.TypeName, Values = enumParam.Type.EnumValues });
-                //}
-
-                string className = OpenApiParser.FixTypeName(proxy) + "WebProxy";
+                string returnType = string.IsNullOrEmpty(operation.ReturnType) ? "void" : string.Format("{0}", operation.ReturnType);
                 /* Sort by required so that non-nullable parameters come first */
-                IEnumerable<Parameter> parameterEnumerable = operationDef.Parameters.OrderByDescending(i => i.IsRequired);
+                IOrderedEnumerable<Parameter> parameterEnumerable = operation.Parameters.OrderByDescending(i => i.IsRequired);
+                foreach (Parameter parameter in parameterEnumerable)
+                {
+                    Log.DebugFormat("* parameter.Type.TypeName is {0} *", parameter.Type.TypeName);
+                    Log.DebugFormat("* default type is {0} *", GetDefaultType(parameter));
+                }
+
+                IEnumerable<Parameter> enumParameters = operation.Parameters.Where(i => (i.Type != null && i.Type.EnumValues != null));
+                foreach (Parameter enumParameter in enumParameters)
+                {
+                    Log.DebugFormat("next enumParameter {0}", enumParameter.Type.Name);
+                    enumParameter.Type.TypeName = operation.OperationId + enumParameter.Type.Name;
+                }
+
                 string parameters = string.Join(", ", parameterEnumerable.Select(p =>
                 {
                     /* if parameter is enum include the namespace */
                     string parameter = (p.Type != null && p.Type.EnumValues != null) ? string.Format("{0}.{1}.", endPoint.GetNamespace(), className) : string.Empty;
+                    Log.DebugFormat("parameter is {0}", parameter);
                     if (p.Type != null)
                     {
+                        Log.DebugFormat("p.Type Name is {0}", p.Type.Name);
+                        Log.DebugFormat("p.Type TypeName is {0}", p.Type.TypeName);
+                        Log.DebugFormat("p default type is {0}", GetDefaultType(p));
                         if (p.IsRequired)
                         {
                             parameter += string.Format("{0} {1}", GetDefaultType(p), p.Type.GetCleanTypeName());
@@ -552,13 +601,17 @@ namespace XCase.REST.ProxyGenerator.Generator
                         }
                     }
 
+                    Log.DebugFormat("parameter is {0}", parameter);
                     return parameter;
                 }));
+                Log.DebugFormat("parameters is {0}", parameters);
                 string returnTypeName = OpenApiParser.FixTypeName(returnType);
-                string methodLine = string.Format("{0} {1}{2}({3});", returnTypeName, OpenApiParser.FixMethodName(operationDef.OperationId), methodNameAppend, parameters);
+                string methodLine = string.Format("{0} {1}{2}({3});", returnTypeName, OpenApiParser.FixMethodName(operation.OperationId), methodNameAppend, parameters);
+                Log.DebugFormat("methodLine is {0}", methodLine);
                 WriteLine(interfaceStringBuilder, methodLine);
             }
 
+            Log.DebugFormat("finished writing method lines for {0} interface", className);
             // close interface
             WriteLine(interfaceStringBuilder, "}");
             // close namespace
@@ -575,17 +628,19 @@ namespace XCase.REST.ProxyGenerator.Generator
 
         private static string GetDefaultType(Parameter parameter)
         {
-            Log.DebugFormat("starting GetDefaultType()");
+            //Log.DebugFormat("starting GetDefaultType(Parameter parameter)");
             if (parameter.Type != null)
             {
+                //Log.DebugFormat("parameter.Type is not null");
                 string typeName = parameter.Type.TypeName;
+                //Log.DebugFormat("typeName is {0}", typeName);
                 if (typeName == "file")
                 {
                     return "Tuple<string, byte[]>";
                 }
                 else if (typeName == "integer")
                 {
-                    return "int?";
+                    return "int";
                 }
 
                 if (!parameter.IsRequired && parameter.Type.IsNullableType)
@@ -607,10 +662,12 @@ namespace XCase.REST.ProxyGenerator.Generator
                     typeName = typeName.Replace("[", "___").Replace("]", "___");
                 }
 
+                //Log.DebugFormat("about to return {0}", typeName);
                 return typeName;
             }
             else
             {
+                Log.DebugFormat("parameter.Type is null");
                 return "string";
             }
         }
