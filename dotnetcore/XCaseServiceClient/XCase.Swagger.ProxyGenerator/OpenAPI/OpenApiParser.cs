@@ -202,9 +202,84 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                 }
             }
 
+            if (keyValuePair.Value.RequestBody != null)
+            {
+                XCase.ProxyGenerator.REST.Parameter parameter = CreateParameterFromOpenApiRequestBody(keyValuePair.Value.RequestBody);
+                Log.DebugFormat("created parameter");
+                parameters.Add(parameter);
+            }
+
             XCase.ProxyGenerator.REST.Operation operation = new XCase.ProxyGenerator.REST.Operation(returnType, method, path, parameters, operationId, description, proxyName);
             Log.DebugFormat("created operation");
             return operation;
+        }
+
+        private Parameter CreateParameterFromOpenApiRequestBody(OpenApiRequestBody requestBody)
+        {
+            Log.DebugFormat("starting CreateParameterFromOpenApiRequestBody()");
+            TypeDefinition typeDefinition = ParseType(requestBody);
+            Log.DebugFormat("typeDefinition TypeName is {0}", typeDefinition.TypeName);
+            bool isRequired = false;
+            if (requestBody.Required)
+            {
+                isRequired = requestBody.Required;
+            }
+
+            string propDescription = string.Empty;
+            if (requestBody.Description != null)
+            {
+                propDescription = requestBody.Description;
+            }
+
+            string collectionFormat = string.Empty;
+            XCase.ProxyGenerator.REST.Parameter parameter = new XCase.ProxyGenerator.REST.Parameter(typeDefinition, ParameterIn.Body, isRequired, propDescription, collectionFormat);
+            return parameter;
+        }
+
+        private TypeDefinition ParseType(OpenApiRequestBody requestBody)
+        {
+            Log.DebugFormat("starting ParseType(OpenApiRequestBody requestBody)");
+            string typeName = null;
+            string name = null;
+            IDictionary<string, OpenApiMediaType> openApiMediaTypeDictionary = requestBody.Content;
+            ICollection<OpenApiMediaType> openApiMediaTypeCollection = openApiMediaTypeDictionary.Values;
+            if (openApiMediaTypeCollection.Count > 0)
+            {
+                Log.DebugFormat("openApiMediaTypeCollection Count is {0}", openApiMediaTypeCollection.Count);
+                OpenApiMediaType firstOpenApiMediaType = openApiMediaTypeCollection.First<OpenApiMediaType>();
+                if (firstOpenApiMediaType != null)
+                {
+                    OpenApiSchema openApiSchema = firstOpenApiMediaType.Schema;
+                    Log.DebugFormat("schema is {0}", openApiSchema.ToString());
+                    if (openApiSchema != null)
+                    {
+                        OpenApiReference openApiReference = openApiSchema.Reference;
+                        if (openApiReference != null)
+                        {
+                            ReferenceType? referenceTye = openApiReference.Type;
+                            typeName = openApiSchema.Reference.ReferenceV3.Substring("#/components/schemas/".Length);
+                            Log.DebugFormat("typeName is {0}", typeName);
+                            name = typeName.ToLower();
+                            Log.DebugFormat("name is {0}", name);
+                            return new TypeDefinition(typeName, name, null, false);
+                        }
+
+                        string type = openApiSchema.Type;
+                        if (type != null)
+                        {
+                            Log.DebugFormat("type is {0}", type);
+                            typeName = "string";
+                            Log.DebugFormat("typeName is {0}", typeName);
+                            name = "name";
+                            Log.DebugFormat("name is {0}", name);
+                            return new TypeDefinition(typeName, name, null, false);
+                        }
+                    }
+                }
+            }
+
+            TypeDefinition typeDefinition = new TypeDefinition(typeName, name, null, false);
+            return typeDefinition;
         }
 
         private Parameter CreateParameterFromOpenApiParameter(OpenApiParameter openApiParameter)
