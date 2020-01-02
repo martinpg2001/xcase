@@ -847,7 +847,7 @@ namespace XCaseServiceClient
                 if (refresh)
                 {
                     Log.DebugFormat("refresh is true");
-                    RESTProxyGenerator restProxyGenerator = null;
+                    CSharpProxyGenerator restProxyGenerator = null;
                     this.Controls.Remove(m_MethodsTabControl);
                     if (!string.IsNullOrEmpty(m_Language) && m_Language == "Java")
                     {

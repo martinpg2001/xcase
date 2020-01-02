@@ -19,7 +19,7 @@
     using XCase.REST.ProxyGenerator.Generator;
     using XCase.REST.ProxyGenerator.OpenAPI;
 
-    public abstract class SwaggerProxyGenerator : RESTProxyGenerator
+    public abstract class SwaggerProxyGenerator : CSharpProxyGenerator
     {
         #region Logger Setup
 

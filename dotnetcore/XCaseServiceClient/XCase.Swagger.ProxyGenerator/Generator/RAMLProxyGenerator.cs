@@ -11,7 +11,7 @@ using XCase.ProxyGenerator;
 
 namespace XCase.REST.ProxyGenerator.Generator
 {
-    public abstract class RAMLProxyGenerator : RESTProxyGenerator
+    public abstract class RAMLProxyGenerator : CSharpProxyGenerator
     {
         #region Logger Setup
 
