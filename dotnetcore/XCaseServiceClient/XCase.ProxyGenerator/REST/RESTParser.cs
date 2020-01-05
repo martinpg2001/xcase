@@ -1,13 +1,24 @@
 ﻿namespace XCase.ProxyGenerator.REST
 {
+    using log4net;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using System.Text;
     using System.Threading.Tasks;
 
     public abstract class RESTParser : IParser
     {
+        #region Logger Setup
+
+        /// <summary>
+        /// A log4net log instance.
+        /// </summary>
+        private static readonly ILog Log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        #endregion
+
         public abstract IProxyDefinition ParseDoc(string document, IAPIProxySettingsEndpoint endpoint);
 
         public static string FixGenericName(string name)
@@ -32,10 +43,16 @@
 
         public static string FixTypeName(string typeName)
         {
-            //Log.DebugFormat("starting FixTypeName()");
+            Log.DebugFormat("starting FixTypeName()");
             if (string.IsNullOrWhiteSpace(typeName))
             {
                 return typeName;
+            }
+
+            if (typeName.StartsWith("#/components/schemas/"))
+            {
+                Log.DebugFormat("typeName starts with #/components/schemas/");
+                return typeName.Substring("#/components/schemas/".Length);
             }
 
             if (typeName.Equals("IterableOfstring"))

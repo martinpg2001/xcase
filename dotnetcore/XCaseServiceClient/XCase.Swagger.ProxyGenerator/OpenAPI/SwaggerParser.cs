@@ -24,8 +24,9 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
         public override IProxyDefinition ParseDoc(string document, IAPIProxySettingsEndpoint endpoint)
         {
             Log.Debug("starting ParseDoc()");
-            JObject jObject = JObject.Parse(document);
             ProxyDefinition proxyDefinition = new ProxyDefinition();
+            Log.DebugFormat("document is {0}", document);
+            JObject jObject = JObject.Parse(document);
             JToken swaggerToken = jObject["swagger"];
             if (swaggerToken != null)
             {
@@ -83,6 +84,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
             }
 
             this.ParsePaths(jObject, proxyDefinition, endpoint.GetParseOperationIdForProxyName());
+            Log.Debug("parsed paths");
             this.ParseDefinitions(jObject, proxyDefinition);
             Log.Debug("finishing ParseSwaggerDoc()");
             return proxyDefinition;
@@ -224,6 +226,31 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
                 }
             }
 
+            Log.DebugFormat("processed parameters");
+            JToken requestBodyJToken = operationToken.First["requestBody"];
+            Log.DebugFormat("got requestBodyJToken");
+            if (requestBodyJToken != null)
+            {
+                Log.DebugFormat("requestBodyJToken is not null");
+                JToken contentJToken = requestBodyJToken["content"];
+                if (contentJToken != null)
+                {
+                    Log.DebugFormat("contentJToken is not null");
+
+                    JToken? applicationJsonJToken = contentJToken["application/json"];
+                    if (applicationJsonJToken != null)
+                    {
+                        Log.DebugFormat("applicationJsonJToken is not null");
+                        bool isNullable = false;
+                        string typeName = GetTypeName(applicationJsonJToken, out isNullable);
+                        Log.DebugFormat("typeName is {0}", typeName);
+                        Parameter requestBodyParameter = new Parameter(new TypeDefinition(typeName, "body", null, false), ParameterIn.Body, true, null, null);
+                        Log.DebugFormat("created requestBodyParameter");
+                        parameters.Add(requestBodyParameter);
+                    }
+                }
+            }
+
             Operation operation = new Operation(returnType, method, path, parameters, operationId, description, proxyName);
             Log.DebugFormat("created operation");
             return operation;
@@ -275,20 +302,33 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
 
         private void ParseDefinitions(JObject jObject, ProxyDefinition proxyDefinition)
         {
-            Log.Debug("starting ParseDefinitions()");
-            if (jObject["definitions"] == null)
+            Log.DebugFormat("starting ParseDefinitions()");
+            if (jObject["components"] == null)
             {
+                Log.DebugFormat("components property is null");
                 return;
             }
 
-            foreach (JProperty definitionToken in jObject["definitions"].Where(i => i.Type == JTokenType.Property).Cast<JProperty>())
+            JToken componentsJToken = jObject["components"];
+            JToken schemasJToken = componentsJToken["schemas"];
+            if (schemasJToken == null)
             {
+                Log.DebugFormat("schemasJToken is null");
+                return;
+            }
+
+            IEnumerable<JProperty> jpropertyEnumerable = schemasJToken.Where(i => i.Type == JTokenType.Property).Cast<JProperty>();
+            Log.DebugFormat("jpropertyEnumerable Count is {0}", jpropertyEnumerable.Count<JProperty>());
+            foreach (JProperty definitionJProperty in jpropertyEnumerable)
+            {
+                Log.DebugFormat("next definition");
                 bool addIt = true;
-                ClassDefinition classDefinition = new ClassDefinition(definitionToken.Name);
-                JToken allOf = definitionToken.First["allOf"];
-                if (allOf != null)
+                ClassDefinition classDefinition = new ClassDefinition(definitionJProperty.Name);
+                JToken allOfJToken = definitionJProperty.First["allOf"];
+                if (allOfJToken != null)
                 {
-                    foreach (JToken itemToken in allOf)
+                    Log.DebugFormat("allOfJToken is is not null");
+                    foreach (JToken itemToken in allOfJToken)
                     {
                         JValue refType = itemToken["$ref"] as JValue;
                         if (refType != null)
@@ -315,12 +355,14 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
                 }
                 else
                 {
-                    JToken properties = definitionToken.Value["properties"];
-                    if (properties != null)
+                    Log.DebugFormat("allOfJToken is null");
+                    JToken propertiesJToken = definitionJProperty.Value["properties"];
+                    if (propertiesJToken != null)
                     {
-                        foreach (JToken prop in properties)
+                        foreach (JToken propertyJToken in propertiesJToken)
                         {
-                            TypeDefinition type = ParseType(prop);
+                            Log.DebugFormat("next propertyJToken");
+                            TypeDefinition type = ParseType(propertyJToken);
                             classDefinition.Properties.Add(type);
                         }
                     }
@@ -332,7 +374,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
                 }
 
                 classDefinition.Name = FixGenericName(classDefinition.Name);
-                Log.Debug("classDefinition Name is " + classDefinition.Name);
+                Log.DebugFormat("classDefinition Name is {0}", classDefinition.Name);
                 /* Some classes should not be added if they exist in .Net */
                 if (classDefinition.Name.Equals("Void", StringComparison.InvariantCulture) || 
                     classDefinition.Name.Equals("IterableOfstring", StringComparison.InvariantCulture))
@@ -341,17 +383,19 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
                     addIt = false;
                 }
 
+                Log.DebugFormat("addIt is {0}", addIt);
                 if (addIt)
                 {
                     proxyDefinition.ClassDefinitions.Add(classDefinition);
                 }
             }
 
-            Log.Debug("finishing ParseDefinitions()");
+            Log.DebugFormat("finishing ParseDefinitions()");
         }
 
         private TypeDefinition ParseType(JToken token)
         {
+            Log.DebugFormat("starting ParseType()");
             bool isNullable;
             JToken workingToken;
             string name;
@@ -376,6 +420,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
             if (workingToken != null)
             {
                 string typeName = GetTypeName(workingToken, out isNullable);
+                Log.DebugFormat("typeName is {0}", typeName);
                 JToken enumToken = workingToken["enum"];
                 string[] enumValues = null;
                 if (enumToken != null)
@@ -402,6 +447,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
                 }
 
                 typeName = FixGenericName(typeName);
+                Log.DebugFormat("typeName is {0}", typeName);
                 TypeDefinition type = new TypeDefinition(typeName, name, enumValues, isNullable);
                 return type;
             }
@@ -418,14 +464,18 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
 
         private string GetTypeName(JToken token, out bool isNullable)
         {
+            Log.DebugFormat("starting GetTypeName()");
             if (token != null)
             {
                 JValue refType = token["$ref"] as JValue;
                 bool hasNullFlag = false;
                 if (refType != null)
                 {
+                    
                     isNullable = false;
-                    return FixTypeName(this.ParseRef(refType.Value.ToString()));
+                    string refTypeValue = refType.Value.ToString();
+                    Log.DebugFormat("refTypeValue is {0}", refTypeValue);
+                    return FixTypeName(this.ParseRef(refTypeValue));
                 }
 
                 JToken schema = token["schema"];
