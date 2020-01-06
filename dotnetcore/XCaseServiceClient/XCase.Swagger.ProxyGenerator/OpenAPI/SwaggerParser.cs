@@ -303,6 +303,28 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
         private void ParseDefinitions(JObject jObject, ProxyDefinition proxyDefinition)
         {
             Log.DebugFormat("starting ParseDefinitions()");
+            if (jObject["definitions"] != null)
+            {
+                foreach (JProperty definitionToken in jObject["definitions"].Where(i => i.Type == JTokenType.Property).Cast<JProperty>())
+                {
+                    ClassDefinition classDefinition = new ClassDefinition(definitionToken.Name);
+                    JToken properties = definitionToken.Value["properties"];
+                    if (properties != null)
+                    {
+                        foreach (JToken propertyJToken in properties)
+                        {
+                            Log.DebugFormat("next propertyJToken");
+                            TypeDefinition type = ParseType(propertyJToken);
+                            classDefinition.Properties.Add(type);
+                        }
+                    }
+
+                    proxyDefinition.ClassDefinitions.Add(classDefinition);
+                }
+
+                return;
+            }
+                
             if (jObject["components"] == null)
             {
                 Log.DebugFormat("components property is null");
