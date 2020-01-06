@@ -40,7 +40,15 @@
                 propertyTypeObject = (int)ObjectFactory.CreateObjectFromTypeAndValue(fieldType, value);
                 if (propertyInfoArray != null && index >= 0 && index < propertyInfoArray.Length)
                 {
-                    propertyInfoArray[index].SetValue(parameterObject, propertyTypeObject, null);
+                    try
+                    {
+                        propertyInfoArray[index].SetValue(parameterObject, propertyTypeObject, null);
+                    }
+                    catch (ArgumentException ae)
+                    {
+                        /* If necessary, convert int32 to int64 value */
+                        propertyInfoArray[index].SetValue(parameterObject, Convert.ToInt64(propertyTypeObject), null);
+                    }
                 }
             };
             Button nullButton = new Button();
