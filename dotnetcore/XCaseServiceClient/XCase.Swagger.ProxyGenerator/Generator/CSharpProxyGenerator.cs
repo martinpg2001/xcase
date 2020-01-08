@@ -104,7 +104,7 @@
                 foreach (Parameter enumParameter in enumParameterEnumerable)
                 {
                     Log.DebugFormat("next enumParameter {0}", enumParameter.Type.Name);
-                    enumParameter.Type.TypeName = operation.OperationId + enumParameter.Type.Name;
+                    enumParameter.Type.TypeName = operation.OperationId + enumParameter.Type.Name + "Enum";
                 }
 
                 string className = OpenApiParser.FixTypeName(proxy) + "WebProxy";
@@ -201,7 +201,7 @@
             foreach (Parameter enumParameter in enumParameterEnumerable)
             {
                 Log.DebugFormat("next enumParameter {0}", enumParameter.Type.Name);
-                enumParameter.Type.TypeName = operation.OperationId + enumParameter.Type.Name;
+                enumParameter.Type.TypeName = operation.OperationId + enumParameter.Type.Name + "Enum";
                 proxyParamEnums.Add(new XCase.ProxyGenerator.REST.Enum() { Name = enumParameter.Type.TypeName, Values = enumParameter.Type.EnumValues });
             }
 

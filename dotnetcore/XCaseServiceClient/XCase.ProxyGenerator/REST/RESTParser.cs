@@ -83,7 +83,8 @@
                 .Replace(")", "_Right_")
                 .Replace("}", "_RightBrace_")
                 .Replace("/", "_Slash_")
-                .Replace(" ", "_Space_");
+                .Replace(" ", "_Space_")
+                .Replace("*", "_Star_");
             fixedTypeName = RESTParser.FixGenericName(fixedTypeName);
             if ((char.IsLetter(fixedTypeName[0]) == false) && (fixedTypeName[0] != '_'))
             {

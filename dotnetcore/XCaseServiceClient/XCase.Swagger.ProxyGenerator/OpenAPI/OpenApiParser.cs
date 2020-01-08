@@ -148,6 +148,7 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                 operationId = method + proxyName;
             }
 
+            Log.DebugFormat("operationId is {0}", operationId);
             string description = keyValuePair.Value.Description;
             string returnType = null;
             List<KeyValuePair<string, OpenApiResponse>> responses = keyValuePair.Value.Responses.ToList();
@@ -161,13 +162,14 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                     Log.DebugFormat("openApiMediaTypeCollection Count is {0}", openApiMediaTypeCollection.Count);
                     OpenApiMediaType firstOpenApiMediaType = openApiMediaTypeCollection.First<OpenApiMediaType>();
                     if (firstOpenApiMediaType != null)
-                    { 
-                        OpenApiSchema schema = firstOpenApiMediaType.Schema;
-                        Log.DebugFormat("schema is {0}", schema.ToString());
-                        if (schema != null)
+                    {
+                        Log.DebugFormat("firstOpenApiMediaType is not null");
+                        OpenApiSchema openApiSchema = firstOpenApiMediaType.Schema;
+                        if (openApiSchema != null)
                         {
+                            Log.DebugFormat("openApiSchema is not null");
                             bool dummyNullable;
-                            returnType = this.GetTypeName(schema, out dummyNullable);
+                            returnType = this.GetTypeName(openApiSchema, out dummyNullable);
                             if (returnType != null && returnType.Equals("Void"))
                             {
                                 returnType = null;
@@ -175,6 +177,7 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                         }
                         else
                         {
+                            Log.DebugFormat("openApiSchema is null");
                             returnType = null;
                         }
                     }
@@ -209,6 +212,7 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                 parameters.Add(parameter);
             }
 
+            Log.DebugFormat("about to create operation");
             XCase.ProxyGenerator.REST.Operation operation = new XCase.ProxyGenerator.REST.Operation(returnType, method, path, parameters, operationId, description, proxyName);
             Log.DebugFormat("created operation");
             return operation;

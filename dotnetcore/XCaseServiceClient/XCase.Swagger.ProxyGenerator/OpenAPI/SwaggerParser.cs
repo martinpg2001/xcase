@@ -152,7 +152,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
             Log.DebugFormat("starting CreateOperationFromOperationToken()");
             string method = operationToken.Name;
             Log.DebugFormat("method is {0}", method);
-            string operationId = method + path.Substring(1);// operationToken.First["operationId"].ToString();
+            string operationId = method + path.Substring(1).Replace("/", "").Replace("{", "").Replace("}", "");// operationToken.First["operationId"].ToString();
             if (operationToken.First["operationId"] != null)
             {
                 operationId = operationToken.First["operationId"].ToString();
@@ -417,7 +417,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
 
         private TypeDefinition ParseType(JToken token)
         {
-            Log.DebugFormat("starting ParseType()");
+            Log.DebugFormat("starting ParseType(JToken token)");
             bool isNullable;
             JToken workingToken;
             string name;
@@ -445,20 +445,24 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
                 Log.DebugFormat("typeName is {0}", typeName);
                 JToken enumToken = workingToken["enum"];
                 string[] enumValues = null;
+                bool isEnum = false;
                 if (enumToken != null)
                 {
+                    isEnum = true;
+                    Log.DebugFormat("isEnum is {0}", isEnum);
                     List<string> enumList = new List<string>();
                     bool anyRawNumbers = false;
                     foreach (JToken enumValueToken in enumToken)
                     {
                         string enumValue = enumValueToken.ToString();
+                        Log.DebugFormat("enumValue is {0}", enumValue);
                         decimal value;
                         if (Decimal.TryParse(enumValue, out value))
                         {
                             anyRawNumbers = true;
                         }
 
-                        enumList.Add(enumValue);
+                        enumList.Add(XCase.ProxyGenerator.REST.Enum.FixEnumValue(enumValue));
                     }
 
                     if (anyRawNumbers == false)
@@ -468,6 +472,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
                     }
                 }
 
+                Log.DebugFormat("isEnum is {0}", isEnum);
                 typeName = FixGenericName(typeName);
                 Log.DebugFormat("typeName is {0}", typeName);
                 TypeDefinition type = new TypeDefinition(typeName, name, enumValues, isNullable);
