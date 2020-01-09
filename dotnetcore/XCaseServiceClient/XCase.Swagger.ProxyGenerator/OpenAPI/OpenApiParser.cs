@@ -129,7 +129,10 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
              * for each method supported by the path. Use the OperationId if possible, but fall back to using
              * path and method if need be.
              */
-            string proxyName = path.Replace("/", "").Replace("{", "").Replace("}", "");
+            string unqueriedPath = path.Contains("?") ? path.Substring(0, path.LastIndexOf("?")) : path;
+            Log.DebugFormat("unqueriedPath is {0}", unqueriedPath);
+            string proxyName = unqueriedPath.Replace("/", "").Replace("{", "").Replace("}", "");
+            Log.DebugFormat("proxyName is {0}", proxyName);
             if (parseOperationIdForProxyName)
             {
                 operationId = keyValuePair.Value.OperationId ?? String.Empty;
@@ -142,6 +145,7 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                 }
             }
 
+            Log.DebugFormat("proxyName is {0}", proxyName);
             if (string.IsNullOrWhiteSpace(operationId))
             {
                 /* Did not get the operationId from property, so generate it from method and path */

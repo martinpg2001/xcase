@@ -9,7 +9,7 @@ namespace XCase.ProxyGenerator.REST
 
         public static string FixEnumValue(string value)
         {
-            string[] specialValues = { "false", "new", "true" };
+            string[] specialValues = { "false", "is", "new", "true" };
             if (string.IsNullOrEmpty(value))
             {
                 return value;
@@ -21,6 +21,16 @@ namespace XCase.ProxyGenerator.REST
             }
 
             return value;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return ((Enum)obj).Name == Name;
+        }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
         }
     }
 }

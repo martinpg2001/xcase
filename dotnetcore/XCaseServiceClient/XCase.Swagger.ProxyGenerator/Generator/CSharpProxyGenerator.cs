@@ -167,13 +167,16 @@
                 WriteOperationToStringBuilder(operation, proxyStringBuilder, endPoint, proxyParamEnums, methodNameAppend);
             }
 
-            foreach (XCase.ProxyGenerator.REST.Enum proxyParamEnum in proxyParamEnums)
+            /* We include definitions of each Enum defined in one or more of the operations. We assume that if two Enums 
+             * have the same name, then they are the same.
+             */
+            foreach (XCase.ProxyGenerator.REST.Enum proxyParamEnum in proxyParamEnums.Distinct<XCase.ProxyGenerator.REST.Enum>())
             {
                 WriteLine(proxyStringBuilder, string.Format("public enum {0}", SwaggerParser.FixTypeName(proxyParamEnum.Name)));
                 WriteLine(proxyStringBuilder, "{");
                 foreach (string enumValue in proxyParamEnum.Values.Distinct())
                 {
-                    WriteLine(proxyStringBuilder, string.Format("{0},", SwaggerParser.FixTypeName(enumValue)));
+                    WriteLine(proxyStringBuilder, string.Format("{0},", XCase.ProxyGenerator.REST.Enum.FixEnumValue(enumValue)));
                 }
 
                 WriteLine(proxyStringBuilder, "}");
@@ -462,7 +465,7 @@
                 }
                 else if (typeName == "integer")
                 {
-                    return "int";
+                    typeName = "int";
                 }
 
                 if (!parameter.IsRequired && parameter.Type.IsNullableType)
