@@ -53,5 +53,15 @@ namespace XCase.ProxyGenerator.REST
 
             return returnType;
         }
+
+        public override bool Equals(object obj)
+        {
+            return ((Operation)obj).OperationId == OperationId;
+        }
+
+        public override int GetHashCode()
+        {
+            return OperationId.GetHashCode();
+        }
     }
 }

@@ -136,14 +136,16 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
             /* Now process methods, and pass common parameters in */
             foreach (JProperty operationToken in jPropertyEnumerable)
             {
+                Log.DebugFormat("next operationToken");
                 if ((new string[] { "delete", "get", "patch", "post", "put" }).Contains(operationToken.Name)) {
                     List<Parameter> operationParameterList = new List<Parameter>(parameterList);
                     Operation operation = CreateOperationFromOperationToken(operationToken, operationParameterList, path, parseOperationIdForProxyName);
-                    Log.DebugFormat("created operation " + operationToken.Name);
+                    Log.DebugFormat("created operation " + operation.OperationId);
                     pathOperationList.Add(operation);
                 }
             }
 
+            Log.DebugFormat("finished processing operationTokens for pathToken");
             return pathOperationList;
         }
 
@@ -152,14 +154,19 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
             Log.DebugFormat("starting CreateOperationFromOperationToken()");
             string method = operationToken.Name;
             Log.DebugFormat("method is {0}", method);
-            string operationId = method + path.Substring(1).Replace("/", "").Replace("{", "").Replace("}", "");// operationToken.First["operationId"].ToString();
+            string unqueriedPath = path.Contains("?") ? path.Substring(0, path.IndexOf("?")) : path;
+            Log.DebugFormat("unqueriedPath is {0}", unqueriedPath);
+            unqueriedPath = unqueriedPath.Replace("/", "").Replace("{", "").Replace("}", "");
+            Log.DebugFormat("unqueriedPath is {0}", unqueriedPath);
+            string proxyName = unqueriedPath;
+            Log.DebugFormat("proxyName is {0}", proxyName);
+            string operationId = method + unqueriedPath;
             if (operationToken.First["operationId"] != null)
             {
                 operationId = operationToken.First["operationId"].ToString();
             }
 
             Log.DebugFormat("operationId is {0}", operationId);
-            string proxyName = string.Empty;
             if (parseOperationIdForProxyName)
             {
                 if (operationId.Contains("_"))
@@ -170,6 +177,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
                 }
             }
 
+            Log.DebugFormat("operationId is {0}", operationId);
             if (string.IsNullOrWhiteSpace(proxyName))
             {
                 /* Did not get the proxy name from the operation id, so take the first tag value */
@@ -417,7 +425,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
 
         private TypeDefinition ParseType(JToken token)
         {
-            Log.DebugFormat("starting ParseType(JToken token)");
+            //Log.DebugFormat("starting ParseType(JToken token)");
             bool isNullable;
             JToken workingToken;
             string name;
@@ -442,20 +450,20 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
             if (workingToken != null)
             {
                 string typeName = GetTypeName(workingToken, out isNullable);
-                Log.DebugFormat("typeName is {0}", typeName);
+                //Log.DebugFormat("typeName is {0}", typeName);
                 JToken enumToken = workingToken["enum"];
                 string[] enumValues = null;
                 bool isEnum = false;
                 if (enumToken != null)
                 {
                     isEnum = true;
-                    Log.DebugFormat("isEnum is {0}", isEnum);
+                    //Log.DebugFormat("isEnum is {0}", isEnum);
                     List<string> enumList = new List<string>();
                     bool anyRawNumbers = false;
                     foreach (JToken enumValueToken in enumToken)
                     {
                         string enumValue = enumValueToken.ToString();
-                        Log.DebugFormat("enumValue is {0}", enumValue);
+                        //Log.DebugFormat("enumValue is {0}", enumValue);
                         decimal value;
                         if (Decimal.TryParse(enumValue, out value))
                         {
@@ -472,9 +480,9 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
                     }
                 }
 
-                Log.DebugFormat("isEnum is {0}", isEnum);
+                //Log.DebugFormat("isEnum is {0}", isEnum);
                 typeName = FixGenericName(typeName);
-                Log.DebugFormat("typeName is {0}", typeName);
+                //Log.DebugFormat("typeName is {0}", typeName);
                 TypeDefinition type = new TypeDefinition(typeName, name, enumValues, isNullable);
                 return type;
             }

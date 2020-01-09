@@ -92,7 +92,8 @@
             WriteLine(stringBuilder, string.Format("public interface {0}", string.Format("I{0}WebProxy", OpenApiParser.FixTypeName(proxy))));
             WriteLine(stringBuilder, "{");
             string proxyName = proxy;
-            foreach (Operation operation in proxyDefinition.Operations.Where(i => i.ProxyName.Equals(proxyName)))
+            IEnumerable<Operation> operationEnumerable = proxyDefinition.Operations.Where(i => i.ProxyName.Equals(proxyName));
+            foreach (Operation operation in operationEnumerable)
             {
                 string returnType = string.IsNullOrEmpty(operation.ReturnType) ? "void" : string.Format("{0}", operation.ReturnType);
                 Log.DebugFormat("returnType is {0}", returnType);
@@ -162,7 +163,8 @@
             WriteLine(proxyStringBuilder);
             List<XCase.ProxyGenerator.REST.Enum> proxyParamEnums = new List<XCase.ProxyGenerator.REST.Enum>();
             string proxyName = proxy;
-            foreach (Operation operation in proxyDefinition.Operations.Where(i => i.ProxyName.Equals(proxyName)))
+            IEnumerable<Operation> operationEnumerable = proxyDefinition.Operations.Where(i => i.ProxyName.Equals(proxyName));
+            foreach (Operation operation in operationEnumerable)
             {
                 WriteOperationToStringBuilder(operation, proxyStringBuilder, endPoint, proxyParamEnums, methodNameAppend);
             }
