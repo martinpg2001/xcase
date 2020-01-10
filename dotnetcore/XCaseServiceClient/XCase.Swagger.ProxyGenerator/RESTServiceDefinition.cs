@@ -27,5 +27,20 @@
         {
             return ProxyClasses;
         }
+
+        public void SetEndPoint(string endPoint)
+        {
+            EndPoint = endPoint;
+        }
+
+        public void SetProxyClasses(List<string> proxyClasses)
+        {
+            ProxyClasses = proxyClasses;
+        }
+
+        public void SetSourceStrings(string[] sourceStrings)
+        {
+            SourceStrings = sourceStrings;
+        }
     }
 }

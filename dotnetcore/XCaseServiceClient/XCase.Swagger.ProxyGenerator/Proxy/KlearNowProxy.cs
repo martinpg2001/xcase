@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace XCase.Swagger.ProxyGenerator.Proxy
+﻿namespace XCase.REST.ProxyGenerator.Proxy
 {
     using log4net;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Net.Http;
+    using System.Net.Http.Headers;
     using System.Reflection;
     using System.Text;
     using XCase.REST.ProxyGenerator;
@@ -50,8 +50,36 @@ namespace XCase.Swagger.ProxyGenerator.Proxy
 
         public override string GetAccessToken(HttpClient client, string userName = "admin", string password = "", string tenantId = null)
         {
-            /* TODO: implement if access token required */
-            return null;
+            Log.DebugFormat("starting GetAccessToken()");
+            string tokenURL = _baseUrl.ToString();
+            Log.DebugFormat("tokenURL is {0}", tokenURL);
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, tokenURL);
+            request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+            Log.DebugFormat("tenantId is {0}", tenantId);
+            string loginString = string.Format("{{\"email\" : \"{0}\", \"password\": \"{1}\" }}", userName, password);
+            Log.DebugFormat("loginString is {0}", loginString);
+            request.Content = new StringContent(loginString);
+            HttpResponseMessage response = client.SendAsync(request).Result;
+            Log.DebugFormat("got response status code {0}", response.StatusCode.ToString());
+            if (!response.IsSuccessStatusCode)
+            {
+                Log.DebugFormat("response status code is not IsSuccessStatusCode");
+                return null;
+            }
+
+            Log.DebugFormat("response status code is IsSuccessStatusCode");
+            string content = response.Content.ReadAsStringAsync().Result;
+            Log.DebugFormat("content is {0}", content);
+            using (StringReader stringReader = new StringReader(content))
+            {
+                using (JsonTextReader jsonReader = new JsonTextReader(stringReader))
+                {
+                    JObject json = (JObject)JsonSerializer.CreateDefault().Deserialize(jsonReader);
+                    string token = json["kxToken"].Value<string>();
+                    Log.DebugFormat("token is {0}", token);
+                    return token;
+                }
+            }
         }
 
         public override string GetSwaggerDocument()
