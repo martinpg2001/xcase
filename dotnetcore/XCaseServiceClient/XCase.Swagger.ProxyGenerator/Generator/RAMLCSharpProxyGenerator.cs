@@ -155,28 +155,41 @@ namespace XCase.REST.ProxyGenerator.Generator
             }
 
             List<string> proxies = proxyDefinition.Operations.Select(i => i.ProxyName).Distinct().ToList();
-            /* Interface for proxy classes */
+            /* Before writing out the proxy classes, we have to ensure that the operation ids are
+             * unique within each proxy class.
+             */
             foreach (string proxy in proxies)
             {
-                Log.DebugFormat("*** next proxy {0} ***", proxy);
+                Log.DebugFormat("next proxy {0}", proxy);
+                IEnumerable<Operation> operationEnumerable = proxyDefinition.Operations.Where(i => i.ProxyName.Equals(proxy));
+                Log.DebugFormat("proxy operation count is ", operationEnumerable.Count<Operation>());
+                foreach (Operation operation in operationEnumerable)
+                {
+                    int count = operationEnumerable.Count<Operation>(o => o.OperationId == operation.OperationId);
+                    if (count > 1)
+                    {
+                        operation.OperationId = operation.OperationId + count;
+                    }
+
+                    Log.DebugFormat("operation.OperationId is {0}", operation.OperationId);
+                }
+            }
+
+            /* Interface and implementation for proxy classes */
+            foreach (string proxy in proxies)
+            {
+                Log.DebugFormat("next proxy {0}", proxy);
                 StringBuilder interfaceStringBuilder = CreateInterfaceStringBuilderForProxy(proxyDefinition, proxy, endPoint, methodNameAppend);
                 Log.DebugFormat("created interfaceStringBuilder for {0}", proxy);
                 sourceStringList.Add(interfaceStringBuilder.ToString());
-                Log.DebugFormat("*** added interface for proxy {0} ***", proxy);
+                Log.DebugFormat("added interface for proxy {0}", proxy);
                 string className = OpenApiParser.FixTypeName(proxy) + "WebProxy";
                 ramlServiceDefinition.ProxyClasses.Add(className);
-                //Log.DebugFormat("added className {0}", className);
-                //Log.DebugFormat("*** added className for proxy {0} ***", proxy);
+                Log.DebugFormat("added className {0}", className);
                 StringBuilder proxyStringBuilder = CreateProxyStringBuilderForProxy(proxyDefinition, proxy, endPoint, methodNameAppend, username, password, tenant);
                 Log.DebugFormat("created proxyStringBuilder for {0}", proxy);
                 sourceStringList.Add(proxyStringBuilder.ToString());
-                Log.DebugFormat("*** finished proxy {0} ***", proxy);
-            }
-
-            /* Main proxy classes */
-            foreach (string proxy in proxies)
-            {
-
+                Log.DebugFormat("finished proxy {0}", proxy);
             }
 
             /* Model Classes */

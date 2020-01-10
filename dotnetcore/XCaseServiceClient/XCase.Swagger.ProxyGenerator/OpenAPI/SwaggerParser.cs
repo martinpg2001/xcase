@@ -128,7 +128,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
                 foreach (JToken paramToken in parameterTokens)
                 {
                     Parameter parameter = CreateParameterFromJToken(paramToken);
-                    Log.DebugFormat("created parameter");
+                    //Log.DebugFormat("created parameter");
                     parameterList.Add(parameter);
                 }
             }
@@ -321,7 +321,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
                     {
                         foreach (JToken propertyJToken in properties)
                         {
-                            Log.DebugFormat("next propertyJToken");
+                            //Log.DebugFormat("next propertyJToken");
                             TypeDefinition type = ParseType(propertyJToken);
                             classDefinition.Properties.Add(type);
                         }
@@ -499,7 +499,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
 
         private string GetTypeName(JToken token, out bool isNullable)
         {
-            Log.DebugFormat("starting GetTypeName()");
+            //Log.DebugFormat("starting GetTypeName()");
             if (token != null)
             {
                 JValue refType = token["$ref"] as JValue;
@@ -509,7 +509,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
                     
                     isNullable = false;
                     string refTypeValue = refType.Value.ToString();
-                    Log.DebugFormat("refTypeValue is {0}", refTypeValue);
+                    //Log.DebugFormat("refTypeValue is {0}", refTypeValue);
                     return FixTypeName(this.ParseRef(refTypeValue));
                 }
 

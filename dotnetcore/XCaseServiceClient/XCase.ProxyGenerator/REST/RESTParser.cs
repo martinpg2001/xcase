@@ -43,7 +43,7 @@
 
         public static string FixTypeName(string typeName)
         {
-            Log.DebugFormat("starting FixTypeName()");
+            //Log.DebugFormat("starting FixTypeName()");
             if (string.IsNullOrWhiteSpace(typeName))
             {
                 return typeName;
