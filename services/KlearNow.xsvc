@@ -7,9 +7,9 @@
   <language>CSharp</language>
   <message>None</message>
   <onpremise>false</onpremise>
-  <password />
+  <password>Ng062010))))</password>
   <security>None</security>
   <timeout>30</timeout>
   <type>KlearNow</type>
-  <username />
+  <username>apiuser@klearnow.com</username>
 </Config>

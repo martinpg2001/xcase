@@ -30,14 +30,21 @@
             _tenantId = "";
         }
 
-        public override HttpClient BuildHttpClient(string username, string password, string tenant)
+        public KlearNowProxy(Uri baseUrl, string username, string password, string domain) : base(baseUrl)
+        {
+            _username = username;
+            _password = password;
+            _tenantId = domain;
+        }
+
+        public override HttpClient BuildHttpClient(string username, string password, string domain)
         {
             HttpClientHandler httpClientHandler = new HttpClientHandler { Credentials = ClientCredentials, Proxy = Proxy, UseCookies = false };
             HttpClient httpClient = new HttpClient(httpClientHandler);
             Log.DebugFormat("created httpClient");
             httpClient.BaseAddress = _baseUrl;
             Log.DebugFormat("set BaseAddress to {0}", _baseUrl);
-            string token = this.GetAccessToken(httpClient, username, password, tenant);
+            string token = this.GetAccessToken(httpClient, username, password, domain);
             this.token = token;
             Log.DebugFormat("set token to {0}", token);
             return httpClient;
@@ -48,14 +55,14 @@
             throw new NotImplementedException();
         }
 
-        public override string GetAccessToken(HttpClient client, string userName = "admin", string password = "", string tenantId = null)
+        public override string GetAccessToken(HttpClient client, string userName = "admin", string password = "", string domain = null)
         {
             Log.DebugFormat("starting GetAccessToken()");
             string tokenURL = _baseUrl.ToString();
             Log.DebugFormat("tokenURL is {0}", tokenURL);
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, tokenURL);
             request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
-            Log.DebugFormat("tenantId is {0}", tenantId);
+            Log.DebugFormat("domain is {0}", domain);
             string loginString = string.Format("{{\"email\" : \"{0}\", \"password\": \"{1}\" }}", userName, password);
             Log.DebugFormat("loginString is {0}", loginString);
             request.Content = new StringContent(loginString);

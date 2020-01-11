@@ -833,7 +833,7 @@ namespace XCaseServiceClient
                 {
                     Log.DebugFormat("refresh is true");
                     RESTServiceDefinition klearNowServiceDefinition = new RESTServiceDefinition();
-                    klearNowServiceDefinition.SetEndPoint("https://api.klearexpress.com/");
+                    klearNowServiceDefinition.SetEndPoint(m_ServiceDescriptionURL);
                     Log.DebugFormat("klearNowServiceDefinition EndPoint is {0}", klearNowServiceDefinition.GetEndPoint());
                     this.Text = m_WindowTitle + " - got REST service definition";
                     string interfaceString = @"namespace XCaseServiceClient
@@ -900,6 +900,13 @@ namespace XCaseServiceClient
                 _tenantId = ""domain"";
             }
 
+            public UserProxy(Uri baseUrl, string username, string password, string domain) : base(baseUrl, username, password, domain)
+            {
+                _username = username;
+                _password = password;
+                _tenantId = domain;
+            }
+
             public void logout()
             {
                 Log.Debug(""starting logout()"");
@@ -961,14 +968,9 @@ namespace XCaseServiceClient
                     Log.DebugFormat("endpoint is {0}", endpoint);
                     Uri endpointUri = new Uri(klearNowServiceDefinition.GetEndPoint());
                     Log.DebugFormat("endpointUri is {0}", endpointUri);
-                    object[] args = new object[] { endpointUri };
+                    object[] args = new object[] { endpointUri, m_ClientCredentialUserName, m_ClientCredentialPassword, m_ClientCredentialDomain };
                     Log.DebugFormat("Namespace is {0}", restApiProxySettingsEndPoint.Namespace);
                     string proxyClass = string.Format("{0}.{1}", restApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
-                    foreach (Type type in m_Assembly.GetTypes())
-                    {
-                        Log.DebugFormat("type is {0}", type.Name);
-                    }
-
                     m_RESTServiceClient = m_Assembly.CreateInstance(proxyClass, false, BindingFlags.CreateInstance, null, args, null, null);
                     if (m_RESTServiceClient != null)
                     {
