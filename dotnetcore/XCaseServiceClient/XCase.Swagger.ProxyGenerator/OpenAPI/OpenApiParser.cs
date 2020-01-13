@@ -48,25 +48,18 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                 Log.DebugFormat("proxyDefinition Description is {0}", proxyDefinition.Description);
                 Log.DebugFormat("proxyDefinition Title is {0}", proxyDefinition.Title);
                 Log.DebugFormat("proxyDefinition Version is {0}", proxyDefinition.Version);
-                if (openApiDocument.Servers != null)
+                if (openApiDocument.Servers != null && (openApiDocument.Servers.Count<OpenApiServer>() > 0))
                 {
                     proxyDefinition.Host = openApiDocument.Servers[0].Url;
-                }
-                else
-                {
-                    proxyDefinition.Host = endpoint.GetHost();
-                }
-
-                Log.DebugFormat("proxyDefinition Host is {0}", proxyDefinition.Host);
-                if (openApiDocument.Servers != null)
-                {
                     proxyDefinition.BasePath = openApiDocument.Servers[0].Url;
                 }
                 else
                 {
+                    proxyDefinition.Host = endpoint.GetHost();
                     proxyDefinition.BasePath = endpoint.GetBasePath();
                 }
 
+                Log.DebugFormat("proxyDefinition Host is {0}", proxyDefinition.Host);
                 Log.DebugFormat("proxyDefinition BasePath is {0}", proxyDefinition.BasePath);
                 ParsePaths(openApiDocument, proxyDefinition, false);
                 ParseDefinitions(openApiDocument, proxyDefinition);
@@ -347,13 +340,32 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                         OpenApiReference refType = itemToken.Reference;
                         if (refType != null)
                         {
-                            string inheritsType = refType.Type.Value.ToString();
-                            if (inheritsType.StartsWith("#/definitions/"))
+                            Log.DebugFormat("refType Type is {0}", refType.Type);
+                            string inheritsType = null;
+                            if (refType.Type != null && refType.Type == ReferenceType.Schema)
                             {
-                                inheritsType = inheritsType.Replace("#/definitions/", "");
+                                if (refType.ReferenceV3.StartsWith("#/components/schemas/"))
+                                {
+                                    Log.DebugFormat("refType.ReferenceV3 starts with #/components/schemas/");
+                                    inheritsType = refType.ReferenceV3.Replace("#/components/schemas/", "");
+                                }
+                                else if (refType.ReferenceV2.StartsWith("#/definitions/"))
+                                {
+                                    Log.DebugFormat("refType.ReferenceV2 starts with #/definitions/");
+                                    inheritsType = refType.ReferenceV2.Replace("#/definitions/", "");
+                                }
+                                else
+                                {
+                                    Log.WarnFormat("inheritsType is null");
+                                }
                             }
 
+                            Log.DebugFormat("inheritsType is {0}", inheritsType);
                             classDefinition.Inherits = inheritsType;
+                        }
+                        else
+                        {
+                            Log.WarnFormat("refType is null");
                         }
 
                         IDictionary<string, OpenApiSchema> propertiesDictionary = itemToken.Properties;
