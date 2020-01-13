@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using XCase.ProxyGenerator;
 using XCase.ProxyGenerator.REST;
@@ -50,8 +51,40 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                 Log.DebugFormat("proxyDefinition Version is {0}", proxyDefinition.Version);
                 if (openApiDocument.Servers != null && (openApiDocument.Servers.Count<OpenApiServer>() > 0))
                 {
-                    proxyDefinition.Host = openApiDocument.Servers[0].Url;
-                    proxyDefinition.BasePath = openApiDocument.Servers[0].Url;
+                    string url = openApiDocument.Servers[0].Url;
+                    GroupCollection groupCollection = Regex.Match(url, @"\{([^)]*)\}").Groups;
+                    if (groupCollection.Count > 0)
+                    {
+                        Log.DebugFormat("groupCollection Count is {0}", groupCollection.Count);
+                        foreach (string key in groupCollection.Keys)
+                        {
+                            Log.DebugFormat("group key is {0}", key);
+                            Group value = null;
+                            if (groupCollection.TryGetValue(key, out value))
+                            {
+                                Log.DebugFormat("group value is {0}", value.Value);
+                            }
+                            else
+                            {
+                                Log.WarnFormat("failed to get value for {0}", key);
+                            }
+                        }
+
+                        string variable = groupCollection[1].Value;
+                        Log.DebugFormat("variable is {0}", variable);
+                        IDictionary<string, OpenApiServerVariable> variablesDictionary = openApiDocument.Servers[0].Variables;
+                        if (variablesDictionary[variable] != null && variablesDictionary[variable].Default != null)
+                        {
+                            url = url.Replace("{" + variable + "}", variablesDictionary[variable].Default);
+                        }
+                        else
+                        {
+                            url = url.Replace("{" + variable + "}", variablesDictionary[variable].Enum[0]);
+                        }
+                    }
+
+                    proxyDefinition.Host = url;
+                    proxyDefinition.BasePath = url;
                 }
                 else
                 {
