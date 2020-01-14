@@ -51,38 +51,47 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                 Log.DebugFormat("proxyDefinition Version is {0}", proxyDefinition.Version);
                 if (openApiDocument.Servers != null && (openApiDocument.Servers.Count<OpenApiServer>() > 0))
                 {
+                    Log.DebugFormat("openApiDocument.Servers is not null and openApiDocument.Servers.Count is greater than zero");
                     string url = openApiDocument.Servers[0].Url;
-                    GroupCollection groupCollection = Regex.Match(url, @"\{([^)]*)\}").Groups;
-                    if (groupCollection.Count > 0)
+                    Log.DebugFormat("url is {0}", url);
+                    for (int index = 0; index < openApiDocument.Servers.Count; index++)
                     {
-                        Log.DebugFormat("groupCollection Count is {0}", groupCollection.Count);
-                        foreach (string key in groupCollection.Keys)
+                        Log.DebugFormat("index is {0}", index);
+                        OpenApiServer openApiServer = openApiDocument.Servers[index];
+                        url = openApiServer.Url;
+                        Log.DebugFormat("url is {0}", url);
+                        GroupCollection groupCollection = Regex.Match(url, @"\{([^)]*)\}").Groups;
+                        if (groupCollection.Count > 0)
                         {
-                            Log.DebugFormat("group key is {0}", key);
-                            Group value = null;
-                            if (groupCollection.TryGetValue(key, out value))
+                            Log.DebugFormat("groupCollection Count is {0}", groupCollection.Count);
+                            for (int key = 1; key < groupCollection.Count; key++)
                             {
-                                Log.DebugFormat("group value is {0}", value.Value);
+                                Log.DebugFormat("group key is {0}", key);
+                                Group group = groupCollection[key];
+                                if (group != null)
+                                {
+                                    Log.DebugFormat("group value is {0}", group.Value);
+                                    string variable = group.Value;
+                                    Log.DebugFormat("variable is {0}", variable);
+                                    IDictionary<string, OpenApiServerVariable> variablesDictionary = openApiServer.Variables;
+                                    if (variablesDictionary[variable] != null && variablesDictionary[variable].Default != null)
+                                    {
+                                        url = url.Replace("{" + variable + "}", variablesDictionary[variable].Default);
+                                    }
+                                    else
+                                    {
+                                        url = url.Replace("{" + variable + "}", variablesDictionary[variable].Enum[0]);
+                                    }
+                                }
+                                else
+                                {
+                                    Log.WarnFormat("failed to get value for {0}", key);
+                                }
                             }
-                            else
-                            {
-                                Log.WarnFormat("failed to get value for {0}", key);
-                            }
-                        }
-
-                        string variable = groupCollection[1].Value;
-                        Log.DebugFormat("variable is {0}", variable);
-                        IDictionary<string, OpenApiServerVariable> variablesDictionary = openApiDocument.Servers[0].Variables;
-                        if (variablesDictionary[variable] != null && variablesDictionary[variable].Default != null)
-                        {
-                            url = url.Replace("{" + variable + "}", variablesDictionary[variable].Default);
-                        }
-                        else
-                        {
-                            url = url.Replace("{" + variable + "}", variablesDictionary[variable].Enum[0]);
                         }
                     }
 
+                    Log.DebugFormat("url is {0}", url);
                     proxyDefinition.Host = url;
                     proxyDefinition.BasePath = url;
                 }
