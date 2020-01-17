@@ -110,7 +110,7 @@
 
                 string className = OpenApiParser.FixTypeName(proxy) + "WebProxy";
                 /* Sort by required so that non-nullable parameters come first */
-                IEnumerable<Parameter> parameterEnumerable = operation.Parameters.OrderByDescending(i => i.IsRequired);
+                IEnumerable<Parameter> parameterEnumerable = operation.Parameters.OrderByDescending(parameter => parameter.Type.Name);
                 string parameters = string.Join(", ", parameterEnumerable.Select(p =>
                 {
                     /* if parameter is enum include the namespace */
@@ -169,7 +169,8 @@
                 WriteOperationToStringBuilder(operation, proxyStringBuilder, endPoint, proxyParamEnums, methodNameAppend);
             }
 
-            /* We include definitions of each Enum defined in one or more of the operations. We assume that if two Enums 
+            /* 
+             * We include definitions of each Enum defined in one or more of the operations. We assume that if two Enums 
              * have the same name, then they are the same.
              */
             foreach (XCase.ProxyGenerator.REST.Enum proxyParamEnum in proxyParamEnums.Distinct<XCase.ProxyGenerator.REST.Enum>())
@@ -210,6 +211,11 @@
                 proxyParamEnums.Add(new XCase.ProxyGenerator.REST.Enum() { Name = enumParameter.Type.TypeName, Values = enumParameter.Type.EnumValues });
             }
 
+            if (operation.SecurityScheme != null)
+            {
+                /* TODO: we have to decide what do with the operation RESTSecurityScheme if it exists */
+            }
+
             WriteLine(stringBuilder, "/// <summary>");
             string summary = (SecurityElement.Escape(operation.Description) ?? "").Replace("\n", "\n///");
             if (string.IsNullOrWhiteSpace(summary))
@@ -222,7 +228,7 @@
             }
 
             WriteLine(stringBuilder, "/// </summary>");
-            foreach (Parameter parameter in operation.Parameters)
+            foreach (Parameter parameter in operation.Parameters.OrderByDescending(parameter => parameter.Type.Name))
             {
                 if (parameter.Type != null)
                 {
@@ -235,7 +241,7 @@
             string returnTypeName = SwaggerParser.FixTypeName(returnType);
             Log.DebugFormat("returnTypeName is {0}", returnTypeName);
             /* Sort by required so that non-nullable parameters come first */
-            IEnumerable<Parameter> parameterEnumerable = operation.Parameters.OrderByDescending(i => i.IsRequired);
+            IEnumerable<Parameter> parameterEnumerable = operation.Parameters.OrderByDescending(parameter => parameter.Type.Name);
             string parameters = string.Join(", ", parameterEnumerable.Select(p =>
             {
                 string parameter = string.Empty;

@@ -22,6 +22,7 @@ namespace XCase.ProxyGenerator.REST
         public string OperationId { get; set; }
         public string Description { get; set; }
         public string ReturnType { get; set; }
+        public RESTSecurityScheme SecurityScheme { get; set; }
 
         public static string GetCleanJavaReturnType(string returnType)
         {

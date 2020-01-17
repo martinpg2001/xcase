@@ -49,62 +49,12 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                 Log.DebugFormat("proxyDefinition Description is {0}", proxyDefinition.Description);
                 Log.DebugFormat("proxyDefinition Title is {0}", proxyDefinition.Title);
                 Log.DebugFormat("proxyDefinition Version is {0}", proxyDefinition.Version);
-                if (openApiDocument.Servers != null && (openApiDocument.Servers.Count<OpenApiServer>() > 0))
-                {
-                    Log.DebugFormat("openApiDocument.Servers is not null and openApiDocument.Servers.Count is greater than zero");
-                    string url = openApiDocument.Servers[0].Url;
-                    Log.DebugFormat("url is {0}", url);
-                    for (int index = 0; index < openApiDocument.Servers.Count; index++)
-                    {
-                        Log.DebugFormat("index is {0}", index);
-                        OpenApiServer openApiServer = openApiDocument.Servers[index];
-                        url = openApiServer.Url;
-                        Log.DebugFormat("url is {0}", url);
-                        GroupCollection groupCollection = Regex.Match(url, @"\{([^)]*)\}").Groups;
-                        if (groupCollection.Count > 0)
-                        {
-                            Log.DebugFormat("groupCollection Count is {0}", groupCollection.Count);
-                            for (int key = 1; key < groupCollection.Count; key++)
-                            {
-                                Log.DebugFormat("group key is {0}", key);
-                                Group group = groupCollection[key];
-                                if (group != null)
-                                {
-                                    Log.DebugFormat("group value is {0}", group.Value);
-                                    string variable = group.Value;
-                                    Log.DebugFormat("variable is {0}", variable);
-                                    IDictionary<string, OpenApiServerVariable> variablesDictionary = openApiServer.Variables;
-                                    if (variablesDictionary[variable] != null && variablesDictionary[variable].Default != null)
-                                    {
-                                        url = url.Replace("{" + variable + "}", variablesDictionary[variable].Default);
-                                    }
-                                    else
-                                    {
-                                        url = url.Replace("{" + variable + "}", variablesDictionary[variable].Enum[0]);
-                                    }
-                                }
-                                else
-                                {
-                                    Log.WarnFormat("failed to get value for {0}", key);
-                                }
-                            }
-                        }
-                    }
-
-                    Log.DebugFormat("url is {0}", url);
-                    proxyDefinition.Host = url;
-                    proxyDefinition.BasePath = url;
-                }
-                else
-                {
-                    proxyDefinition.Host = endpoint.GetHost();
-                    proxyDefinition.BasePath = endpoint.GetBasePath();
-                }
-
+                PopulateBasePathAndHost(endpoint, proxyDefinition, openApiDocument);
                 Log.DebugFormat("proxyDefinition Host is {0}", proxyDefinition.Host);
                 Log.DebugFormat("proxyDefinition BasePath is {0}", proxyDefinition.BasePath);
                 ParsePaths(openApiDocument, proxyDefinition, false);
                 ParseDefinitions(openApiDocument, proxyDefinition);
+                ParseSecuritySchema(openApiDocument, proxyDefinition);
             }
             catch (Exception e)
             {
@@ -116,6 +66,87 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
             return proxyDefinition;
         }
 
+        private void ParseSecuritySchema(OpenApiDocument openApiDocument, ProxyDefinition proxyDefinition)
+        {
+            Log.DebugFormat("starting ParseSecuritySchema()");
+            IDictionary<string, RESTSecurityScheme> restSecuritySchemeDictionary = new Dictionary<string, RESTSecurityScheme>();
+            IDictionary<string, OpenApiSecurityScheme> openApiSecuritySchemeDictionary = openApiDocument.Components.SecuritySchemes;
+            foreach (string key in openApiSecuritySchemeDictionary.Keys)
+            {
+                OpenApiSecurityScheme openApiSecurityScheme = openApiSecuritySchemeDictionary[key];
+                RESTSecurityScheme restSecurityScheme = CreateRESTSecuritySchemeFromOpenApiSecurityScheme(openApiSecurityScheme);
+                restSecuritySchemeDictionary.Add(key, restSecurityScheme);
+            }
+
+            proxyDefinition.SecuritySchemes = restSecuritySchemeDictionary;
+        }
+
+        private RESTSecurityScheme CreateRESTSecuritySchemeFromOpenApiSecurityScheme(OpenApiSecurityScheme openApiSecurityScheme)
+        {
+            Log.DebugFormat("starting CreateRESTSecuritySchemeFromOpenApiSecurityScheme()");
+            RESTSecurityScheme restSecurityScheme = new RESTSecurityScheme();
+            restSecurityScheme.Type = openApiSecurityScheme.Type.ToString();
+            restSecurityScheme.Scheme = openApiSecurityScheme.Scheme;
+            restSecurityScheme.ApiKeyLocation = openApiSecurityScheme.In.ToString();
+            restSecurityScheme.Name = openApiSecurityScheme.Name;
+            return restSecurityScheme;
+        }
+
+        private static void PopulateBasePathAndHost(IAPIProxySettingsEndpoint endpoint, ProxyDefinition proxyDefinition, OpenApiDocument openApiDocument)
+        {
+            Log.DebugFormat("starting PopulateBasePathAndHost()");
+            if (openApiDocument.Servers != null && (openApiDocument.Servers.Count<OpenApiServer>() > 0))
+            {
+                Log.DebugFormat("openApiDocument.Servers is not null and openApiDocument.Servers.Count is greater than zero");
+                string url = openApiDocument.Servers[0].Url;
+                Log.DebugFormat("url is {0}", url);
+                for (int index = 0; index < openApiDocument.Servers.Count; index++)
+                {
+                    Log.DebugFormat("index is {0}", index);
+                    OpenApiServer openApiServer = openApiDocument.Servers[index];
+                    url = openApiServer.Url;
+                    Log.DebugFormat("url is {0}", url);
+                    GroupCollection groupCollection = Regex.Match(url, @"\{([^)]*)\}").Groups;
+                    if (groupCollection.Count > 0)
+                    {
+                        Log.DebugFormat("groupCollection Count is {0}", groupCollection.Count);
+                        for (int key = 1; key < groupCollection.Count; key++)
+                        {
+                            Log.DebugFormat("group key is {0}", key);
+                            Group group = groupCollection[key];
+                            if (group != null)
+                            {
+                                Log.DebugFormat("group value is {0}", group.Value);
+                                string variable = group.Value;
+                                Log.DebugFormat("variable is {0}", variable);
+                                IDictionary<string, OpenApiServerVariable> variablesDictionary = openApiServer.Variables;
+                                if (variablesDictionary[variable] != null && variablesDictionary[variable].Default != null)
+                                {
+                                    url = url.Replace("{" + variable + "}", variablesDictionary[variable].Default);
+                                }
+                                else
+                                {
+                                    url = url.Replace("{" + variable + "}", variablesDictionary[variable].Enum[0]);
+                                }
+                            }
+                            else
+                            {
+                                Log.WarnFormat("failed to get value for {0}", key);
+                            }
+                        }
+                    }
+                }
+
+                Log.DebugFormat("url is {0}", url);
+                proxyDefinition.Host = url;
+                proxyDefinition.BasePath = url;
+            }
+            else
+            {
+                proxyDefinition.Host = endpoint.GetHost();
+                proxyDefinition.BasePath = endpoint.GetBasePath();
+            }
+        }
 
         private void ParsePaths(OpenApiDocument openApiDocument, ProxyDefinition proxyDefinition, bool parseOperationIdForProxyName)
         {
@@ -124,7 +155,7 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
             List<KeyValuePair<string, OpenApiPathItem>> endpointEnumerable = openApiPaths.ToList();
             foreach(KeyValuePair<string, OpenApiPathItem> endpoint in endpointEnumerable)
             {
-                List<XCase.ProxyGenerator.REST.Operation> endpointOperationList = CreateOperationListFromEndpoint(endpoint, parseOperationIdForProxyName);
+                List<XCase.ProxyGenerator.REST.Operation> endpointOperationList = CreateOperationListFromEndpoint(endpoint, parseOperationIdForProxyName, proxyDefinition.SecuritySchemes);
                 Log.DebugFormat("created endpointOperationList");
                 proxyDefinition.Operations.AddRange(endpointOperationList);
             }
@@ -132,29 +163,29 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
             Log.Debug("finishing ParsePaths()");
         }
 
-        private List<XCase.ProxyGenerator.REST.Operation> CreateOperationListFromEndpoint(KeyValuePair<string, OpenApiPathItem> endpoint, bool parseOperationIdForProxyName)
+        private List<XCase.ProxyGenerator.REST.Operation> CreateOperationListFromEndpoint(KeyValuePair<string, OpenApiPathItem> endpoint, bool parseOperationIdForProxyName, IDictionary<string, RESTSecurityScheme> restSecuritySchemeDictionary)
         {
             Log.DebugFormat("starting CreateOperationListFromEndpoint()");
             List<XCase.ProxyGenerator.REST.Operation> operationList = new List<XCase.ProxyGenerator.REST.Operation>();
-            List < XCase.ProxyGenerator.REST.Operation> restOperationList = CreateOperationListFromPathToken(endpoint.Key, endpoint.Value, null, parseOperationIdForProxyName);
+            List < XCase.ProxyGenerator.REST.Operation> restOperationList = CreateOperationListFromPathToken(endpoint.Key, endpoint.Value, null, parseOperationIdForProxyName, restSecuritySchemeDictionary);
             operationList.AddRange(restOperationList);
             return operationList;
         }
 
-        private List<XCase.ProxyGenerator.REST.Operation> CreateOperationListFromPathToken(string path, OpenApiPathItem endpoint, List<XCase.ProxyGenerator.REST.Parameter> parameterList, bool parseOperationIdForProxyName)
+        private List<XCase.ProxyGenerator.REST.Operation> CreateOperationListFromPathToken(string path, OpenApiPathItem endpoint, List<XCase.ProxyGenerator.REST.Parameter> parameterList, bool parseOperationIdForProxyName, IDictionary<string, RESTSecurityScheme> restSecuritySchemeDictionary)
         {
             Log.DebugFormat("starting CreateOperationListFromPathToken()");
             List<XCase.ProxyGenerator.REST.Operation> pathOperationList = new List<XCase.ProxyGenerator.REST.Operation>();
             foreach (KeyValuePair<OperationType, OpenApiOperation> operation in endpoint.Operations)
             {
-                XCase.ProxyGenerator.REST.Operation restOperation = CreateOperationFromOpenApiOperation(path, operation, null, true);
+                XCase.ProxyGenerator.REST.Operation restOperation = CreateOperationFromOpenApiOperation(path, operation, null, true, restSecuritySchemeDictionary);
                 pathOperationList.Add(restOperation);
             }
 
             return pathOperationList;
         }
 
-        private XCase.ProxyGenerator.REST.Operation CreateOperationFromOpenApiOperation(string path, KeyValuePair<OperationType, OpenApiOperation> keyValuePair, List<XCase.ProxyGenerator.REST.Parameter> parameterList, bool parseOperationIdForProxyName)
+        private XCase.ProxyGenerator.REST.Operation CreateOperationFromOpenApiOperation(string path, KeyValuePair<OperationType, OpenApiOperation> keyValuePair, List<XCase.ProxyGenerator.REST.Parameter> parameterList, bool parseOperationIdForProxyName, IDictionary<string, RESTSecurityScheme> restSecuritySchemeDictionary)
         {
             Log.DebugFormat("starting CreateOperationFromOpenApiOperation()");
             string method = keyValuePair.Key.ToString();
@@ -189,6 +220,26 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
 
             Log.DebugFormat("operationId is {0}", operationId);
             string description = keyValuePair.Value.Description;
+            /* For the moment, we check for the first (if any) security requirement and use that */
+            RESTSecurityScheme restSecurityScheme = null;
+            IList <OpenApiSecurityRequirement> openApiSecurityRequirementList = keyValuePair.Value.Security;
+            if (openApiSecurityRequirementList != null && openApiSecurityRequirementList.Count > 0)
+            {
+                OpenApiSecurityRequirement openApiSecurityRequirement = openApiSecurityRequirementList[0];
+                if (openApiSecurityRequirement.Count > 0)
+                {
+                    KeyValuePair<OpenApiSecurityScheme, IList<string>> firstKeyValuePair = openApiSecurityRequirement.First<KeyValuePair<OpenApiSecurityScheme, IList<string>>>();
+                    foreach (string value in firstKeyValuePair.Value)
+                    {
+                        if (restSecuritySchemeDictionary.ContainsKey(value))
+                        {
+                            restSecurityScheme = restSecuritySchemeDictionary[value];
+                            break;
+                        }
+                    }
+                }
+            }
+
             string returnType = null;
             List<KeyValuePair<string, OpenApiResponse>> responses = keyValuePair.Value.Responses.ToList();
             KeyValuePair<string, OpenApiResponse> firstResponse = responses.First<KeyValuePair<string, OpenApiResponse>>();
@@ -253,6 +304,7 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
 
             Log.DebugFormat("about to create operation");
             XCase.ProxyGenerator.REST.Operation operation = new XCase.ProxyGenerator.REST.Operation(returnType, method, path, parameters, operationId, description, proxyName);
+            operation.SecurityScheme = restSecurityScheme;
             Log.DebugFormat("created operation");
             return operation;
         }
