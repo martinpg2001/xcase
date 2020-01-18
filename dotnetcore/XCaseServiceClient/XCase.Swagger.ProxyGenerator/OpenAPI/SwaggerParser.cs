@@ -87,10 +87,37 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
             Log.Debug("parsed paths");
             this.ParseDefinitions(jObject, proxyDefinition);
             Log.Debug("finishing ParseSwaggerDoc()");
+            ParseSecuritySchema(jObject, proxyDefinition);
             return proxyDefinition;
         }
 
- 
+        private void ParseSecuritySchema(JObject jObject, ProxyDefinition proxyDefinition)
+        {
+            Log.DebugFormat("starting ParseSecuritySchema()");
+            IDictionary<string, RESTSecurityScheme> restSecuritySchemeDictionary = new Dictionary<string, RESTSecurityScheme>();
+            foreach (JProperty schemeJProperty in jObject["securitySchemes"].Cast<JProperty>())
+            {
+               string key = schemeJProperty.Name;
+               JToken schemeJToken = schemeJProperty.Value;
+               RESTSecurityScheme restSecurityScheme = CreateRESTSecuritySchemeFromSchemeJToken(schemeJToken);
+               restSecuritySchemeDictionary.Add(key, restSecurityScheme);
+            }
+
+            proxyDefinition.SecuritySchemes = restSecuritySchemeDictionary;
+        }
+
+        private RESTSecurityScheme CreateRESTSecuritySchemeFromSchemeJToken(JToken schemeJToken)
+        {
+            Log.DebugFormat("starting CreateRESTSecuritySchemeFromSchemeJToken()");
+            /* This is not correct, but points to what has to be done to process the scheme tokens */
+            RESTSecurityScheme restSecurityScheme = new RESTSecurityScheme();
+            restSecurityScheme.Type = schemeJToken["type"].ToString();
+            restSecurityScheme.Scheme = schemeJToken["scheme"].ToString();
+            restSecurityScheme.ApiKeyLocation = schemeJToken["apikeylocation"].ToString();
+            restSecurityScheme.Name = schemeJToken["name"].ToString();
+            return restSecurityScheme;
+        }
+
         private void ParsePaths(JObject jObject, ProxyDefinition proxyDefinition, bool parseOperationIdForProxyName)
         {
             Log.DebugFormat("starting ParsePaths()");
