@@ -4,8 +4,10 @@ import com.xcase.klearnow.transputs.*;
 
 public interface KlearNowExternalAPI {
 
-    SendMessageResponse sendMessage(SendMessageRequest sendMessageRequest);
+    SendMessageResponse sendMessage(SendMessageRequest request);
 
-    GetAccessTokenResponse getAccessToken(GetAccessTokenRequest getAccessTokenRequest);
+    GetAccessTokenResponse getAccessToken(GetAccessTokenRequest request);
+
+    CreateShipmentResponse createShipment(CreateShipmentRequest request);
 
 }

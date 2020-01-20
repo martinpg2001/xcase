@@ -16,12 +16,22 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
     /**
      * Mail action implementation.
      */
+    private CreateShipmentMethod createShipmentMethod = new CreateShipmentMethod();
+    
+    /**
+     * Mail action implementation.
+     */
     private GetAccessTokenMethod getAccessTokenMethod = new GetAccessTokenMethod();
 
     /**
      * Mail action implementation.
      */
     private SendMessageMethod sendMessageMethod = new SendMessageMethod();
+    
+    @Override
+    public CreateShipmentResponse createShipment(CreateShipmentRequest request) {
+        return this.createShipmentMethod.createShipment(request);
+    }
 
     @Override
     public SendMessageResponse sendMessage(SendMessageRequest sendMessageRequest) {

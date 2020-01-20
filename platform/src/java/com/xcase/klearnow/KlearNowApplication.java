@@ -1,17 +1,19 @@
 package com.xcase.klearnow;
 
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.xcase.klearnow.constant.*;
 import com.xcase.klearnow.factories.KlearNowRequestFactory;
 import com.xcase.klearnow.impl.simple.core.KlearNowConfigurationManager;
-import com.xcase.klearnow.transputs.GetAccessTokenRequest;
-import com.xcase.klearnow.transputs.GetAccessTokenResponse;
-import com.xcase.klearnow.transputs.SendMessageRequest;
-import com.xcase.klearnow.transputs.SendMessageResponse;
+import com.xcase.klearnow.objects.*;
+import com.xcase.klearnow.transputs.*;
 import java.lang.invoke.MethodHandles;
+import java.util.UUID;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,6 +26,7 @@ public class KlearNowApplication {
     public static void main(String[] args) {
         try {
             LOGGER.debug("starting main()");
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
             KlearNowExternalAPI klearNowExternalAPI = new SimpleKlearNowImpl();
             String apiEventsURL = KlearNowConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(KlearNowConstant.LOCAL_API_URL);
             LOGGER.debug("apiEventsURL is " + apiEventsURL);
@@ -42,9 +45,7 @@ public class KlearNowApplication {
             GetAccessTokenResponse getAccessTokenResponse = klearNowExternalAPI.getAccessToken(getAccessTokenRequest);
             JsonObject eventMessageJsonObject = getAccessTokenResponse.getEventMessage();
             LOGGER.debug("got eventMessageJsonObject");
-            JsonObject userJsonObject = eventMessageJsonObject.getAsJsonObject("user");
-            LOGGER.debug("got userJsonObject");
-            JsonPrimitive kxTokenJsonPrimitive = userJsonObject.getAsJsonPrimitive("kxToken");
+            JsonPrimitive kxTokenJsonPrimitive = eventMessageJsonObject.getAsJsonPrimitive("kxToken");
             LOGGER.debug("kxTokenJsonPrimitive is " + kxTokenJsonPrimitive);
             if (kxTokenJsonPrimitive != null && !kxTokenJsonPrimitive.isJsonNull()) {
                 LOGGER.debug("kxTokenJsonPrimitive is not null");
@@ -60,19 +61,20 @@ public class KlearNowApplication {
             }
 
             /* Create shipment */
-            SendMessageRequest sendMessageRequest = KlearNowRequestFactory.createSendMessageRequest(accessToken);
-            sendMessageRequest.setAPIUrl(apiEventsURL);
-            sendMessageRequest.setMessage(" {\n" +
-                    "\"eventMessage\": {\n" +
-                    "\"carrierId\": \"36\",\n" +
-                    "\"carrierType\": \"VESSEL\"\n" +
-                    "},\n" +
-                    "\"eventType\": \"GET_VESSEL_DTL\",\n" +
-                    "\"eventTime\": 1554999583589\n" +
-                    "}");
-            SendMessageResponse sendMessageResponse = klearNowExternalAPI.sendMessage(sendMessageRequest);
+            CreateShipmentRequest request = KlearNowRequestFactory.createCreateShipmentRequest(accessToken);
+            request.setAPIUrl(apiEventsURL);
+            Shipment shipment = new Shipment();
+            String uuid = UUID.randomUUID().toString();
+            LOGGER.debug("uuid is " + uuid);
+            shipment.shipmentId = uuid;
+            String createShipmentString = gson.toJson(shipment);
+            LOGGER.debug("createShipmentString is " + createShipmentString);
+            request.setMessage(createShipmentString);
+            CreateShipmentResponse createShipmentResponse = klearNowExternalAPI.createShipment(request);
+            int responseCode = createShipmentResponse.getResponseCode();
+            LOGGER.debug("responseCode is " + responseCode);
         } catch (Exception e) {
-            LOGGER.warn("exception invoking events API: " + e.getMessage());
+            LOGGER.warn("exception invoking API operation: " + e.getMessage());
         }
     }
 }
