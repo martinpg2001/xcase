@@ -103,6 +103,7 @@
         /// <param name="xmlNode">The xmlNode parameter</param>
         public static void WriteXmlNodeToLog(XmlNode xmlNode)
         {
+            Log.DebugFormat("starting WriteXmlNodeToLog()");
             StringWriter stringWriter = new StringWriter();
             XmlTextWriter xmlTextWriter = new XmlTextWriter(stringWriter);
             xmlTextWriter.Formatting = Formatting.Indented;

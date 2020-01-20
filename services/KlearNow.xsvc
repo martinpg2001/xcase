@@ -3,13 +3,13 @@
   <binding>Basic</binding>
   <client>None</client>
   <domain />
-  <endpoint>https://api.klearnow.com/</endpoint>
+  <endpoint>https://api.klearnow.com/api-staging/v1/</endpoint>
   <language>CSharp</language>
   <message>None</message>
   <onpremise>false</onpremise>
-  <password>Ng062010))))</password>
+  <password>api123</password>
   <security>None</security>
   <timeout>30</timeout>
   <type>KlearNow</type>
-  <username>apiuser@klearnow.com</username>
+  <username>kx7@klearnow.com</username>
 </Config>
