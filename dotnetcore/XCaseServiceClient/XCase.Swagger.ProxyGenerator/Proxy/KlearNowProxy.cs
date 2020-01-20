@@ -55,15 +55,15 @@
             throw new NotImplementedException();
         }
 
-        public override string GetAccessToken(HttpClient client, string userName = "admin", string password = "", string domain = null)
+        public override string GetAccessToken(HttpClient client, string username = "admin", string password = "", string domain = null)
         {
             Log.DebugFormat("starting GetAccessToken()");
-            string tokenURL = _baseUrl.ToString();
+            string tokenURL = _baseUrl.ToString() + "login";
             Log.DebugFormat("tokenURL is {0}", tokenURL);
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, tokenURL);
             request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
             Log.DebugFormat("domain is {0}", domain);
-            string loginString = string.Format("{{\"email\" : \"{0}\", \"password\": \"{1}\" }}", userName, password);
+            string loginString = string.Format("{{\"email\" : \"{0}\", \"password\": \"{1}\" }}", username, password);
             Log.DebugFormat("loginString is {0}", loginString);
             request.Content = new StringContent(loginString);
             HttpResponseMessage response = client.SendAsync(request).Result;

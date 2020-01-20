@@ -1,0 +1,37 @@
+package com.xcase.klearnow.factories;
+
+import java.lang.invoke.MethodHandles;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import com.xcase.klearnow.transputs.*;
+
+public class KlearNowResponseFactory extends BaseKlearNowFactory {
+
+    /**
+     * log4j object.
+     */
+    protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
+
+    /**
+     * create response object.
+     *
+     * @return response object
+     */
+
+    public static SendMessageResponse createSendMessageResponse() {
+        Object obj = newInstanceOf("klearnow.config.responsefactory.SendMessageResponse");
+        return (SendMessageResponse) obj;
+    }
+
+    public static GetAccessTokenResponse createGetAccessTokenResponse() {
+        Object obj = newInstanceOf("klearnow.config.responsefactory.GetAccessTokenResponse");
+        return (GetAccessTokenResponse) obj;
+    }
+
+    public static CreateShipmentResponse createCreateShipmentResponse() {
+        Object obj = newInstanceOf("klearnow.config.responsefactory.CreateShipmentResponse");
+        return (CreateShipmentResponse) obj;
+    }
+
+}

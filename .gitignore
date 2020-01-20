@@ -266,3 +266,4 @@ dotnetcore/XCaseServiceClient/.vs/XCaseServiceClient/v16/Server/sqlite3/storage.
 dotnetcore/XCaseServiceClient/.vs/XCaseServiceClient/DesignTimeBuild/.dtbcache
 dotnetcore/XCaseServiceClient/.vs/XCaseServiceClient/v16/Server/sqlite3/storage.ide
 *.ide
+platform/klearnow-local-config.properties
