@@ -1003,23 +1003,38 @@ namespace XCaseServiceClient
 
             public string CreateShipment(Shipment shipment)
             {
-                Log.Debug(""starting CreateShipment()"");
-                string url = string.Empty;
+                Log.DebugFormat(""starting CreateShipment()"");
+                string url = ""shipment"";
                 using (HttpClient apiClient = BuildHttpClient())
                 {
-                    string requestURL = string.Format(""{0}{1}"", apiClient.BaseAddress, url);
+                    string requestURL = string.Format(""{0}{1}"", apiClient.BaseAddress.ToString(), url);
+                    Log.DebugFormat(""requestURL is {0}"", requestURL);
                     HttpRequestMessage httpRequestMessage = new HttpRequestMessage() { RequestUri = new Uri(requestURL), Method = System.Net.Http.HttpMethod.Get };
+                    Log.DebugFormat(""created httpRequestMessage"");
                     httpRequestMessage.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(""application/json""));
+                    Log.DebugFormat(""set Accept header"");
                     httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue(""kxToken"", token);
+                    Log.DebugFormat(""set Authorization header"");
                     HttpResponseMessage response = apiClient.SendAsync(httpRequestMessage).Result;
-                    if (response.IsSuccessStatusCode)
+                    Log.DebugFormat(""got response"");
+                    if (response != null)
                     {
-                        string content = response.Content.ReadAsStringAsync().Result;
-                        return content;
+                        if (response.IsSuccessStatusCode)
+                        {
+                            Log.DebugFormat(""got response {0}"", response.IsSuccessStatusCode);
+                            string content = response.Content.ReadAsStringAsync().Result;
+                            return content;
+                        }
+                        else
+                        {
+                            Log.WarnFormat(""response is not success"");
+                            throw new Exception(""Failure invoking method: "" + response.StatusCode + "":"" + response.Content.ReadAsStringAsync().Result);
+                        }
                     }
                     else
                     {
-                        throw new Exception(""Failure invoking method: "" + response.StatusCode + "":"" + response.Content.ReadAsStringAsync().Result);
+                        Log.WarnFormat(""response is null"");
+                        return null;
                     }
                 }
             }
@@ -1051,7 +1066,16 @@ namespace XCaseServiceClient
         /// </summary>
         public class Shipment
         {
+            public string supplierEmail { get; set; }
             public string shipmentId { get; set; }
+            public string houseBolNumber { get; set; }
+            public int departureDate { get; set; }
+            public int arrivalDate { get; set; }
+            public string portOfLadingCode { get; set; }
+            public string portOfUnladingCode { get; set; }
+            public string supplierActorId { get; set; }
+            public string sellerActorId { get; set; }
+            public string manufacturerActorId { get; set; }
         }
     }";
                     List<string> proxyList = new List<string>();
