@@ -1,6 +1,5 @@
 package com.xcase.klearnow;
 
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -12,11 +11,11 @@ import com.xcase.klearnow.impl.simple.core.KlearNowConfigurationManager;
 import com.xcase.klearnow.objects.*;
 import com.xcase.klearnow.transputs.*;
 import java.lang.invoke.MethodHandles;
+import java.time.Instant;
 import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.joda.time.Instant;
 
 public class KlearNowApplication {
     /**
@@ -62,16 +61,16 @@ public class KlearNowApplication {
             }
 
             /* Create shipment */
-            CreateShipmentRequest request = KlearNowRequestFactory.createCreateShipmentRequest(accessToken);
-            request.setAPIUrl(apiEventsURL);
+            CreateShipmentRequest createShipmentRequest = KlearNowRequestFactory.createCreateShipmentRequest(accessToken);
+            createShipmentRequest.setAPIUrl(apiEventsURL);
             Shipment shipment = new Shipment();
-            String uuid = UUID.randomUUID().toString();
-            LOGGER.debug("uuid is " + uuid);
-            shipment.shipmentId = uuid;
+            String shipmentId = UUID.randomUUID().toString();
+            LOGGER.debug("shipmentId is " + shipmentId);
+            shipment.shipmentId = shipmentId;
             shipment.supplierEmail = "qa@klearexpress.us";
             shipment.houseBolNumber = "HBOL123455666";
-            shipment.departureDate = Instant.now().getMillis();
-            shipment.arrivalDate = Instant.now().getMillis();
+            shipment.departureDate = Instant.now().toEpochMilli();
+            shipment.arrivalDate = Instant.now().plusMillis(1000 * 7 * 24 * 24 * 60 * 60).toEpochMilli();
             shipment.portOfLadingCode = "48945";
             shipment.portOfUnladingCode = "4601";
             shipment.supplierActorId = "";
@@ -79,9 +78,41 @@ public class KlearNowApplication {
             shipment.manufacturerActorId = "";
             String createShipmentString = gson.toJson(shipment);
             LOGGER.debug("createShipmentString is " + createShipmentString);
-            request.setMessage(createShipmentString);
-            CreateShipmentResponse createShipmentResponse = klearNowExternalAPI.createShipment(request);
+            createShipmentRequest.setMessage(createShipmentString);
+            CreateShipmentResponse createShipmentResponse = klearNowExternalAPI.createShipment(createShipmentRequest);
             int responseCode = createShipmentResponse.getResponseCode();
+            LOGGER.debug("responseCode is " + responseCode);
+            /* Get shipment */
+            LOGGER.debug("shipmentId is " + shipmentId);
+            GetShipmentRequest getShipmentRequest = KlearNowRequestFactory.createGetShipmentRequest(accessToken, shipmentId);
+            getShipmentRequest.setAPIUrl(apiEventsURL);
+            GetShipmentResponse getShipmentResponse = klearNowExternalAPI.getShipment(getShipmentRequest);
+            responseCode = getShipmentResponse.getResponseCode();
+            LOGGER.debug("responseCode is " + responseCode);
+            /* Update shipment */
+            LOGGER.debug("shipmentId is " + shipmentId);
+            UpdateShipmentRequest updateShipmentRequest = KlearNowRequestFactory.createUpdateShipmentRequest(accessToken, shipmentId);
+            updateShipmentRequest.setAPIUrl(apiEventsURL);            
+            Shipment updateShipment = new Shipment();
+            updateShipment.houseBolNumber = "HBOL987654321";
+            updateShipment.departureDate = Instant.now().toEpochMilli();
+            updateShipment.arrivalDate = Instant.now().plusMillis(1000 * 7 * 24 * 24 * 60 * 60).toEpochMilli();
+            updateShipment.portOfLadingCode = "48945";
+            updateShipment.portOfUnladingCode = "4601";
+            updateShipment.supplierActorId = "";
+            updateShipment.sellerActorId = "";
+            updateShipment.manufacturerActorId = "";
+            String updateShipmentString = gson.toJson(updateShipment);
+            LOGGER.debug("updateShipmentString is " + updateShipmentString);
+            updateShipmentRequest.setMessage(updateShipmentString);
+            UpdateShipmentResponse updateShipmentResponse = klearNowExternalAPI.updateShipment(updateShipmentRequest);
+            responseCode = updateShipmentResponse.getResponseCode();
+            LOGGER.debug("responseCode is " + responseCode);
+            /* Get shipment */
+            getShipmentRequest = KlearNowRequestFactory.createGetShipmentRequest(accessToken, shipmentId);
+            getShipmentRequest.setAPIUrl(apiEventsURL);
+            getShipmentResponse = klearNowExternalAPI.getShipment(getShipmentRequest);
+            responseCode = getShipmentResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
         } catch (Exception e) {
             LOGGER.warn("exception invoking API operation: " + e.getMessage());

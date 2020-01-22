@@ -28,6 +28,18 @@ public class KlearNowRequestFactory extends BaseKlearNowFactory {
         return (GetAccessTokenRequest) obj;
     }
     
+    public static GetShipmentRequest createGetShipmentRequest() {
+        Object obj = newInstanceOf("klearnow.config.requestfactory.GetShipmentRequest");
+        return (GetShipmentRequest) obj;
+    }
+    
+    public static GetShipmentRequest createGetShipmentRequest(String accessToken, String shipmentId) {
+        GetShipmentRequest request = createGetShipmentRequest();
+        request.setAccessToken(accessToken);
+        request.setShipmentId(shipmentId);
+        return request;
+    }
+    
     public static SendMessageRequest createSendMessageRequest() {
         Object obj = newInstanceOf("klearnow.config.requestfactory.SendMessageRequest");
         return (SendMessageRequest) obj;
@@ -38,4 +50,18 @@ public class KlearNowRequestFactory extends BaseKlearNowFactory {
         request.setAccessToken(accessToken);
         return request;
     }
+    
+    public static UpdateShipmentRequest createUpdateShipmentRequest() {
+        Object obj = newInstanceOf("klearnow.config.requestfactory.UpdateShipmentRequest");
+        return (UpdateShipmentRequest) obj;
+    }
+
+    public static UpdateShipmentRequest createUpdateShipmentRequest(String accessToken, String shipmentId) {
+        UpdateShipmentRequest request = createUpdateShipmentRequest();
+        request.setAccessToken(accessToken);
+        request.setShipmentId(shipmentId);
+        return request;
+    }
+
+
 }

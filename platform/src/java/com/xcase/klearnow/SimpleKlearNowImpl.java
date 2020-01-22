@@ -14,19 +14,29 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
     /**
-     * Mail action implementation.
+     * CreateShipmentMethod action implementation.
      */
     private CreateShipmentMethod createShipmentMethod = new CreateShipmentMethod();
     
     /**
-     * Mail action implementation.
+     * GetAccessTokenMethod action implementation.
      */
     private GetAccessTokenMethod getAccessTokenMethod = new GetAccessTokenMethod();
+    
+    /**
+     * GetShipmentMethod action implementation.
+     */
+    private GetShipmentMethod getShipmentMethod = new GetShipmentMethod();
 
     /**
-     * Mail action implementation.
+     * SendMessageMethod action implementation.
      */
     private SendMessageMethod sendMessageMethod = new SendMessageMethod();
+    
+    /**
+     * UpdateShipmentMethod action implementation.
+     */
+    private UpdateShipmentMethod updateShipmentMethod = new UpdateShipmentMethod();
     
     @Override
     public CreateShipmentResponse createShipment(CreateShipmentRequest request) {
@@ -34,13 +44,23 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
     }
 
     @Override
+    public GetAccessTokenResponse getAccessToken(GetAccessTokenRequest getAccessTokenRequest) {
+        return this.getAccessTokenMethod.getAccessToken(getAccessTokenRequest);
+    }
+
+    @Override
+    public GetShipmentResponse getShipment(GetShipmentRequest getShipmentRequest) {
+        return this.getShipmentMethod.getShipment(getShipmentRequest);
+    }
+    
+    @Override
     public SendMessageResponse sendMessage(SendMessageRequest sendMessageRequest) {
         return this.sendMessageMethod.sendMessage(sendMessageRequest);
     }
 
     @Override
-    public GetAccessTokenResponse getAccessToken(GetAccessTokenRequest getAccessTokenRequest) {
-        return this.getAccessTokenMethod.getAccessToken(getAccessTokenRequest);
+    public UpdateShipmentResponse updateShipment(UpdateShipmentRequest updateShipmentRequest) {
+        return this.updateShipmentMethod.updateShipment(updateShipmentRequest);
     }
 
 }

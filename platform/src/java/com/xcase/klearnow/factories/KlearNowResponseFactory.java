@@ -19,19 +19,29 @@ public class KlearNowResponseFactory extends BaseKlearNowFactory {
      * @return response object
      */
 
-    public static SendMessageResponse createSendMessageResponse() {
-        Object obj = newInstanceOf("klearnow.config.responsefactory.SendMessageResponse");
-        return (SendMessageResponse) obj;
+    public static CreateShipmentResponse createCreateShipmentResponse() {
+        Object obj = newInstanceOf("klearnow.config.responsefactory.CreateShipmentResponse");
+        return (CreateShipmentResponse) obj;
     }
 
     public static GetAccessTokenResponse createGetAccessTokenResponse() {
         Object obj = newInstanceOf("klearnow.config.responsefactory.GetAccessTokenResponse");
         return (GetAccessTokenResponse) obj;
     }
+    
+    public static GetShipmentResponse createGetShipmentResponse() {
+        Object obj = newInstanceOf("klearnow.config.responsefactory.GetShipmentResponse");
+        return (GetShipmentResponse) obj;
+    }
+    
+    public static SendMessageResponse createSendMessageResponse() {
+        Object obj = newInstanceOf("klearnow.config.responsefactory.SendMessageResponse");
+        return (SendMessageResponse) obj;
+    }
 
-    public static CreateShipmentResponse createCreateShipmentResponse() {
-        Object obj = newInstanceOf("klearnow.config.responsefactory.CreateShipmentResponse");
-        return (CreateShipmentResponse) obj;
+    public static UpdateShipmentResponse createUpdateShipmentResponse() {
+        Object obj = newInstanceOf("klearnow.config.responsefactory.UpdateShipmentResponse");
+        return (UpdateShipmentResponse) obj;
     }
 
 }

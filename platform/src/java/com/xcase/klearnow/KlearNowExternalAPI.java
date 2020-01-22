@@ -10,4 +10,8 @@ public interface KlearNowExternalAPI {
 
     CreateShipmentResponse createShipment(CreateShipmentRequest request);
 
+    GetShipmentResponse getShipment(GetShipmentRequest getShipmentRequest);
+
+    UpdateShipmentResponse updateShipment(UpdateShipmentRequest updateShipmentRequest);
+
 }
