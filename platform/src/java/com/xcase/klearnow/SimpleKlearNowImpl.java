@@ -12,6 +12,11 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
      * log4j logger.
      */
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
+    
+    /**
+     * CreateActorMethod action implementation.
+     */
+    private CreateActorMethod createActorMethod = new CreateActorMethod();
 
     /**
      * CreateShipmentMethod action implementation.
@@ -37,6 +42,11 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
      * UpdateShipmentMethod action implementation.
      */
     private UpdateShipmentMethod updateShipmentMethod = new UpdateShipmentMethod();
+    
+	@Override
+	public CreateActorResponse createActor(CreateActorRequest request) {
+        return this.createActorMethod.createActor(request);
+	}
     
     @Override
     public CreateShipmentResponse createShipment(CreateShipmentRequest request) {

@@ -11,6 +11,11 @@ public class KlearNowRequestFactory extends BaseKlearNowFactory {
      * log4j object.
      */
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
+    
+	public static CreateActorRequest createCreateActorRequest(String accessToken) {
+        Object obj = newInstanceOf("klearnow.config.requestfactory.CreateActorRequest");
+        return (CreateActorRequest) obj;
+	}
 
     public static CreateShipmentRequest createCreateShipmentRequest() {
         Object obj = newInstanceOf("klearnow.config.requestfactory.CreateShipmentRequest");
@@ -62,6 +67,4 @@ public class KlearNowRequestFactory extends BaseKlearNowFactory {
         request.setShipmentId(shipmentId);
         return request;
     }
-
-
 }

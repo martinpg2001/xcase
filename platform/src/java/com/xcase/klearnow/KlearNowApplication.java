@@ -137,6 +137,24 @@ public class KlearNowApplication {
             getShipmentResponse = klearNowExternalAPI.getShipment(getShipmentRequest);
             responseCode = getShipmentResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
+            /* Create actor */
+            CreateActorRequest createActorRequest = KlearNowRequestFactory.createCreateActorRequest(accessToken);
+            createActorRequest.setAPIUrl(apiEventsURL);
+            Actor actor = new Actor();
+            actor.name = "Firstname Lastname";
+            Address address = new Address();
+            address.addressLine1 = "1 High Street";
+            address.addressLine2 = "Second Floor";
+            address.province = "Province";
+            address.country = "Country";
+            address.zip = "95000";
+            actor.address = address;
+            String createActorString = gson.toJson(shipment);
+            LOGGER.debug("createActorString is " + createActorString);
+            createActorRequest.setMessage(createActorString);
+            CreateActorResponse response = klearNowExternalAPI.createActor(createActorRequest);
+            responseCode = response.getResponseCode();
+            LOGGER.debug("responseCode is " + responseCode);
         } catch (Exception e) {
             LOGGER.warn("exception invoking API operation: " + e.getMessage());
         }
