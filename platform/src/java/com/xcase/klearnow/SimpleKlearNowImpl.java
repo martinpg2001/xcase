@@ -44,23 +44,23 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
     }
 
     @Override
-    public GetAccessTokenResponse getAccessToken(GetAccessTokenRequest getAccessTokenRequest) {
-        return this.getAccessTokenMethod.getAccessToken(getAccessTokenRequest);
+    public GetAccessTokenResponse getAccessToken(GetAccessTokenRequest request) {
+        return this.getAccessTokenMethod.getAccessToken(request);
     }
 
     @Override
-    public GetShipmentResponse getShipment(GetShipmentRequest getShipmentRequest) {
-        return this.getShipmentMethod.getShipment(getShipmentRequest);
+    public GetShipmentResponse getShipment(GetShipmentRequest request) {
+        return this.getShipmentMethod.getShipment(request);
     }
     
     @Override
-    public SendMessageResponse sendMessage(SendMessageRequest sendMessageRequest) {
-        return this.sendMessageMethod.sendMessage(sendMessageRequest);
+    public SendMessageResponse sendMessage(SendMessageRequest request) {
+        return this.sendMessageMethod.sendMessage(request);
     }
 
     @Override
-    public UpdateShipmentResponse updateShipment(UpdateShipmentRequest updateShipmentRequest) {
-        return this.updateShipmentMethod.updateShipment(updateShipmentRequest);
+    public UpdateShipmentResponse updateShipment(UpdateShipmentRequest request) {
+        return this.updateShipmentMethod.updateShipment(request);
     }
 
 }
