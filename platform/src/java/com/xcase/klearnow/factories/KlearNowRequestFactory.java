@@ -12,9 +12,15 @@ public class KlearNowRequestFactory extends BaseKlearNowFactory {
      */
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
-    public static CreateShipmentRequest createCreateShipmentRequest(String accessToken) {
+    public static CreateShipmentRequest createCreateShipmentRequest() {
         Object obj = newInstanceOf("klearnow.config.requestfactory.CreateShipmentRequest");
         return (CreateShipmentRequest) obj;
+    }
+    
+    public static CreateShipmentRequest createCreateShipmentRequest(String accessToken) {
+    	CreateShipmentRequest request = createCreateShipmentRequest();
+    	request.setAccessToken(accessToken);
+        return request;
     }
     
     public static GetAccessTokenRequest createGetAccessTokenRequest() {
@@ -28,8 +34,8 @@ public class KlearNowRequestFactory extends BaseKlearNowFactory {
     }
 
     public static SendMessageRequest createSendMessageRequest(String accessToken) {
-        SendMessageRequest sendMessageRequest = createSendMessageRequest();
-        sendMessageRequest.setAccessToken(accessToken);
-        return sendMessageRequest;
+        SendMessageRequest request = createSendMessageRequest();
+        request.setAccessToken(accessToken);
+        return request;
     }
 }

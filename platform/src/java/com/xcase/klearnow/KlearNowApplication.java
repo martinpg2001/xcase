@@ -16,6 +16,7 @@ import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.joda.time.Instant;
 
 public class KlearNowApplication {
     /**
@@ -40,7 +41,7 @@ public class KlearNowApplication {
             getAccessTokenRequest.setAPIUrl(apiEventsURL);
             getAccessTokenRequest.setEntityRequest("{\n" +
                                                    "  \"email\" : \"" + userEmail + "\",\n" +
-                                                   "  \"password\": \"" + userPassword + "\",\n" +
+                                                   "  \"password\": \"" + userPassword + "\"\n" +
                                                    "}");
             GetAccessTokenResponse getAccessTokenResponse = klearNowExternalAPI.getAccessToken(getAccessTokenRequest);
             JsonObject eventMessageJsonObject = getAccessTokenResponse.getEventMessage();
@@ -67,6 +68,15 @@ public class KlearNowApplication {
             String uuid = UUID.randomUUID().toString();
             LOGGER.debug("uuid is " + uuid);
             shipment.shipmentId = uuid;
+            shipment.supplierEmail = "qa@klearexpress.us";
+            shipment.houseBolNumber = "HBOL123455666";
+            shipment.departureDate = Instant.now().getMillis();
+            shipment.arrivalDate = Instant.now().getMillis();
+            shipment.portOfLadingCode = "48945";
+            shipment.portOfUnladingCode = "4601";
+            shipment.supplierActorId = "";
+            shipment.sellerActorId = "";
+            shipment.manufacturerActorId = "";
             String createShipmentString = gson.toJson(shipment);
             LOGGER.debug("createShipmentString is " + createShipmentString);
             request.setMessage(createShipmentString);
