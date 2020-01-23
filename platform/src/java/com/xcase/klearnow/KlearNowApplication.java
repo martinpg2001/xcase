@@ -11,6 +11,8 @@ import com.xcase.klearnow.impl.simple.core.KlearNowConfigurationManager;
 import com.xcase.klearnow.objects.*;
 import com.xcase.klearnow.objects.Shipment.ModeOfTransport;
 import com.xcase.klearnow.transputs.*;
+import com.xcase.klearnow.transputs.CreateActorResponse;
+
 import java.lang.invoke.MethodHandles;
 import java.time.Instant;
 import java.util.UUID;
@@ -137,6 +139,12 @@ public class KlearNowApplication {
             getShipmentResponse = klearNowExternalAPI.getShipment(getShipmentRequest);
             responseCode = getShipmentResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
+            /* Get shipment status */
+            GetShipmentStatusRequest getShipmentStatusRequest = KlearNowRequestFactory.createGetShipmentStatusRequest(accessToken, shipmentId);
+            getShipmentStatusRequest.setAPIUrl(apiEventsURL);
+            GetShipmentStatusResponse getShipmentStatusResponse = klearNowExternalAPI.getShipmentStatus(getShipmentStatusRequest);
+            responseCode = getShipmentStatusResponse.getResponseCode();
+            LOGGER.debug("responseCode is " + responseCode);
             /* Create actor */
             CreateActorRequest createActorRequest = KlearNowRequestFactory.createCreateActorRequest(accessToken);
             createActorRequest.setAPIUrl(apiEventsURL);
@@ -154,7 +162,23 @@ public class KlearNowApplication {
             createActorRequest.setMessage(createActorString);
             CreateActorResponse createActorResponse = klearNowExternalAPI.createActor(createActorRequest);
             responseCode = createActorResponse.getResponseCode();
-            LOGGER.debug("createActorResponse is " + responseCode);
+            LOGGER.debug("responseCode is " + responseCode);
+            ActorResponse actorResponse = gson.fromJson(createActorResponse.getEntityString(), ActorResponse.class);
+            String actorId = actorResponse.knActorId;
+            /* Get actor */
+            GetActorRequest getActorRequest = KlearNowRequestFactory.createGetActorRequest(accessToken);
+            getActorRequest.setAPIUrl(apiEventsURL);
+            getActorRequest.setActorId(actorId);
+            GetActorResponse getActorResponse = klearNowExternalAPI.getActor(getActorRequest);
+            responseCode = getActorResponse.getResponseCode();
+            LOGGER.debug("responseCode is " + responseCode);
+            /* Delete actor */
+            DeleteActorRequest deleteActorRequest = KlearNowRequestFactory.createDeleteActorRequest(accessToken);
+            deleteActorRequest.setAPIUrl(apiEventsURL);
+            deleteActorRequest.setActorId(actorId);
+            DeleteActorResponse deleteActorResponse = klearNowExternalAPI.deleteActor(deleteActorRequest);
+            responseCode = deleteActorResponse.getResponseCode();
+            LOGGER.debug("responseCode is " + responseCode);
             /* Create supplier admin */
             CreateSupplierAdminRequest createSupplierAdminRequest = KlearNowRequestFactory.createCreateSupplierAdminRequest(accessToken);
             createSupplierAdminRequest.setAPIUrl(apiEventsURL);

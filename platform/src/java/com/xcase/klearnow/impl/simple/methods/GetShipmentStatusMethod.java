@@ -10,18 +10,20 @@ import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.klearnow.factories.KlearNowResponseFactory;
 import com.xcase.klearnow.transputs.GetActorRequest;
 import com.xcase.klearnow.transputs.GetActorResponse;
+import com.xcase.klearnow.transputs.GetShipmentStatusRequest;
+import com.xcase.klearnow.transputs.GetShipmentStatusResponse;
 
-public class GetActorMethod extends BaseKlearNowMethod {
+public class GetShipmentStatusMethod extends BaseKlearNowMethod {
     /**
      * log4j object.
      */
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
-    public GetActorResponse getActor(GetActorRequest request) {
-        LOGGER.debug("starting getActor()");
+    public GetShipmentStatusResponse getShipmentStatus(GetShipmentStatusRequest request) {
+        LOGGER.debug("starting getShipmentStatus()");
         try {
-        	GetActorResponse response = KlearNowResponseFactory.createGetActorResponse();
-            String endPoint = request.getAPIUrl() + "actor/" + request.getActorId();
+        	GetShipmentStatusResponse response = KlearNowResponseFactory.createGetShipmentStatusResponse();
+            String endPoint = request.getAPIUrl() + "shipment/" + request.getShipmentId();
             LOGGER.debug("endPoint is " + endPoint);
             String accessToken = request.getAccessToken();
             LOGGER.debug("accessToken is " + accessToken);

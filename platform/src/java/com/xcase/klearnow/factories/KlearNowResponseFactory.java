@@ -4,6 +4,7 @@ import java.lang.invoke.MethodHandles;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import com.xcase.klearnow.transputs.*;
 
 public class KlearNowResponseFactory extends BaseKlearNowFactory {
@@ -82,6 +83,16 @@ public class KlearNowResponseFactory extends BaseKlearNowFactory {
         Object obj = newInstanceOf("klearnow.config.responsefactory.GetShipmentResponse");
         return (GetShipmentResponse) obj;
     }
+    
+    /**
+     * create response object.
+     *
+     * @return response object
+     */
+	public static GetShipmentStatusResponse createGetShipmentStatusResponse() {
+        Object obj = newInstanceOf("klearnow.config.responsefactory.GetShipmentStatusResponse");
+        return (GetShipmentStatusResponse) obj;
+	}
     
     /**
      * create response object.
