@@ -63,6 +63,11 @@ public class KlearNowResponseFactory extends BaseKlearNowFactory {
         return (GetShipmentResponse) obj;
     }
     
+	public static GetSupplierOnboardingStatusResponse createGetSupplierOnboardingStatusResponse() {
+        Object obj = newInstanceOf("klearnow.config.responsefactory.GetSupplierOnboardingStatusResponse");
+        return (GetSupplierOnboardingStatusResponse) obj;
+	}
+    
     /**
      * create response object.
      *

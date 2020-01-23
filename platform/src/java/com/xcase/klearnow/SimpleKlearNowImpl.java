@@ -37,6 +37,11 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
      * GetShipmentMethod action implementation.
      */
     private GetShipmentMethod getShipmentMethod = new GetShipmentMethod();
+    
+    /**
+     * GetSupplierOnboardingStatusMethod action implementation.
+     */
+    private GetSupplierOnboardingStatusMethod getSupplierOnboardingStatusMethod = new GetSupplierOnboardingStatusMethod();
 
     /**
      * SendMessageMethod action implementation.
@@ -67,6 +72,11 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
     public GetShipmentResponse getShipment(GetShipmentRequest request) {
         return this.getShipmentMethod.getShipment(request);
     }
+    
+	@Override
+	public GetSupplierOnboardingStatusResponse getSupplierOnboardingStatus(GetSupplierOnboardingStatusRequest request) {
+	    return this.getSupplierOnboardingStatusMethod.getSupplierOnboardingStatus(request);
+	}
     
     @Override
     public SendMessageResponse sendMessage(SendMessageRequest request) {

@@ -56,6 +56,17 @@ public class KlearNowRequestFactory extends BaseKlearNowFactory {
         return request;
     }
     
+	public static GetSupplierOnboardingStatusRequest createGetSupplierOnboardingStatusRequest() {
+        Object obj = newInstanceOf("klearnow.config.requestfactory.GetSupplierOnboardingStatusRequest");
+        return (GetSupplierOnboardingStatusRequest) obj;
+	}
+    
+	public static GetSupplierOnboardingStatusRequest createGetSupplierOnboardingStatusRequest(String accessToken) {
+		GetSupplierOnboardingStatusRequest request = createGetSupplierOnboardingStatusRequest();
+    	request.setAccessToken(accessToken);
+        return request;
+	}
+    
     public static SendMessageRequest createSendMessageRequest() {
         Object obj = newInstanceOf("klearnow.config.requestfactory.SendMessageRequest");
         return (SendMessageRequest) obj;
