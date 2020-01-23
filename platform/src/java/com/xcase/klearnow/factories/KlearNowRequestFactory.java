@@ -38,11 +38,33 @@ public class KlearNowRequestFactory extends BaseKlearNowFactory {
     	request.setAccessToken(accessToken);
         return request;
 	}
+	
+	public static DeleteActorRequest createDeleteActorRequest() {
+        Object obj = newInstanceOf("klearnow.config.requestfactory.DeleteActorRequest");
+        return (DeleteActorRequest) obj;
+	}
+	
+	public static DeleteActorRequest createDeleteActorRequest(String accessToken) {
+		DeleteActorRequest request = createDeleteActorRequest();
+    	request.setAccessToken(accessToken);
+        return request;
+	}
     
     public static GetAccessTokenRequest createGetAccessTokenRequest() {
         Object obj = newInstanceOf("klearnow.config.requestfactory.GetAccessTokenRequest");
         return (GetAccessTokenRequest) obj;
     }
+    
+	public static GetActorRequest createGetActorRequest() {
+        Object obj = newInstanceOf("klearnow.config.requestfactory.GetActorRequest");
+        return (GetActorRequest) obj;
+	}
+    
+	public static GetActorRequest createGetActorRequest(String accessToken) {
+		GetActorRequest request = createGetActorRequest();
+    	request.setAccessToken(accessToken);
+        return request;
+	}
     
     public static GetShipmentRequest createGetShipmentRequest() {
         Object obj = newInstanceOf("klearnow.config.requestfactory.GetShipmentRequest");

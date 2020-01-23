@@ -48,10 +48,30 @@ public class KlearNowResponseFactory extends BaseKlearNowFactory {
      *
      * @return response object
      */
+	public static DeleteActorResponse createDeleteActorResponse() {
+        Object obj = newInstanceOf("klearnow.config.responsefactory.DeleteActorResponse");
+        return (DeleteActorResponse) obj;
+	}
+
+    /**
+     * create response object.
+     *
+     * @return response object
+     */
     public static GetAccessTokenResponse createGetAccessTokenResponse() {
         Object obj = newInstanceOf("klearnow.config.responsefactory.GetAccessTokenResponse");
         return (GetAccessTokenResponse) obj;
     }
+    
+    /**
+     * create response object.
+     *
+     * @return response object
+     */
+	public static GetActorResponse createGetActorResponse() {
+        Object obj = newInstanceOf("klearnow.config.responsefactory.GetActorResponse");
+        return (GetActorResponse) obj;
+	}
     
     /**
      * create response object.
@@ -63,6 +83,11 @@ public class KlearNowResponseFactory extends BaseKlearNowFactory {
         return (GetShipmentResponse) obj;
     }
     
+    /**
+     * create response object.
+     *
+     * @return response object
+     */
 	public static GetSupplierOnboardingStatusResponse createGetSupplierOnboardingStatusResponse() {
         Object obj = newInstanceOf("klearnow.config.responsefactory.GetSupplierOnboardingStatusResponse");
         return (GetSupplierOnboardingStatusResponse) obj;
