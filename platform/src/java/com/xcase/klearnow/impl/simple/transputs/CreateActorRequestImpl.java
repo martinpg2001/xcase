@@ -1,7 +1,7 @@
 package com.xcase.klearnow.impl.simple.transputs;
 
-import com.xcase.klearnow.transputs.KlearNowRequest;
+import com.xcase.klearnow.transputs.CreateActorRequest;
 
-public class CreateActorRequestImpl extends KlearNowRequestImpl implements KlearNowRequest {
+public class CreateActorRequestImpl extends KlearNowRequestImpl implements CreateActorRequest {
 
 }

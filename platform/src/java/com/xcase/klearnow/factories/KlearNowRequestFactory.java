@@ -28,6 +28,17 @@ public class KlearNowRequestFactory extends BaseKlearNowFactory {
         return request;
     }
     
+	public static CreateSupplierAdminRequest createCreateSupplierAdminRequest() {
+        Object obj = newInstanceOf("klearnow.config.requestfactory.CreateSupplierAdminRequest");
+        return (CreateSupplierAdminRequest) obj;
+	}
+    
+	public static CreateSupplierAdminRequest createCreateSupplierAdminRequest(String accessToken) {
+		CreateSupplierAdminRequest request = createCreateSupplierAdminRequest();
+    	request.setAccessToken(accessToken);
+        return request;
+	}
+    
     public static GetAccessTokenRequest createGetAccessTokenRequest() {
         Object obj = newInstanceOf("klearnow.config.requestfactory.GetAccessTokenRequest");
         return (GetAccessTokenRequest) obj;

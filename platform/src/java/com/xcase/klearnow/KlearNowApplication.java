@@ -149,11 +149,25 @@ public class KlearNowApplication {
             address.country = "Country";
             address.zip = "95000";
             actor.address = address;
-            String createActorString = gson.toJson(shipment);
+            String createActorString = gson.toJson(actor);
             LOGGER.debug("createActorString is " + createActorString);
             createActorRequest.setMessage(createActorString);
-            CreateActorResponse response = klearNowExternalAPI.createActor(createActorRequest);
-            responseCode = response.getResponseCode();
+            CreateActorResponse createActorResponse = klearNowExternalAPI.createActor(createActorRequest);
+            responseCode = createActorResponse.getResponseCode();
+            LOGGER.debug("createActorResponse is " + responseCode);
+            /* Create supplier admin */
+            CreateSupplierAdminRequest createSupplierAdminRequest = KlearNowRequestFactory.createCreateSupplierAdminRequest(accessToken);
+            createSupplierAdminRequest.setAPIUrl(apiEventsURL);
+            SupplierAdmin supplierAdmin = new SupplierAdmin();
+            supplierAdmin.adminEmail = "";
+            supplierAdmin.companyName = "";
+            supplierAdmin.contactName = "";
+            supplierAdmin.role = "";
+            String supplierAdminString = gson.toJson(supplierAdmin);
+            LOGGER.debug("supplierAdminString is " + supplierAdminString);
+            createSupplierAdminRequest.setMessage(supplierAdminString);
+            CreateSupplierAdminResponse createSupplierAdminResponse = klearNowExternalAPI.createSupplierAdmin(createSupplierAdminRequest);
+            responseCode = createSupplierAdminResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
         } catch (Exception e) {
             LOGGER.warn("exception invoking API operation: " + e.getMessage());

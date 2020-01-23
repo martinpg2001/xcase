@@ -8,6 +8,8 @@ public interface KlearNowExternalAPI {
 	
     CreateShipmentResponse createShipment(CreateShipmentRequest request);
     
+	CreateSupplierAdminResponse createSupplierAdmin(CreateSupplierAdminRequest createSupplierAdminRequest);
+    
     GetAccessTokenResponse getAccessToken(GetAccessTokenRequest request);
 
     GetShipmentResponse getShipment(GetShipmentRequest getShipmentRequest);

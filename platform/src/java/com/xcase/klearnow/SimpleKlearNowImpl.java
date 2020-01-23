@@ -24,6 +24,11 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
     private CreateShipmentMethod createShipmentMethod = new CreateShipmentMethod();
     
     /**
+     * CreateSupplierAdminMethod action implementation.
+     */
+    private CreateSupplierAdminMethod createSupplierAdminMethod = new CreateSupplierAdminMethod();
+    
+    /**
      * GetAccessTokenMethod action implementation.
      */
     private GetAccessTokenMethod getAccessTokenMethod = new GetAccessTokenMethod();
@@ -72,5 +77,10 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
     public UpdateShipmentResponse updateShipment(UpdateShipmentRequest request) {
         return this.updateShipmentMethod.updateShipment(request);
     }
+
+	@Override
+	public CreateSupplierAdminResponse createSupplierAdmin(CreateSupplierAdminRequest request) {
+		return this.createSupplierAdminMethod.createSupplierAdmin(request);
+	}
 
 }
