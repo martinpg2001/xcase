@@ -67,7 +67,7 @@ public class KlearNowApplication {
             CreateShipmentRequest createShipmentRequest = KlearNowRequestFactory.createCreateShipmentRequest(accessToken);
             createShipmentRequest.setAPIUrl(apiEventsURL);
             Shipment shipment = new Shipment();
-            String shipmentId = UUID.randomUUID().toString();
+            String shipmentId = UUID.randomUUID().toString().substring(0, 31);
             LOGGER.debug("shipmentId is " + shipmentId);
             shipment.shipmentId = shipmentId;
             shipment.supplierEmail = "qa@klearexpress.us";
@@ -76,8 +76,12 @@ public class KlearNowApplication {
             shipment.masterBolNumber = "";
             shipment.houseBolNumber = "HBOL123455666";
             shipment.vesselName = "EVER SMILE";
-            shipment.departureDate = Instant.now().toEpochMilli();
-            shipment.arrivalDate = Instant.now().plusMillis(1000 * 7 * 24 * 60 * 60).toEpochMilli();
+            long departureDate = Instant.now().toEpochMilli();
+            shipment.departureDate = departureDate;
+            LOGGER.debug("departureDate is " + departureDate);
+            long arrivalDate = Instant.now().plusMillis(1000 * 7 * 24 * 60 * 60).toEpochMilli();
+            shipment.arrivalDate = arrivalDate;
+            LOGGER.debug("arrivalDate is " + arrivalDate);
             shipment.modeOfTransport = Shipment.ModeOfTransport.OCEAN;
             shipment.originCountry = "";
             shipment.originCity = "";
@@ -120,8 +124,12 @@ public class KlearNowApplication {
             updateShipmentRequest.setAPIUrl(apiEventsURL);            
             Shipment updateShipment = new Shipment();
             updateShipment.houseBolNumber = "HBOL987654321";
-            updateShipment.departureDate = Instant.now().toEpochMilli();
-            updateShipment.arrivalDate = Instant.now().plusMillis(1000 * 8 * 24 * 60 * 60).toEpochMilli();
+            departureDate = Instant.now().toEpochMilli();
+            updateShipment.departureDate = departureDate;
+            LOGGER.debug("departureDate is " + departureDate);
+            arrivalDate = Instant.now().plusMillis(1000 * 8 * 24 * 60 * 60).toEpochMilli();
+            updateShipment.arrivalDate = arrivalDate;
+            LOGGER.debug("arrivalDate is " + arrivalDate);
             updateShipment.portOfLadingCode = "48945";
             updateShipment.portOfUnladingCode = "4601";
             updateShipment.supplierActorId = "";
