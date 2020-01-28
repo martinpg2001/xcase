@@ -3,6 +3,7 @@ package com.xcase.klearnow;
 import com.xcase.klearnow.transputs.*;
 
 public interface KlearNowExternalAPI {
+	AddSupplierTeamMemberResponse addSupplierTeamMember(AddSupplierTeamMemberRequest addSupplierTeamMemberRequest);
 	
 	CreateActorResponse createActor(CreateActorRequest createActorRequest);
 	

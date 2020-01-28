@@ -212,6 +212,20 @@ public class KlearNowApplication {
             GetSupplierOnboardingStatusResponse getSupplierOnboardingStatusResponse = klearNowExternalAPI.getSupplierOnboardingStatus(getSupplierOnboardingStatusRequest);
             responseCode = getSupplierOnboardingStatusResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
+            /* Add supplier team member */
+            AddSupplierTeamMemberRequest addSupplierTeamMemberRequest = KlearNowRequestFactory.createAddSupplierTeamMemberRequest(accessToken);
+            addSupplierTeamMemberRequest.setAPIUrl(apiEventsURL);
+            SupplierTeamMemberRequest supplierTeamMemberRequest = new SupplierTeamMemberRequest();
+            supplierTeamMemberRequest.role = "";
+            supplierTeamMemberRequest.adminEmail = "john@supplier.com";
+            supplierTeamMemberRequest.name = "John";
+            supplierTeamMemberRequest.companyName = "John company";
+            String supplierTeamMemberRequestString = gson.toJson(supplierTeamMemberRequest);
+            LOGGER.debug("supplierTeamMemberRequestString is " + supplierTeamMemberRequestString);
+            addSupplierTeamMemberRequest.setMessage(supplierTeamMemberRequestString);
+            AddSupplierTeamMemberResponse addSupplierTeamMemberResponse = klearNowExternalAPI.addSupplierTeamMember(addSupplierTeamMemberRequest);
+            responseCode = addSupplierTeamMemberResponse.getResponseCode();
+            LOGGER.debug("responseCode is " + responseCode);
         } catch (Exception e) {
             LOGGER.warn("exception invoking API operation: " + e.getMessage());
         }

@@ -16,6 +16,11 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
     /**
      * CreateActorMethod action implementation.
      */
+    private AddSupplierTeamMemberMethod addSupplierTeamMemberMethod = new AddSupplierTeamMemberMethod();
+    
+    /**
+     * CreateActorMethod action implementation.
+     */
     private CreateActorMethod createActorMethod = new CreateActorMethod();
 
     /**
@@ -121,6 +126,12 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
 	@Override
 	public CreateSupplierAdminResponse createSupplierAdmin(CreateSupplierAdminRequest request) {
 		return this.createSupplierAdminMethod.createSupplierAdmin(request);
+	}
+
+	@Override
+	public AddSupplierTeamMemberResponse addSupplierTeamMember(
+			AddSupplierTeamMemberRequest addSupplierTeamMemberRequest) {
+		return this.addSupplierTeamMemberMethod.addSupplierTeamMember(addSupplierTeamMemberRequest);
 	}
 
 }

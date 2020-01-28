@@ -12,6 +12,17 @@ public class KlearNowRequestFactory extends BaseKlearNowFactory {
      */
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
     
+	public static AddSupplierTeamMemberRequest createAddSupplierTeamMemberRequest() {
+        Object obj = newInstanceOf("klearnow.config.requestfactory.AddSupplierTeamMemberRequest");
+        return (AddSupplierTeamMemberRequest) obj;
+	}
+	
+	public static AddSupplierTeamMemberRequest createAddSupplierTeamMemberRequest(String accessToken) {
+		AddSupplierTeamMemberRequest request = createAddSupplierTeamMemberRequest();
+    	request.setAccessToken(accessToken);
+        return request;
+	}
+    
 	public static CreateActorRequest createCreateActorRequest(String accessToken) {
         Object obj = newInstanceOf("klearnow.config.requestfactory.CreateActorRequest");
         return (CreateActorRequest) obj;
