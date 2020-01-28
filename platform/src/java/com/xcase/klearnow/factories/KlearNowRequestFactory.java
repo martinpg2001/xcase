@@ -27,6 +27,17 @@ public class KlearNowRequestFactory extends BaseKlearNowFactory {
         Object obj = newInstanceOf("klearnow.config.requestfactory.CreateActorRequest");
         return (CreateActorRequest) obj;
 	}
+	
+	public static CreateContainerRequest createCreateContainerRequest() {
+        Object obj = newInstanceOf("klearnow.config.requestfactory.CreateContainerRequest");
+        return (CreateContainerRequest) obj;
+	}
+	
+	public static CreateContainerRequest createCreateContainerRequest(String accessToken) {
+		CreateContainerRequest request = createCreateContainerRequest();
+    	request.setAccessToken(accessToken);
+        return request;
+	}
 
     public static CreateShipmentRequest createCreateShipmentRequest() {
         Object obj = newInstanceOf("klearnow.config.requestfactory.CreateShipmentRequest");

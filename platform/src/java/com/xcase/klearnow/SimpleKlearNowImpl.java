@@ -22,6 +22,11 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
      * CreateActorMethod action implementation.
      */
     private CreateActorMethod createActorMethod = new CreateActorMethod();
+    
+    /**
+     * CreateContainerMethod action implementation.
+     */
+    private CreateContainerMethod createContainerMethod = new CreateContainerMethod();
 
     /**
      * CreateShipmentMethod action implementation.
@@ -76,6 +81,11 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
 	@Override
 	public CreateActorResponse createActor(CreateActorRequest request) {
         return this.createActorMethod.createActor(request);
+	}
+	
+	@Override
+	public CreateContainerResponse createContainer(CreateContainerRequest request) {
+		return this.createContainerMethod.createContainer(request);
 	}
     
     @Override
@@ -133,5 +143,6 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
 			AddSupplierTeamMemberRequest addSupplierTeamMemberRequest) {
 		return this.addSupplierTeamMemberMethod.addSupplierTeamMember(addSupplierTeamMemberRequest);
 	}
+
 
 }

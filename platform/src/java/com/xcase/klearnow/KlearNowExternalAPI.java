@@ -7,6 +7,8 @@ public interface KlearNowExternalAPI {
 	
 	CreateActorResponse createActor(CreateActorRequest createActorRequest);
 	
+	CreateContainerResponse createContainer(CreateContainerRequest createContainerRequest);
+	
     CreateShipmentResponse createShipment(CreateShipmentRequest request);
     
 	CreateSupplierAdminResponse createSupplierAdmin(CreateSupplierAdminRequest createSupplierAdminRequest);

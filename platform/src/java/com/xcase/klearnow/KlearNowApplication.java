@@ -226,6 +226,25 @@ public class KlearNowApplication {
             AddSupplierTeamMemberResponse addSupplierTeamMemberResponse = klearNowExternalAPI.addSupplierTeamMember(addSupplierTeamMemberRequest);
             responseCode = addSupplierTeamMemberResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
+            /* Create container */
+            CreateContainerRequest createContainerRequest = KlearNowRequestFactory.createCreateContainerRequest(accessToken);
+            createContainerRequest.setAPIUrl(apiEventsURL);
+            Container container = new Container();
+            container.containerNumber = "ZZZZ9999999";
+            container.containerType = "CLOSE_TOP_40_FT";
+            Address containerAddress = new Address();
+            containerAddress.addressLine1 = "1 High Street";
+            containerAddress.addressLine2 = "Second Floor";
+            containerAddress.province = "Province";
+            containerAddress.country = "Country";
+            containerAddress.zip = "95000";
+            container.destinationAddress = containerAddress;
+            String createContainerString = gson.toJson(actor);
+            LOGGER.debug("createContainerString is " + createContainerString);
+            createContainerRequest.setMessage(createContainerString);
+            CreateContainerResponse createContainerResponse = klearNowExternalAPI.createContainer(createContainerRequest);
+            responseCode = createContainerResponse.getResponseCode();
+            LOGGER.debug("responseCode is " + responseCode);
         } catch (Exception e) {
             LOGGER.warn("exception invoking API operation: " + e.getMessage());
         }
