@@ -27,6 +27,11 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
      * CreateContainerMethod action implementation.
      */
     private CreateContainerMethod createContainerMethod = new CreateContainerMethod();
+    
+    /**
+     * CreateMerchandiseLineItemMethod action implementation.
+     */
+    private CreateMerchandiseLineItemMethod createMerchandiseLineItemMethod = new CreateMerchandiseLineItemMethod();
 
     /**
      * CreateShipmentMethod action implementation.
@@ -87,6 +92,12 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
 	public CreateContainerResponse createContainer(CreateContainerRequest request) {
 		return this.createContainerMethod.createContainer(request);
 	}
+	
+	@Override
+	public CreateMerchandiseLineItemResponse createMerchandiseLineItem(
+			CreateMerchandiseLineItemRequest request) {
+		return this.createMerchandiseLineItemMethod.createMerchandiseLineItem(request);
+	}
     
     @Override
     public CreateShipmentResponse createShipment(CreateShipmentRequest request) {
@@ -140,9 +151,8 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
 
 	@Override
 	public AddSupplierTeamMemberResponse addSupplierTeamMember(
-			AddSupplierTeamMemberRequest addSupplierTeamMemberRequest) {
-		return this.addSupplierTeamMemberMethod.addSupplierTeamMember(addSupplierTeamMemberRequest);
+			AddSupplierTeamMemberRequest request) {
+		return this.addSupplierTeamMemberMethod.addSupplierTeamMember(request);
 	}
-
 
 }

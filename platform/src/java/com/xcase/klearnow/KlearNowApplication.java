@@ -239,11 +239,25 @@ public class KlearNowApplication {
             containerAddress.country = "Country";
             containerAddress.zip = "95000";
             container.destinationAddress = containerAddress;
-            String createContainerString = gson.toJson(actor);
+            String createContainerString = gson.toJson(container);
             LOGGER.debug("createContainerString is " + createContainerString);
             createContainerRequest.setMessage(createContainerString);
             CreateContainerResponse createContainerResponse = klearNowExternalAPI.createContainer(createContainerRequest);
             responseCode = createContainerResponse.getResponseCode();
+            LOGGER.debug("responseCode is " + responseCode);
+            /* Create merchandise line item */
+            CreateMerchandiseLineItemRequest createMerchandiseLineItemRequest = KlearNowRequestFactory.createCreateMerchandiseLineItemRequest(accessToken);
+            createMerchandiseLineItemRequest.setAPIUrl(apiEventsURL);
+            MerchandiseLineItem merchandiseLineItem = new MerchandiseLineItem();
+            merchandiseLineItem.commercialDescription = "";
+            merchandiseLineItem.manufacturerId = "";
+            merchandiseLineItem.originCountry = "China";
+            merchandiseLineItem.sequenceID = 1;
+            String merchandiseLineItemString = gson.toJson(merchandiseLineItem);
+            LOGGER.debug("merchandiseLineItemString is " + merchandiseLineItemString);
+            createContainerRequest.setMessage(merchandiseLineItemString);
+            CreateMerchandiseLineItemResponse createMerchandiseLineItemResponse = klearNowExternalAPI.createMerchandiseLineItem(createMerchandiseLineItemRequest);
+            responseCode = createMerchandiseLineItemResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
         } catch (Exception e) {
             LOGGER.warn("exception invoking API operation: " + e.getMessage());

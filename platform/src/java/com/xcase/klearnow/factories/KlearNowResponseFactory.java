@@ -43,6 +43,16 @@ public class KlearNowResponseFactory extends BaseKlearNowFactory {
         Object obj = newInstanceOf("klearnow.config.responsefactory.CreateContainerResponse");
         return (CreateContainerResponse) obj;
 	}
+	
+    /**
+     * create response object.
+     *
+     * @return response object
+     */
+	public static CreateMerchandiseLineItemResponse createCreateMerchandiseLineItemResponse() {
+        Object obj = newInstanceOf("klearnow.config.responsefactory.CreateMerchandiseLineItemResponse");
+        return (CreateMerchandiseLineItemResponse) obj;
+	}
 
     /**
      * create response object.

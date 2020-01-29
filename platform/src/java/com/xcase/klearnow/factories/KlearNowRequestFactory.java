@@ -38,6 +38,17 @@ public class KlearNowRequestFactory extends BaseKlearNowFactory {
     	request.setAccessToken(accessToken);
         return request;
 	}
+	
+	public static CreateMerchandiseLineItemRequest createCreateMerchandiseLineItemRequest() {
+        Object obj = newInstanceOf("klearnow.config.requestfactory.CreateMerchandiseLineItemRequest");
+        return (CreateMerchandiseLineItemRequest) obj;
+	}
+	
+	public static CreateMerchandiseLineItemRequest createCreateMerchandiseLineItemRequest(String accessToken) {
+		CreateMerchandiseLineItemRequest request = createCreateMerchandiseLineItemRequest();
+    	request.setAccessToken(accessToken);
+        return request;
+	}
 
     public static CreateShipmentRequest createCreateShipmentRequest() {
         Object obj = newInstanceOf("klearnow.config.requestfactory.CreateShipmentRequest");
@@ -145,4 +156,5 @@ public class KlearNowRequestFactory extends BaseKlearNowFactory {
         request.setShipmentId(shipmentId);
         return request;
     }
+
 }

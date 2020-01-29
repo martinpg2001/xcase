@@ -8,22 +8,22 @@ import org.apache.logging.log4j.Logger;
 
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.klearnow.factories.KlearNowResponseFactory;
-import com.xcase.klearnow.transputs.CreateContainerRequest;
-import com.xcase.klearnow.transputs.CreateContainerResponse;
+import com.xcase.klearnow.transputs.CreateMerchandiseLineItemRequest;
+import com.xcase.klearnow.transputs.CreateMerchandiseLineItemResponse;
 
-public class CreateContainerMethod extends BaseKlearNowMethod {
+public class CreateMerchandiseLineItemMethod extends BaseKlearNowMethod {
     /**
      * log4j object.
      */
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
-    public CreateContainerResponse createContainer(CreateContainerRequest request) {
-        LOGGER.debug("starting createContainer()");
+    public CreateMerchandiseLineItemResponse createMerchandiseLineItem(CreateMerchandiseLineItemRequest request) {
+        LOGGER.debug("starting createMerchandiseLineItem()");
         try {
-        	CreateContainerResponse response = KlearNowResponseFactory.createCreateContainerResponse();
+        	CreateMerchandiseLineItemResponse response = KlearNowResponseFactory.createCreateMerchandiseLineItemResponse();
         	String shipmentId = request.getShipmentId();
         	LOGGER.debug("shipmentId is " + shipmentId);
-            String endPoint = request.getAPIUrl() + "shipment/" + shipmentId + "/container";
+            String endPoint = request.getAPIUrl() + "shipment/" + shipmentId + "/merchandise";
             LOGGER.debug("endPoint is " + endPoint);
             String accessToken = request.getAccessToken();
             LOGGER.debug("accessToken is " + accessToken);
