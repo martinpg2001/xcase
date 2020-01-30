@@ -118,6 +118,15 @@ public class KlearNowApplication {
             GetShipmentResponse getShipmentResponse = klearNowExternalAPI.getShipment(getShipmentRequest);
             responseCode = getShipmentResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
+            /* Search shipments */
+            LOGGER.debug("shipmentId is " + shipmentId);
+            SearchShipmentsRequest searchShipmentsRequest = KlearNowRequestFactory.createSearchShipmentsRequest(accessToken);
+            searchShipmentsRequest.setAPIUrl(apiEventsURL);
+            String searchMessage = "{ \"keywords\" : \"COMFORT SOFA\" }";
+            searchShipmentsRequest.setMessage(searchMessage);
+            SearchShipmentsResponse searchShipmentsResponse = klearNowExternalAPI.searchShipments(searchShipmentsRequest);
+            responseCode = searchShipmentsResponse.getResponseCode();
+            LOGGER.debug("responseCode is " + responseCode);            
             /* Update shipment */
             LOGGER.debug("shipmentId is " + shipmentId);
             UpdateShipmentRequest updateShipmentRequest = KlearNowRequestFactory.createUpdateShipmentRequest(accessToken, shipmentId);

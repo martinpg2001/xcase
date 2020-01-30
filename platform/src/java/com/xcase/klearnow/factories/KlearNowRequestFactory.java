@@ -133,6 +133,17 @@ public class KlearNowRequestFactory extends BaseKlearNowFactory {
     	request.setAccessToken(accessToken);
         return request;
 	}
+	
+	public static SearchShipmentsRequest createSearchShipmentsRequest() {
+        Object obj = newInstanceOf("klearnow.config.requestfactory.SearchShipmentsRequest");
+        return (SearchShipmentsRequest) obj;
+	}
+	
+	public static SearchShipmentsRequest createSearchShipmentsRequest(String accessToken) {
+		SearchShipmentsRequest request = createSearchShipmentsRequest();
+    	request.setAccessToken(accessToken);
+        return request;
+	}
     
     public static SendMessageRequest createSendMessageRequest() {
         Object obj = newInstanceOf("klearnow.config.requestfactory.SendMessageRequest");

@@ -28,8 +28,11 @@ public interface KlearNowExternalAPI {
     
 	GetSupplierOnboardingStatusResponse getSupplierOnboardingStatus(
 			GetSupplierOnboardingStatusRequest getSupplierOnboardingStatusRequest);
+	
+	SearchShipmentsResponse searchShipments(SearchShipmentsRequest searchShipmentsRequest);
 
     SendMessageResponse sendMessage(SendMessageRequest request);
 
     UpdateShipmentResponse updateShipment(UpdateShipmentRequest updateShipmentRequest);
+
 }

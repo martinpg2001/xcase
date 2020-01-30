@@ -74,6 +74,11 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
     private GetSupplierOnboardingStatusMethod getSupplierOnboardingStatusMethod = new GetSupplierOnboardingStatusMethod();
 
     /**
+     * SearchShipmentsMethod action implementation.
+     */
+    private SearchShipmentsMethod searchShipmentsMethod = new SearchShipmentsMethod();
+    
+    /**
      * SendMessageMethod action implementation.
      */
     private SendMessageMethod sendMessageMethod = new SendMessageMethod();
@@ -82,6 +87,12 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
      * UpdateShipmentMethod action implementation.
      */
     private UpdateShipmentMethod updateShipmentMethod = new UpdateShipmentMethod();
+
+	@Override
+	public AddSupplierTeamMemberResponse addSupplierTeamMember(
+			AddSupplierTeamMemberRequest request) {
+		return this.addSupplierTeamMemberMethod.addSupplierTeamMember(request);
+	}
     
 	@Override
 	public CreateActorResponse createActor(CreateActorRequest request) {
@@ -103,6 +114,11 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
     public CreateShipmentResponse createShipment(CreateShipmentRequest request) {
         return this.createShipmentMethod.createShipment(request);
     }
+    
+	@Override
+	public CreateSupplierAdminResponse createSupplierAdmin(CreateSupplierAdminRequest request) {
+		return this.createSupplierAdminMethod.createSupplierAdmin(request);
+	}
     
 	@Override
 	public DeleteActorResponse deleteActor(DeleteActorRequest request) {
@@ -133,6 +149,11 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
 	public GetSupplierOnboardingStatusResponse getSupplierOnboardingStatus(GetSupplierOnboardingStatusRequest request) {
 	    return this.getSupplierOnboardingStatusMethod.getSupplierOnboardingStatus(request);
 	}
+	
+    @Override
+    public SearchShipmentsResponse searchShipments(SearchShipmentsRequest request) {
+        return this.searchShipmentsMethod.searchShipments(request);
+    }
     
     @Override
     public SendMessageResponse sendMessage(SendMessageRequest request) {
@@ -143,16 +164,5 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
     public UpdateShipmentResponse updateShipment(UpdateShipmentRequest request) {
         return this.updateShipmentMethod.updateShipment(request);
     }
-
-	@Override
-	public CreateSupplierAdminResponse createSupplierAdmin(CreateSupplierAdminRequest request) {
-		return this.createSupplierAdminMethod.createSupplierAdmin(request);
-	}
-
-	@Override
-	public AddSupplierTeamMemberResponse addSupplierTeamMember(
-			AddSupplierTeamMemberRequest request) {
-		return this.addSupplierTeamMemberMethod.addSupplierTeamMember(request);
-	}
 
 }
