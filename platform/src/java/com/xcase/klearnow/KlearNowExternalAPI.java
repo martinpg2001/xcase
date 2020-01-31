@@ -21,6 +21,8 @@ public interface KlearNowExternalAPI {
     GetAccessTokenResponse getAccessToken(GetAccessTokenRequest request);
     
 	GetActorResponse getActor(GetActorRequest getActorRequest);
+	
+	GetContainerResponse getContainer(GetContainerRequest getContainerRequest);
 
     GetShipmentResponse getShipment(GetShipmentRequest getShipmentRequest);
     

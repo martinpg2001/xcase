@@ -126,7 +126,22 @@ public class KlearNowApplication {
             searchShipmentsRequest.setMessage(searchMessage);
             SearchShipmentsResponse searchShipmentsResponse = klearNowExternalAPI.searchShipments(searchShipmentsRequest);
             responseCode = searchShipmentsResponse.getResponseCode();
-            LOGGER.debug("responseCode is " + responseCode);            
+            LOGGER.debug("responseCode is " + responseCode);
+            SearchShipmentsResponseMessage searchShipmentsResponseMessage = gson.fromJson(searchShipmentsResponse.getEntityString(), SearchShipmentsResponseMessage.class);
+            LOGGER.debug("parsed entity string as SearchShipmentsResponseMessage");
+            String[] shipmentIdArray = searchShipmentsResponseMessage.shipmentIdArray;
+            LOGGER.debug("shipmentIdArray as " + shipmentIdArray);
+            for (String searchShipmentId : shipmentIdArray) {
+                LOGGER.debug("searchShipmentId is " + searchShipmentId);
+                getShipmentRequest = KlearNowRequestFactory.createGetShipmentRequest(accessToken, searchShipmentId);
+                getShipmentRequest.setAPIUrl(apiEventsURL);
+                getShipmentResponse = klearNowExternalAPI.getShipment(getShipmentRequest);
+                responseCode = getShipmentResponse.getResponseCode();
+                LOGGER.debug("responseCode is " + responseCode);
+                Shipment searchshipment = gson.fromJson(getShipmentResponse.getEntityString(), Shipment.class);
+                LOGGER.debug("parsed entity string as Shipment");
+            }
+            
             /* Update shipment */
             LOGGER.debug("shipmentId is " + shipmentId);
             UpdateShipmentRequest updateShipmentRequest = KlearNowRequestFactory.createUpdateShipmentRequest(accessToken, shipmentId);
@@ -180,8 +195,8 @@ public class KlearNowApplication {
             CreateActorResponse createActorResponse = klearNowExternalAPI.createActor(createActorRequest);
             responseCode = createActorResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
-            ActorResponse actorResponse = gson.fromJson(createActorResponse.getEntityString(), ActorResponse.class);
-            String actorId = actorResponse.knActorId;
+            ActorResponseMessage actorResponseMessage = gson.fromJson(createActorResponse.getEntityString(), ActorResponseMessage.class);
+            String actorId = actorResponseMessage.knActorId;
             /* Get actor */
             GetActorRequest getActorRequest = KlearNowRequestFactory.createGetActorRequest(accessToken);
             getActorRequest.setAPIUrl(apiEventsURL);
@@ -254,6 +269,16 @@ public class KlearNowApplication {
             CreateContainerResponse createContainerResponse = klearNowExternalAPI.createContainer(createContainerRequest);
             responseCode = createContainerResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
+            /* Get container status */
+            GetContainerRequest getContainerRequest = KlearNowRequestFactory.createGetContainerRequest(accessToken);
+            getContainerRequest.setAPIUrl(apiEventsURL);
+            getContainerRequest.setContainerNumber("ZZZZ9999999");
+            GetContainerResponse getContainerResponse = klearNowExternalAPI.getContainer(getContainerRequest);
+            responseCode = getContainerResponse.getResponseCode();
+            LOGGER.debug("responseCode is " + responseCode);
+            ContainerStatus containerStatus = gson.fromJson(getContainerResponse.getEntityString(), ContainerStatus.class);
+            String containerNumber = containerStatus.containerNumber;
+            LOGGER.debug("containerNumber is " + containerNumber);
             /* Create merchandise line item */
             CreateMerchandiseLineItemRequest createMerchandiseLineItemRequest = KlearNowRequestFactory.createCreateMerchandiseLineItemRequest(accessToken);
             createMerchandiseLineItemRequest.setAPIUrl(apiEventsURL);

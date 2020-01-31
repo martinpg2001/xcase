@@ -98,6 +98,17 @@ public class KlearNowRequestFactory extends BaseKlearNowFactory {
     	request.setAccessToken(accessToken);
         return request;
 	}
+	
+	public static GetContainerRequest createGetContainerRequest() {
+        Object obj = newInstanceOf("klearnow.config.requestfactory.GetContainerRequest");
+        return (GetContainerRequest) obj;
+	}
+	
+	public static GetContainerRequest createGetContainerRequest(String accessToken) {
+		GetContainerRequest request = createGetContainerRequest();
+    	request.setAccessToken(accessToken);
+        return request;
+	}
     
     public static GetShipmentRequest createGetShipmentRequest() {
         Object obj = newInstanceOf("klearnow.config.requestfactory.GetShipmentRequest");

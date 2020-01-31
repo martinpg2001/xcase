@@ -59,6 +59,11 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
     private GetActorMethod getActorMethod = new GetActorMethod();
     
     /**
+     * GetContainerMethod action implementation.
+     */
+    private GetContainerMethod getContainerMethod = new GetContainerMethod(); 
+    
+    /**
      * GetShipmentMethod action implementation.
      */
     private GetShipmentMethod getShipmentMethod = new GetShipmentMethod();
@@ -133,6 +138,11 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
 	@Override
 	public GetActorResponse getActor(GetActorRequest request) {
         return this.getActorMethod.getActor(request);
+	}
+	
+	@Override
+	public GetContainerResponse getContainer(GetContainerRequest request) {
+        return this.getContainerMethod.getContainer(request);
 	}
 
     @Override

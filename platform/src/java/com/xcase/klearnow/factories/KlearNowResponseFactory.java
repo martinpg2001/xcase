@@ -103,6 +103,16 @@ public class KlearNowResponseFactory extends BaseKlearNowFactory {
         Object obj = newInstanceOf("klearnow.config.responsefactory.GetActorResponse");
         return (GetActorResponse) obj;
 	}
+	
+    /**
+     * create response object.
+     *
+     * @return response object
+     */
+	public static GetContainerResponse createGetContainerResponse() {
+        Object obj = newInstanceOf("klearnow.config.responsefactory.GetContainerResponse");
+        return (GetContainerResponse) obj;
+	}
     
     /**
      * create response object.
@@ -163,7 +173,5 @@ public class KlearNowResponseFactory extends BaseKlearNowFactory {
         Object obj = newInstanceOf("klearnow.config.responsefactory.UpdateShipmentResponse");
         return (UpdateShipmentResponse) obj;
     }
-
-
 
 }
