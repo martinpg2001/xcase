@@ -41,4 +41,6 @@ public interface KlearNowExternalAPI {
 
     UpdateShipmentResponse updateShipment(UpdateShipmentRequest updateShipmentRequest);
 
+	UploadDocumentsResponse uploadDocuments(UploadDocumentsRequest uploadDocumentsRequest);
+
 }

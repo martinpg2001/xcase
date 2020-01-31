@@ -194,4 +194,14 @@ public class KlearNowResponseFactory extends BaseKlearNowFactory {
         return (UpdateShipmentResponse) obj;
     }
 
+    /**
+     * create response object.
+     *
+     * @return response object
+     */
+	public static UploadDocumentsResponse createUploadDocumentsResponse() {
+        Object obj = newInstanceOf("klearnow.config.responsefactory.UploadDocumentsResponse");
+        return (UploadDocumentsResponse) obj;
+	}
+
 }

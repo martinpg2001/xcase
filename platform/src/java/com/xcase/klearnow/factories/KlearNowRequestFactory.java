@@ -216,4 +216,16 @@ public class KlearNowRequestFactory extends BaseKlearNowFactory {
         return request;
     }
 
+	public static UploadDocumentsRequest createUploadDocumentsRequest() {
+        Object obj = newInstanceOf("klearnow.config.requestfactory.UploadDocumentsRequest");
+        return (UploadDocumentsRequest) obj;
+	}
+	
+	public static UploadDocumentsRequest createUploadDocumentsRequest(String accessToken, String shipmentId) {
+		UploadDocumentsRequest request = createUploadDocumentsRequest();
+        request.setAccessToken(accessToken);
+        request.setShipmentId(shipmentId);
+        return request;
+	}
+
 }

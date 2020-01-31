@@ -13,8 +13,10 @@ import com.xcase.klearnow.objects.Shipment.ModeOfTransport;
 import com.xcase.klearnow.transputs.*;
 import com.xcase.klearnow.transputs.CreateActorResponse;
 
+import java.io.File;
 import java.lang.invoke.MethodHandles;
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
@@ -343,6 +345,17 @@ public class KlearNowApplication {
             createContainerRequest.setMessage(merchandiseLineItemString);
             CreateMerchandiseLineItemResponse createMerchandiseLineItemResponse = klearNowExternalAPI.createMerchandiseLineItem(createMerchandiseLineItemRequest);
             responseCode = createMerchandiseLineItemResponse.getResponseCode();
+            LOGGER.debug("responseCode is " + responseCode);
+            /* Upload documents */
+            LOGGER.debug("shipmentId is " + shipmentId);
+            UploadDocumentsRequest uploadDocumentsRequest = KlearNowRequestFactory.createUploadDocumentsRequest(accessToken, shipmentId);
+            uploadDocumentsRequest.setAPIUrl(apiEventsURL);
+            HashMap<String, File> dataMap = new HashMap<String, File>();
+            File sampleFile = new File("docs", "Sample.txt");
+            dataMap.put("Sample", sampleFile);
+            uploadDocumentsRequest.setDataMap(dataMap);
+            UploadDocumentsResponse uploadDocumentsResponse = klearNowExternalAPI.uploadDocuments(uploadDocumentsRequest);
+            responseCode = uploadDocumentsResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
         } catch (Exception e) {
             LOGGER.warn("exception invoking API operation: " + e.getMessage());

@@ -29,6 +29,10 @@ public class BaseKlearNowMethod {
     public Header createContentTypeHeader() {
         return new BasicHeader("Content-Type", "application/json");
     }
+    
+    public Header createContentTypeHeader(String contentType) {
+        return new BasicHeader("Content-Type", contentType);
+    }
 
     public Header createAccessTokenHeader(String accessToken) {
         return new BasicHeader("kxToken", accessToken);

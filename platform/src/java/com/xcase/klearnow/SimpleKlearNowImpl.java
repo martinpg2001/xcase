@@ -102,6 +102,11 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
      * UpdateShipmentMethod action implementation.
      */
     private UpdateShipmentMethod updateShipmentMethod = new UpdateShipmentMethod();
+    
+    /**
+     * UploadDocumentsMethod action implementation.
+     */
+    private UploadDocumentsMethod uploadDocumentsMethod = new UploadDocumentsMethod();
 
 	@Override
 	public AddSupplierTeamMemberResponse addSupplierTeamMember(
@@ -194,5 +199,10 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
     public UpdateShipmentResponse updateShipment(UpdateShipmentRequest request) {
         return this.updateShipmentMethod.updateShipment(request);
     }
+
+	@Override
+	public UploadDocumentsResponse uploadDocuments(UploadDocumentsRequest request) {
+		return this.uploadDocumentsMethod.uploadDocuments(request);
+	}
 
 }
