@@ -82,6 +82,17 @@ public class KlearNowRequestFactory extends BaseKlearNowFactory {
     	request.setAccessToken(accessToken);
         return request;
 	}
+	
+	public static DeleteContainerRequest createDeleteContainerRequest() {
+        Object obj = newInstanceOf("klearnow.config.requestfactory.DeleteContainerRequest");
+        return (DeleteContainerRequest) obj;
+	}
+	
+	public static DeleteContainerRequest createDeleteContainerRequest(String accessToken) {
+		DeleteContainerRequest request = createDeleteContainerRequest();
+    	request.setAccessToken(accessToken);
+        return request;
+	}
     
     public static GetAccessTokenRequest createGetAccessTokenRequest() {
         Object obj = newInstanceOf("klearnow.config.requestfactory.GetAccessTokenRequest");
@@ -164,6 +175,32 @@ public class KlearNowRequestFactory extends BaseKlearNowFactory {
     public static SendMessageRequest createSendMessageRequest(String accessToken) {
         SendMessageRequest request = createSendMessageRequest();
         request.setAccessToken(accessToken);
+        return request;
+    }
+    
+    public static UpdateContainerRequest createUpdateContainerRequest() {
+        Object obj = newInstanceOf("klearnow.config.requestfactory.UpdateContainerRequest");
+        return (UpdateContainerRequest) obj;
+    }
+    
+	public static UpdateContainerRequest createUpdateContainerRequest(String accessToken) {
+        UpdateContainerRequest request = createUpdateContainerRequest();
+        request.setAccessToken(accessToken);
+        return request;
+	}
+
+    public static UpdateContainerRequest createUpdateContainerRequest(String accessToken, String containerId) {
+        UpdateContainerRequest request = createUpdateContainerRequest();
+        request.setAccessToken(accessToken);
+        request.setContainerId(containerId);
+        return request;
+    }
+    
+    public static UpdateContainerRequest createUpdateContainerRequest(String accessToken, String shipmentId, String containerNumber) {
+        UpdateContainerRequest request = createUpdateContainerRequest();
+        request.setAccessToken(accessToken);
+        request.setShipmentId(shipmentId);
+        request.setContainerId(containerNumber);
         return request;
     }
     

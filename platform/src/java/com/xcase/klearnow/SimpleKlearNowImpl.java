@@ -49,6 +49,11 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
     private DeleteActorMethod deleteActorMethod = new DeleteActorMethod();
     
     /**
+     * DeleteContainerMethod action implementation.
+     */
+    private DeleteContainerMethod deleteContainerMethod = new DeleteContainerMethod();
+    
+    /**
      * GetAccessTokenMethod action implementation.
      */
     private GetAccessTokenMethod getAccessTokenMethod = new GetAccessTokenMethod();
@@ -87,6 +92,11 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
      * SendMessageMethod action implementation.
      */
     private SendMessageMethod sendMessageMethod = new SendMessageMethod();
+    
+    /**
+     * UpdateContainerMethod action implementation.
+     */
+    private UpdateContainerMethod updateContainerMethod = new UpdateContainerMethod();
     
     /**
      * UpdateShipmentMethod action implementation.
@@ -129,6 +139,11 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
 	public DeleteActorResponse deleteActor(DeleteActorRequest request) {
         return this.deleteActorMethod.deleteActor(request);
 	}
+	
+	@Override
+	public DeleteContainerResponse deleteContainer(DeleteContainerRequest request) {
+        return this.deleteContainerMethod.deleteContainer(request);
+	}
 
     @Override
     public GetAccessTokenResponse getAccessToken(GetAccessTokenRequest request) {
@@ -169,6 +184,11 @@ public class SimpleKlearNowImpl implements KlearNowExternalAPI {
     public SendMessageResponse sendMessage(SendMessageRequest request) {
         return this.sendMessageMethod.sendMessage(request);
     }
+    
+	@Override
+	public UpdateContainerResponse updateContainer(UpdateContainerRequest request) {
+		return this.updateContainerMethod.updateContainer(request);
+	}
 
     @Override
     public UpdateShipmentResponse updateShipment(UpdateShipmentRequest request) {

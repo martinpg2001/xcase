@@ -8,20 +8,26 @@ import org.apache.logging.log4j.Logger;
 
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
 import com.xcase.klearnow.factories.KlearNowResponseFactory;
-import com.xcase.klearnow.transputs.GetContainerRequest;
-import com.xcase.klearnow.transputs.GetContainerResponse;
+import com.xcase.klearnow.transputs.DeleteContainerRequest;
+import com.xcase.klearnow.transputs.DeleteContainerResponse;
 
-public class GetContainerMethod extends BaseKlearNowMethod {
+public class DeleteContainerMethod extends BaseKlearNowMethod {
     /**
      * log4j object.
      */
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
-    public GetContainerResponse getContainer(GetContainerRequest request) {
-        LOGGER.debug("starting getContainer()");
+    public DeleteContainerResponse deleteContainer(DeleteContainerRequest request) {
+        LOGGER.debug("starting deleteContainer()");
+        String endPoint = null;
         try {
-            GetContainerResponse response = KlearNowResponseFactory.createGetContainerResponse();
-            String endPoint = request.getAPIUrl() + "shipment" + "/" + request.getShipmentId() + "/container/" + request.getContainerNumber();
+        	DeleteContainerResponse response = KlearNowResponseFactory.createDeleteContainerResponse();
+            if (request.getContainerId() != null) {
+                endPoint = request.getAPIUrl() + "container" + "/" + request.getContainerId();
+            } else {
+            	endPoint = request.getAPIUrl() + "shipment" + "/" + request.getShipmentId() + "/container/" + request.getContainerNumber();
+            }
+            
             LOGGER.debug("endPoint is " + endPoint);
             String accessToken = request.getAccessToken();
             LOGGER.debug("accessToken is " + accessToken);
@@ -29,7 +35,7 @@ public class GetContainerMethod extends BaseKlearNowMethod {
             LOGGER.debug("created accessTokenHeader");
             Header contentTypeHeader = createContentTypeHeader();
             Header[] headers = {accessTokenHeader, contentTypeHeader};
-            CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponseMethod("GET", endPoint, headers, null, null, null);
+            CommonHttpResponse commonHttpResponse = httpManager.doCommonHttpResponseMethod("DELETE", endPoint, headers, null, null, null);
             int responseCode = commonHttpResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
             response.setResponseCode(responseCode);

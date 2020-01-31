@@ -272,6 +272,7 @@ public class KlearNowApplication {
             /* Get container status */
             GetContainerRequest getContainerRequest = KlearNowRequestFactory.createGetContainerRequest(accessToken);
             getContainerRequest.setAPIUrl(apiEventsURL);
+            getContainerRequest.setShipmentId(shipmentId);
             getContainerRequest.setContainerNumber("ZZZZ9999999");
             GetContainerResponse getContainerResponse = klearNowExternalAPI.getContainer(getContainerRequest);
             responseCode = getContainerResponse.getResponseCode();
@@ -279,6 +280,56 @@ public class KlearNowApplication {
             ContainerStatus containerStatus = gson.fromJson(getContainerResponse.getEntityString(), ContainerStatus.class);
             String containerNumber = containerStatus.containerNumber;
             LOGGER.debug("containerNumber is " + containerNumber);
+            /* Update container */
+            UpdateContainerRequest updateContainerRequest = KlearNowRequestFactory.createUpdateContainerRequest(accessToken);
+            updateContainerRequest.setAPIUrl(apiEventsURL);
+            updateContainerRequest.setShipmentId(shipmentId);
+            updateContainerRequest.setContainerNumber("ZZZZ9999999");
+            Container updateContainer = new Container();
+            updateContainer.containerType = "OPEN_TOP_40_FT";
+            Address updateContainerAddress = new Address();
+            updateContainerAddress.addressLine1 = "1 Low Street";
+            updateContainerAddress.addressLine2 = "Third Floor";
+            updateContainerAddress.province = "Updated Province";
+            updateContainerAddress.country = "Updated Country";
+            updateContainerAddress.zip = "96000";
+            container.destinationAddress = updateContainerAddress;
+            String updateContainerString = gson.toJson(container);
+            LOGGER.debug("updateContainerString is " + updateContainerString);
+            updateContainerRequest.setMessage(updateContainerString);
+            UpdateContainerResponse updateContainerResponse = klearNowExternalAPI.updateContainer(updateContainerRequest);
+            responseCode = updateContainerResponse.getResponseCode();
+            LOGGER.debug("responseCode is " + responseCode);
+            /* Get container status */
+            getContainerRequest = KlearNowRequestFactory.createGetContainerRequest(accessToken);
+            getContainerRequest.setAPIUrl(apiEventsURL);
+            getContainerRequest.setShipmentId(shipmentId);
+            getContainerRequest.setContainerNumber("ZZZZ9999999");
+            getContainerResponse = klearNowExternalAPI.getContainer(getContainerRequest);
+            responseCode = getContainerResponse.getResponseCode();
+            LOGGER.debug("responseCode is " + responseCode);
+            containerStatus = gson.fromJson(getContainerResponse.getEntityString(), ContainerStatus.class);
+            containerNumber = containerStatus.containerNumber;
+            LOGGER.debug("containerNumber is " + containerNumber);
+            /* Delete container */
+            DeleteContainerRequest deleteContainerRequest = KlearNowRequestFactory.createDeleteContainerRequest(accessToken);
+            deleteContainerRequest.setAPIUrl(apiEventsURL);
+            deleteContainerRequest.setShipmentId(shipmentId);
+            deleteContainerRequest.setContainerNumber("ZZZZ9999999");
+            DeleteContainerResponse deleteContainerResponse = klearNowExternalAPI.deleteContainer(deleteContainerRequest);
+            responseCode = deleteContainerResponse.getResponseCode();
+            LOGGER.debug("responseCode is " + responseCode);
+            /* Get container status: should throw some sort of error */
+            getContainerRequest = KlearNowRequestFactory.createGetContainerRequest(accessToken);
+            getContainerRequest.setAPIUrl(apiEventsURL);
+            getContainerRequest.setShipmentId(shipmentId);
+            getContainerRequest.setContainerNumber("ZZZZ9999999");
+            getContainerResponse = klearNowExternalAPI.getContainer(getContainerRequest);
+            responseCode = getContainerResponse.getResponseCode();
+            LOGGER.debug("responseCode is " + responseCode);
+            containerStatus = gson.fromJson(getContainerResponse.getEntityString(), ContainerStatus.class);
+            containerNumber = containerStatus.containerNumber;
+            LOGGER.debug("containerNumber is " + containerNumber);            
             /* Create merchandise line item */
             CreateMerchandiseLineItemRequest createMerchandiseLineItemRequest = KlearNowRequestFactory.createCreateMerchandiseLineItemRequest(accessToken);
             createMerchandiseLineItemRequest.setAPIUrl(apiEventsURL);

@@ -17,6 +17,8 @@ public interface KlearNowExternalAPI {
 	CreateSupplierAdminResponse createSupplierAdmin(CreateSupplierAdminRequest createSupplierAdminRequest);
 	
 	DeleteActorResponse deleteActor(DeleteActorRequest deleteActorRequest);
+	
+	DeleteContainerResponse deleteContainer(DeleteContainerRequest request);
     
     GetAccessTokenResponse getAccessToken(GetAccessTokenRequest request);
     
@@ -34,6 +36,8 @@ public interface KlearNowExternalAPI {
 	SearchShipmentsResponse searchShipments(SearchShipmentsRequest searchShipmentsRequest);
 
     SendMessageResponse sendMessage(SendMessageRequest request);
+    
+	UpdateContainerResponse updateContainer(UpdateContainerRequest updateContainerRequest);
 
     UpdateShipmentResponse updateShipment(UpdateShipmentRequest updateShipmentRequest);
 
