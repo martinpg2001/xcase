@@ -69,7 +69,7 @@ public class KlearNowApplication {
             CreateShipmentRequest createShipmentRequest = KlearNowRequestFactory.createCreateShipmentRequest(accessToken);
             createShipmentRequest.setAPIUrl(apiEventsURL);
             Shipment shipment = new Shipment();
-            String shipmentId = UUID.randomUUID().toString().substring(0, 31);
+            String shipmentId = "AAAA1111112";//UUID.randomUUID().toString().substring(0, 31);
             LOGGER.debug("shipmentId is " + shipmentId);
             shipment.shipmentId = shipmentId;
             shipment.supplierEmail = "qa@klearexpress.us";
@@ -98,11 +98,11 @@ public class KlearNowApplication {
             shipment.goNumber = "";
             shipment.paymentTypeCode = "";
             shipment.examPortCode = "";
-            shipment.supplierActorId = "";
+            shipment.supplierActorId = "abcd";
             shipment.consigneeActorId = "";
-            shipment.sellerActorId = "";
+            shipment.sellerActorId = "abcd";
             shipment.buyerActorId = "";
-            shipment.manufacturerActorId = "";
+            shipment.manufacturerActorId = "abcd";
             shipment.shipToActorId = "";
             shipment.stufferActorId = "";
             shipment.consolidatorActorId = "";
@@ -131,17 +131,19 @@ public class KlearNowApplication {
             LOGGER.debug("responseCode is " + responseCode);
             SearchShipmentsResponseMessage searchShipmentsResponseMessage = gson.fromJson(searchShipmentsResponse.getEntityString(), SearchShipmentsResponseMessage.class);
             LOGGER.debug("parsed entity string as SearchShipmentsResponseMessage");
-            String[] shipmentIdArray = searchShipmentsResponseMessage.shipmentIdArray;
-            LOGGER.debug("shipmentIdArray as " + shipmentIdArray);
-            for (String searchShipmentId : shipmentIdArray) {
-                LOGGER.debug("searchShipmentId is " + searchShipmentId);
-                getShipmentRequest = KlearNowRequestFactory.createGetShipmentRequest(accessToken, searchShipmentId);
-                getShipmentRequest.setAPIUrl(apiEventsURL);
-                getShipmentResponse = klearNowExternalAPI.getShipment(getShipmentRequest);
-                responseCode = getShipmentResponse.getResponseCode();
-                LOGGER.debug("responseCode is " + responseCode);
-                Shipment searchshipment = gson.fromJson(getShipmentResponse.getEntityString(), Shipment.class);
-                LOGGER.debug("parsed entity string as Shipment");
+            if (searchShipmentsResponseMessage != null) {
+	            String[] shipmentIdArray = searchShipmentsResponseMessage.shipmentIdArray;
+	            LOGGER.debug("shipmentIdArray as " + shipmentIdArray);
+	            for (String searchShipmentId : shipmentIdArray) {
+	                LOGGER.debug("searchShipmentId is " + searchShipmentId);
+	                getShipmentRequest = KlearNowRequestFactory.createGetShipmentRequest(accessToken, searchShipmentId);
+	                getShipmentRequest.setAPIUrl(apiEventsURL);
+	                getShipmentResponse = klearNowExternalAPI.getShipment(getShipmentRequest);
+	                responseCode = getShipmentResponse.getResponseCode();
+	                LOGGER.debug("responseCode is " + responseCode);
+	                Shipment searchshipment = gson.fromJson(getShipmentResponse.getEntityString(), Shipment.class);
+	                LOGGER.debug("parsed entity string as Shipment");
+	            }
             }
             
             /* Update shipment */
@@ -158,9 +160,9 @@ public class KlearNowApplication {
             LOGGER.debug("arrivalDate is " + arrivalDate);
             updateShipment.portOfLadingCode = "48945";
             updateShipment.portOfUnladingCode = "4601";
-            updateShipment.supplierActorId = "";
-            updateShipment.sellerActorId = "";
-            updateShipment.manufacturerActorId = "";
+            updateShipment.supplierActorId = "abcde";
+            updateShipment.sellerActorId = "abcde";
+            updateShipment.manufacturerActorId = "abcde";
             String updateShipmentString = gson.toJson(updateShipment);
             LOGGER.debug("updateShipmentString is " + updateShipmentString);
             updateShipmentRequest.setMessage(updateShipmentString);
@@ -179,7 +181,7 @@ public class KlearNowApplication {
             GetShipmentStatusResponse getShipmentStatusResponse = klearNowExternalAPI.getShipmentStatus(getShipmentStatusRequest);
             responseCode = getShipmentStatusResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
-            /* Create actor */
+            /* Create actor 
             CreateActorRequest createActorRequest = KlearNowRequestFactory.createCreateActorRequest(accessToken);
             createActorRequest.setAPIUrl(apiEventsURL);
             Actor actor = new Actor();
@@ -198,22 +200,22 @@ public class KlearNowApplication {
             responseCode = createActorResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
             ActorResponseMessage actorResponseMessage = gson.fromJson(createActorResponse.getEntityString(), ActorResponseMessage.class);
-            String actorId = actorResponseMessage.knActorId;
-            /* Get actor */
+            String actorId = actorResponseMessage.knActorId; */
+            /* Get actor 
             GetActorRequest getActorRequest = KlearNowRequestFactory.createGetActorRequest(accessToken);
             getActorRequest.setAPIUrl(apiEventsURL);
             getActorRequest.setActorId(actorId);
             GetActorResponse getActorResponse = klearNowExternalAPI.getActor(getActorRequest);
             responseCode = getActorResponse.getResponseCode();
-            LOGGER.debug("responseCode is " + responseCode);
-            /* Delete actor */
+            LOGGER.debug("responseCode is " + responseCode);*/
+            /* Delete actor 
             DeleteActorRequest deleteActorRequest = KlearNowRequestFactory.createDeleteActorRequest(accessToken);
             deleteActorRequest.setAPIUrl(apiEventsURL);
             deleteActorRequest.setActorId(actorId);
             DeleteActorResponse deleteActorResponse = klearNowExternalAPI.deleteActor(deleteActorRequest);
             responseCode = deleteActorResponse.getResponseCode();
-            LOGGER.debug("responseCode is " + responseCode);
-            /* Create supplier admin */
+            LOGGER.debug("responseCode is " + responseCode); */
+            /* Create supplier admin 
             CreateSupplierAdminRequest createSupplierAdminRequest = KlearNowRequestFactory.createCreateSupplierAdminRequest(accessToken);
             createSupplierAdminRequest.setAPIUrl(apiEventsURL);
             SupplierAdmin supplierAdmin = new SupplierAdmin();
@@ -226,8 +228,8 @@ public class KlearNowApplication {
             createSupplierAdminRequest.setMessage(supplierAdminString);
             CreateSupplierAdminResponse createSupplierAdminResponse = klearNowExternalAPI.createSupplierAdmin(createSupplierAdminRequest);
             responseCode = createSupplierAdminResponse.getResponseCode();
-            LOGGER.debug("responseCode is " + responseCode);
-            /* Get supplier onboarding status */
+            LOGGER.debug("responseCode is " + responseCode); */
+            /* Get supplier onboarding status 
             GetSupplierOnboardingStatusRequest getSupplierOnboardingStatusRequest = KlearNowRequestFactory.createGetSupplierOnboardingStatusRequest(accessToken);
             getSupplierOnboardingStatusRequest.setAPIUrl(apiEventsURL);
             SupplierOnboardingStatusRequest supplierOnboardingStatusRequest = new SupplierOnboardingStatusRequest();
@@ -237,8 +239,8 @@ public class KlearNowApplication {
             getSupplierOnboardingStatusRequest.setMessage(supplierAdminString);
             GetSupplierOnboardingStatusResponse getSupplierOnboardingStatusResponse = klearNowExternalAPI.getSupplierOnboardingStatus(getSupplierOnboardingStatusRequest);
             responseCode = getSupplierOnboardingStatusResponse.getResponseCode();
-            LOGGER.debug("responseCode is " + responseCode);
-            /* Add supplier team member */
+            LOGGER.debug("responseCode is " + responseCode); */
+            /* Add supplier team member 
             AddSupplierTeamMemberRequest addSupplierTeamMemberRequest = KlearNowRequestFactory.createAddSupplierTeamMemberRequest(accessToken);
             addSupplierTeamMemberRequest.setAPIUrl(apiEventsURL);
             SupplierTeamMemberRequest supplierTeamMemberRequest = new SupplierTeamMemberRequest();
@@ -251,10 +253,11 @@ public class KlearNowApplication {
             addSupplierTeamMemberRequest.setMessage(supplierTeamMemberRequestString);
             AddSupplierTeamMemberResponse addSupplierTeamMemberResponse = klearNowExternalAPI.addSupplierTeamMember(addSupplierTeamMemberRequest);
             responseCode = addSupplierTeamMemberResponse.getResponseCode();
-            LOGGER.debug("responseCode is " + responseCode);
-            /* Create container */
+            LOGGER.debug("responseCode is " + responseCode); */
+            /* Create container
             CreateContainerRequest createContainerRequest = KlearNowRequestFactory.createCreateContainerRequest(accessToken);
             createContainerRequest.setAPIUrl(apiEventsURL);
+            createContainerRequest.setShipmentId(shipmentId);
             Container container = new Container();
             container.containerNumber = "ZZZZ9999999";
             container.containerType = "CLOSE_TOP_40_FT";
@@ -270,8 +273,8 @@ public class KlearNowApplication {
             createContainerRequest.setMessage(createContainerString);
             CreateContainerResponse createContainerResponse = klearNowExternalAPI.createContainer(createContainerRequest);
             responseCode = createContainerResponse.getResponseCode();
-            LOGGER.debug("responseCode is " + responseCode);
-            /* Get container status */
+            LOGGER.debug("responseCode is " + responseCode); */
+            /* Get container status
             GetContainerRequest getContainerRequest = KlearNowRequestFactory.createGetContainerRequest(accessToken);
             getContainerRequest.setAPIUrl(apiEventsURL);
             getContainerRequest.setShipmentId(shipmentId);
@@ -281,8 +284,8 @@ public class KlearNowApplication {
             LOGGER.debug("responseCode is " + responseCode);
             ContainerStatus containerStatus = gson.fromJson(getContainerResponse.getEntityString(), ContainerStatus.class);
             String containerNumber = containerStatus.containerNumber;
-            LOGGER.debug("containerNumber is " + containerNumber);
-            /* Update container */
+            LOGGER.debug("containerNumber is " + containerNumber); */
+            /* Update container
             UpdateContainerRequest updateContainerRequest = KlearNowRequestFactory.createUpdateContainerRequest(accessToken);
             updateContainerRequest.setAPIUrl(apiEventsURL);
             updateContainerRequest.setShipmentId(shipmentId);
@@ -301,8 +304,8 @@ public class KlearNowApplication {
             updateContainerRequest.setMessage(updateContainerString);
             UpdateContainerResponse updateContainerResponse = klearNowExternalAPI.updateContainer(updateContainerRequest);
             responseCode = updateContainerResponse.getResponseCode();
-            LOGGER.debug("responseCode is " + responseCode);
-            /* Get container status */
+            LOGGER.debug("responseCode is " + responseCode); */
+            /* Get container status
             getContainerRequest = KlearNowRequestFactory.createGetContainerRequest(accessToken);
             getContainerRequest.setAPIUrl(apiEventsURL);
             getContainerRequest.setShipmentId(shipmentId);
@@ -312,16 +315,16 @@ public class KlearNowApplication {
             LOGGER.debug("responseCode is " + responseCode);
             containerStatus = gson.fromJson(getContainerResponse.getEntityString(), ContainerStatus.class);
             containerNumber = containerStatus.containerNumber;
-            LOGGER.debug("containerNumber is " + containerNumber);
-            /* Delete container */
+            LOGGER.debug("containerNumber is " + containerNumber); */
+            /* Delete container
             DeleteContainerRequest deleteContainerRequest = KlearNowRequestFactory.createDeleteContainerRequest(accessToken);
             deleteContainerRequest.setAPIUrl(apiEventsURL);
             deleteContainerRequest.setShipmentId(shipmentId);
             deleteContainerRequest.setContainerNumber("ZZZZ9999999");
             DeleteContainerResponse deleteContainerResponse = klearNowExternalAPI.deleteContainer(deleteContainerRequest);
             responseCode = deleteContainerResponse.getResponseCode();
-            LOGGER.debug("responseCode is " + responseCode);
-            /* Get container status: should throw some sort of error */
+            LOGGER.debug("responseCode is " + responseCode); */
+            /* Get container status: should throw some sort of error
             getContainerRequest = KlearNowRequestFactory.createGetContainerRequest(accessToken);
             getContainerRequest.setAPIUrl(apiEventsURL);
             getContainerRequest.setShipmentId(shipmentId);
@@ -331,22 +334,25 @@ public class KlearNowApplication {
             LOGGER.debug("responseCode is " + responseCode);
             containerStatus = gson.fromJson(getContainerResponse.getEntityString(), ContainerStatus.class);
             containerNumber = containerStatus.containerNumber;
-            LOGGER.debug("containerNumber is " + containerNumber);            
+            LOGGER.debug("containerNumber is " + containerNumber); */         
             /* Create merchandise line item */
             CreateMerchandiseLineItemRequest createMerchandiseLineItemRequest = KlearNowRequestFactory.createCreateMerchandiseLineItemRequest(accessToken);
             createMerchandiseLineItemRequest.setAPIUrl(apiEventsURL);
+            createMerchandiseLineItemRequest.setShipmentId(shipmentId);
             MerchandiseLineItem merchandiseLineItem = new MerchandiseLineItem();
             merchandiseLineItem.commercialDescription = "";
             merchandiseLineItem.manufacturerId = "";
             merchandiseLineItem.originCountry = "China";
             merchandiseLineItem.sequenceID = 1;
-            String merchandiseLineItemString = gson.toJson(merchandiseLineItem);
-            LOGGER.debug("merchandiseLineItemString is " + merchandiseLineItemString);
-            createContainerRequest.setMessage(merchandiseLineItemString);
+            MerchandiseCreateRequestMessage merchandiseCreateRequestMessage = new MerchandiseCreateRequestMessage();
+            merchandiseCreateRequestMessage.merchandises = new MerchandiseLineItem[] { merchandiseLineItem };
+            String merchandiseCreateRequestMessageString = gson.toJson(merchandiseCreateRequestMessage);
+            LOGGER.debug("merchandiseCreateRequestMessageString is " + merchandiseCreateRequestMessageString);
+            createMerchandiseLineItemRequest.setMessage(merchandiseCreateRequestMessageString);
             CreateMerchandiseLineItemResponse createMerchandiseLineItemResponse = klearNowExternalAPI.createMerchandiseLineItem(createMerchandiseLineItemRequest);
             responseCode = createMerchandiseLineItemResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
-            /* Upload documents */
+            /* Upload documents
             LOGGER.debug("shipmentId is " + shipmentId);
             UploadDocumentsRequest uploadDocumentsRequest = KlearNowRequestFactory.createUploadDocumentsRequest(accessToken, shipmentId);
             uploadDocumentsRequest.setAPIUrl(apiEventsURL);
@@ -356,7 +362,7 @@ public class KlearNowApplication {
             uploadDocumentsRequest.setDataMap(dataMap);
             UploadDocumentsResponse uploadDocumentsResponse = klearNowExternalAPI.uploadDocuments(uploadDocumentsRequest);
             responseCode = uploadDocumentsResponse.getResponseCode();
-            LOGGER.debug("responseCode is " + responseCode);
+            LOGGER.debug("responseCode is " + responseCode); */
         } catch (Exception e) {
             LOGGER.warn("exception invoking API operation: " + e.getMessage());
         }
