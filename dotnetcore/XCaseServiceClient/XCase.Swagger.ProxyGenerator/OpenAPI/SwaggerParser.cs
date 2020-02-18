@@ -507,7 +507,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
                     }
                 }
 
-                //Log.DebugFormat("isEnum is {0}", isEnum);
+                Log.DebugFormat("isEnum is {0}", isEnum);
                 typeName = FixGenericName(typeName);
                 //Log.DebugFormat("typeName is {0}", typeName);
                 TypeDefinition type = new TypeDefinition(typeName, name, enumValues, isNullable);

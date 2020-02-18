@@ -509,7 +509,7 @@
             return proxyStringBuilder;
         }
 
-        private static StringBuilder WriteClassDefinitionToStringBuilder(ClassDefinition classDefinition, IAPIProxySettingsEndpoint endPoint)
+        public static StringBuilder WriteClassDefinitionToStringBuilder(ClassDefinition classDefinition, IAPIProxySettingsEndpoint endPoint)
         {
             StringBuilder modelClassStringBuilder = new StringBuilder();
             List<XCase.ProxyGenerator.REST.Enum> modelEnums = new List<XCase.ProxyGenerator.REST.Enum>();
@@ -694,14 +694,14 @@
             WriteLine(stringBuilder);
         }
 
-        private static void PrintLogger(StringBuilder stringBuilder)
+        public static void PrintLogger(StringBuilder stringBuilder)
         {
             WriteLine(stringBuilder);
             WriteLine(stringBuilder, "protected static final Logger LOGGER = LogManager.getLogger();");
             WriteLine(stringBuilder);
         }
 
-        static string GetDefaultType(Parameter parameter)
+        public static string GetDefaultType(Parameter parameter)
         {
             if (parameter.Type != null)
             {
@@ -769,7 +769,7 @@
             }
         }
 
-        static string GetDefaultValue(Parameter x)
+        public static string GetDefaultValue(Parameter x)
         {
             if (!x.Type.IsNullableType && x.CollectionFormat != "multi" && x.Type.EnumValues != null && x.Type.EnumValues.Any())
             {
@@ -779,7 +779,7 @@
             return "null";
         }
 
-        static void PrintHeaders(StringBuilder stringBuilder, string package)
+        public static void PrintHeaders(StringBuilder stringBuilder, string package)
         {
             WriteLine(stringBuilder, string.Format("package {0};", package));
             WriteLine(stringBuilder);
@@ -801,7 +801,7 @@
             WriteLine(stringBuilder, string.Format("import {0};", import));
         }
 
-        static void WriteNullIfStatementOpening(StringBuilder stringBuilder, string parameterName, string typeName)
+        public static void WriteNullIfStatementOpening(StringBuilder stringBuilder, string parameterName, string typeName)
         {
             if (IsIntrinsicType(typeName))
             {
@@ -813,12 +813,12 @@
             }
         }
 
-        static void WriteNullIfStatementClosing(StringBuilder stringBuilder, string parameterName, string typeName)
+        public static void WriteNullIfStatementClosing(StringBuilder stringBuilder, string parameterName, string typeName)
         {
             WriteLine(stringBuilder, string.Format("}}"));
         }
 
-        static bool IsIntrinsicType(string typeName)
+        public static bool IsIntrinsicType(string typeName)
         {
             switch (typeName.ToLowerInvariant())
             {
