@@ -8,8 +8,8 @@ public class Shipment {
     public String masterBolNumber;
     public String houseBolNumber;
     public String vesselName;
-    public long departureDate;
-    public long arrivalDate;
+    public String departureDate;
+    public String arrivalDate;
     public ModeOfTransport modeOfTransport;
     public String originCountry;
     public String originCity;
