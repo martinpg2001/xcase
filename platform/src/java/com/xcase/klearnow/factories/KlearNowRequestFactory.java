@@ -22,10 +22,16 @@ public class KlearNowRequestFactory extends BaseKlearNowFactory {
     	request.setAccessToken(accessToken);
         return request;
 	}
-    
-	public static CreateActorRequest createCreateActorRequest(String accessToken) {
+	
+    public static CreateActorRequest createCreateActorRequest() {
         Object obj = newInstanceOf("klearnow.config.requestfactory.CreateActorRequest");
         return (CreateActorRequest) obj;
+    }
+    
+	public static CreateActorRequest createCreateActorRequest(String accessToken) {
+        CreateActorRequest request = createCreateActorRequest();
+        request.setAccessToken(accessToken);
+        return request;
 	}
 	
 	public static CreateContainerRequest createCreateContainerRequest() {

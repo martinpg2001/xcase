@@ -7,6 +7,7 @@ public class Shipment {
     public String referenceNumber;
     public String masterBolNumber;
     public String houseBolNumber;
+    public String htsCode;
     public String vesselName;
     public String departureDate;
     public String arrivalDate;
@@ -29,7 +30,7 @@ public class Shipment {
     public String sellerActorId;
     public String buyerActorId;
     public String manufacturerActorId;
-    public String shipToActorId;
+    public String shipperActorId;
     public String stufferActorId;
     public String consolidatorActorId;
     public String notifyPartyActorId;

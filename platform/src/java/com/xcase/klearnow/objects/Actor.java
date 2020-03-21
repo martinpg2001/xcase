@@ -2,6 +2,7 @@ package com.xcase.klearnow.objects;
 
 public class Actor {
     public String name;
+    public String actorType;
     public Address address;
 
     @Override

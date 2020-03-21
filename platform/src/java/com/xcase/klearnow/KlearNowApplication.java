@@ -16,7 +16,9 @@ import com.xcase.klearnow.transputs.CreateActorResponse;
 import java.io.File;
 import java.lang.invoke.MethodHandles;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
@@ -77,6 +79,7 @@ public class KlearNowApplication {
             shipment.referenceNumber = "";
             shipment.masterBolNumber = "";
             shipment.houseBolNumber = "HBOL123455666";
+            shipment.htsCode = "940306";
             shipment.vesselName = "EVER SMILE";
             long departureDate = Instant.now().toEpochMilli();
             shipment.departureDate = Long.toString(departureDate);
@@ -103,7 +106,7 @@ public class KlearNowApplication {
             shipment.sellerActorId = "877325595";
             shipment.buyerActorId = "";
             shipment.manufacturerActorId = "877325595";
-            shipment.shipToActorId = "";
+            shipment.shipperActorId = "";
             shipment.stufferActorId = "";
             shipment.consolidatorActorId = "";
             shipment.notifyPartyActorId = "";
@@ -181,14 +184,16 @@ public class KlearNowApplication {
             GetShipmentStatusResponse getShipmentStatusResponse = klearNowExternalAPI.getShipmentStatus(getShipmentStatusRequest);
             responseCode = getShipmentStatusResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
-            /* Create actor 
+            /* Create actor */
             CreateActorRequest createActorRequest = KlearNowRequestFactory.createCreateActorRequest(accessToken);
             createActorRequest.setAPIUrl(apiEventsURL);
             Actor actor = new Actor();
             actor.name = "Firstname Lastname";
+            actor.actorType = "MANUFACTURER";
             Address address = new Address();
-            address.addressLine1 = "1 High Street";
+            address.addressLine1 = "Main Road";
             address.addressLine2 = "Second Floor";
+            address.city = "City";
             address.province = "Province";
             address.country = "Country";
             address.zip = "95000";
@@ -200,21 +205,21 @@ public class KlearNowApplication {
             responseCode = createActorResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
             ActorResponseMessage actorResponseMessage = gson.fromJson(createActorResponse.getEntityString(), ActorResponseMessage.class);
-            String actorId = actorResponseMessage.knActorId; */
-            /* Get actor 
+            String actorId = actorResponseMessage.knActorId;
+            /* Get actor */
             GetActorRequest getActorRequest = KlearNowRequestFactory.createGetActorRequest(accessToken);
             getActorRequest.setAPIUrl(apiEventsURL);
             getActorRequest.setActorId(actorId);
             GetActorResponse getActorResponse = klearNowExternalAPI.getActor(getActorRequest);
             responseCode = getActorResponse.getResponseCode();
-            LOGGER.debug("responseCode is " + responseCode);*/
-            /* Delete actor 
+            LOGGER.debug("responseCode is " + responseCode);
+            /* Delete actor */
             DeleteActorRequest deleteActorRequest = KlearNowRequestFactory.createDeleteActorRequest(accessToken);
             deleteActorRequest.setAPIUrl(apiEventsURL);
             deleteActorRequest.setActorId(actorId);
             DeleteActorResponse deleteActorResponse = klearNowExternalAPI.deleteActor(deleteActorRequest);
             responseCode = deleteActorResponse.getResponseCode();
-            LOGGER.debug("responseCode is " + responseCode); */
+            LOGGER.debug("responseCode is " + responseCode);
             /* Create supplier admin 
             CreateSupplierAdminRequest createSupplierAdminRequest = KlearNowRequestFactory.createCreateSupplierAdminRequest(accessToken);
             createSupplierAdminRequest.setAPIUrl(apiEventsURL);
@@ -254,7 +259,7 @@ public class KlearNowApplication {
             AddSupplierTeamMemberResponse addSupplierTeamMemberResponse = klearNowExternalAPI.addSupplierTeamMember(addSupplierTeamMemberRequest);
             responseCode = addSupplierTeamMemberResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode); */
-            /* Create container
+            /* Create container */
             CreateContainerRequest createContainerRequest = KlearNowRequestFactory.createCreateContainerRequest(accessToken);
             createContainerRequest.setAPIUrl(apiEventsURL);
             createContainerRequest.setShipmentId(shipmentId);
@@ -262,23 +267,24 @@ public class KlearNowApplication {
             container.containerNumber = "ZZZZ9999999";
             container.containerType = "40C";
             Address containerAddress = new Address();
-            containerAddress.addressLine1 = "1 High Street";
+            containerAddress.addressLine1 = "Main Road";
             containerAddress.addressLine2 = "Second Floor";
+            containerAddress.city = "City";
             containerAddress.province = "Province";
             containerAddress.country = "Country";
             containerAddress.zip = "95000";
             container.containerDestinationAddress = containerAddress;
-            List<Container> containerList = new List<Container>();
+            List<Container> containerList = new ArrayList<Container>();
             containerList.add(container);
-            ContainerCreateRequestMessage containerCreateRequestMessage = new ContainerCreateRequestMessage();
-            containerCreateRequestMessage.containers = containerList.toArray(new Container[0]);
-            String createContainerString = gson.toJson(containerCreateRequestMessage);
+            CreateContainerRequestMessage createContainerRequestMessage = new CreateContainerRequestMessage();
+            createContainerRequestMessage.containers = containerList.toArray(new Container[0]);
+            String createContainerString = gson.toJson(createContainerRequestMessage);
             LOGGER.debug("createContainerString is " + createContainerString);
             createContainerRequest.setMessage(createContainerString);
             CreateContainerResponse createContainerResponse = klearNowExternalAPI.createContainer(createContainerRequest);
             responseCode = createContainerResponse.getResponseCode();
-            LOGGER.debug("responseCode is " + responseCode); */
-            /* Get container status
+            LOGGER.debug("responseCode is " + responseCode);
+            /* Get container status */
             GetContainerRequest getContainerRequest = KlearNowRequestFactory.createGetContainerRequest(accessToken);
             getContainerRequest.setAPIUrl(apiEventsURL);
             getContainerRequest.setShipmentId(shipmentId);
@@ -288,8 +294,8 @@ public class KlearNowApplication {
             LOGGER.debug("responseCode is " + responseCode);
             ContainerStatus containerStatus = gson.fromJson(getContainerResponse.getEntityString(), ContainerStatus.class);
             String containerNumber = containerStatus.containerNumber;
-            LOGGER.debug("containerNumber is " + containerNumber); */
-            /* Update container
+            LOGGER.debug("containerNumber is " + containerNumber);
+            /* Update container */
             UpdateContainerRequest updateContainerRequest = KlearNowRequestFactory.createUpdateContainerRequest(accessToken);
             updateContainerRequest.setAPIUrl(apiEventsURL);
             updateContainerRequest.setShipmentId(shipmentId);
@@ -297,19 +303,20 @@ public class KlearNowApplication {
             Container updateContainer = new Container();
             updateContainer.containerType = "OPEN_TOP_40_FT";
             Address updateContainerAddress = new Address();
-            updateContainerAddress.addressLine1 = "1 Low Street";
+            updateContainerAddress.addressLine1 = "Minor Road";
             updateContainerAddress.addressLine2 = "Third Floor";
+            updateContainerAddress.city = "Updated City";
             updateContainerAddress.province = "Updated Province";
             updateContainerAddress.country = "Updated Country";
             updateContainerAddress.zip = "96000";
-            container.destinationAddress = updateContainerAddress;
+            container.containerDestinationAddress = updateContainerAddress;
             String updateContainerString = gson.toJson(container);
             LOGGER.debug("updateContainerString is " + updateContainerString);
             updateContainerRequest.setMessage(updateContainerString);
             UpdateContainerResponse updateContainerResponse = klearNowExternalAPI.updateContainer(updateContainerRequest);
             responseCode = updateContainerResponse.getResponseCode();
-            LOGGER.debug("responseCode is " + responseCode); */
-            /* Get container status
+            LOGGER.debug("responseCode is " + responseCode);
+            /* Get container status */
             getContainerRequest = KlearNowRequestFactory.createGetContainerRequest(accessToken);
             getContainerRequest.setAPIUrl(apiEventsURL);
             getContainerRequest.setShipmentId(shipmentId);
@@ -319,16 +326,16 @@ public class KlearNowApplication {
             LOGGER.debug("responseCode is " + responseCode);
             containerStatus = gson.fromJson(getContainerResponse.getEntityString(), ContainerStatus.class);
             containerNumber = containerStatus.containerNumber;
-            LOGGER.debug("containerNumber is " + containerNumber); */
-            /* Delete container
+            LOGGER.debug("containerNumber is " + containerNumber);
+            /* Delete container */
             DeleteContainerRequest deleteContainerRequest = KlearNowRequestFactory.createDeleteContainerRequest(accessToken);
             deleteContainerRequest.setAPIUrl(apiEventsURL);
             deleteContainerRequest.setShipmentId(shipmentId);
             deleteContainerRequest.setContainerNumber("ZZZZ9999999");
             DeleteContainerResponse deleteContainerResponse = klearNowExternalAPI.deleteContainer(deleteContainerRequest);
             responseCode = deleteContainerResponse.getResponseCode();
-            LOGGER.debug("responseCode is " + responseCode); */
-            /* Get container status: should throw some sort of error
+            LOGGER.debug("responseCode is " + responseCode);
+            /* Get container status: should throw some sort of error */
             getContainerRequest = KlearNowRequestFactory.createGetContainerRequest(accessToken);
             getContainerRequest.setAPIUrl(apiEventsURL);
             getContainerRequest.setShipmentId(shipmentId);
@@ -338,7 +345,7 @@ public class KlearNowApplication {
             LOGGER.debug("responseCode is " + responseCode);
             containerStatus = gson.fromJson(getContainerResponse.getEntityString(), ContainerStatus.class);
             containerNumber = containerStatus.containerNumber;
-            LOGGER.debug("containerNumber is " + containerNumber); */         
+            LOGGER.debug("containerNumber is " + containerNumber);     
             /* Create merchandise line item */
             CreateMerchandiseLineItemRequest createMerchandiseLineItemRequest = KlearNowRequestFactory.createCreateMerchandiseLineItemRequest(accessToken);
             createMerchandiseLineItemRequest.setAPIUrl(apiEventsURL);
