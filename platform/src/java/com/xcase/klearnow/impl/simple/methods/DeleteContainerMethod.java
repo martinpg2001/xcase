@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
+import com.xcase.klearnow.constant.KlearNowConstant;
 import com.xcase.klearnow.factories.KlearNowResponseFactory;
 import com.xcase.klearnow.transputs.DeleteContainerRequest;
 import com.xcase.klearnow.transputs.DeleteContainerResponse;
@@ -39,7 +40,7 @@ public class DeleteContainerMethod extends BaseKlearNowMethod {
             int responseCode = commonHttpResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
             response.setResponseCode(responseCode);
-            if (responseCode == 202) {
+            if (responseCode == KlearNowConstant.DELETE_CONTAINER) {
                 processExpectedResponseCode(response, commonHttpResponse);
             } else {
                 LOGGER.warn("unexpected response code " + responseCode);

@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
+import com.xcase.klearnow.constant.KlearNowConstant;
 import com.xcase.klearnow.factories.KlearNowResponseFactory;
 import com.xcase.klearnow.transputs.GetSupplierOnboardingStatusRequest;
 import com.xcase.klearnow.transputs.GetSupplierOnboardingStatusResponse;
@@ -33,7 +34,7 @@ public class GetSupplierOnboardingStatusMethod extends BaseKlearNowMethod {
             int responseCode = commonHttpResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
             response.setResponseCode(responseCode);
-            if (responseCode == 201) {
+            if (responseCode == KlearNowConstant.GET_SUPPLIER_ONBOARDING_STATUS) {
                 processExpectedResponseCode(response, commonHttpResponse);
             } else {
                 LOGGER.warn("unexpected response code " + responseCode);

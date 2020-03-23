@@ -1,6 +1,7 @@
 package com.xcase.klearnow.impl.simple.methods;
 
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
+import com.xcase.klearnow.constant.KlearNowConstant;
 import com.xcase.klearnow.factories.KlearNowResponseFactory;
 import com.xcase.klearnow.transputs.GetShipmentRequest;
 import com.xcase.klearnow.transputs.GetShipmentResponse;
@@ -35,7 +36,7 @@ public class GetShipmentMethod extends BaseKlearNowMethod {
             int responseCode = commonHttpResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
             response.setResponseCode(responseCode);
-            if (responseCode == 201) {
+            if (responseCode == KlearNowConstant.GET_SHIPMENT) {
                 processExpectedResponseCode(response, commonHttpResponse);
             } else {
                 LOGGER.warn("unexpected response code " + responseCode);

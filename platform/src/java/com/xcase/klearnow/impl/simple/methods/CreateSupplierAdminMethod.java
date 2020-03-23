@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.xcase.common.impl.simple.core.CommonHttpResponse;
+import com.xcase.klearnow.constant.KlearNowConstant;
 import com.xcase.klearnow.factories.KlearNowResponseFactory;
 import com.xcase.klearnow.transputs.CreateSupplierAdminRequest;
 import com.xcase.klearnow.transputs.CreateSupplierAdminResponse;
@@ -35,7 +36,7 @@ public class CreateSupplierAdminMethod extends BaseKlearNowMethod {
             int responseCode = commonHttpResponse.getResponseCode();
             LOGGER.debug("responseCode is " + responseCode);
             response.setResponseCode(responseCode);
-            if (responseCode == 201) {
+            if (responseCode == KlearNowConstant.CREATE_SUPPLIER_ADMIN) {
                 processExpectedResponseCode(response, commonHttpResponse);
             } else {
                 LOGGER.warn("unexpected response code " + responseCode);
