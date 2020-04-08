@@ -21,6 +21,21 @@ import software.amazon.awssdk.services.s3.model.CreateBucketResponse;
 import software.amazon.awssdk.services.s3.model.DeleteBucketRequest;
 import software.amazon.awssdk.services.s3.model.DeleteBucketResponse;
 import software.amazon.awssdk.services.s3.model.ListBucketsResponse;
+import software.amazon.awssdk.services.sqs.SqsClient;
+import software.amazon.awssdk.services.sqs.SqsClientBuilder;
+import software.amazon.awssdk.services.sqs.model.ChangeMessageVisibilityRequest;
+import software.amazon.awssdk.services.sqs.model.CreateQueueRequest;
+import software.amazon.awssdk.services.sqs.model.DeleteMessageRequest;
+import software.amazon.awssdk.services.sqs.model.DeleteQueueRequest;
+import software.amazon.awssdk.services.sqs.model.GetQueueUrlRequest;
+import software.amazon.awssdk.services.sqs.model.GetQueueUrlResponse;
+import software.amazon.awssdk.services.sqs.model.ListQueuesRequest;
+import software.amazon.awssdk.services.sqs.model.ListQueuesResponse;
+import software.amazon.awssdk.services.sqs.model.Message;
+import software.amazon.awssdk.services.sqs.model.ReceiveMessageRequest;
+import software.amazon.awssdk.services.sqs.model.SendMessageBatchRequest;
+import software.amazon.awssdk.services.sqs.model.SendMessageBatchRequestEntry;
+import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
@@ -93,6 +108,22 @@ public class AWSApplication {
             DeleteDbInstanceRequest deleteDbInstanceRequest = DeleteDbInstanceRequest.builder().dbInstanceIdentifier(dbInstanceIdentifier).build();
             DeleteDbInstanceResponse deleteDbInstanceResponse = rdsClient.deleteDBInstance(deleteDbInstanceRequest);
             LOGGER.debug("deleted dbInstance");
+            /* SQS operations */
+            SqsClientBuilder sqsClientBuilder = SqsClient.builder().httpClient(apacheSdkHttpClient).region(region).credentialsProvider(awsCredentialsProvider);
+            SqsClient sqsClient = sqsClientBuilder.build();
+            LOGGER.debug("created sqsClient"); 
+            String queueName = "TestQueue";
+            CreateQueueRequest createQueueRequest = CreateQueueRequest.builder().queueName(queueName).build();
+            sqsClient.createQueue(createQueueRequest);
+            String prefix = "TestQueue";
+            ListQueuesRequest listQueuesRequest = ListQueuesRequest.builder().queueNamePrefix(prefix).build();
+            ListQueuesResponse listQueuesResponse = sqsClient.listQueues(listQueuesRequest);
+            for (String url : listQueuesResponse.queueUrls()) {
+                LOGGER.debug(url);
+            }
+            
+            DeleteQueueRequest deleteQueueRequest = DeleteQueueRequest.builder().queueUrl(queueName).build();
+            sqsClient.deleteQueue(deleteQueueRequest);
         } catch (Exception e) {
             LOGGER.warn("exception executing AWS operations: " + e.getMessage());
         }
