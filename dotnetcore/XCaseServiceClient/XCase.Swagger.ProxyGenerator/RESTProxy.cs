@@ -10,7 +10,7 @@
     using System.Reflection;
     using System.Threading.Tasks;
     using System.Web;
-    using log4net;
+    using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
@@ -21,7 +21,7 @@
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        private static readonly ILog Log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         #endregion
 
@@ -81,16 +81,16 @@
 
         public async Task EnsureSuccessStatusCodeAsync(HttpResponseMessage response)
         {
-            Log.DebugFormat("starting EnsureSuccessStatusCodeAsync()");
+            Log.LogDebug("starting EnsureSuccessStatusCodeAsync()");
             if (response.IsSuccessStatusCode)
             {
-                Log.DebugFormat("response IsSuccessStatusCode");
+                Log.LogDebug("response IsSuccessStatusCode");
                 return;
             }
 
             try
             {
-                Log.DebugFormat("trying to read content");
+                Log.LogDebug("trying to read content");
                 var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false); ;
                 throw new SimpleHttpResponseException(response.StatusCode, content);
             }
@@ -98,7 +98,7 @@
             {
                 if (response.Content != null)
                 {
-                    Log.DebugFormat("about to dispose of content");
+                    Log.LogDebug("about to dispose of content");
                     response.Content.Dispose();
                 }
             }
@@ -138,7 +138,7 @@
             }
 
             string encodedParameterString = string.Join("", encodedParameterStringList);
-            Log.DebugFormat("encodedParameterString is {0}", encodedParameterString);
+            Log.LogDebug("encodedParameterString is {0}", encodedParameterString);
             return encodedParameterString;
         }
 

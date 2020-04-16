@@ -13,7 +13,7 @@
     using System.Threading.Tasks;
     using Microsoft.CSharp;
 //    using Microsoft.Owin.Testing;
-    using log4net;
+    using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
     using XCase.ProxyGenerator;
     using XCase.ProxyGenerator.REST;
@@ -26,19 +26,19 @@
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        private static readonly ILog Log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         #endregion
 
         public override IServiceDefinition GenerateSourceString(IAPIProxySettingsEndpoint swaggerApiProxySettingsEndPoint, string swaggerDocument)
         {
-            Log.Debug("starting GenerateSourceString()");
+            Log.LogDebug("starting GenerateSourceString()");
             return null; 
         }
 
         public override IServiceDefinition GenerateSourceString(string swaggerDocument)
         {
-            Log.Debug("starting GenerateSourceString()");
+            Log.LogDebug("starting GenerateSourceString()");
             try
             {
                 swaggerDocDictionary = new ConcurrentDictionary<IAPIProxySettingsEndpoint, string>();
@@ -47,24 +47,24 @@
                 swaggerApiProxySettingsEndPoint.AppendAsyncToMethodName = false;
                 swaggerApiProxySettingsEndPoint.Namespace = "com.xcase.integrate.objects";
                 swaggerDocDictionary.GetOrAdd(swaggerApiProxySettingsEndPoint, swaggerDocument);
-                Log.Debug("about to process REST document");
+                Log.LogDebug("about to process REST document");
                 return ProcessSwaggerDocuments();
             }
             catch (AggregateException ae)
             {
-                Log.Warn("aggregate exception generating source string: " + ae.Message);
+                Log.LogWarning("aggregate exception generating source string: " + ae.Message);
                 throw;
             }
             catch (Exception e)
             {
-                Log.Warn("exception generating source string: " + e.Message);
+                Log.LogWarning("exception generating source string: " + e.Message);
                 throw;
             }
         }
 
         public override IServiceDefinition GenerateSourceString(IAPIProxySettingsEndpoint swaggerApiProxySettingsEndPoint, string swaggerDocument, string username, string password, string tenant)
         {
-            Log.Debug("starting GenerateSourceString()");
+            Log.LogDebug("starting GenerateSourceString()");
             try
             {
                 swaggerDocDictionary = new ConcurrentDictionary<IAPIProxySettingsEndpoint, string>();
@@ -72,51 +72,51 @@
                 //SwaggerApiProxySettingsEndPoint swaggerApiProxySettingsEndPoint = new SwaggerApiProxySettingsEndPoint();
                 ((RESTApiProxySettingsEndPoint)swaggerApiProxySettingsEndPoint).AppendAsyncToMethodName = false;
                 swaggerDocDictionary.GetOrAdd(swaggerApiProxySettingsEndPoint, swaggerDocument);
-                Log.Debug("about to process REST document");
+                Log.LogDebug("about to process REST document");
                 RESTServiceDefinition restServiceDefinition = ProcessSwaggerDocuments(username, password, tenant);
-                Log.Debug("processed REST document");
+                Log.LogDebug("processed REST document");
                 return restServiceDefinition;
             }
             catch (AggregateException ae)
             {
-                Log.Warn("aggregate exception generating source string: " + ae.Message);
+                Log.LogWarning("aggregate exception generating source string: " + ae.Message);
                 throw;
             }
             catch (Exception e)
             {
-                Log.Warn("exception generating source string: " + e.Message);
+                Log.LogWarning("exception generating source string: " + e.Message);
                 throw;
             }
         }
 
         public override IServiceDefinition GenerateSourceString(IAPIProxySettingsEndpoint[] endpoints)
         {
-            Log.Debug("starting GenerateSourceString()");
+            Log.LogDebug("starting GenerateSourceString()");
             try
             {
                 swaggerDocDictionary = new ConcurrentDictionary<IAPIProxySettingsEndpoint, string>();
                 SourceStringBuilder = new StringBuilder();
-                Log.Debug("requesting REST documents...");
+                Log.LogDebug("requesting REST documents...");
                 List<Task> taskList = new List<Task>();
                 foreach (IAPIProxySettingsEndpoint endPoint in endpoints)
                 {
                     string requestUri = endPoint.GetUrl();
-                    Log.DebugFormat("requested: {0}", requestUri);
+                    Log.LogDebug("requested: {0}", requestUri);
                     taskList.Add(GetEndpointSwaggerDoc(requestUri, endPoint));
                 }
 
-                Log.Debug("waiting for REST documents to complete downloading...");
+                Log.LogDebug("waiting for REST documents to complete downloading...");
                 Task.WaitAll(taskList.ToArray());
                 return ProcessSwaggerDocuments();
             }
             catch (AggregateException ae)
             {
-                Log.Warn("aggregate exception generating source string: " + ae.Message);
+                Log.LogWarning("aggregate exception generating source string: " + ae.Message);
                 throw;
             }
             catch (Exception e)
             {
-                Log.Warn("exception generating source string: " + e.Message);
+                Log.LogWarning("exception generating source string: " + e.Message);
                 throw;
             }
         }
@@ -207,7 +207,7 @@
             }
             catch (Exception e)
             {
-                Log.Warn("exception setting parameters: " + e.Message);
+                Log.LogWarning("exception setting parameters: " + e.Message);
             }
 
             WriteLine(proxyStringBuilder, "/// <summary>");
@@ -326,11 +326,11 @@
             WriteLine(proxyStringBuilder, "{");
             WriteLine(proxyStringBuilder, "Header[] headers = setHeaders();");
             string method = operation.Method.ToUpperInvariant();
-            Log.DebugFormat("method is {0}", method);
+            Log.LogDebug("method is {0}", method);
             WriteLine(proxyStringBuilder, string.Format("LOGGER.debug(\"method is " + method + "\");"));
-            Log.DebugFormat("about to write method {0}", method);
+            Log.LogDebug("about to write method {0}", method);
             WriteMethod(operation, proxyStringBuilder, method);
-            Log.DebugFormat("written method {0}", method);
+            Log.LogDebug("written method {0}", method);
             //WriteLine(classStringBuilder, "EnsureSuccessStatusCodeAsync(response);");
             if (string.IsNullOrWhiteSpace(operation.ReturnType) == false)
             {
@@ -354,18 +354,18 @@
 
         private static void WriteMethod(Operation operation, StringBuilder proxyStringBuilder, string method)
         {
-            Log.DebugFormat("starting WriteMethod()");
+            Log.LogDebug("starting WriteMethod()");
             string returnType = string.IsNullOrEmpty(operation.ReturnType) ? "void" : string.Format("{0}", Operation.GetCleanJavaReturnType(operation.ReturnType));
             //string bodyParameterTypeName = null;
             Parameter bodyParameter = operation.Parameters.FirstOrDefault(p => p.ParameterIn == ParameterIn.Body);
             if (method != "GET")
             {
-                Log.DebugFormat("bodyParameter is not null and method is {0}", method);
+                Log.LogDebug("bodyParameter is not null and method is {0}", method);
                 WriteLine(proxyStringBuilder, string.Format("String entityBody = null;"));
                 if (bodyParameter != null)
                 {
                     string bodyParameterTypeName = GetDefaultTypeName(bodyParameter);
-                    Log.DebugFormat("bodyParameterTypeName is {0}", bodyParameterTypeName);
+                    Log.LogDebug("bodyParameterTypeName is {0}", bodyParameterTypeName);
                     WriteLine(proxyStringBuilder, "Gson gson = new GsonBuilder().setDateFormat(\"yyyy-MM-dd' 'HH:mm:ss\").create();");
                     WriteLine(proxyStringBuilder, string.Format("entityBody = gson.toJson({0});", bodyParameterTypeName));
                 }
@@ -396,7 +396,7 @@
                 }
                 else
                 {
-                    Log.Debug("formParameter type is file");
+                    Log.LogDebug("formParameter type is file");
                     hasFileParameters = true;
                     WriteLine(proxyStringBuilder, string.Format("for (String key : {0}.keySet()) {{", formParameterTypeName));
                     WriteLine(proxyStringBuilder, string.Format("fileParametersHashMap.put(key, {0}.get(key));", formParameterTypeName));
@@ -433,7 +433,7 @@
                         WriteLine(proxyStringBuilder, "JsonElement response = apiClient.doJsonPut(url, headers, formKeyValuePairs, entityBody);");
                         break;
                     default:
-                        Log.WarnFormat("unrecognized method {0}", method);
+                        Log.LogWarning("unrecognized method {0}", method);
                         break;
                 }
 
@@ -556,13 +556,13 @@
 
         private static RESTServiceDefinition ProcessSwaggerDocuments(string username, string password, string tenant)
         {
-            Log.Debug("starting ProcessSwaggerDocuments()");
+            Log.LogDebug("starting ProcessSwaggerDocuments()");
             RESTServiceDefinition swaggerServiceDefinition = new RESTServiceDefinition();
             List<string> sourceStringList = new List<string>();
             foreach (KeyValuePair<IAPIProxySettingsEndpoint, string> swaggerDocDictionaryEntry in swaggerDocDictionary.OrderBy(x => x.Key.GetId()))
             {
                 IAPIProxySettingsEndpoint endPoint = swaggerDocDictionaryEntry.Key;
-                Log.DebugFormat("processing {0}", endPoint.GetUrl());
+                Log.LogDebug("processing {0}", endPoint.GetUrl());
                 string methodNameAppend = string.Empty;
                 if (endPoint.GetAppendAsyncToMethodName())
                 {
@@ -584,7 +584,7 @@
                 foreach (string proxy in proxies)
                 {
                     StringBuilder interfaceStringBuilder = CreateInterfaceStringBuilderForProxy(proxyDefinition, proxy, endPoint, methodNameAppend);
-                    Log.DebugFormat("created interfaceStringBuilder for {0}", proxy);
+                    Log.LogDebug("created interfaceStringBuilder for {0}", proxy);
                     sourceStringList.Add(interfaceStringBuilder.ToString());
                 }
 
@@ -594,7 +594,7 @@
                     string className = SwaggerParser.FixTypeName(proxy) + "WebProxy";
                     swaggerServiceDefinition.ProxyClasses.Add(className);
                     StringBuilder classStringBuilder = CreateProxyStringBuilderForProxy(proxyDefinition, proxy, endPoint, methodNameAppend);
-                    Log.DebugFormat("created classStringBuilder for {0}", proxy);
+                    Log.LogDebug("created classStringBuilder for {0}", proxy);
                     sourceStringList.Add(classStringBuilder.ToString());
                 }
 
@@ -612,7 +612,7 @@
 
         private static RESTServiceDefinition ProcessSwaggerDocuments()
         {
-            Log.Debug("starting ProcessSwaggerDocuments()");
+            Log.LogDebug("starting ProcessSwaggerDocuments()");
             return ProcessSwaggerDocuments("Admin", "1nt@ppC10ud2016", "tenant1");
         }
 

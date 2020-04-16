@@ -13,7 +13,7 @@
     using System.Threading.Tasks;
     using Microsoft.CSharp;
 //    using Microsoft.Owin.Testing;
-    using log4net;
+    using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
     using XCase.ProxyGenerator;
     using XCase.REST.ProxyGenerator.Generator;
@@ -26,7 +26,7 @@
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        private static readonly ILog Log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         #endregion
 
@@ -40,13 +40,13 @@
 
         public static async Task GetEndpointSwaggerDoc(string requestUri, IAPIProxySettingsEndpoint endPoint)
         {
-            Log.Debug("starting GetEndpointSwaggerDoc()");
+            Log.LogDebug("starting GetEndpointSwaggerDoc()");
             string swaggerString = null;
             System.Net.WebRequest webRequest = System.Net.WebRequest.Create(requestUri);
-            Log.Debug("created webRequest");
+            Log.LogDebug("created webRequest");
             using (WebResponse webResponse = await webRequest.GetResponseAsync().ConfigureAwait(false))
             {
-                Log.Debug("got webResponse");
+                Log.LogDebug("got webResponse");
                 Stream webResponseStream = webResponse.GetResponseStream();
                 StreamReader webResponseStreamReader = new StreamReader(webResponseStream);
                 swaggerString = await webResponseStreamReader.ReadToEndAsync().ConfigureAwait(false);
@@ -57,9 +57,9 @@
                 throw new Exception(string.Format("Error downloading from: {0}", endPoint.GetUrl()));
             }
 
-            Log.DebugFormat("downloaded: {0}", requestUri);
+            Log.LogDebug("downloaded: {0}", requestUri);
             swaggerDocDictionary.GetOrAdd(endPoint, swaggerString);
-            Log.Debug("finishing GetEndpointSwaggerDoc()");
+            Log.LogDebug("finishing GetEndpointSwaggerDoc()");
         }
     }
 }

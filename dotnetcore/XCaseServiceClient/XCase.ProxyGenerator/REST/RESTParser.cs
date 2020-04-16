@@ -1,6 +1,6 @@
 ﻿namespace XCase.ProxyGenerator.REST
 {
-    using log4net;
+    using Microsoft.Extensions.Logging;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -15,7 +15,7 @@
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        private static readonly ILog Log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         #endregion
 
@@ -51,7 +51,7 @@
 
             if (typeName.StartsWith("#/components/schemas/"))
             {
-                Log.DebugFormat("typeName starts with #/components/schemas/");
+                Log.LogDebug("typeName starts with #/components/schemas/");
                 return typeName.Substring("#/components/schemas/".Length);
             }
 

@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -15,7 +15,7 @@ namespace XCase.REST.ProxyGenerator.Proxy
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        private static readonly ILog Log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         #endregion
 
@@ -30,12 +30,12 @@ namespace XCase.REST.ProxyGenerator.Proxy
         {
             HttpClientHandler httpClientHandler = new HttpClientHandler { Credentials = ClientCredentials, Proxy = Proxy, UseCookies = false };
             HttpClient httpClient = new HttpClient(httpClientHandler);
-            Log.DebugFormat("created httpClient");
+            Log.LogDebug("created httpClient");
             httpClient.BaseAddress = _baseUrl;
-            Log.DebugFormat("set BaseAddress to {0}", _baseUrl);
+            Log.LogDebug("set BaseAddress to {0}", _baseUrl);
             string token = this.GetAccessToken(httpClient, username, password, tenant);
             this.token = token;
-            Log.DebugFormat("set token to {0}", token);
+            Log.LogDebug("set token to {0}", token);
             return httpClient;
         }
 

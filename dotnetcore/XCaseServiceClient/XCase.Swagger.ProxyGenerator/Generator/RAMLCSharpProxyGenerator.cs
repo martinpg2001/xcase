@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.CSharp;
 using Newtonsoft.Json;
 using System;
@@ -23,13 +23,13 @@ namespace XCase.REST.ProxyGenerator.Generator
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        private static readonly ILog Log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         #endregion
 
         public override IServiceDefinition GenerateSourceString(string ramlDocument)
         {
-            Log.Debug("starting GenerateSourceString()");
+            Log.LogDebug("starting GenerateSourceString()");
             try
             {
                 ramlDocDictionary = new ConcurrentDictionary<IAPIProxySettingsEndpoint, string>();
@@ -37,24 +37,24 @@ namespace XCase.REST.ProxyGenerator.Generator
                 RESTApiProxySettingsEndPoint swaggerApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint();
                 //swaggerApiProxySettingsEndPoint.AppendAsyncToMethodName = false;
                 ramlDocDictionary.GetOrAdd(swaggerApiProxySettingsEndPoint, ramlDocument);
-                Log.Debug("about to process RAML document");
+                Log.LogDebug("about to process RAML document");
                 return ProcessRAMLDocuments();
             }
             catch (AggregateException ae)
             {
-                Log.Warn("aggregate exception generating source string: " + ae.Message);
+                Log.LogWarning("aggregate exception generating source string: " + ae.Message);
                 throw;
             }
             catch (Exception e)
             {
-                Log.Warn("exception generating source string: " + e.Message);
+                Log.LogWarning("exception generating source string: " + e.Message);
                 throw;
             }
         }
 
         public override IServiceDefinition GenerateSourceString(IAPIProxySettingsEndpoint[] endpoints)
         {
-            Log.Debug("starting GenerateSourceString()");
+            Log.LogDebug("starting GenerateSourceString()");
             try
             {
                 ramlDocDictionary = new ConcurrentDictionary<IAPIProxySettingsEndpoint, string>();
@@ -63,23 +63,23 @@ namespace XCase.REST.ProxyGenerator.Generator
                 foreach (IAPIProxySettingsEndpoint endPoint in endpoints)
                 {
                     string requestUri = endPoint.GetUrl();
-                    Log.DebugFormat("about to add task for {0}", requestUri);
+                    Log.LogDebug("about to add task for {0}", requestUri);
                     taskList.Add(GetEndpointRAMLDoc(requestUri, endPoint));
                 }
 
-                Log.Debug("waiting for REST documents to complete downloading...");
+                Log.LogDebug("waiting for REST documents to complete downloading...");
                 Task.WaitAll(taskList.ToArray());
-                Log.Debug("REST documents completed downloading");
+                Log.LogDebug("REST documents completed downloading");
                 return ProcessRAMLDocuments();
             }
             catch (AggregateException ae)
             {
-                Log.Warn("aggregate exception generating source string: " + ae.Message);
+                Log.LogWarning("aggregate exception generating source string: " + ae.Message);
                 throw;
             }
             catch (Exception e)
             {
-                Log.Warn("exception generating source string: " + e.Message);
+                Log.LogWarning("exception generating source string: " + e.Message);
                 throw;
             }
         }
@@ -96,17 +96,17 @@ namespace XCase.REST.ProxyGenerator.Generator
 
         private static RESTServiceDefinition ProcessRAMLDocuments()
         {
-            Log.Debug("starting ProcessRAMLDocuments()");
+            Log.LogDebug("starting ProcessRAMLDocuments()");
             return ProcessRAMLDocuments("Admin", "password", "domain");
         }
 
         private static RESTServiceDefinition ProcessRAMLDocuments(string username, string password, string tenant)
         {
-            Log.Debug("starting ProcessRAMLDocuments()");
+            Log.LogDebug("starting ProcessRAMLDocuments()");
             RESTServiceDefinition ramlServiceDefinition = new RESTServiceDefinition();
             List<string> sourceStringList = new List<string>();
             OpenApiParser parser = new OpenApiParser();
-            Log.DebugFormat("created RAMLParser");
+            Log.LogDebug("created RAMLParser");
             foreach (KeyValuePair<IAPIProxySettingsEndpoint, string> swaggerDocDictionaryEntry in ramlDocDictionary.OrderBy(x => x.Key.GetId()))
             {
                 ProcessRAMLDocDictionaryEntry(ramlServiceDefinition, swaggerDocDictionaryEntry, sourceStringList, parser, username, password, tenant);
@@ -123,9 +123,9 @@ namespace XCase.REST.ProxyGenerator.Generator
             string result = swaggerDocDictionaryEntry.Value;
             /* Process endpoint information */
             string endPointURL = endPoint.GetUrl();
-            Log.DebugFormat("endPointURL is {0}", endPointURL);
+            Log.LogDebug("endPointURL is {0}", endPointURL);
             string schemeFromURL = endPointURL != null ? endPointURL.Substring(0, endPointURL.IndexOf(":")) : "http";
-            Log.DebugFormat("schemeFromURL is {0}", schemeFromURL);
+            Log.LogDebug("schemeFromURL is {0}", schemeFromURL);
             string methodNameAppend = string.Empty;
             if (endPoint.GetAppendAsyncToMethodName())
             {
@@ -135,16 +135,16 @@ namespace XCase.REST.ProxyGenerator.Generator
             /* Parse REST document for endpoint */
             IProxyDefinition proxyDefinition = parser.ParseDoc(result, (RESTApiProxySettingsEndPoint)endPoint);
             string scheme = proxyDefinition.Schemes != null ? proxyDefinition.Schemes[0] : schemeFromURL;
-            Log.DebugFormat("scheme is {0}", scheme);
+            Log.LogDebug("scheme is {0}", scheme);
             string endPointString = proxyDefinition.Host;
-            Log.DebugFormat("proxyDefinition.Host is {0}", proxyDefinition.Host);
+            Log.LogDebug("proxyDefinition.Host is {0}", proxyDefinition.Host);
             //string endPointString = string.Format("{0}://{1}{2}", scheme, proxyDefinition.Host, proxyDefinition.BasePath);
             if (!endPointString.EndsWith("/"))
             {
                 endPointString = string.Format(endPointString + "{0}", "/");
             }
 
-            Log.DebugFormat("endPointString is {0}", endPointString);
+            Log.LogDebug("endPointString is {0}", endPointString);
             if (endPointString.StartsWith("http"))
             {
                 ramlServiceDefinition.EndPoint = endPointString;
@@ -160,9 +160,9 @@ namespace XCase.REST.ProxyGenerator.Generator
              */
             foreach (string proxy in proxies)
             {
-                Log.DebugFormat("next proxy {0}", proxy);
+                Log.LogDebug("next proxy {0}", proxy);
                 IEnumerable<Operation> operationEnumerable = proxyDefinition.Operations.Where(i => i.ProxyName.Equals(proxy));
-                Log.DebugFormat("proxy operation count is ", operationEnumerable.Count<Operation>());
+                Log.LogDebug("proxy operation count is ", operationEnumerable.Count<Operation>());
                 foreach (Operation operation in operationEnumerable)
                 {
                     int count = operationEnumerable.Count<Operation>(o => o.OperationId == operation.OperationId);
@@ -171,25 +171,25 @@ namespace XCase.REST.ProxyGenerator.Generator
                         operation.OperationId = operation.OperationId + count;
                     }
 
-                    Log.DebugFormat("operation.OperationId is {0}", operation.OperationId);
+                    Log.LogDebug("operation.OperationId is {0}", operation.OperationId);
                 }
             }
 
             /* Interface and implementation for proxy classes */
             foreach (string proxy in proxies)
             {
-                Log.DebugFormat("next proxy {0}", proxy);
+                Log.LogDebug("next proxy {0}", proxy);
                 StringBuilder interfaceStringBuilder = CreateInterfaceStringBuilderForProxy(proxyDefinition, proxy, endPoint, methodNameAppend);
-                Log.DebugFormat("created interfaceStringBuilder for {0}", proxy);
+                Log.LogDebug("created interfaceStringBuilder for {0}", proxy);
                 sourceStringList.Add(interfaceStringBuilder.ToString());
-                Log.DebugFormat("added interface for proxy {0}", proxy);
+                Log.LogDebug("added interface for proxy {0}", proxy);
                 string className = OpenApiParser.FixTypeName(proxy) + "WebProxy";
                 ramlServiceDefinition.ProxyClasses.Add(className);
-                Log.DebugFormat("added className {0}", className);
+                Log.LogDebug("added className {0}", className);
                 StringBuilder proxyStringBuilder = CreateProxyStringBuilderForProxy(proxyDefinition, proxy, endPoint, methodNameAppend, username, password, tenant);
-                Log.DebugFormat("created proxyStringBuilder for {0}", proxy);
+                Log.LogDebug("created proxyStringBuilder for {0}", proxy);
                 sourceStringList.Add(proxyStringBuilder.ToString());
-                Log.DebugFormat("finished proxy {0}", proxy);
+                Log.LogDebug("finished proxy {0}", proxy);
             }
 
             /* Model Classes */

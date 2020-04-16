@@ -10,7 +10,7 @@
     using System.Text;
     using System.Windows.Forms;
     using System.Xml;
-    using log4net;
+    using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
 
     public class ObjectRenderer
@@ -20,20 +20,20 @@
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        private static readonly ILog Log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         #endregion
 
         public static XCaseTableLayoutPanel RenderParameterObject(object parameterObject)
         {
-            Log.Debug("starting RenderParameterObject()");
+            Log.LogDebug("starting RenderParameterObject()");
             if (parameterObject == null)
             {
-                Log.Debug("parameter object is null");
+                Log.LogDebug("parameter object is null");
                 return new XCaseTableLayoutPanel();
             }
 
-            Log.Debug("starting RenderParameterObject() for " + parameterObject.GetType());
+            Log.LogDebug("starting RenderParameterObject() for " + parameterObject.GetType());
             XCaseTableLayoutPanel propertyTableLayoutPanel = new XCaseTableLayoutPanel();
             propertyTableLayoutPanel.PropertyObject = parameterObject;
             propertyTableLayoutPanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
@@ -43,19 +43,19 @@
             if (ObjectFactory.IsArrayType(parameterObject.GetType()))
             {
                 /* Parameter object is array */
-                Log.Debug("parameter object is array");
+                Log.LogDebug("parameter object is array");
                 RenderArray(propertyTableLayoutPanel, null, parameterObject, 0);
             }
             else if (ObjectFactory.IsDictionaryType(parameterObject.GetType()))
             {
                 /* Property type is not array and is Dictionary */
-                Log.Debug("parameter object is Dictionary");
+                Log.LogDebug("parameter object is Dictionary");
                 RenderDictionary(propertyTableLayoutPanel, null, parameterObject, 0);
             }
             else if (ObjectFactory.IsIEnumerableType(parameterObject.GetType()))
             {
                 /* Parameter object is IEnumerable */
-                Log.Debug("parameter object is IEnumerable");
+                Log.LogDebug("parameter object is IEnumerable");
                 RenderIEnumerable(propertyTableLayoutPanel, null, parameterObject, 0);
             }
             else if (ObjectFactory.IsBooleanType(parameterObject.GetType()))
@@ -145,7 +145,7 @@
             else if (ObjectFactory.IsTimeSpanType(parameterObject.GetType()))
             {
                 /* Property type is not array and is string */
-                Log.Debug("parameter type is not array and is TimeSpan");
+                Log.LogDebug("parameter type is not array and is TimeSpan");
                 ((TimeSpan)parameterObject).RenderTimeSpan(propertyTableLayoutPanel, null, 0);
             }
             else if (ObjectFactory.IsXmlDocumentType(parameterObject.GetType()))
@@ -157,10 +157,10 @@
             else
             {
                 /* Property type is not array and is complex type */
-                Log.DebugFormat("parameter type is not array and is complex type: {0}", parameterObject.GetType());
+                Log.LogDebug("parameter type is not array and is complex type: {0}", parameterObject.GetType());
                 /* Iterate through each property of the parameter */
                 PropertyInfo[] propertyInfoArray = parameterObject.GetType().GetProperties();
-                Log.DebugFormat("number of properties is {0}", propertyInfoArray.Length);
+                Log.LogDebug("number of properties is {0}", propertyInfoArray.Length);
                 propertyTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
                 propertyTableLayoutPanel.RowCount = propertyInfoArray.Length + 2;
                 Label propertyNameLabel = new Label();
@@ -174,19 +174,19 @@
                 for (int j = 0; j < propertyInfoArray.Length; j++)
                 {
                     PropertyInfo propertyInfo = propertyInfoArray[j];
-                    Log.DebugFormat("property name is {0}", propertyInfo.Name);
+                    Log.LogDebug("property name is {0}", propertyInfo.Name);
                     Label propertyLabel = new Label();
                     propertyLabel.AutoSize = true;
                     propertyLabel.Text = string.Format("{0} ({1})", propertyInfo.Name, propertyInfo.PropertyType.Name);
                     propertyTableLayoutPanel.Controls.Add(propertyLabel, 0, j + 1);
                     Type propertyType = propertyInfo.PropertyType;
-                    Log.DebugFormat("property type is {0}", propertyType);
+                    Log.LogDebug("property type is {0}", propertyType);
                     object propertyTypeObject = null;
                     if (propertyInfo.GetValue(parameterObject, null) == null)
                     {
                         //Log.Debug("property value is null");
                         propertyTypeObject = ObjectFactory.CreateDefaultObject(propertyType);
-                        Log.DebugFormat("created default property type object of type {0}", propertyType.Name);
+                        Log.LogDebug("created default property type object of type {0}", propertyType.Name);
                         propertyInfo.SetValue(parameterObject, propertyTypeObject, null);
                         //Log.Debug("set {0} to propertyTypeObject", propertyInfoArray[j].Name);
                     }
@@ -361,7 +361,7 @@
                     else if (ObjectFactory.IsTimeSpanType(propertyType))
                     {
                         /* Property type is complex type and is String */
-                        Log.Debug("property type is complex type and is TimeSpan");
+                        Log.LogDebug("property type is complex type and is TimeSpan");
                         if (propertyTypeObject != null)
                         {
                             ((TimeSpan)propertyTypeObject).RenderTimeSpanProperty(propertyTableLayoutPanel, parameterObject, propertyInfoArray, j);
@@ -520,7 +520,7 @@
                         }
                         else if (ObjectFactory.IsInt64Type(underlyingPropertyType))
                         {
-                            Log.Debug("underlying property type is nullable Int64");
+                            Log.LogDebug("underlying property type is nullable Int64");
                             XCaseTextBox textBox = new XCaseTextBox();
                             textBox.Index = j;
                             textBox.FieldType = propertyType;
@@ -532,7 +532,7 @@
                                 int index = textBox.Index;
                                 Type fieldType = textBox.FieldType;
                                 Type underlyingFieldType = Nullable.GetUnderlyingType(fieldType);
-                                Log.Debug("about to create object for nullable long");
+                                Log.LogDebug("about to create object for nullable long");
                                 object underlyingPropertyTypeObject = ObjectFactory.CreateInt64ObjectFromTypeAndValue(underlyingFieldType, value);
                                 propertyTypeObject = Activator.CreateInstance(fieldType, underlyingPropertyTypeObject);
                                 propertyInfoArray[index].SetValue(parameterObject, propertyTypeObject, null);
@@ -552,7 +552,7 @@
                                 int index = textBox.Index;
                                 Type fieldType = textBox.FieldType;
                                 Type underlyingFieldType = Nullable.GetUnderlyingType(fieldType);
-                                Log.Debug("about to create object for nullable long");
+                                Log.LogDebug("about to create object for nullable long");
                                 object underlyingPropertyTypeObject = ObjectFactory.CreateInt64ObjectFromTypeAndValue(underlyingFieldType, value);
                                 propertyTypeObject = Activator.CreateInstance(fieldType, underlyingPropertyTypeObject);
                                 propertyInfoArray[index].SetValue(parameterObject, propertyTypeObject, null);
@@ -631,7 +631,7 @@
 
         public static XCaseTableLayoutPanel RenderPropertyObject(object parameterObject, PropertyInfo[] propertyInfoArray, object propertyObject)
         {
-            Log.Debug("starting RenderPropertyObject()");
+            Log.LogDebug("starting RenderPropertyObject()");
             XCaseTableLayoutPanel propertyTableLayoutPanel = new XCaseTableLayoutPanel();
             return propertyTableLayoutPanel;
         }
@@ -639,7 +639,7 @@
         /* This method renders the single panel for an object in an array */
         public static XCaseTableLayoutPanel RenderArrayObject(Array array, int index, object arrayObject)
         {
-            Log.DebugFormat("starting RenderArrayObject()");
+            Log.LogDebug("starting RenderArrayObject()");
             XCaseTableLayoutPanel arrayObjectTableLayoutPanel = new XCaseTableLayoutPanel();
             arrayObjectTableLayoutPanel.Index = index;
             if (arrayObject == null)
@@ -796,7 +796,7 @@
                     string value = xcaseTextBox.Text;
                     //Log.DebugFormat("index is {0}", arrayObjectTableLayoutPanel.index);
                     arrayObject = ObjectFactory.CreateObjectFromTypeAndValue(typeof(string), value);
-                    Log.DebugFormat("arrayObject changed to {0}", arrayObject);
+                    Log.LogDebug("arrayObject changed to {0}", arrayObject);
                     array.SetValue(arrayObject, arrayObjectTableLayoutPanel.Index);
                     //array[arrayObjectTableLayoutPanel.index] = arrayObject;
                 };
@@ -811,7 +811,7 @@
 
         public static void RenderIEnumerable(TableLayoutPanel propertyTableLayoutPanel, object[] parameterArray, object parameterObject, int index)
         {
-            Log.Debug("starting RenderIEnumerable()");
+            Log.LogDebug("starting RenderIEnumerable()");
             XCaseTableLayoutPanel arrayTableLayoutPanel = new XCaseTableLayoutPanel();
             arrayTableLayoutPanel.PropertyObject = parameterObject;
             arrayTableLayoutPanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
@@ -859,12 +859,12 @@
             }
 
             propertyTableLayoutPanel.Controls.Add(arrayTableLayoutPanel, 1, index + 1);
-            Log.Debug("finishing RenderIEnumerable()");
+            Log.LogDebug("finishing RenderIEnumerable()");
         }
 
         public static void RenderArray(TableLayoutPanel propertyTableLayoutPanel, object[] parameterArray, object parameterObject, int index)
         {
-            Log.Debug("starting RenderArray()");
+            Log.LogDebug("starting RenderArray()");
             XCaseTableLayoutPanel arrayTableLayoutPanel = new XCaseTableLayoutPanel();
             arrayTableLayoutPanel.PropertyObject = parameterObject;
             arrayTableLayoutPanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
@@ -917,7 +917,7 @@
             }
 
             propertyTableLayoutPanel.Controls.Add(arrayTableLayoutPanel, 1, index + 1);
-            Log.Debug("finishing RenderArray()");
+            Log.LogDebug("finishing RenderArray()");
         }
 
         /* This method renders an array as a table layout panel */
@@ -945,13 +945,13 @@
             //Log.Debug("set Add button properties");
             addButton.MouseClick += delegate(object sender, MouseEventArgs mea)
             {
-                Log.Debug("Add button clicked");
+                Log.LogDebug("Add button clicked");
                 arrayLength = ((Array)propertyTypeObject).Length;
                 ArrayList propertyObjectArrayList = new ArrayList(((Array)propertyTypeObject));
                 object newArrayObject = ObjectFactory.CreateDefaultObject(addButton.FieldType);
                 propertyObjectArrayList.Add(newArrayObject);
                 propertyTypeObject = propertyObjectArrayList.ToArray(newArrayObject.GetType());
-                Log.DebugFormat("arrayLength is {0}", arrayLength);
+                Log.LogDebug("arrayLength is {0}", arrayLength);
                 propertyInfoArray[index].SetValue(parameterObject, propertyTypeObject, null);
                 TableLayoutPanel newPropertyTableLayoutPanel = RenderArrayObject((Array)propertyTypeObject, arrayLength, newArrayObject);
                 arrayTableLayoutPanel.Controls.Add(newPropertyTableLayoutPanel, 0, propertyObjectArrayList.Count + 1);
@@ -982,12 +982,12 @@
             }
 
             propertyTableLayoutPanel.Controls.Add(arrayTableLayoutPanel, 1, index + 1);
-            Log.Debug("finishing RenderArrayProperty()");
+            Log.LogDebug("finishing RenderArrayProperty()");
         }
 
         public static void RenderDictionary(TableLayoutPanel propertyTableLayoutPanel, object[] parameterArray, object parameterObject, int index)
         {
-            Log.DebugFormat("starting RenderDictionary()");
+            Log.LogDebug("starting RenderDictionary()");
             if (parameterObject == null)
             {
                 return;
@@ -1013,7 +1013,7 @@
             //Log.Debug("set Add button properties");
             addButton.MouseClick += delegate(object sender, MouseEventArgs mea)
             {
-                Log.Debug("Add button clicked");
+                Log.LogDebug("Add button clicked");
                 dictionaryLength = ((IDictionary)parameterObject).Count;
                 object newKeyObject = ObjectFactory.CreateUniqueObject(keyType);
                 object newValueObject = ObjectFactory.CreateDefaultObject(valueType);
@@ -1022,7 +1022,7 @@
                 newDictionaryEntry.Key = newKeyObject;
                 newDictionaryEntry.Value = newValueObject;
                 TableLayoutPanel dictionaryEntryTableLayoutPanel = RenderDictionaryEntryObject((IDictionary)parameterObject, newDictionaryEntry);
-                Log.Debug("rendered newDictionaryEntry");
+                Log.LogDebug("rendered newDictionaryEntry");
                 dictionaryTableLayoutPanel.Controls.Add(dictionaryEntryTableLayoutPanel, 0, ((IDictionary)parameterObject).Count + 1);
                 if (parameterArray != null && index >= 0 && index < parameterArray.Length)
                 {
@@ -1041,7 +1041,7 @@
             }
 
             propertyTableLayoutPanel.Controls.Add(dictionaryTableLayoutPanel, 1, index + 1);
-            Log.Debug("finishing RenderDictionary()");
+            Log.LogDebug("finishing RenderDictionary()");
         }
 
         private static TableLayoutPanel RenderDictionaryEntryObject(IDictionary dictionary, DictionaryEntry dictionaryEntry)
@@ -1083,7 +1083,7 @@
             }
             else
             {
-                Log.WarnFormat("key type is not string or enum {0}", dictionaryEntry.Key.GetType().Name);
+                Log.LogWarning("key type is not string or enum {0}", dictionaryEntry.Key.GetType().Name);
             }
 
             /* Assume that the value is a string or enum*/
@@ -1115,7 +1115,7 @@
             }
             else
             {
-                Log.WarnFormat("value type is not string or enum {0}", dictionaryEntry.Value.GetType().Name);
+                Log.LogWarning("value type is not string or enum {0}", dictionaryEntry.Value.GetType().Name);
             }
 
             Button removeButton = new Button();
@@ -1210,13 +1210,13 @@
 
         private static void RenderDictionaryKeyString(XCaseTableLayoutPanel propertyTableLayoutPanel, IDictionary dictionary, DictionaryEntry dictionaryEntry, int index)
         {
-            Log.Debug("starting RenderString()");
+            Log.LogDebug("starting RenderString()");
             XCaseTextBox textBox = new XCaseTextBox();
             object dictionaryKeyObject = dictionaryEntry.Key;
             if (dictionaryKeyObject.GetType() == typeof(string))
             {
                 textBox.Text = (string)dictionaryKeyObject;
-                Log.DebugFormat("set text to {0}", (string)dictionaryKeyObject);
+                Log.LogDebug("set text to {0}", (string)dictionaryKeyObject);
             }
             else
             {
@@ -1246,7 +1246,7 @@
                     string[] valueArray = value.Split();
                     Type elementType = fieldType.GetElementType();
                     Array objectArray = Array.CreateInstance(elementType, valueArray.Length);
-                    Log.DebugFormat("created object array of length {0}", valueArray.Length);
+                    Log.LogDebug("created object array of length {0}", valueArray.Length);
                     for (int k = 0; k < valueArray.Length; k++)
                     {
                         //Log.Debug("field type is array");
@@ -1257,7 +1257,7 @@
                     dictionaryKeyObject = objectArray;
                 }
             };
-            Log.Debug("finishing RenderDictionaryKeyString()");
+            Log.LogDebug("finishing RenderDictionaryKeyString()");
         }
 
         private static void RenderXmlDocument(XCaseTableLayoutPanel propertyTableLayoutPanel, IDictionary dictionary, object dictionaryKeyObject, int p)
@@ -1279,14 +1279,14 @@
 
         private static Control RenderDictionaryValueObject(object dictionaryValueObject)
         {
-            Log.Debug("starting RenderDictionaryValueObject()");
+            Log.LogDebug("starting RenderDictionaryValueObject()");
             if (dictionaryValueObject == null)
             {
-                Log.Debug("parameter object is null");
+                Log.LogDebug("parameter object is null");
                 return new XCaseTableLayoutPanel();
             }
 
-            Log.Debug("starting RenderDictionaryValueObject() for " + dictionaryValueObject.GetType());
+            Log.LogDebug("starting RenderDictionaryValueObject() for " + dictionaryValueObject.GetType());
             XCaseTableLayoutPanel propertyTableLayoutPanel = new XCaseTableLayoutPanel();
             propertyTableLayoutPanel.PropertyObject = dictionaryValueObject;
             propertyTableLayoutPanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
@@ -1296,19 +1296,19 @@
             if (ObjectFactory.IsArrayType(dictionaryValueObject.GetType()))
             {
                 /* Parameter object is array */
-                Log.Debug("parameter object is array");
+                Log.LogDebug("parameter object is array");
                 RenderArray(propertyTableLayoutPanel, null, dictionaryValueObject, 0);
             }
             else if (ObjectFactory.IsDictionaryType(dictionaryValueObject.GetType()))
             {
                 /* Property type is not array and is Dictionary */
-                Log.Debug("parameter object is Dictionary");
+                Log.LogDebug("parameter object is Dictionary");
                 RenderDictionary(propertyTableLayoutPanel, null, dictionaryValueObject, 0);
             }
             else if (ObjectFactory.IsIEnumerableType(dictionaryValueObject.GetType()))
             {
                 /* Parameter object is IEnumerable */
-                Log.Debug("parameter object is IEnumerable");
+                Log.LogDebug("parameter object is IEnumerable");
                 RenderIEnumerable(propertyTableLayoutPanel, null, dictionaryValueObject, 0);
             }
             else if (ObjectFactory.IsBooleanType(dictionaryValueObject.GetType()))
@@ -1404,10 +1404,10 @@
             else
             {
                 /* Property type is not array and is complex type */
-                Log.DebugFormat("parameter type is not array and is complex type: {0}", dictionaryValueObject.GetType());
+                Log.LogDebug("parameter type is not array and is complex type: {0}", dictionaryValueObject.GetType());
                 /* Iterate through each property of the parameter */
                 PropertyInfo[] propertyInfoArray = dictionaryValueObject.GetType().GetProperties();
-                Log.DebugFormat("number of properties is {0}", propertyInfoArray.Length);
+                Log.LogDebug("number of properties is {0}", propertyInfoArray.Length);
                 propertyTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
                 propertyTableLayoutPanel.RowCount = propertyInfoArray.Length + 2;
                 Label propertyNameLabel = new Label();
@@ -1671,7 +1671,7 @@
                         }
                         else if (ObjectFactory.IsInt64Type(underlyingPropertyType))
                         {
-                            Log.Debug("underlying property type is nullable Int64");
+                            Log.LogDebug("underlying property type is nullable Int64");
                             XCaseTextBox textBox = new XCaseTextBox();
                             textBox.Index = j;
                             textBox.FieldType = propertyType;
@@ -1683,7 +1683,7 @@
                                 int index = textBox.Index;
                                 Type fieldType = textBox.FieldType;
                                 Type underlyingFieldType = Nullable.GetUnderlyingType(fieldType);
-                                Log.Debug("about to create object for nullable long");
+                                Log.LogDebug("about to create object for nullable long");
                                 object underlyingPropertyTypeObject = ObjectFactory.CreateInt64ObjectFromTypeAndValue(underlyingFieldType, value);
                                 propertyTypeObject = Activator.CreateInstance(fieldType, underlyingPropertyTypeObject);
                                 propertyInfoArray[index].SetValue(dictionaryValueObject, propertyTypeObject, null);
@@ -1703,7 +1703,7 @@
                                 int index = textBox.Index;
                                 Type fieldType = textBox.FieldType;
                                 Type underlyingFieldType = Nullable.GetUnderlyingType(fieldType);
-                                Log.Debug("about to create object for nullable long");
+                                Log.LogDebug("about to create object for nullable long");
                                 object underlyingPropertyTypeObject = ObjectFactory.CreateInt64ObjectFromTypeAndValue(underlyingFieldType, value);
                                 propertyTypeObject = Activator.CreateInstance(fieldType, underlyingPropertyTypeObject);
                                 propertyInfoArray[index].SetValue(dictionaryValueObject, propertyTypeObject, null);
@@ -1773,14 +1773,14 @@
 
         private static Control RenderDictionaryKeyObject(object dictionaryKeyObject)
         {
-            Log.Debug("starting RenderDictionaryKeyObject()");
+            Log.LogDebug("starting RenderDictionaryKeyObject()");
             if (dictionaryKeyObject == null)
             {
-                Log.Debug("parameter object is null");
+                Log.LogDebug("parameter object is null");
                 return new XCaseTableLayoutPanel();
             }
 
-            Log.Debug("starting RenderDictionaryKeyObject() for " + dictionaryKeyObject.GetType());
+            Log.LogDebug("starting RenderDictionaryKeyObject() for " + dictionaryKeyObject.GetType());
             XCaseTableLayoutPanel propertyTableLayoutPanel = new XCaseTableLayoutPanel();
             propertyTableLayoutPanel.PropertyObject = dictionaryKeyObject;
             propertyTableLayoutPanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
@@ -1790,19 +1790,19 @@
             if (ObjectFactory.IsArrayType(dictionaryKeyObject.GetType()))
             {
                 /* Parameter object is array */
-                Log.Debug("parameter object is array");
+                Log.LogDebug("parameter object is array");
                 RenderArray(propertyTableLayoutPanel, null, dictionaryKeyObject, 0);
             }
             else if (ObjectFactory.IsDictionaryType(dictionaryKeyObject.GetType()))
             {
                 /* Property type is not array and is Dictionary */
-                Log.Debug("parameter object is Dictionary");
+                Log.LogDebug("parameter object is Dictionary");
                 RenderDictionary(propertyTableLayoutPanel, null, dictionaryKeyObject, 0);
             }
             else if (ObjectFactory.IsIEnumerableType(dictionaryKeyObject.GetType()))
             {
                 /* Parameter object is IEnumerable */
-                Log.Debug("parameter object is IEnumerable");
+                Log.LogDebug("parameter object is IEnumerable");
                 RenderIEnumerable(propertyTableLayoutPanel, null, dictionaryKeyObject, 0);
             }
             else if (ObjectFactory.IsBooleanType(dictionaryKeyObject.GetType()))
@@ -1898,10 +1898,10 @@
             else
             {
                 /* Property type is not array and is complex type */
-                Log.DebugFormat("parameter type is not array and is complex type: {0}", dictionaryKeyObject.GetType());
+                Log.LogDebug("parameter type is not array and is complex type: {0}", dictionaryKeyObject.GetType());
                 /* Iterate through each property of the parameter */
                 PropertyInfo[] propertyInfoArray = dictionaryKeyObject.GetType().GetProperties();
-                Log.DebugFormat("number of properties is {0}", propertyInfoArray.Length);
+                Log.LogDebug("number of properties is {0}", propertyInfoArray.Length);
                 propertyTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
                 propertyTableLayoutPanel.RowCount = propertyInfoArray.Length + 2;
                 Label propertyNameLabel = new Label();
@@ -2165,7 +2165,7 @@
                         }
                         else if (ObjectFactory.IsInt64Type(underlyingPropertyType))
                         {
-                            Log.Debug("underlying property type is nullable Int64");
+                            Log.LogDebug("underlying property type is nullable Int64");
                             XCaseTextBox textBox = new XCaseTextBox();
                             textBox.Index = j;
                             textBox.FieldType = propertyType;
@@ -2177,7 +2177,7 @@
                                 int index = textBox.Index;
                                 Type fieldType = textBox.FieldType;
                                 Type underlyingFieldType = Nullable.GetUnderlyingType(fieldType);
-                                Log.Debug("about to create object for nullable long");
+                                Log.LogDebug("about to create object for nullable long");
                                 object underlyingPropertyTypeObject = ObjectFactory.CreateInt64ObjectFromTypeAndValue(underlyingFieldType, value);
                                 propertyTypeObject = Activator.CreateInstance(fieldType, underlyingPropertyTypeObject);
                                 propertyInfoArray[index].SetValue(dictionaryKeyObject, propertyTypeObject, null);
@@ -2197,7 +2197,7 @@
                                 int index = textBox.Index;
                                 Type fieldType = textBox.FieldType;
                                 Type underlyingFieldType = Nullable.GetUnderlyingType(fieldType);
-                                Log.Debug("about to create object for nullable long");
+                                Log.LogDebug("about to create object for nullable long");
                                 object underlyingPropertyTypeObject = ObjectFactory.CreateInt64ObjectFromTypeAndValue(underlyingFieldType, value);
                                 propertyTypeObject = Activator.CreateInstance(fieldType, underlyingPropertyTypeObject);
                                 propertyInfoArray[index].SetValue(dictionaryKeyObject, propertyTypeObject, null);
@@ -2267,7 +2267,7 @@
 
         public static void RenderDictionaryProperty(XCaseTableLayoutPanel propertyTableLayoutPanel, object parameterObject, PropertyInfo[] propertyInfoArray, object propertyTypeObject, int index)
         {
-            Log.Debug("starting RenderDictionaryProperty()");
+            Log.LogDebug("starting RenderDictionaryProperty()");
             Type[] dictionaryTypes = propertyTypeObject.GetType().GetGenericArguments();
             Type keyType = dictionaryTypes[0];
             Type valueType = dictionaryTypes[1];
@@ -2331,7 +2331,7 @@
                 }
                 else
                 {
-                    Log.WarnFormat("key type is not string or enum {0}", newDictionaryEntry.Key.GetType().Name);
+                    Log.LogWarning("key type is not string or enum {0}", newDictionaryEntry.Key.GetType().Name);
                 }
 
                 /* Assume that the value is a string or enum */
@@ -2363,7 +2363,7 @@
                 }
                 else
                 {
-                    Log.WarnFormat("value type is not string or enum {0}", newDictionaryEntry.Value.GetType().Name);
+                    Log.LogWarning("value type is not string or enum {0}", newDictionaryEntry.Value.GetType().Name);
                 }
 
                 Button removeButton = new Button();
@@ -2375,9 +2375,9 @@
                 };
                 dictionaryTableLayoutPanel.Controls.Add(dictionaryEntryTableLayoutPanel, 0, ((IDictionary)propertyTypeObject).Count + 1);
             };
-            Log.Debug("set click behavior");
+            Log.LogDebug("set click behavior");
             dictionaryTableLayoutPanel.Controls.Add(addButton, 0, 0);
-            Log.Debug("added button to panel");
+            Log.LogDebug("added button to panel");
             int i = 0;
             foreach (DictionaryEntry dictionaryEntry in ((IDictionary)propertyTypeObject))
             {
@@ -2388,12 +2388,12 @@
 
             propertyInfoArray[index].SetValue(parameterObject, propertyTypeObject, null);
             propertyTableLayoutPanel.Controls.Add(dictionaryTableLayoutPanel, 1, index + 1);
-            Log.Debug("finishing RenderDictionaryProperty()");
+            Log.LogDebug("finishing RenderDictionaryProperty()");
         }
 
         public static void RenderExtensionDataObject(TableLayoutPanel propertyTableLayoutPanel, object[] parameterArray, object parameterObject, int index)
         {
-            Log.Debug("starting RenderExtensionDataObject()");
+            Log.LogDebug("starting RenderExtensionDataObject()");
             ExtensionDataObject value = (ExtensionDataObject)parameterObject;
             XCaseTextBox textBox = new XCaseTextBox();
             textBox.Multiline = true;
@@ -2411,12 +2411,12 @@
                     parameterArray[index] = parameterObject;
                 }
             };
-            Log.Debug("finishing RenderExtensionDataObject()");
+            Log.LogDebug("finishing RenderExtensionDataObject()");
         }
 
         public static void RenderExtensionDataObjectProperty(TableLayoutPanel propertyTableLayoutPanel, object parameterObject, PropertyInfo[] propertyInfoArray, object propertyTypeObject, int index)
         {
-            Log.Debug("starting RenderExtensionDataObjectProperty()");
+            Log.LogDebug("starting RenderExtensionDataObjectProperty()");
             ExtensionDataObject value = (ExtensionDataObject)parameterObject;
             XCaseTextBox textBox = new XCaseTextBox();
             textBox.Multiline = true;
@@ -2435,12 +2435,12 @@
                     propertyInfoArray[index].SetValue(parameterObject, propertyTypeObject, null);
                 }
             };
-            Log.Debug("finishing RenderExtensionDataObjectProperty()");
+            Log.LogDebug("finishing RenderExtensionDataObjectProperty()");
         }
 
         public static void RenderXmlDocument(TableLayoutPanel propertyTableLayoutPanel, object[] parameterArray, object parameterObject, int index)
         {
-            Log.Debug("starting RenderXmlDocument()");
+            Log.LogDebug("starting RenderXmlDocument()");
             XCaseTextBox textBox = new XCaseTextBox();
             if (parameterObject != null)
             {
@@ -2461,10 +2461,10 @@
                 {
                     valueDocument.LoadXml(value);
                     //Log.Debug("parameterObject is valid XML");
-                    Log.Debug(valueDocument);
+                    Log.LogDebug(valueDocument.ToString());
                     //Log.Debug("about to create object for XmlDocument");
                     parameterObject = ObjectFactory.CreateObjectFromTypeAndValue(fieldType, valueDocument);
-                    Log.Debug(((XmlDocument)parameterObject));
+                    Log.LogDebug(((XmlDocument)parameterObject).ToString());
                     if (parameterArray != null && index >= 0 && index < parameterArray.Length)
                     {
                         parameterArray[index] = parameterObject;
@@ -2472,15 +2472,15 @@
                 }
                 catch
                 {
-                    Log.Debug("string is not valid XML");
+                    Log.LogDebug("string is not valid XML");
                 }
             };
-            Log.Debug("finishing RenderXmlDocument()");
+            Log.LogDebug("finishing RenderXmlDocument()");
         }
 
         public static void RenderXmlDocumentProperty(TableLayoutPanel propertyTableLayoutPanel, object parameterObject, PropertyInfo[] propertyInfoArray, object propertyTypeObject, int index)
         {
-            Log.Debug("starting RenderXmlDocumentProperty()");
+            Log.LogDebug("starting RenderXmlDocumentProperty()");
             XCaseTextBox textBox = new XCaseTextBox();
             if (parameterObject != null)
             {
@@ -2501,10 +2501,10 @@
                 {
                     valueDocument.LoadXml(value);
                     //Log.Debug("parameterObject is valid XML");
-                    Log.Debug(valueDocument);
+                    Log.LogDebug(valueDocument.ToString());
                     //Log.Debug("about to create object for XmlDocument");
                     propertyTypeObject = ObjectFactory.CreateObjectFromTypeAndValue(fieldType, valueDocument);
-                    Log.Debug(((XmlDocument)propertyTypeObject));
+                    Log.LogDebug(((XmlDocument)propertyTypeObject).ToString());
                     if (propertyInfoArray != null && index >= 0 && index < propertyInfoArray.Length)
                     {
                         propertyInfoArray[index].SetValue(parameterObject, propertyTypeObject, null);
@@ -2512,14 +2512,14 @@
                 }
                 catch
                 {
-                    Log.Debug("string is not valid XML");
+                    Log.LogDebug("string is not valid XML");
                 }
             };
         }
 
         public static void RenderXmlNode(TableLayoutPanel propertyTableLayoutPanel, object[] parameterArray, object parameterObject, int index)
         {
-            Log.Debug("starting RenderXmlNode()");
+            Log.LogDebug("starting RenderXmlNode()");
             XCaseTextBox textBox = new XCaseTextBox();
             textBox.Multiline = true;
             textBox.Size = new Size(300, 200);
@@ -2542,31 +2542,31 @@
                 try
                 {
                     valueDocument.LoadXml(value);
-                    Log.DebugFormat("parameterObject is valid XML");
-                    Log.Debug(valueDocument);
-                    Log.DebugFormat("about to create object for XML document");
+                    Log.LogDebug("parameterObject is valid XML");
+                    Log.LogDebug(valueDocument.ToString());
+                    Log.LogDebug("about to create object for XML document");
                     parameterObject = ObjectFactory.CreateObjectFromTypeAndValue(fieldType, valueDocument);
-                    Log.Debug(((XmlDocument)parameterObject));
+                    Log.LogDebug(((XmlDocument)parameterObject).ToString());
                     parameterArray[index] = parameterObject;
                 }
                 catch
                 {
-                    Log.Debug("string is not valid XML");
+                    Log.LogDebug("string is not valid XML");
                 }
             };
         }
 
         public static TableLayoutPanel RenderResultObject(object resultObject, int maxArrayLength)
         {
-            Log.Debug("starting RenderResultObject()");
+            Log.LogDebug("starting RenderResultObject()");
             if (resultObject == null)
             {
-                Log.Debug("result object is null");
+                Log.LogDebug("result object is null");
                 return new TableLayoutPanel();
             }
 
             Type resultType = resultObject.GetType();
-            Log.Debug("result object type is " + resultType);
+            Log.LogDebug("result object type is " + resultType);
             TableLayoutPanel resultTableLayoutPanel = new TableLayoutPanel();
             resultTableLayoutPanel.AutoScroll = true;
             resultTableLayoutPanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
@@ -2590,125 +2590,125 @@
             resultTableLayoutPanel.SetColumnSpan(resultTypeLabel, 2);
             if (ObjectFactory.IsArrayType(resultType))
             {
-                Log.Debug("result object type is array");
+                Log.LogDebug("result object type is array");
                 RenderTopResultArray(resultTableLayoutPanel, resultObject, 0, maxArrayLength);
                 return resultTableLayoutPanel;
             }
             else if (ObjectFactory.IsIEnumerableType(resultType))
             {
                 /* Parameter object is IEnumerable */
-                Log.Debug("result object is IEnumerable");
+                Log.LogDebug("result object is IEnumerable");
                 RenderTopResultIEnumerable(resultTableLayoutPanel, (IEnumerable)resultObject, 0, maxArrayLength);
                 return resultTableLayoutPanel;
             }
             else
             {
-                Log.Debug("result object type is not array");
+                Log.LogDebug("result object type is not array");
                 if (ObjectFactory.IsBooleanType(resultType))
                 {
-                    Log.Debug("Result object type is boolean type");
+                    Log.LogDebug("Result object type is boolean type");
                     ((bool)resultObject).RenderResultBoolean(resultTableLayoutPanel, 0);
                 }
                 else if (ObjectFactory.IsByteType(resultType))
                 {
-                    Log.Debug("result object type is Byte type");
+                    Log.LogDebug("result object type is Byte type");
                     ((Byte)resultObject).RenderResultByte(resultTableLayoutPanel, 0);
                 }
                 else if (ObjectFactory.IsCancellationTokenType(resultType))
                 {
-                    Log.Debug("result object type is CancellationToken type");
+                    Log.LogDebug("result object type is CancellationToken type");
                     RenderResultCancellationToken(resultTableLayoutPanel, resultObject, 0);
                 }
                 else if (ObjectFactory.IsCharType(resultType))
                 {
-                    Log.Debug("result object type is Char type");
+                    Log.LogDebug("result object type is Char type");
                     ((Char)resultObject).RenderResultChar(resultTableLayoutPanel, 0);
                 }
                 else if (ObjectFactory.IsDateTimeType(resultType))
                 {
-                    Log.Debug("result object type is DateTime type");
+                    Log.LogDebug("result object type is DateTime type");
                     ((DateTime)resultObject).RenderResultDateTime(resultTableLayoutPanel, 0);
                 }
                 else if (ObjectFactory.IsDecimalType(resultType))
                 {
-                    Log.Debug("result object type is Decimal type");
+                    Log.LogDebug("result object type is Decimal type");
                     ((Decimal)resultObject).RenderResultDecimal(resultTableLayoutPanel, 0);
                 }
                 else if (ObjectFactory.IsDictionaryType(resultType))
                 {
-                    Log.Debug("result object type is Dictionary type");
+                    Log.LogDebug("result object type is Dictionary type");
                     RenderResultDictionary(resultTableLayoutPanel, resultObject, 0, maxArrayLength);
                 }
                 else if (ObjectFactory.IsDoubleType(resultType))
                 {
-                    Log.Debug("result object type is Double type");
+                    Log.LogDebug("result object type is Double type");
                     ((Double)resultObject).RenderResultDouble(resultTableLayoutPanel, 0);
                 }
                 else if (ObjectFactory.IsEnumType(resultType))
                 {
-                    Log.Debug("result object type is Enum type");
+                    Log.LogDebug("result object type is Enum type");
                     ((Enum)resultObject).RenderResultEnum(resultTableLayoutPanel, 0);
                 }
                 else if (ObjectFactory.IsExtensionDataObjectType(resultType))
                 {
-                    Log.Debug("result object type is ExtensionDataObject type");
+                    Log.LogDebug("result object type is ExtensionDataObject type");
                     RenderResultExtensionDataObject(resultTableLayoutPanel, resultObject, 0);
                 }
                 else if (ObjectFactory.IsIntegerType(resultType))
                 {
-                    Log.Debug("result object type is Integer type");
+                    Log.LogDebug("result object type is Integer type");
                     ((int)resultObject).RenderResultInteger(resultTableLayoutPanel, 0);
                 }
                 else if (ObjectFactory.IsInt16Type(resultType))
                 {
-                    Log.Debug("result object type is Int16 type");
+                    Log.LogDebug("result object type is Int16 type");
                     ((Int16)resultObject).RenderResultInt16(resultTableLayoutPanel, 0);
                 }
                 else if (ObjectFactory.IsInt64Type(resultType))
                 {
-                    Log.Debug("result object type is Int64 type");
+                    Log.LogDebug("result object type is Int64 type");
                     ((Int64)resultObject).RenderResultInt64(resultTableLayoutPanel, 0);
                 }
                 else if (ObjectFactory.IsSingleType(resultType))
                 {
-                    Log.Debug("result object type is Single type");
+                    Log.LogDebug("result object type is Single type");
                     ((Single)resultObject).RenderResultSingle(resultTableLayoutPanel, 0);
                 }
                 else if (ObjectFactory.IsStringType(resultType))
                 {
-                    Log.Debug("result object type is string type");
+                    Log.LogDebug("result object type is string type");
                     ((string)resultObject).RenderResultString(resultTableLayoutPanel, 0);
                 }
                 else if (ObjectFactory.IsXmlDocumentType(resultType))
                 {
-                    Log.Debug("result object type is XmlDocument type");
+                    Log.LogDebug("result object type is XmlDocument type");
                     RenderResultXmlDocument(resultTableLayoutPanel, resultObject, 0);
                 }
                 else if (ObjectFactory.IsXmlElementType(resultType))
                 {
-                    Log.Debug("result object type is XmlElement type");
+                    Log.LogDebug("result object type is XmlElement type");
                     RenderResultXmlElement(resultTableLayoutPanel, resultObject, 0);
                 }
                 else
                 {
-                    Log.Debug("result object type is complex type");
+                    Log.LogDebug("result object type is complex type");
                     RenderResultComplexType(resultTableLayoutPanel, resultObject, maxArrayLength);
                 }
                 
-                Log.Debug("about to perform layout");
+                Log.LogDebug("about to perform layout");
                 resultTableLayoutPanel.AutoSize = true;
                 resultTableLayoutPanel.PerformLayout();
-                Log.Debug("about to return result table layout");
+                Log.LogDebug("about to return result table layout");
                 return resultTableLayoutPanel;
             }
         }
 
         public static void RenderTopResultIEnumerable(TableLayoutPanel resultTableLayoutPanel, IEnumerable resultObject, int p, int maxArrayLength)
         {
-            Log.Debug("starting RenderTopResultIEnumerable()");
+            Log.LogDebug("starting RenderTopResultIEnumerable()");
             int arrayLength = ((ICollection)resultObject).Count;
             Type resultObjectType = resultObject.GetType();
-            Log.DebugFormat("type of resultObject is {0}", resultObjectType.ToString());
+            Log.LogDebug("type of resultObject is {0}", resultObjectType.ToString());
             resultTableLayoutPanel.RowCount = arrayLength;
             resultTableLayoutPanel.ColumnCount = 2;
             resultTableLayoutPanel.AutoSize = true;
@@ -2718,15 +2718,15 @@
             int i = 0;
             foreach (object arrayObject in (IEnumerable)resultObject)
             {
-                Log.DebugFormat("next object {0}", i);
+                Log.LogDebug("next object {0}", i);
                 if (i < displayArrayLength)
                 {
-                    Log.DebugFormat("next object is {0}", arrayObject);
+                    Log.LogDebug("next object is {0}", arrayObject);
                     Label rowLabel = new Label();
                     rowLabel.Text = i.ToString();
                     resultTableLayoutPanel.Controls.Add(rowLabel, 0, i + 1);
                     Type arrayObjectType = arrayObject.GetType();
-                    Log.DebugFormat("type of arrayObject is {0}", arrayObjectType.ToString());
+                    Log.LogDebug("type of arrayObject is {0}", arrayObjectType.ToString());
                     TableLayoutPanel rowTableLayoutPanel = RenderResultObject(arrayObject, maxArrayLength);
                     rowTableLayoutPanel.AutoScroll = true;
                     rowTableLayoutPanel.Dock = DockStyle.Fill;
@@ -2739,12 +2739,12 @@
                 }
             }
 
-            Log.Debug("finishing RenderTopResultIEnumerable()");
+            Log.LogDebug("finishing RenderTopResultIEnumerable()");
         }
 
         public static void RenderResultCancellationToken(TableLayoutPanel resultTableLayoutPanel, object resultObject, int row)
         {
-            Log.DebugFormat("starting RenderResultCancellationToken() for {0}", resultObject);
+            Log.LogDebug("starting RenderResultCancellationToken() for {0}", resultObject);
             XCaseTextBox textBox = new XCaseTextBox();
             textBox.Text = resultObject.ToString();
             resultTableLayoutPanel.Controls.Add(textBox, 1, row);
@@ -2752,7 +2752,7 @@
 
         public static void RenderResultDictionary(TableLayoutPanel resultTableLayoutPanel, object resultObject, int row, int maxArrayLength)
         {
-            Log.DebugFormat("starting RenderResultDictionary() for {0}", resultObject);
+            Log.LogDebug("starting RenderResultDictionary() for {0}", resultObject);
             TableLayoutPanel dictionaryTableLayoutPanel = new TableLayoutPanel();
             dictionaryTableLayoutPanel.AutoSize = true;
             dictionaryTableLayoutPanel.AutoScroll = true;
@@ -2760,31 +2760,31 @@
             dictionaryTableLayoutPanel.ColumnCount = 2;
             dictionaryTableLayoutPanel.Dock = DockStyle.Fill;
             int entryCount = (int)resultObject.GetType().GetProperty("Count").GetValue(resultObject, null);
-            Log.DebugFormat("entryCount is {0}", entryCount);
+            Log.LogDebug("entryCount is {0}", entryCount);
             dictionaryTableLayoutPanel.RowCount = entryCount;
             int i = 0;
             foreach (object key in ((IDictionary)resultObject).Keys)
             {
-                Log.Debug("next dictionary entry");
+                Log.LogDebug("next dictionary entry");
                 object value = (resultObject as IDictionary)[key];
                 dictionaryTableLayoutPanel.Controls.Add(RenderResultObject(key, maxArrayLength), 0, i);
                 dictionaryTableLayoutPanel.Controls.Add(RenderResultObject(value, maxArrayLength), 1, i);
                 i++;
             }
 
-            Log.Debug("finished rendering result dictionary");
+            Log.LogDebug("finished rendering result dictionary");
             resultTableLayoutPanel.Controls.Add(dictionaryTableLayoutPanel, 1, row);
         }
 
         public static void RenderResultExtensionDataObject(TableLayoutPanel resultTableLayoutPanel, Object resultObject, int row)
         {
-            Log.DebugFormat("starting RenderResultExtensionDataObject() for {0}", resultObject);
+            Log.LogDebug("starting RenderResultExtensionDataObject() for {0}", resultObject);
             /* TODO: consider how to handle extension data */
         }
 
         public static void RenderResultArray(TableLayoutPanel resultTableLayoutPanel, Object resultObject, int row, int maxArrayLength)
         {
-            Log.Debug("starting RenderResultArray()");
+            Log.LogDebug("starting RenderResultArray()");
             int arrayLength = (resultObject as Array).Length;
             TableLayoutPanel arrayLayoutPanel = new TableLayoutPanel();
             arrayLayoutPanel.RowCount = arrayLength;
@@ -2793,12 +2793,12 @@
             int displayLength = maxArrayLength > 0 ? Math.Min(arrayLength, maxArrayLength) : arrayLength;
             for (int i = 0; i < displayLength; i++)
             {
-                Log.DebugFormat("next object {0}", i);
+                Log.LogDebug("next object {0}", i);
                 Label rowLabel = new Label();
                 rowLabel.Text = i.ToString();
                 arrayLayoutPanel.Controls.Add(rowLabel, 0, i + 1);
                 object arrayObject = (resultObject as Array).GetValue(i);
-                Log.DebugFormat("next array object is {0}", arrayObject);
+                Log.LogDebug("next array object is {0}", arrayObject);
                 TableLayoutPanel rowTableLayoutPanel = RenderResultObject(arrayObject, maxArrayLength);
                 rowTableLayoutPanel.AutoScroll = true;
                 arrayLayoutPanel.Controls.Add(rowTableLayoutPanel, 1, i + 1);
@@ -2806,15 +2806,15 @@
             }
 
             resultTableLayoutPanel.Controls.Add(arrayLayoutPanel, 1, row);
-            Log.Debug("finishing RenderResultArray()");
+            Log.LogDebug("finishing RenderResultArray()");
         }
 
         public static void RenderTopResultArray(TableLayoutPanel resultTableLayoutPanel, Object resultObject, int row, int maxArrayLength)
         {
-            Log.Debug("starting RenderTopResultArray()");
+            Log.LogDebug("starting RenderTopResultArray()");
             int arrayLength = (resultObject as Array).Length;
             Type resultObjectType = resultObject.GetType();
-            Log.DebugFormat("type of resultObject is {0}", resultObjectType.ToString());
+            Log.LogDebug("type of resultObject is {0}", resultObjectType.ToString());
             resultTableLayoutPanel.RowCount = arrayLength;
             resultTableLayoutPanel.ColumnCount = 2;
             resultTableLayoutPanel.AutoSize = true;
@@ -2823,7 +2823,7 @@
             int displayArrayLength = maxArrayLength > 0 ? Math.Min(arrayLength, maxArrayLength) : arrayLength;
             for (int i = 0; i < displayArrayLength; i++)
             {
-                Log.DebugFormat("next object {0}", i);
+                Log.LogDebug("next object {0}", i);
                 Label rowLabel = new Label();
                 rowLabel.Text = i.ToString();
                 resultTableLayoutPanel.Controls.Add(rowLabel, 0, i + 1);
@@ -2832,22 +2832,22 @@
                 {
                     arrayObject = (resultObject as Array).GetValue(i);
                     Type arrayObjectType = arrayObject.GetType();
-                    Log.DebugFormat("type of arrayObject is {0}", arrayObjectType.ToString());
+                    Log.LogDebug("type of arrayObject is {0}", arrayObjectType.ToString());
                 }
 
-                Log.DebugFormat("next array object is {0}", arrayObject);
+                Log.LogDebug("next array object is {0}", arrayObject);
                 TableLayoutPanel rowTableLayoutPanel = RenderResultObject(arrayObject, maxArrayLength);
                 rowTableLayoutPanel.AutoScroll = true;
                 rowTableLayoutPanel.Dock = DockStyle.Fill;
                 resultTableLayoutPanel.Controls.Add(rowTableLayoutPanel, 1, i + 1);
             }
 
-            Log.Debug("finishing RenderResultArray()");
+            Log.LogDebug("finishing RenderResultArray()");
         }
 
         public static void RenderResultXmlDocument(TableLayoutPanel resultTableLayoutPanel, Object resultObject, int row)
         {
-            Log.DebugFormat("starting RenderResultXmlDocument() for {0}", resultObject);
+            Log.LogDebug("starting RenderResultXmlDocument() for {0}", resultObject);
             XCaseTextBox textBox = new XCaseTextBox();
             textBox.Size = new Size(100, 100);
             textBox.Multiline = true;
@@ -2864,7 +2864,7 @@
 
         public static void RenderResultXmlElement(TableLayoutPanel resultTableLayoutPanel, Object resultObject, int row)
         {
-            Log.DebugFormat("starting RenderResultXmlElement() for {0}", resultObject);
+            Log.LogDebug("starting RenderResultXmlElement() for {0}", resultObject);
             XCaseTextBox textBox = new XCaseTextBox();
             textBox.Size = new Size(100, 100);
             textBox.Multiline = true;
@@ -2881,22 +2881,22 @@
 
         public static void RenderResultComplexType(TableLayoutPanel resultTableLayoutPanel, Object resultObject, int maxArrayLength)
         {
-            Log.Debug("starting RenderResultComplexType()");
+            Log.LogDebug("starting RenderResultComplexType()");
             PropertyInfo[] propertyInfoArray = resultObject.GetType().GetProperties();
-            Log.DebugFormat("result object property array length is {0}", propertyInfoArray.Length);
+            Log.LogDebug("result object property array length is {0}", propertyInfoArray.Length);
             for (int j = 0; j < propertyInfoArray.Length; j++)
             {
-                Log.Debug("property name is " + propertyInfoArray[j].Name);
+                Log.LogDebug("property name is " + propertyInfoArray[j].Name);
                 Type propertyType = propertyInfoArray[j].PropertyType;
-                Log.Debug("property type is " + propertyType);
+                Log.LogDebug("property type is " + propertyType);
                 if (propertyInfoArray[j].GetIndexParameters().Length > 0)
                 {
-                    Log.DebugFormat("property has index parameters");
+                    Log.LogDebug("property has index parameters");
                     break;
                 }
 
                 object resultPropertyObject = propertyInfoArray[j].GetValue(resultObject, null);
-                Log.DebugFormat("got property type object {0}", resultPropertyObject);
+                Log.LogDebug("got property type object {0}", resultPropertyObject);
                 Label propertyLabel = new Label();
                 propertyLabel.AutoSize = true;
                 propertyLabel.Text = propertyInfoArray[j].Name;
@@ -2910,111 +2910,111 @@
                     {
                         if (resultPropertyObject != null)
                         {
-                            Log.WarnFormat("failed to cast resultPropertyObject to array {0}", resultPropertyObject.GetType());
+                            Log.LogWarning("failed to cast resultPropertyObject to array {0}", resultPropertyObject.GetType());
                         }
                         else
                         {
-                            Log.WarnFormat("resultPropertyObject is null");
+                            Log.LogWarning("resultPropertyObject is null");
                         }
                     }
                 }
 
                 resultTableLayoutPanel.Controls.Add(propertyLabel, 0, j + 1);
-                Log.DebugFormat("added property label at (0, {0})", j + 1);
+                Log.LogDebug("added property label at (0, {0})", j + 1);
                 if (resultPropertyObject != null)
                 {
-                    Log.DebugFormat("resultPropertyObject is not null");
+                    Log.LogDebug("resultPropertyObject is not null");
                     if (ObjectFactory.IsArrayType(resultPropertyObject.GetType()))
                     {
-                        Log.DebugFormat("element type of array is {0}", resultPropertyObject.GetType().GetElementType());
+                        Log.LogDebug("element type of array is {0}", resultPropertyObject.GetType().GetElementType());
                         RenderResultArray(resultTableLayoutPanel, resultPropertyObject, j + 1, maxArrayLength);
                     }
                     else
                     {
-                        Log.Debug("result property is not array");
-                        Log.Debug("set " + propertyInfoArray[j].Name + " to propertyTypeObject");
+                        Log.LogDebug("result property is not array");
+                        Log.LogDebug("set " + propertyInfoArray[j].Name + " to propertyTypeObject");
                         if (ObjectFactory.IsBooleanType(propertyType))
                         {
-                            Log.Debug("result property is Boolean type");
+                            Log.LogDebug("result property is Boolean type");
                             ((bool)resultPropertyObject).RenderResultBoolean(resultTableLayoutPanel, j + 1);
                         }
                         else if (ObjectFactory.IsByteType(propertyType))
                         {
-                            Log.Debug("result property is Byte type");
+                            Log.LogDebug("result property is Byte type");
                             ((Byte)resultPropertyObject).RenderResultByte(resultTableLayoutPanel, j + 1);
                         }
                         else if (ObjectFactory.IsCharType(propertyType))
                         {
-                            Log.Debug("result property is Char type");
+                            Log.LogDebug("result property is Char type");
                             ((Char)resultPropertyObject).RenderResultChar(resultTableLayoutPanel, j + 1);
                         }
                         else if (ObjectFactory.IsDateTimeType(propertyType))
                         {
-                            Log.Debug("result property is DateTime type");
+                            Log.LogDebug("result property is DateTime type");
                             ((DateTime)resultPropertyObject).RenderResultDateTime(resultTableLayoutPanel, j + 1);
                         }
                         else if (ObjectFactory.IsDecimalType(propertyType))
                         {
-                            Log.Debug("result property is Decimal type");
+                            Log.LogDebug("result property is Decimal type");
                             ((Decimal)resultPropertyObject).RenderResultDecimal(resultTableLayoutPanel, j + 1);
                         }
                         else if (ObjectFactory.IsDoubleType(propertyType))
                         {
-                            Log.Debug("result property is Double type");
+                            Log.LogDebug("result property is Double type");
                             ((Double)resultPropertyObject).RenderResultDouble(resultTableLayoutPanel, j + 1);
                         }
                         else if (ObjectFactory.IsEnumType(propertyType))
                         {
-                            Log.Debug("result property is enum type");
+                            Log.LogDebug("result property is enum type");
                             ((Enum)resultPropertyObject).RenderResultEnum(resultTableLayoutPanel, j + 1);
                         }
                         else if (ObjectFactory.IsIntegerType(propertyType))
                         {
-                            Log.Debug("result property is Integer type");
+                            Log.LogDebug("result property is Integer type");
                             try
                             {
                                 ((int)resultPropertyObject).RenderResultInteger(resultTableLayoutPanel, j + 1);
                             }
                             catch (Exception e)
                             {
-                                Log.Debug("exception casting result property as int: " + e.Message);
+                                Log.LogDebug("exception casting result property as int: " + e.Message);
                                 ((Int64)resultPropertyObject).RenderResultInt64(resultTableLayoutPanel, j + 1);
                             }
                         }
                         else if (ObjectFactory.IsInt64Type(propertyType))
                         {
-                            Log.Debug("result property is Int64 type");
+                            Log.LogDebug("result property is Int64 type");
                             ((Int64)resultPropertyObject).RenderResultInt64(resultTableLayoutPanel, j + 1);
                         }
                         else if (ObjectFactory.IsSingleType(propertyType))
                         {
-                            Log.Debug("result property is Single type");
+                            Log.LogDebug("result property is Single type");
                             ((Single)resultPropertyObject).RenderResultSingle(resultTableLayoutPanel, j + 1);
                         }
                         else if (ObjectFactory.IsStringType(propertyType))
                         {
-                            Log.Debug("result property is string type");
+                            Log.LogDebug("result property is string type");
                             ((string)resultPropertyObject).RenderResultString(resultTableLayoutPanel, j + 1);
                         }
                         else
                         {
-                            Log.Debug("result property is complex type " + resultPropertyObject.GetType());
+                            Log.LogDebug("result property is complex type " + resultPropertyObject.GetType());
                             TableLayoutPanel childTableLayoutPanel = RenderResultObject(resultPropertyObject, maxArrayLength);
-                            Log.Debug("rendered property object");
+                            Log.LogDebug("rendered property object");
                             resultTableLayoutPanel.Controls.Add(childTableLayoutPanel, 1, j + 1);
                             childTableLayoutPanel.Dock = DockStyle.Fill;
-                            Log.DebugFormat("added child table layout panel for " + propertyInfoArray[j].Name + " on row " + (j + 1));
+                            Log.LogDebug("added child table layout panel for " + propertyInfoArray[j].Name + " on row " + (j + 1));
                         }
                     }
                 }
             }
 
             FieldInfo[] fieldInfoArray = resultObject.GetType().GetFields();
-            Log.DebugFormat("result object field array length is {0}", fieldInfoArray.Length);
+            Log.LogDebug("result object field array length is {0}", fieldInfoArray.Length);
             for (int j = 0; j < fieldInfoArray.Length; j++)
             {
-                Log.Debug("field name is " + fieldInfoArray[j].Name);
-                Log.Debug("field type is " + fieldInfoArray[j].FieldType);
+                Log.LogDebug("field name is " + fieldInfoArray[j].Name);
+                Log.LogDebug("field type is " + fieldInfoArray[j].FieldType);
                 Label propertyLabel = new Label();
                 propertyLabel.AutoSize = true;
                 propertyLabel.Text = propertyInfoArray[j].Name;
@@ -3028,87 +3028,87 @@
                 {
                     if (ObjectFactory.IsArrayType(resultFieldObject.GetType()))
                     {
-                        Log.DebugFormat("element type of array is {0}", resultFieldObject.GetType().GetElementType());
+                        Log.LogDebug("element type of array is {0}", resultFieldObject.GetType().GetElementType());
                         RenderResultArray(resultTableLayoutPanel, resultFieldObject, j + 1, maxArrayLength);
                     }
                     else
                     {
-                        Log.Debug("result property is not array");
-                        Log.Debug("set " + propertyInfoArray[j].Name + " to propertyTypeObject");
+                        Log.LogDebug("result property is not array");
+                        Log.LogDebug("set " + propertyInfoArray[j].Name + " to propertyTypeObject");
                         if (ObjectFactory.IsBooleanType(fieldType))
                         {
-                            Log.Debug("result property is Boolean type");
+                            Log.LogDebug("result property is Boolean type");
                             ((bool)resultFieldObject).RenderResultBoolean(resultTableLayoutPanel, j + 1);
                         }
                         else if (ObjectFactory.IsByteType(fieldType))
                         {
-                            Log.Debug("result property is Byte type");
+                            Log.LogDebug("result property is Byte type");
                             ((Byte)resultFieldObject).RenderResultByte(resultTableLayoutPanel, j + 1);
                         }
                         else if (ObjectFactory.IsCharType(fieldType))
                         {
-                            Log.Debug("result property is Char type");
+                            Log.LogDebug("result property is Char type");
                             ((Char)resultFieldObject).RenderResultChar(resultTableLayoutPanel, j + 1);
                         }
                         else if (ObjectFactory.IsDateTimeType(fieldType))
                         {
-                            Log.Debug("result property is DateTime type");
+                            Log.LogDebug("result property is DateTime type");
                             ((DateTime)resultFieldObject).RenderResultDateTime(resultTableLayoutPanel, j + 1);
                         }
                         else if (ObjectFactory.IsDecimalType(fieldType))
                         {
-                            Log.Debug("result property is Decimal type");
+                            Log.LogDebug("result property is Decimal type");
                             ((Decimal)resultFieldObject).RenderResultDecimal(resultTableLayoutPanel, j + 1);
                         }
                         else if (ObjectFactory.IsDoubleType(fieldType))
                         {
-                            Log.Debug("result property is Double type");
+                            Log.LogDebug("result property is Double type");
                             ((Double)resultFieldObject).RenderResultDouble(resultTableLayoutPanel, j + 1);
                         }
                         else if (ObjectFactory.IsEnumType(fieldType))
                         {
-                            Log.Debug("result property is Enum type");
+                            Log.LogDebug("result property is Enum type");
                             ((Enum)resultFieldObject).RenderResultEnum(resultTableLayoutPanel, j + 1);
                         }
                         else if (ObjectFactory.IsIntegerType(fieldType))
                         {
-                            Log.Debug("result property is Integer type");
+                            Log.LogDebug("result property is Integer type");
                             ((int)resultFieldObject).RenderResultInteger(resultTableLayoutPanel, j + 1);
                         }
                         else if (ObjectFactory.IsInt64Type(fieldType))
                         {
-                            Log.Debug("result property is Int64 type");
+                            Log.LogDebug("result property is Int64 type");
                             ((Int64)resultFieldObject).RenderResultInt64(resultTableLayoutPanel, j + 1);
                         }
                         else if (ObjectFactory.IsSingleType(fieldType))
                         {
-                            Log.Debug("result property is Single type");
+                            Log.LogDebug("result property is Single type");
                             ((Single)resultFieldObject).RenderResultSingle(resultTableLayoutPanel, j + 1);
                         }
                         else if (ObjectFactory.IsStringType(fieldType))
                         {
-                            Log.Debug("result property is String type");
+                            Log.LogDebug("result property is String type");
                             ((string)resultFieldObject).RenderResultString(resultTableLayoutPanel, j + 1);
                         }
                         else
                         {
-                            Log.Debug("result property is complex type " + resultFieldObject.GetType());
+                            Log.LogDebug("result property is complex type " + resultFieldObject.GetType());
                             TableLayoutPanel childTableLayoutPanel = RenderResultObject(resultFieldObject, maxArrayLength);
-                            Log.DebugFormat("rendered result field object");
+                            Log.LogDebug("rendered result field object");
                             resultTableLayoutPanel.Controls.Add(childTableLayoutPanel, 1, j + 1);
                             childTableLayoutPanel.Dock = DockStyle.Fill;
-                            Log.DebugFormat("added child table layout panel for " + fieldInfoArray[j].Name + " on row " + (j + 1));
+                            Log.LogDebug("added child table layout panel for " + fieldInfoArray[j].Name + " on row " + (j + 1));
                         }
                     }
                 }
             }
 
-            Log.Debug("finishing RenderResultComplexType()");
+            Log.LogDebug("finishing RenderResultComplexType()");
         }
 
         public static void RenderList(TableLayoutPanel propertyTableLayoutPanel, object[] parameterArray, object parameterObject, int index)
         {
-            Log.Debug("starting RenderList()");
+            Log.LogDebug("starting RenderList()");
             XCaseTableLayoutPanel listTableLayoutPanel = new XCaseTableLayoutPanel();
             listTableLayoutPanel.PropertyObject = parameterObject;
             listTableLayoutPanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
@@ -3116,17 +3116,17 @@
             listTableLayoutPanel.ColumnCount = 1;
             listTableLayoutPanel.AutoScroll = true;
             Type elementType = parameterObject.GetType().GetGenericArguments()[0];
-            Log.Debug("list element type is " + elementType);
+            Log.LogDebug("list element type is " + elementType);
             int listCount = ((IList)parameterObject).Count;
             listTableLayoutPanel.RowCount = listCount + 1;
-            Log.Debug("listCount is " + listCount);
+            Log.LogDebug("listCount is " + listCount);
             XCaseButton addButton = new XCaseButton();
             addButton.Text = "Add";
             addButton.PropertyObject = parameterObject;
             addButton.FieldType = elementType;
             addButton.MouseClick += delegate(object sender, MouseEventArgs mea)
             {
-                Log.Debug("Add button clicked");
+                Log.LogDebug("Add button clicked");
                 listCount = ((IList)parameterObject).Count;
                 ArrayList parameterObjectArrayList = new ArrayList(((IList)parameterObject));
                 object newArrayObject = ObjectFactory.CreateDefaultObject(addButton.FieldType);
@@ -3158,12 +3158,12 @@
             }
 
             propertyTableLayoutPanel.Controls.Add(listTableLayoutPanel, 1, index + 1);
-            Log.Debug("finishing RenderList()");
+            Log.LogDebug("finishing RenderList()");
         }
 
         public static TableLayoutPanel RenderListObject(IList list, int index, object listObject)
         {
-            Log.DebugFormat("starting RenderListObject()");
+            Log.LogDebug("starting RenderListObject()");
             XCaseTableLayoutPanel listObjectTableLayoutPanel = new XCaseTableLayoutPanel();
             listObjectTableLayoutPanel.Index = index;
             Type listObjectType = listObject.GetType();
@@ -3314,7 +3314,7 @@
                     string value = xcaseTextBox.Text;
                     //Log.DebugFormat("index is {0}", arrayObjectTableLayoutPanel.index);
                     listObject = ObjectFactory.CreateObjectFromTypeAndValue(typeof(string), value);
-                    Log.DebugFormat("listObject changed to {0}", listObject);
+                    Log.LogDebug("listObject changed to {0}", listObject);
                     //list.Add(listObject);
                     //array[arrayObjectTableLayoutPanel.index] = arrayObject;
                 };

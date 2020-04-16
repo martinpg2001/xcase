@@ -10,7 +10,7 @@
     using System.Reflection;
     using System.Text;
     using System.Threading.Tasks;
-    using log4net;
+    using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
@@ -31,7 +31,7 @@
 
         public override string GetSwaggerDocument()
         {
-            Log.Debug("starting GetSwaggerDocument()");
+            Log.LogDebug("starting GetSwaggerDocument()");
             return GetSwaggerDocument("admin/document/v2/api-docs");
         }
     }

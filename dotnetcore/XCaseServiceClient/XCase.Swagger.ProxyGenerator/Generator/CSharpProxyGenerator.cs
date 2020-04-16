@@ -1,6 +1,6 @@
 ﻿namespace XCase.REST.ProxyGenerator.Generator
 {
-    using log4net;
+    using Microsoft.Extensions.Logging;
     using Microsoft.CSharp;
     using System;
     using System.Collections.Generic;
@@ -21,7 +21,7 @@
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        private static readonly ILog Log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         #endregion
 
@@ -42,7 +42,7 @@
             WriteLine(classStringBuilder, "{");
             foreach (TypeDefinition typeDefinition in classDefinition.Properties)
             {
-                Log.DebugFormat("typeDefinition Name is {0}", typeDefinition.Name);
+                Log.LogDebug("typeDefinition Name is {0}", typeDefinition.Name);
                 /* enum values need to be submitted as strings */
                 if (typeDefinition.EnumValues != null)
                 {
@@ -52,9 +52,9 @@
                 string typeDefinitionTypeName = string.IsNullOrWhiteSpace(typeDefinition.TypeName) ? "object" : typeDefinition.TypeName;
                 /* Arrays are not nullable */
                 typeDefinitionTypeName += (typeDefinition.IsNullableType && !typeDefinitionTypeName.EndsWith("[]")) ? "?" : string.Empty;
-                Log.DebugFormat("typeDefinitionTypeName is {0}", typeDefinitionTypeName);
+                Log.LogDebug("typeDefinitionTypeName is {0}", typeDefinitionTypeName);
                 string typeDefinitionName = SwaggerParser.FixTypeName(typeDefinition.Name);
-                Log.DebugFormat("typeDefinitionName is {0}", typeDefinitionName);
+                Log.LogDebug("typeDefinitionName is {0}", typeDefinitionName);
                 WriteLine(classStringBuilder, string.Format("public {0} @{1} {{ get; set; }}", typeDefinitionTypeName, typeDefinitionName));
                 if (typeDefinition.EnumValues != null)
                 {
@@ -85,7 +85,7 @@
 
         public static StringBuilder CreateInterfaceStringBuilderForProxy(IProxyDefinition proxyDefinition, string proxy, IAPIProxySettingsEndpoint endPoint, string methodNameAppend)
         {
-            Log.DebugFormat("starting CreateInterfaceStringBuilderForProxy()");
+            Log.LogDebug("starting CreateInterfaceStringBuilderForProxy()");
             StringBuilder stringBuilder = new StringBuilder();
             WriteLine(stringBuilder, string.Format("namespace {0} {{", endPoint.GetNamespace()));
             PrintHeaders(stringBuilder);
@@ -96,7 +96,7 @@
             foreach (Operation operation in operationEnumerable)
             {
                 string returnType = string.IsNullOrEmpty(operation.ReturnType) ? "void" : string.Format("{0}", operation.ReturnType);
-                Log.DebugFormat("returnType is {0}", returnType);
+                Log.LogDebug("returnType is {0}", returnType);
                 /* 
                  * Adjust the type names of the enum parameters in order to reference their types
                  * declared in the Proxy class.
@@ -104,26 +104,29 @@
                 IEnumerable<Parameter> enumParameterEnumerable = operation.Parameters.Where(i => (i.Type != null && i.Type.EnumValues != null));
                 foreach (Parameter enumParameter in enumParameterEnumerable)
                 {
-                    Log.DebugFormat("next enumParameter {0}", enumParameter.Type.Name);
+                    Log.LogDebug("next enumParameter {0}", enumParameter.Type.Name);
                     enumParameter.Type.TypeName = operation.OperationId + enumParameter.Type.Name + "Enum";
                 }
 
                 string className = OpenApiParser.FixTypeName(proxy) + "WebProxy";
                 /* Sort by required so that non-nullable parameters come first */
-                IEnumerable<Parameter> parameterEnumerable = operation.Parameters.OrderByDescending(parameter => parameter.Type.Name);
+                IEnumerable<Parameter> parameterEnumerable = operation.Parameters.OrderByDescending(parameter => parameter.IsRequired);
                 string parameters = string.Join(", ", parameterEnumerable.Select(p =>
                 {
                     /* if parameter is enum include the namespace */
                     string parameter = (p.Type != null && p.Type.EnumValues != null) ? string.Format("{0}.{1}.", endPoint.GetNamespace(), className) : string.Empty;
                     if (p.Type != null)
                     {
+                        string defaultType = GetDefaultType(p);
+                        string cleanTypeName = p.Type.GetCleanTypeName();
+                        string defaultValue = GetDefaultValue(p);
                         if (p.IsRequired)
                         {
-                            parameter += string.Format("{0} {1}", GetDefaultType(p), p.Type.GetCleanTypeName());
+                            parameter += string.Format("{0} {1}", defaultType, cleanTypeName);
                         }
                         else
                         {
-                            parameter += string.Format("{0} {1} = {2}{3}", GetDefaultType(p), p.Type.GetCleanTypeName(), parameter, GetDefaultValue(p));
+                            parameter += string.Format("{0} {1} = {2}{3}", defaultType, cleanTypeName, parameter, defaultValue);
                         }
                     }
 
@@ -143,7 +146,7 @@
 
         public static StringBuilder CreateProxyStringBuilderForProxy(IProxyDefinition proxyDefinition, string proxy, IAPIProxySettingsEndpoint endPoint, string methodNameAppend, string username, string password, string tenant)
         {
-            Log.DebugFormat("starting CreateProxyStringBuilderForProxy()");
+            Log.LogDebug("starting CreateProxyStringBuilderForProxy()");
             StringBuilder proxyStringBuilder = new StringBuilder();
             WriteLine(proxyStringBuilder, string.Format("namespace {0} {{", endPoint.GetNamespace()));
             PrintHeaders(proxyStringBuilder);
@@ -196,9 +199,9 @@
 
         public static void WriteOperationToStringBuilder(Operation operation, StringBuilder stringBuilder, IAPIProxySettingsEndpoint endPoint, List<XCase.ProxyGenerator.REST.Enum> proxyParamEnums, string methodNameAppend)
         {
-            Log.DebugFormat("starting WriteOperationToStringBuilder()");
+            Log.LogDebug("starting WriteOperationToStringBuilder()");
             string returnType = string.IsNullOrEmpty(operation.ReturnType) ? "void" : string.Format("{0}", operation.ReturnType);
-            Log.DebugFormat("returnType is {0}", returnType);
+            Log.LogDebug("returnType is {0}", returnType);
             /* 
              * Adjust the type names of the enum parameters in order to reference their types
              * declared in the Proxy class.
@@ -206,7 +209,7 @@
             IEnumerable<Parameter> enumParameterEnumerable = operation.Parameters.Where(i => (i.Type != null && i.Type.EnumValues != null));
             foreach (Parameter enumParameter in enumParameterEnumerable)
             {
-                Log.DebugFormat("next enumParameter {0}", enumParameter.Type.Name);
+                Log.LogDebug("next enumParameter {0}", enumParameter.Type.Name);
                 enumParameter.Type.TypeName = operation.OperationId + enumParameter.Type.Name + "Enum";
                 proxyParamEnums.Add(new XCase.ProxyGenerator.REST.Enum() { Name = enumParameter.Type.TypeName, Values = enumParameter.Type.EnumValues });
             }
@@ -228,7 +231,7 @@
             }
 
             WriteLine(stringBuilder, "/// </summary>");
-            foreach (Parameter parameter in operation.Parameters.OrderByDescending(parameter => parameter.Type.Name))
+            foreach (Parameter parameter in operation.Parameters.OrderByDescending(parameter => parameter.IsRequired))
             {
                 if (parameter.Type != null)
                 {
@@ -237,23 +240,26 @@
             }
 
             string methodName = SwaggerParser.FixMethodName(operation.OperationId);
-            Log.DebugFormat("methodName is {0}", methodName);
+            Log.LogDebug("methodName is {0}", methodName);
             string returnTypeName = SwaggerParser.FixTypeName(returnType);
-            Log.DebugFormat("returnTypeName is {0}", returnTypeName);
+            Log.LogDebug("returnTypeName is {0}", returnTypeName);
             /* Sort by required so that non-nullable parameters come first */
-            IEnumerable<Parameter> parameterEnumerable = operation.Parameters.OrderByDescending(parameter => parameter.Type.Name);
+            IEnumerable<Parameter> parameterEnumerable = operation.Parameters.OrderByDescending(parameter => parameter.IsRequired);
             string parameters = string.Join(", ", parameterEnumerable.Select(p =>
             {
                 string parameter = string.Empty;
                 if (p.Type != null)
                 {
+                    string defaultType = GetDefaultType(p);
+                    string cleanTypeName = p.Type.GetCleanTypeName();
+                    string defaultValue = GetDefaultValue(p);
                     if (p.IsRequired)
                     {
-                        parameter += string.Format("{0} {1}", GetDefaultType(p), p.Type.GetCleanTypeName());
+                        parameter += string.Format("{0} {1}", defaultType, cleanTypeName);
                     }
                     else
                     {
-                        parameter += string.Format("{0} {1} = {2}{3}", GetDefaultType(p), p.Type.GetCleanTypeName(), parameter, GetDefaultValue(p));
+                        parameter += string.Format("{0} {1} = {2}{3}", defaultType, cleanTypeName, parameter, defaultValue);
                     }
                 }
 
@@ -262,7 +268,7 @@
             string methodLine = string.Format("public {0} {1}{2}({3})", returnTypeName, SwaggerParser.FixMethodName(operation.OperationId), methodNameAppend, parameters);
             WriteLine(stringBuilder, methodLine);
             WriteLine(stringBuilder, "{");
-            WriteLine(stringBuilder, string.Format("Log.Debug(\"starting {0}()\");", methodName));
+            WriteLine(stringBuilder, string.Format("Log.LogDebug(\"starting {0}()\");", methodName));
             if (operation.Path.StartsWith("/"))
             {
                 WriteLine(stringBuilder, string.Format("var url = \"{0}\"", operation.Path.Substring(1)));
@@ -288,13 +294,13 @@
             }
 
             WriteLine(stringBuilder);
-            WriteLine(stringBuilder, "Log.DebugFormat(\"url is {0}\", url);");
+            WriteLine(stringBuilder, "Log.LogDebug(\"url is {0}\", url);");
             WriteLine(stringBuilder, "using (HttpClient apiClient = BuildHttpClient())");
             WriteLine(stringBuilder, "{");
-            WriteLine(stringBuilder, "Log.DebugFormat(\"about to invoke method using url {0}\", url);");
+            WriteLine(stringBuilder, "Log.LogDebug(\"about to invoke method using url {0}\", url);");
             string method = operation.Method.ToUpperInvariant();
-            Log.DebugFormat("method is {0}", method);
-            WriteLine(stringBuilder, string.Format("Log.DebugFormat(\"method is {0}\");", method));
+            Log.LogDebug("method is {0}", method);
+            WriteLine(stringBuilder, string.Format("Log.LogDebug(\"method is {0}\");", method));
             WriteMethod(operation, stringBuilder, endPoint, method);
             WriteLine(stringBuilder, "}"); // close up the using
             WriteLine(stringBuilder, "}"); // close up the method
@@ -303,7 +309,7 @@
 
         public static void WriteMethod(Operation operation, StringBuilder proxyStringBuilder, IAPIProxySettingsEndpoint endPoint, string method)
         {
-            Log.DebugFormat("starting WriteMethod()");
+            Log.LogDebug("starting WriteMethod()");
             string httpMethod = "System.Net.Http.HttpMethod.Post";
             if (!string.IsNullOrEmpty(method))
             {
@@ -325,16 +331,16 @@
                         httpMethod = "System.Net.Http.HttpMethod.Put";
                         break;
                     default:
-                        Log.WarnFormat("unrecognized method {0}", method);
+                        Log.LogWarning("unrecognized method {0}", method);
                         break;
                 }
             }
 
-            Log.DebugFormat("httpMethod is {0}", httpMethod);
+            Log.LogDebug("httpMethod is {0}", httpMethod);
             WriteLine(proxyStringBuilder, "string requestURL = string.Format(\"{0}{1}\", apiClient.BaseAddress, url);");
-            WriteLine(proxyStringBuilder, "Log.DebugFormat(\"requestURL is {0}\", requestURL);");
+            WriteLine(proxyStringBuilder, "Log.LogDebug(\"requestURL is {0}\", requestURL);");
             string httpRequestMessage = string.Format("HttpRequestMessage httpRequestMessage = new HttpRequestMessage() {{RequestUri = new Uri(requestURL), Method = {0}}};", httpMethod);
-            Log.DebugFormat("httpRequestMessage is {0}", httpRequestMessage);
+            Log.LogDebug("httpRequestMessage is {0}", httpRequestMessage);
             WriteLine(proxyStringBuilder, httpRequestMessage);
             //WriteLine(proxyStringBuilder, "httpRequestMessage.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(\"application/json\"));");
             WriteLine(proxyStringBuilder, "httpRequestMessage.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(\"" + endPoint.GetAccept() + "\"));");
@@ -343,12 +349,12 @@
             Parameter bodyParameter = operation.Parameters.FirstOrDefault(p => p.ParameterIn == ParameterIn.Body);
             if (bodyParameter != null && method != "GET")
             {
-                Log.DebugFormat("bodyParameter is not null and method is {0}", method);
+                Log.LogDebug("bodyParameter is not null and method is {0}", method);
                 WriteLine(proxyStringBuilder, "JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };");
                 string bodyParameterTypeName = bodyParameter.Type.GetCleanTypeName();
                 WriteLine(proxyStringBuilder, string.Format("string bodyJson = JsonConvert.SerializeObject({0});", bodyParameterTypeName));
                 //WriteLine(proxyStringBuilder, string.Format("string bodyJson = JsonConvert.SerializeObject({0}, settings);", bodyParameterTypeName));
-                WriteLine(proxyStringBuilder, "Log.DebugFormat(\"bodyJson is {0}\", bodyJson);");
+                WriteLine(proxyStringBuilder, "Log.LogDebug(\"bodyJson is {0}\", bodyJson);");
                 WriteLine(proxyStringBuilder, "httpRequestMessage.Content = new StringContent(bodyJson, Encoding.UTF8, \"application/json\");");
             }
             else if (operation.Parameters.Any(p => p.ParameterIn == ParameterIn.FormData))
@@ -383,19 +389,19 @@
             }
 
             WriteLine(proxyStringBuilder, "HttpResponseMessage response = apiClient.SendAsync(httpRequestMessage).Result;");
-            WriteLine(proxyStringBuilder, "Log.DebugFormat(\"response StatusCode is {0}\", response.StatusCode.ToString());");
-            WriteLine(proxyStringBuilder, "Log.DebugFormat(\"response StatusCode is {0}\", (int)response.StatusCode);");
+            WriteLine(proxyStringBuilder, "Log.LogDebug(\"response StatusCode is {0}\", response.StatusCode.ToString());");
+            WriteLine(proxyStringBuilder, "Log.LogDebug(\"response StatusCode is {0}\", (int)response.StatusCode);");
             WriteLine(proxyStringBuilder, "if (response.IsSuccessStatusCode)");
             WriteLine(proxyStringBuilder, "{");
-            WriteLine(proxyStringBuilder, "Log.DebugFormat(\"invoked method successfully\");");
+            WriteLine(proxyStringBuilder, "Log.LogDebug(\"invoked method successfully\");");
             string returnType = string.IsNullOrEmpty(operation.ReturnType) ? "void" : string.Format("{0}", operation.ReturnType);
             string returnTypeName = SwaggerParser.FixTypeName(returnType);
             if (!string.IsNullOrEmpty(returnType) && returnType != "void")
             {
                 WriteLine(proxyStringBuilder, "string content = response.Content.ReadAsStringAsync().Result;");
-                WriteLine(proxyStringBuilder, "Log.DebugFormat(\"content is {0}\", content);");
+                WriteLine(proxyStringBuilder, "Log.LogDebug(\"content is {0}\", content);");
                 WriteLine(proxyStringBuilder, string.Format("{0} returnObject = JsonConvert.DeserializeObject<{0}>(content);", returnTypeName));
-                WriteLine(proxyStringBuilder, "Log.DebugFormat(\"deserialized object\");");
+                WriteLine(proxyStringBuilder, "Log.LogDebug(\"deserialized object\");");
                 WriteLine(proxyStringBuilder, "return returnObject;");
             }
 
@@ -408,7 +414,7 @@
 
         public static void WriteParameterToProxyStringBuilder(Parameter parameter, StringBuilder proxyStringBuilder)
         {
-            Log.DebugFormat("starting WriteParameterToProxyStringBuilder()");
+            Log.LogDebug("starting WriteParameterToProxyStringBuilder()");
             if (parameter.IsRequired == false && (parameter.Type.EnumValues == null || parameter.Type.EnumValues.Any() == false))
             {
                 WriteNullIfStatementOpening(proxyStringBuilder, parameter.Type.GetCleanTypeName(), parameter.Type.TypeName);
@@ -458,7 +464,7 @@
         public static void PrintLogger(StringBuilder stringBuilder)
         {
             WriteLine(stringBuilder);
-            WriteLine(stringBuilder, "private static readonly new ILog Log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);");
+            WriteLine(stringBuilder, "private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);");
             WriteLine(stringBuilder);
         }
 
@@ -527,7 +533,7 @@
             WriteLine(stringBuilder, "using System.Runtime.Serialization;");
             WriteLine(stringBuilder, "using System.Text;");
             WriteLine(stringBuilder, "using System.Web;");
-            WriteLine(stringBuilder, "using log4net;");
+            WriteLine(stringBuilder, "using Microsoft.Extensions.Logging;");
             WriteLine(stringBuilder, "using Newtonsoft.Json;");
             WriteLine(stringBuilder, "using Newtonsoft.Json.Converters;");
             WriteLine(stringBuilder, "using Newtonsoft.Json.Linq;");

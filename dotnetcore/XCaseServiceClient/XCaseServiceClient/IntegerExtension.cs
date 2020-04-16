@@ -7,7 +7,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using System.Windows.Forms;
-    using log4net;
+    using Microsoft.Extensions.Logging;
 
     public static class IntegerExtension
     {
@@ -15,7 +15,7 @@
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        private static readonly ILog Log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public static void RenderInteger(this int parameterObject, TableLayoutPanel propertyTableLayoutPanel, object[] parameterArray, int index)
         {
@@ -53,7 +53,7 @@
                     }
                     catch (ArgumentException ae)
                     {
-                        Log.Debug("exception casting result property as int: " + ae.Message);
+                        Log.LogDebug("exception casting result property as int: " + ae.Message);
                         /* If necessary, convert int32 to int64 value */
                         propertyInfoArray[index].SetValue(parameterObject, Convert.ToInt64(propertyTypeObject), null);
                     }

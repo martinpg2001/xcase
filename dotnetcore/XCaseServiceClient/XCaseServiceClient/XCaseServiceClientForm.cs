@@ -1,14 +1,9 @@
-﻿using log4net;
-using log4net.Appender;
-using log4net.Config;
-using log4net.Core;
-using log4net.Layout;
-using log4net.Repository;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
 using Microsoft.CSharp;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using System;
 using System.CodeDom.Compiler;
@@ -39,9 +34,10 @@ namespace XCaseServiceClient
         #region Logger Setup
 
         /// <summary>
-        /// A log4net log instance.
+        /// A log instance.
         /// </summary>
-        private static readonly ILog Log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        //private static ILoggerFactory loggerFactory = new LoggerFactory();
+        private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         #endregion
 
@@ -110,19 +106,18 @@ namespace XCaseServiceClient
 
         public XCaseServiceClientForm()
         {
-            ILoggerRepository repository = log4net.LogManager.GetRepository(Assembly.GetCallingAssembly());
-            FileInfo fileInfo = new FileInfo(@"log4net.config");
-            log4net.Config.XmlConfigurator.Configure(repository, fileInfo);
-            Log.DebugFormat("no arguments constructor");
+            //ILoggerFactory loggerFactory = new LoggerFactory().AddConsole();
+            //ILogger logger = loggerFactory.CreateLogger<Program>();
+            Log.LogInformation("This is log message.");
             Initialize();
         }
 
         private void Initialize()
         {
-            Log.Debug("starting Initialize()");
-            Log.Debug("about to initialize component");
+            Log.LogDebug("starting Initialize()");
+            Log.LogDebug("about to initialize component");
             InitializeComponent();
-            Log.Debug("initialized component");
+            Log.LogDebug("initialized component");
             System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
             Rectangle workingRectangle = Screen.PrimaryScreen.WorkingArea;
             this.m_WindowWidth = workingRectangle.Width - m_WindowWidthIndent;
@@ -198,28 +193,28 @@ namespace XCaseServiceClient
             }
 
             m_TopTableLayoutPanel.Controls.Add(m_TypeComboBox, 0, 0);
-            Log.Debug("added m_TypeComboBox");
+            Log.LogDebug("added m_TypeComboBox");
             m_TypeComboBox.DataSource = new string[] { "Custom", "Integrate", "KlearNow", "NetDocs", "Open", "PlatformCDS", "PlatformCDSCM", "PlatformDocument", "PlatformRefData", "PlatformSanctionLists", "PlatformTMS", "RAML", "REST", "SOAP", "Source", "Swagger", "Time", "View" };
             ComboBox.ObjectCollection typeObjectCollection = m_TypeComboBox.Items;
             if (typeObjectCollection.Contains(m_Type))
             {
-                Log.DebugFormat("objectCollection contains {0}", m_Type);
+                Log.LogDebug("objectCollection contains {0}", m_Type);
                 int index = typeObjectCollection.IndexOf(m_Type);
                 m_TypeComboBox.SelectedIndex = index;
             }
             else
             {
-                Log.DebugFormat("objectCollection does not contain {0}", m_Type);
+                Log.LogDebug("objectCollection does not contain {0}", m_Type);
                 int index = typeObjectCollection.IndexOf("SOAP");
-                Log.DebugFormat("index of SOAP is {0}", index);
+                Log.LogDebug("index of SOAP is {0}", index);
                 m_TypeComboBox.SelectedIndex = index;
             }
 
             m_TypeComboBox.SelectionChangeCommitted += delegate (object o, EventArgs ev)
             {
-                Log.Debug("m_TypeComboBox SelectionChangeCommitted");
+                Log.LogDebug("m_TypeComboBox SelectionChangeCommitted");
                 m_Type = (string)m_TypeComboBox.SelectedItem;
-                Log.DebugFormat("m_Type is {0}", m_Type);
+                Log.LogDebug("m_Type is {0}", m_Type);
             };
             m_ServiceDescriptionURLTextBox.Text = m_ServiceDescriptionURL;
             m_ServiceDescriptionURLTextBox.Width = 250;
@@ -228,39 +223,39 @@ namespace XCaseServiceClient
                 m_ServiceDescriptionURL = m_ServiceDescriptionURLTextBox.Text;
             };
             m_TopTableLayoutPanel.Controls.Add(m_ServiceDescriptionURLTextBox, 0, 1);
-            Log.Debug("added m_ServiceDescriptionURLTextBox");
+            Log.LogDebug("added m_ServiceDescriptionURLTextBox");
             Label languageLabel = new Label();
             languageLabel.Text = XCaseServiceClient.Properties.Resources.Language;
             m_TopTableLayoutPanel.Controls.Add(languageLabel, 1, 0);
-            Log.Debug("added languageLabel");
+            Log.LogDebug("added languageLabel");
             m_TopTableLayoutPanel.Controls.Add(m_LanguageComboBox, 1, 1);
-            Log.Debug("added m_LanguageComboBox");
+            Log.LogDebug("added m_LanguageComboBox");
             m_LanguageComboBox.DataSource = new string[] { "CSharp", "Java" };
             ComboBox.ObjectCollection languageObjectCollection = m_LanguageComboBox.Items;
             if (languageObjectCollection.Contains(m_Language))
             {
-                Log.DebugFormat("languageObjectCollection contains {0}", m_Language);
+                Log.LogDebug("languageObjectCollection contains {0}", m_Language);
                 int index = languageObjectCollection.IndexOf(m_Language);
                 m_LanguageComboBox.SelectedIndex = index;
             }
             else
             {
-                Log.DebugFormat("languageObjectCollection does not contain {0}", m_Language);
+                Log.LogDebug("languageObjectCollection does not contain {0}", m_Language);
                 int index = languageObjectCollection.IndexOf("CSharp");
-                Log.DebugFormat("index of CSharp is {0}", index);
+                Log.LogDebug("index of CSharp is {0}", index);
                 m_LanguageComboBox.SelectedIndex = index;
             }
 
             m_LanguageComboBox.SelectionChangeCommitted += delegate (object o, EventArgs ev)
             {
-                Log.Debug("m_TypeComboBox SelectionChangeCommitted");
+                Log.LogDebug("m_TypeComboBox SelectionChangeCommitted");
                 m_Language = (string)m_LanguageComboBox.SelectedItem;
-                Log.DebugFormat("m_Language is {0}", m_Language);
+                Log.LogDebug("m_Language is {0}", m_Language);
             };
             Label serviceURLLabel = new Label();
             serviceURLLabel.Text = XCaseServiceClient.Properties.Resources.ServiceName;
             m_TopTableLayoutPanel.Controls.Add(serviceURLLabel, 2, 0);
-            Log.Debug("added serviceURLLabel");
+            Log.LogDebug("added serviceURLLabel");
             m_ServicesComboBox.DataSource = m_Services;
             if (m_Services.Contains<string>(m_ServiceName))
             {
@@ -273,44 +268,44 @@ namespace XCaseServiceClient
             };
             m_ServicesComboBox.SelectionChangeCommitted += delegate (object o, EventArgs ev)
             {
-                Log.Debug("m_ServicesComboBox SelectionChangeCommitted");
+                Log.LogDebug("m_ServicesComboBox SelectionChangeCommitted");
                 m_ServiceName = (string)m_ServicesComboBox.SelectedItem;
-                Log.DebugFormat("m_ServiceName is {0}", m_ServiceName);
+                Log.LogDebug("m_ServiceName is {0}", m_ServiceName);
                 ProcessServicesChange();
             };
             m_TopTableLayoutPanel.Controls.Add(m_ServicesComboBox, 2, 1);
-            Log.Debug("added m_ServicesComboBox");
+            Log.LogDebug("added m_ServicesComboBox");
             Label domainLabel = new Label();
             domainLabel.Text = XCaseServiceClient.Properties.Resources.Domain;
             m_TopTableLayoutPanel.Controls.Add(domainLabel, 3, 0);
-            Log.Debug("added domainLabel");
+            Log.LogDebug("added domainLabel");
             m_DomainTextBox.Text = m_ClientCredentialDomain;
             m_TopTableLayoutPanel.Controls.Add(m_DomainTextBox, 3, 1);
-            Log.Debug("added m_DomainTextBox");
+            Log.LogDebug("added m_DomainTextBox");
             Label usernameLabel = new Label();
             usernameLabel.Text = XCaseServiceClient.Properties.Resources.Username;
             m_TopTableLayoutPanel.Controls.Add(usernameLabel, 4, 0);
-            Log.Debug("added usernameLabel");
+            Log.LogDebug("added usernameLabel");
             m_UsernameTextBox.Text = m_ClientCredentialUserName;
             m_TopTableLayoutPanel.Controls.Add(m_UsernameTextBox, 4, 1);
-            Log.Debug("added m_UsernameTextBox");
+            Log.LogDebug("added m_UsernameTextBox");
             Label passwordLabel = new Label();
             passwordLabel.Text = XCaseServiceClient.Properties.Resources.Password;
             m_TopTableLayoutPanel.Controls.Add(passwordLabel, 5, 0);
-            Log.Debug("added passwordLabel");
+            Log.LogDebug("added passwordLabel");
             m_PasswordTextBox.PasswordChar = '*';
             m_PasswordTextBox.Text = m_ClientCredentialPassword;
             m_TopTableLayoutPanel.Controls.Add(m_PasswordTextBox, 5, 1);
-            Log.Debug("added m_PasswordTextBox");
+            Log.LogDebug("added m_PasswordTextBox");
             /* Array length control */
             Label m_MaxArrayLengthLabel = new Label();
             m_MaxArrayLengthLabel.Text = XCaseServiceClient.Properties.Resources.ArrayLength;
             m_TopTableLayoutPanel.Controls.Add(m_MaxArrayLengthLabel, 6, 0);
-            Log.Debug("added m_MaxArrayLengthLabel");
+            Log.LogDebug("added m_MaxArrayLengthLabel");
             m_MaxArrayLengthTextBox.Text = m_MaxArrayLength.ToString();
             m_MaxArrayLengthTextBox.Visible = true;
             m_TopTableLayoutPanel.Controls.Add(m_MaxArrayLengthTextBox, 6, 1);
-            Log.Debug("added m_MaxArrayLengthTextBox");
+            Log.LogDebug("added m_MaxArrayLengthTextBox");
             m_MaxArrayLengthTextBox.TextChanged += delegate (object o, EventArgs ev)
             {
                 try
@@ -319,7 +314,7 @@ namespace XCaseServiceClient
                 }
                 catch (Exception e)
                 {
-                    Log.DebugFormat("max array length format incorrect {0}", e.Message);
+                    Log.LogDebug("max array length format incorrect {0}", e.Message);
                 }
             };
             /* Binding settings */
@@ -335,21 +330,21 @@ namespace XCaseServiceClient
             m_MessageCredentialTypeLabel.AutoSize = true;
             m_MessageCredentialTypeLabel.Text = string.Format("Message: {0}", m_MessageCredentialType);
             m_TopTableLayoutPanel.Controls.Add(m_MessageCredentialTypeLabel, 8, 0);
-            Log.Debug("added m_MessageCredentialTypeLabel");
+            Log.LogDebug("added m_MessageCredentialTypeLabel");
             m_ClientCredentialTypeLabel.AutoEllipsis = true;
             m_ClientCredentialTypeLabel.AutoSize = true;
             m_ClientCredentialTypeLabel.Text = string.Format("Client: {0}", m_ClientCredentialType);
             m_TopTableLayoutPanel.Controls.Add(m_ClientCredentialTypeLabel, 8, 1);
-            Log.Debug("added m_ClientCredentialTypeLabel");
+            Log.LogDebug("added m_ClientCredentialTypeLabel");
             /* Buttons */
             Button goButton = new Button();
             goButton.Dock = DockStyle.Fill;
             goButton.Text = XCaseServiceClient.Properties.Resources.Go;
             m_TopTableLayoutPanel.Controls.Add(goButton, 9, 0);
-            Log.Debug("added goButton");
+            Log.LogDebug("added goButton");
             goButton.MouseClick += delegate (object o, MouseEventArgs mev)
             {
-                Log.Debug("Go clicked");
+                Log.LogDebug("Go clicked");
                 ProcessGoClicked();
             };
             Button fileButton = new Button();
@@ -358,7 +353,7 @@ namespace XCaseServiceClient
             fileButton.MouseClick += delegate (object o, MouseEventArgs mev)
             {
                 OpenFileDialog openFileDialog = new OpenFileDialog();
-                Log.Debug("service name is " + m_ServiceName);
+                Log.LogDebug("service name is " + m_ServiceName);
                 if (m_CurrentDirectory == null)
                 {
                     m_CurrentDirectory = Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()));
@@ -369,135 +364,135 @@ namespace XCaseServiceClient
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     string fileName = openFileDialog.FileName;
-                    Log.DebugFormat("fileName is {0}", fileName);
+                    Log.LogDebug("fileName is {0}", fileName);
                     //ProcessWSDLFile(fileName);
                 }
             };
             m_TopTableLayoutPanel.Controls.Add(fileButton, 9, 1);
-            Log.Debug("added fileButton");
+            Log.LogDebug("added fileButton");
             /* Top panel rendered. */
             RenderServiceControl(m_ServiceClient);
             this.Controls.Add(m_MethodsTabControl);
-            Log.Debug("added m_MethodsTabControl");
+            Log.LogDebug("added m_MethodsTabControl");
             this.ResumeLayout(true);
             m_Starting = false;
-            Log.Debug("finishing Initialize()");
+            Log.LogDebug("finishing Initialize()");
         }
 
         private void ProcessServicesChange()
         {
-            Log.Debug("starting ProcessServicesChange()");
-            Log.DebugFormat("m_Language is {0}", m_Language);
-            Log.DebugFormat("m_Type is {0}", m_Type);
+            Log.LogDebug("starting ProcessServicesChange()");
+            Log.LogDebug("m_Language is {0}", m_Language);
+            Log.LogDebug("m_Type is {0}", m_Type);
             if (string.IsNullOrEmpty(m_Type) || m_Type == "SOAP")
             {
                 m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
-                Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
+                Log.LogDebug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
                 if (string.IsNullOrEmpty(m_ServiceName))
                 {
-                    Log.Debug("service name is empty");
+                    Log.LogDebug("service name is empty");
                 }
                 else
                 {
-                    Log.Debug("about to get service contract client from WSDL");
+                    Log.LogDebug("about to get service contract client from WSDL");
                     //m_ServiceClient = GetServiceContractClientFromWSDL(m_ServiceName);
-                    Log.Debug("got service contract client from WSDL");
+                    Log.LogDebug("got service contract client from WSDL");
                 }
             }
             else if (m_Type == "Custom")
             {
                 m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
-                Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
+                Log.LogDebug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
                 ProcessCustomType(false);
             }
             else if (m_Type == "Integrate")
             {
                 m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
-                Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
+                Log.LogDebug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
                 //ProcessIntegrateType(false);
             }
             else if (m_Type == "Open")
             {
                 m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
-                Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
+                Log.LogDebug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
                 ProcessSwaggerType(false);
             }
             else if (m_Type == "PlatformCDS")
             {
                 m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
-                Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
+                Log.LogDebug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
                 //ProcessPlatformCDSType(false);
             }
             else if (m_Type == "PlatformDocument")
             {
                 m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
-                Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
+                Log.LogDebug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
                 //ProcessPlatformDocumentType(false);
             }
             else if (m_Type == "PlatformRefData")
             {
                 m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
-                Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
+                Log.LogDebug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
                 //ProcessPlatformRefDataType(false);
             }
             else if (m_Type == "PlatformSanctionLists")
             {
                 m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
-                Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
+                Log.LogDebug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
                 //ProcessPlatformSanctionListsType(false);
             }
             else if (m_Type == "PlatformTMS")
             {
                 m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
-                Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
+                Log.LogDebug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
                 //ProcessPlatformTMSType(false);
             }
             else if (m_Type == "RAML")
             {
                 m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
-                Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
+                Log.LogDebug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
                 ProcessRAMLType(false);
             }
             else if (m_Type == "REST")
             {
                 m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
-                Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
+                Log.LogDebug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
                 ProcessSwaggerType(false);
             }
             else if (m_Type == "Swagger")
             {
                 m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
-                Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
+                Log.LogDebug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
                 ProcessSwaggerType(false);
             }
             else if (m_Type == "Time")
             {
                 m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
-                Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
+                Log.LogDebug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
                 //ProcessTimeType(false);
             }
         }
 
         private void ProcessCustomType(Boolean refresh)
         {
-            Log.Debug("starting ProcessCustomType()");
+            Log.LogDebug("starting ProcessCustomType()");
             try
             {
                 this.Controls.Remove(m_ViewRichTextBox);
-                Log.DebugFormat("m_Language is {0}", m_Language);
-                Log.DebugFormat("m_Type is {0}", m_Type);
+                Log.LogDebug("m_Language is {0}", m_Language);
+                Log.LogDebug("m_Type is {0}", m_Type);
                 m_ClientCredentialDomain = m_DomainTextBox.Text;
-                Log.DebugFormat("m_ClientCredentialDomain is {0}", m_ClientCredentialDomain);
+                Log.LogDebug("m_ClientCredentialDomain is {0}", m_ClientCredentialDomain);
                 m_ClientCredentialUserName = m_UsernameTextBox.Text;
-                Log.DebugFormat("m_ClientCredentialUserName is {0}", m_ClientCredentialUserName);
+                Log.LogDebug("m_ClientCredentialUserName is {0}", m_ClientCredentialUserName);
                 m_ClientCredentialPassword = m_PasswordTextBox.Text;
-                Log.DebugFormat("m_ClientCredentialPassword is {0}", m_ClientCredentialPassword);
+                Log.LogDebug("m_ClientCredentialPassword is {0}", m_ClientCredentialPassword);
                 m_ServiceDescriptionURL = m_ServiceDescriptionURLTextBox.Text;
-                Log.Debug("about to get REST description from " + m_ServiceDescriptionURL);
+                Log.LogDebug("about to get REST description from " + m_ServiceDescriptionURL);
                 this.Text = m_WindowTitle + " - retrieving REST description from " + m_ServiceDescriptionURL;
                 if (refresh)
                 {
-                    Log.DebugFormat("refresh is true");
+                    Log.LogDebug("refresh is true");
                     this.Controls.Remove(m_MethodsTabControl);
                     if (!string.IsNullOrEmpty(m_Language) && m_Language == "Java")
                     {
@@ -512,21 +507,21 @@ namespace XCaseServiceClient
                     }
 
                     restApiProxySettingsEndPoint.Url = m_ServiceDescriptionURL;
-                    Log.DebugFormat("m_ServiceDescriptionURL is {0}", m_ServiceDescriptionURL);
+                    Log.LogDebug("m_ServiceDescriptionURL is {0}", m_ServiceDescriptionURL);
                     RESTApiProxySettingsEndPoint[] endpoints = new RESTApiProxySettingsEndPoint[] { restApiProxySettingsEndPoint };
                     restServiceDefinition = m_SwaggerProxyGenerator.GenerateSourceString(endpoints);
-                    Log.DebugFormat("swaggerServiceDefinition EndPoint is {0}", restServiceDefinition.GetEndPoint());
+                    //Log.LogDebug("swaggerServiceDefinition EndPoint is {0}", restServiceDefinition.GetEndPoint());
                     this.Text = m_WindowTitle + " - got REST service definition";
                     m_SourceStringArray = restServiceDefinition.GetSourceStrings();
                     if (m_SourceStringArray != null)
                     {
                         foreach (string sourceString in m_SourceStringArray)
                         {
-                            Log.DebugFormat("sourceString is {0}", sourceString);
+                            Log.LogDebug("sourceString is {0}", sourceString);
                         }
                     }
 
-                    Log.DebugFormat("endpoint is {0}", restServiceDefinition.GetEndPoint());
+                    Log.LogDebug("endpoint is {0}", restServiceDefinition.GetEndPoint());
                     if (string.IsNullOrEmpty(m_Language) || m_Language == "CSharp")
                     {
                         m_ServicesComboBox.DataSource = restServiceDefinition.GetProxyClasses();
@@ -541,13 +536,13 @@ namespace XCaseServiceClient
 
                         List<SyntaxTree> syntaxTreeList = CreateSyntaxTreeListFromSourceStringArray();
                         string assemblyName = Path.GetRandomFileName();
-                        Log.DebugFormat("assemblyName is {0}", assemblyName);
+                        Log.LogDebug("assemblyName is {0}", assemblyName);
                         List<MetadataReference> metadataReferenceList = CreateMetadataReferenceList();
-                        Log.DebugFormat("created metadataReferenceList");
+                        Log.LogDebug("created metadataReferenceList");
                         CSharpCompilation cSharpCompilation = CSharpCompilation.Create(assemblyName, syntaxTrees: syntaxTreeList, references: metadataReferenceList, options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
-                        Log.DebugFormat("created cSharpCompilation");
+                        Log.LogDebug("created cSharpCompilation");
                         m_Assembly = CreateAssemblyFromCSharpCompilation(cSharpCompilation);
-                        Log.DebugFormat("created assembly");
+                        Log.LogDebug("created assembly");
                         object[] args = new object[] { new Uri(restServiceDefinition.GetEndPoint()) };
                         string proxyClass = string.Format("{0}.{1}", restApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
                         m_RESTServiceClient = m_Assembly.CreateInstance(proxyClass, false, BindingFlags.CreateInstance, null, args, null, null);
@@ -560,14 +555,14 @@ namespace XCaseServiceClient
                                 ((SwaggerProxy)m_RESTServiceClient).Proxy = new WebProxy(m_ProxyAddress, m_ProxyPort);
                             }
 
-                            Log.Debug("set client credentials");
+                            Log.LogDebug("set client credentials");
                         }
                         else
                         {
-                            Log.Debug("m_RESTServiceClient is null");
+                            Log.LogDebug("m_RESTServiceClient is null");
                         }
 
-                        Log.Debug("about to re-render service control");
+                        Log.LogDebug("about to re-render service control");
                         RerenderServiceControl(m_RESTServiceClient);
                     }
                     else if (m_Language == "Java")
@@ -575,12 +570,12 @@ namespace XCaseServiceClient
                         MessageBox.Show("Finished generating classes.");
                     }
 
-                    Log.DebugFormat("{0}", restServiceDefinition.GetEndPoint());
+                    Log.LogDebug("{0}", restServiceDefinition.GetEndPoint());
                 }
                 else
                 {
                     /* refresh is false, but service or proxy class has changed */
-                    Log.DebugFormat("refresh is false");
+                    Log.LogDebug("refresh is false");
                     if (string.IsNullOrEmpty(m_Language) || m_Language == "CSharp")
                     {
                         object[] args = new object[] { new Uri(restServiceDefinition.GetEndPoint()) };
@@ -590,25 +585,25 @@ namespace XCaseServiceClient
                         {
                             NetworkCredential networkCredential = new NetworkCredential(m_ClientCredentialUserName, m_ClientCredentialPassword, m_ClientCredentialDomain);
                             ((SwaggerProxy)m_RESTServiceClient).ClientCredentials = networkCredential;
-                            Log.Debug("set client credentials");
+                            Log.LogDebug("set client credentials");
                         }
                         else
                         {
-                            Log.Debug("m_RESTServiceClient is null");
+                            Log.LogDebug("m_RESTServiceClient is null");
                         }
 
-                        Log.Debug("about to re-render service control");
+                        Log.LogDebug("about to re-render service control");
                         RerenderServiceControl(m_RESTServiceClient);
                     }
 
-                    Log.DebugFormat("{0}", restServiceDefinition.GetEndPoint());
+                    Log.LogDebug("{0}", restServiceDefinition.GetEndPoint());
                 }
 
-                Log.Debug("finishing ProcessCustomType()");
+                Log.LogDebug("finishing ProcessCustomType()");
             }
             catch (AggregateException ae)
             {
-                Log.Debug("aggregate exception thrown: " + ae.Message);
+                Log.LogDebug("aggregate exception thrown: " + ae.Message);
                 if (!m_Starting)
                 {
                     MessageBox.Show("Aggregate exception thrown: " + ae.Message);
@@ -616,7 +611,7 @@ namespace XCaseServiceClient
             }
             catch (Exception e)
             {
-                Log.Debug("exception thrown: " + e.Message);
+                Log.LogDebug("exception thrown: " + e.Message);
                 if (!m_Starting)
                 {
                     MessageBox.Show("Exception thrown: " + e.Message);
@@ -626,17 +621,17 @@ namespace XCaseServiceClient
 
         private static Assembly CreateAssemblyFromCSharpCompilation(CSharpCompilation cSharpCompilation)
         {
-            Log.DebugFormat("starting CreateAssemblyFromCSharpCompilation()");
+            Log.LogDebug("starting CreateAssemblyFromCSharpCompilation()");
             using (MemoryStream memoryStream = new MemoryStream())
             {
                 EmitResult result = cSharpCompilation.Emit(memoryStream);
                 if (!result.Success)
                 {
-                    Log.WarnFormat("result is {0}", result.Success);
+                    Log.LogWarning("result is {0}", result.Success);
                     IEnumerable<Diagnostic> failures = result.Diagnostics.Where(diagnostic => diagnostic.IsWarningAsError || diagnostic.Severity == DiagnosticSeverity.Error);
                     foreach (Diagnostic diagnostic in failures)
                     {
-                        Log.WarnFormat("{0}: {1}", diagnostic.Id, diagnostic.GetMessage());
+                        Log.LogWarning("{0}: {1}", diagnostic.Id, diagnostic.GetMessage());
                     }
 
                     return null;
@@ -668,7 +663,7 @@ namespace XCaseServiceClient
                 }
                 catch (Exception e)
                 {
-                    Log.DebugFormat("failed to get MetadataReference {0}", e.Message);
+                    Log.LogDebug("failed to get MetadataReference {0}", e.Message);
                 }
             }
 
@@ -682,7 +677,7 @@ namespace XCaseServiceClient
             {
                 foreach (string sourceString in m_SourceStringArray)
                 {
-                    Log.DebugFormat("sourceString is {0}", sourceString);
+                    Log.LogDebug("sourceString is {0}", sourceString);
                     SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(sourceString);
                     syntaxTreeList.Add(syntaxTree);
                 }
@@ -709,9 +704,9 @@ namespace XCaseServiceClient
 
         private void ProcessGoClicked()
         {
-            Log.Debug("starting ProcessGoClicked()");
-            Log.DebugFormat("m_Language is {0}", m_Language);
-            Log.DebugFormat("m_Type is {0}", m_Type);
+            Log.LogDebug("starting ProcessGoClicked()");
+            Log.LogDebug("m_Language is {0}", m_Language);
+            Log.LogDebug("m_Type is {0}", m_Type);
             if (string.IsNullOrEmpty(m_Type))
             {
                 ProcessSOAPType();
@@ -802,15 +797,15 @@ namespace XCaseServiceClient
 
         private void ProcessKlearNowType(bool refresh)
         {
-            Log.Debug("starting ProcessKlearNowType()");
+            Log.LogDebug("starting ProcessKlearNowType()");
             try
             {
                 /* Force loading System.Net libraries */
                 System.Net.WebRequest webRequest = System.Net.WebRequest.Create("http://www.google.com");
-                Log.Debug("created webRequest");
+                Log.LogDebug("created webRequest");
                 using (WebResponse webResponse = webRequest.GetResponse())
                 {
-                    Log.Debug("got webResponse");
+                    Log.LogDebug("got webResponse");
                     Stream webResponseStream = webResponse.GetResponseStream();
                     StreamReader webResponseStreamReader = new StreamReader(webResponseStream);
                 }
@@ -818,23 +813,23 @@ namespace XCaseServiceClient
                 /* Force loading the Newtonsoft library */
                 JObject jObject = JObject.Parse("{}");
                 this.Controls.Remove(m_ViewRichTextBox);
-                Log.DebugFormat("m_Language is {0}", m_Language);
-                Log.DebugFormat("m_Type is {0}", m_Type);
+                Log.LogDebug("m_Language is {0}", m_Language);
+                Log.LogDebug("m_Type is {0}", m_Type);
                 m_ClientCredentialDomain = m_DomainTextBox.Text;
-                Log.DebugFormat("m_ClientCredentialDomain is {0}", m_ClientCredentialDomain);
+                Log.LogDebug("m_ClientCredentialDomain is {0}", m_ClientCredentialDomain);
                 m_ClientCredentialUserName = m_UsernameTextBox.Text;
-                Log.DebugFormat("m_ClientCredentialUserName is {0}", m_ClientCredentialUserName);
+                Log.LogDebug("m_ClientCredentialUserName is {0}", m_ClientCredentialUserName);
                 m_ClientCredentialPassword = m_PasswordTextBox.Text;
-                Log.DebugFormat("m_ClientCredentialPassword is {0}", m_ClientCredentialPassword);
+                Log.LogDebug("m_ClientCredentialPassword is {0}", m_ClientCredentialPassword);
                 m_ServiceDescriptionURL = m_ServiceDescriptionURLTextBox.Text;
-                Log.Debug("about to get REST description from " + m_ServiceDescriptionURL);
+                Log.LogDebug("about to get REST description from " + m_ServiceDescriptionURL);
                 this.Text = m_WindowTitle + " - retrieving REST description from " + m_ServiceDescriptionURL;
                 if (refresh)
                 {
-                    Log.DebugFormat("refresh is true");
+                    Log.LogDebug("refresh is true");
                     RESTServiceDefinition klearNowServiceDefinition = new RESTServiceDefinition();
                     klearNowServiceDefinition.SetEndPoint(m_ServiceDescriptionURL);
-                    Log.DebugFormat("klearNowServiceDefinition EndPoint is {0}", klearNowServiceDefinition.GetEndPoint());
+                    Log.LogDebug("klearNowServiceDefinition EndPoint is {0}", klearNowServiceDefinition.GetEndPoint());
                     this.Text = m_WindowTitle + " - got REST service definition";
                     string userInterfaceString = @"namespace XCaseServiceClient
     {
@@ -920,7 +915,7 @@ namespace XCaseServiceClient
         public class UserProxy : KlearNowProxy, IUserProxy
         {
 
-            private static readonly new ILog Log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+            private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
             public UserProxy(Uri baseUrl) : base(baseUrl)
             {
@@ -985,7 +980,7 @@ namespace XCaseServiceClient
         public class ShipmentProxy : KlearNowProxy, IShipmentProxy
         {
 
-            private static readonly new ILog Log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+            private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
             public ShipmentProxy(Uri baseUrl) : base(baseUrl)
             {
@@ -1088,12 +1083,12 @@ namespace XCaseServiceClient
                     {
                         foreach (string sourceString in sourceStringArray)
                         {
-                            Log.DebugFormat("sourceString is {0}", sourceString);
+                            Log.LogDebug("sourceString is {0}", sourceString);
                         }
                     }
 
                     m_ServicesComboBox.DataSource = klearNowServiceDefinition.GetProxyClasses();
-                    Log.DebugFormat("set m_ServicesComboBox datasource");
+                    Log.LogDebug("set m_ServicesComboBox datasource");
                     if (klearNowServiceDefinition.GetProxyClasses().Contains<string>(((string)m_ServicesComboBox.SelectedItem)))
                     {
                         m_ServicesComboBox.SelectedItem = klearNowServiceDefinition.GetProxyClasses().First<string>(pc => pc == ((string)m_ServicesComboBox.SelectedItem));
@@ -1103,22 +1098,22 @@ namespace XCaseServiceClient
                         m_ServicesComboBox.SelectedItem = klearNowServiceDefinition.GetProxyClasses().First<string>();
                     }
 
-                    Log.DebugFormat("selected item is {0}", m_ServicesComboBox.SelectedItem);
+                    Log.LogDebug("selected item is {0}", m_ServicesComboBox.SelectedItem);
                     List<SyntaxTree> syntaxTreeList = CreateSyntaxTreeListFromSourceStringArray(sourceStringArray);
                     string assemblyName = Path.GetRandomFileName();
-                    Log.DebugFormat("assemblyName is {0}", assemblyName);
+                    Log.LogDebug("assemblyName is {0}", assemblyName);
                     List<MetadataReference> metadataReferenceList = CreateMetadataReferenceList();
-                    Log.DebugFormat("created metadataReferenceList");
+                    Log.LogDebug("created metadataReferenceList");
                     CSharpCompilation cSharpCompilation = CSharpCompilation.Create(assemblyName, syntaxTrees: syntaxTreeList, references: metadataReferenceList, options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
-                    Log.DebugFormat("created cSharpCompilation");
+                    Log.LogDebug("created cSharpCompilation");
                     m_Assembly = CreateAssemblyFromCSharpCompilation(cSharpCompilation);
-                    Log.DebugFormat("created assembly");
+                    Log.LogDebug("created assembly");
                     string endpoint = klearNowServiceDefinition.GetEndPoint();
-                    Log.DebugFormat("endpoint is {0}", endpoint);
+                    Log.LogDebug("endpoint is {0}", endpoint);
                     Uri endpointUri = new Uri(klearNowServiceDefinition.GetEndPoint());
-                    Log.DebugFormat("endpointUri is {0}", endpointUri);
+                    Log.LogDebug("endpointUri is {0}", endpointUri);
                     object[] args = new object[] { endpointUri, m_ClientCredentialUserName, m_ClientCredentialPassword, m_ClientCredentialDomain };
-                    Log.DebugFormat("Namespace is {0}", restApiProxySettingsEndPoint.Namespace);
+                    Log.LogDebug("Namespace is {0}", restApiProxySettingsEndPoint.Namespace);
                     string proxyClass = string.Format("{0}.{1}", restApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
                     m_RESTServiceClient = m_Assembly.CreateInstance(proxyClass, false, BindingFlags.CreateInstance, null, args, null, null);
                     if (m_RESTServiceClient != null)
@@ -1130,25 +1125,25 @@ namespace XCaseServiceClient
                             ((SwaggerProxy)m_RESTServiceClient).Proxy = new WebProxy(m_ProxyAddress, m_ProxyPort);
                         }
 
-                        Log.Debug("set client credentials");
+                        Log.LogDebug("set client credentials");
                     }
                     else
                     {
-                        Log.Debug("m_RESTServiceClient is null");
+                        Log.LogDebug("m_RESTServiceClient is null");
                     }
 
-                    Log.Debug("about to re-render service control");
+                    Log.LogDebug("about to re-render service control");
                     RerenderServiceControl(m_RESTServiceClient);
                 }
                 else
                 {
-                    Log.DebugFormat("refresh is true");
+                    Log.LogDebug("refresh is true");
                 }
  
             }
             catch (Exception e)
             {
-                Log.Debug("exception thrown: " + e.Message);
+                Log.LogDebug("exception thrown: " + e.Message);
                 if (!m_Starting)
                 {
                     MessageBox.Show("Exception thrown: " + e.Message);
@@ -1203,26 +1198,26 @@ namespace XCaseServiceClient
 
         private void ProcessRAMLType(bool refresh)
         {
-            Log.Debug("starting ProcessRAMLType()");
+            Log.LogDebug("starting ProcessRAMLType()");
             try
             {
                 /* Force loading the Newtonsoft library */
                 JObject jObject = JObject.Parse("{}");
                 this.Controls.Remove(m_ViewRichTextBox);
-                Log.DebugFormat("m_Language is {0}", m_Language);
-                Log.DebugFormat("m_Type is {0}", m_Type);
+                Log.LogDebug("m_Language is {0}", m_Language);
+                Log.LogDebug("m_Type is {0}", m_Type);
                 m_ClientCredentialDomain = m_DomainTextBox.Text;
-                Log.DebugFormat("m_ClientCredentialDomain is {0}", m_ClientCredentialDomain);
+                Log.LogDebug("m_ClientCredentialDomain is {0}", m_ClientCredentialDomain);
                 m_ClientCredentialUserName = m_UsernameTextBox.Text;
-                Log.DebugFormat("m_ClientCredentialUserName is {0}", m_ClientCredentialUserName);
+                Log.LogDebug("m_ClientCredentialUserName is {0}", m_ClientCredentialUserName);
                 m_ClientCredentialPassword = m_PasswordTextBox.Text;
-                Log.DebugFormat("m_ClientCredentialPassword is {0}", m_ClientCredentialPassword);
+                Log.LogDebug("m_ClientCredentialPassword is {0}", m_ClientCredentialPassword);
                 m_ServiceDescriptionURL = m_ServiceDescriptionURLTextBox.Text;
-                Log.Debug("about to get REST description from " + m_ServiceDescriptionURL);
+                Log.LogDebug("about to get REST description from " + m_ServiceDescriptionURL);
                 this.Text = m_WindowTitle + " - retrieving REST description from " + m_ServiceDescriptionURL;
                 if (refresh)
                 {
-                    Log.DebugFormat("refresh is true");
+                    Log.LogDebug("refresh is true");
                     CSharpProxyGenerator restProxyGenerator = null;
                     this.Controls.Remove(m_MethodsTabControl);
                     if (!string.IsNullOrEmpty(m_Language) && m_Language == "Java")
@@ -1238,21 +1233,21 @@ namespace XCaseServiceClient
                     }
 
                     restApiProxySettingsEndPoint.Url = m_ServiceDescriptionURL;
-                    Log.DebugFormat("m_ServiceDescriptionURL is {0}", m_ServiceDescriptionURL);
+                    Log.LogDebug("m_ServiceDescriptionURL is {0}", m_ServiceDescriptionURL);
                     RESTApiProxySettingsEndPoint[] endpoints = new RESTApiProxySettingsEndPoint[] { restApiProxySettingsEndPoint };
                     restServiceDefinition = restProxyGenerator.GenerateSourceString(endpoints);
-                    Log.DebugFormat("restServiceDefinition EndPoint is {0}", restServiceDefinition.GetEndPoint());
+                    Log.LogDebug("restServiceDefinition EndPoint is {0}", restServiceDefinition.GetEndPoint());
                     this.Text = m_WindowTitle + " - got REST service definition";
                     m_SourceStringArray = restServiceDefinition.GetSourceStrings();
                     if (m_SourceStringArray != null)
                     {
                         foreach (string sourceString in m_SourceStringArray)
                         {
-                            Log.DebugFormat("sourceString is {0}", sourceString);
+                            Log.LogDebug("sourceString is {0}", sourceString);
                         }
                     }
 
-                    Log.DebugFormat("endpoint is {0}", restServiceDefinition.GetEndPoint());
+                    Log.LogDebug("endpoint is {0}", restServiceDefinition.GetEndPoint());
                     if (string.IsNullOrEmpty(m_Language) || m_Language == "CSharp")
                     {
                         m_ServicesComboBox.DataSource = restServiceDefinition.GetProxyClasses();
@@ -1267,17 +1262,17 @@ namespace XCaseServiceClient
 
                         List<SyntaxTree> syntaxTreeList = CreateSyntaxTreeListFromSourceStringArray();
                         string assemblyName = Path.GetRandomFileName();
-                        Log.DebugFormat("assemblyName is {0}", assemblyName);
+                        Log.LogDebug("assemblyName is {0}", assemblyName);
                         List<MetadataReference> metadataReferenceList = CreateMetadataReferenceList();
-                        Log.DebugFormat("created metadataReferenceList");
+                        Log.LogDebug("created metadataReferenceList");
                         CSharpCompilation cSharpCompilation = CSharpCompilation.Create(assemblyName, syntaxTrees: syntaxTreeList, references: metadataReferenceList, options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
-                        Log.DebugFormat("created cSharpCompilation");
+                        Log.LogDebug("created cSharpCompilation");
                         m_Assembly = CreateAssemblyFromCSharpCompilation(cSharpCompilation);
-                        Log.DebugFormat("created assembly");
+                        Log.LogDebug("created assembly");
                         string endpoint = restServiceDefinition.GetEndPoint();
-                        Log.DebugFormat("endpoint is {0}", endpoint);
+                        Log.LogDebug("endpoint is {0}", endpoint);
                         Uri endpointUri = new Uri(restServiceDefinition.GetEndPoint());
-                        Log.DebugFormat("endpointUri is {0}", endpointUri);
+                        Log.LogDebug("endpointUri is {0}", endpointUri);
                         object[] args = new object[] { endpointUri };
                         string proxyClass = string.Format("{0}.{1}", restApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
                         m_RESTServiceClient = m_Assembly.CreateInstance(proxyClass, false, BindingFlags.CreateInstance, null, args, null, null);
@@ -1290,14 +1285,14 @@ namespace XCaseServiceClient
                                 ((SwaggerProxy)m_RESTServiceClient).Proxy = new WebProxy(m_ProxyAddress, m_ProxyPort);
                             }
 
-                            Log.Debug("set client credentials");
+                            Log.LogDebug("set client credentials");
                         }
                         else
                         {
-                            Log.Debug("m_RESTServiceClient is null");
+                            Log.LogDebug("m_RESTServiceClient is null");
                         }
 
-                        Log.Debug("about to re-render service control");
+                        Log.LogDebug("about to re-render service control");
                         RerenderServiceControl(m_RESTServiceClient);
                     }
                     else if (m_Language == "Java")
@@ -1305,12 +1300,12 @@ namespace XCaseServiceClient
                         MessageBox.Show("Finished generating classes.");
                     }
 
-                    Log.DebugFormat("{0}", restServiceDefinition.GetEndPoint());
+                    Log.LogDebug("{0}", restServiceDefinition.GetEndPoint());
                 }
                 else
                 {
                     /* refresh is false, but service or proxy class has changed */
-                    Log.DebugFormat("refresh is false");
+                    Log.LogDebug("refresh is false");
                     if (string.IsNullOrEmpty(m_Language) || m_Language == "CSharp")
                     {
                         object[] args = new object[] { new Uri(restServiceDefinition.GetEndPoint()) };
@@ -1320,25 +1315,25 @@ namespace XCaseServiceClient
                         {
                             NetworkCredential networkCredential = new NetworkCredential(m_ClientCredentialUserName, m_ClientCredentialPassword, m_ClientCredentialDomain);
                             ((SwaggerProxy)m_RESTServiceClient).ClientCredentials = networkCredential;
-                            Log.Debug("set client credentials");
+                            Log.LogDebug("set client credentials");
                         }
                         else
                         {
-                            Log.Debug("m_RESTServiceClient is null");
+                            Log.LogDebug("m_RESTServiceClient is null");
                         }
 
-                        Log.Debug("about to re-render service control");
+                        Log.LogDebug("about to re-render service control");
                         RerenderServiceControl(m_RESTServiceClient);
                     }
 
-                    Log.DebugFormat("{0}", restServiceDefinition.GetEndPoint());
+                    Log.LogDebug("{0}", restServiceDefinition.GetEndPoint());
                 }
 
-                Log.Debug("finishing ProcessRAMLType()");
+                Log.LogDebug("finishing ProcessRAMLType()");
             }
             catch (AggregateException ae)
             {
-                Log.Debug("aggregate exception thrown: " + ae.Message);
+                Log.LogDebug("aggregate exception thrown: " + ae.Message);
                 if (!m_Starting)
                 {
                     MessageBox.Show("Aggregate exception thrown: " + ae.Message);
@@ -1346,7 +1341,7 @@ namespace XCaseServiceClient
             }
             catch (Exception e)
             {
-                Log.Debug("exception thrown: " + e.Message);
+                Log.LogDebug("exception thrown: " + e.Message);
                 if (!m_Starting)
                 {
                     MessageBox.Show("Exception thrown: " + e.Message);
@@ -1356,24 +1351,24 @@ namespace XCaseServiceClient
 
         private void ProcessSwaggerType(bool refresh)
         {
-            Log.Debug("starting ProcessSwaggerType()");
+            Log.LogDebug("starting ProcessSwaggerType()");
             this.Controls.Remove(m_ViewRichTextBox);
-            Log.DebugFormat("m_Language is {0}", m_Language);
-            Log.DebugFormat("m_Type is {0}", m_Type);
+            Log.LogDebug("m_Language is {0}", m_Language);
+            Log.LogDebug("m_Type is {0}", m_Type);
             m_ClientCredentialDomain = m_DomainTextBox.Text;
-            Log.DebugFormat("m_ClientCredentialDomain is {0}", m_ClientCredentialDomain);
+            Log.LogDebug("m_ClientCredentialDomain is {0}", m_ClientCredentialDomain);
             m_ClientCredentialUserName = m_UsernameTextBox.Text;
-            Log.DebugFormat("m_ClientCredentialUserName is {0}", m_ClientCredentialUserName);
+            Log.LogDebug("m_ClientCredentialUserName is {0}", m_ClientCredentialUserName);
             m_ClientCredentialPassword = m_PasswordTextBox.Text;
-            Log.DebugFormat("m_ClientCredentialPassword is {0}", m_ClientCredentialPassword);
+            Log.LogDebug("m_ClientCredentialPassword is {0}", m_ClientCredentialPassword);
             m_ServiceDescriptionURL = m_ServiceDescriptionURLTextBox.Text;
-            Log.Debug("about to get REST description from " + m_ServiceDescriptionURL);
+            Log.LogDebug("about to get REST description from " + m_ServiceDescriptionURL);
             this.Text = m_WindowTitle + " - retrieving REST description from " + m_ServiceDescriptionURL;
             try
             {
                 if (refresh)
                 {
-                    Log.DebugFormat("refresh is true");
+                    Log.LogDebug("refresh is true");
                     this.Controls.Remove(m_MethodsTabControl);
                     if (!string.IsNullOrEmpty(m_Language) && m_Language == "Java")
                     {
@@ -1387,17 +1382,17 @@ namespace XCaseServiceClient
                     }
 
                     restApiProxySettingsEndPoint.Url = m_ServiceDescriptionURL;
-                    Log.DebugFormat("m_ServiceDescriptionURL is {0}", m_ServiceDescriptionURL);
+                    Log.LogDebug("m_ServiceDescriptionURL is {0}", m_ServiceDescriptionURL);
                     RESTApiProxySettingsEndPoint[] endpoints = new RESTApiProxySettingsEndPoint[] { restApiProxySettingsEndPoint };
                     restServiceDefinition = m_SwaggerProxyGenerator.GenerateSourceString(endpoints);
-                    Log.DebugFormat("swaggerServiceDefinition EndPoint is {0}", restServiceDefinition.GetEndPoint());
+                    Log.LogDebug("swaggerServiceDefinition EndPoint is {0}", restServiceDefinition.GetEndPoint());
                     this.Text = m_WindowTitle + " - got REST service definition";
                     m_SourceStringArray = restServiceDefinition.GetSourceStrings();
                     if (m_SourceStringArray != null)
                     {
                         foreach (string sourceString in m_SourceStringArray)
                         {
-                            Log.DebugFormat("sourceString is {0}", sourceString);
+                            Log.LogDebug("sourceString is {0}", sourceString);
                         }
                     }
 
@@ -1415,13 +1410,13 @@ namespace XCaseServiceClient
                         m_ServicesComboBox.DataSource = restServiceDefinition.GetProxyClasses();
                         List<SyntaxTree> syntaxTreeList = CreateSyntaxTreeListFromSourceStringArray();
                         string assemblyName = Path.GetRandomFileName();
-                        Log.DebugFormat("assemblyName is {0}", assemblyName);
+                        Log.LogDebug("assemblyName is {0}", assemblyName);
                         List<MetadataReference> metadataReferenceList = CreateMetadataReferenceList();
-                        Log.DebugFormat("created metadataReferenceList");
+                        Log.LogDebug("created metadataReferenceList");
                         CSharpCompilation cSharpCompilation = CSharpCompilation.Create(assemblyName, syntaxTrees: syntaxTreeList, references: metadataReferenceList, options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
-                        Log.DebugFormat("created cSharpCompilation");
+                        Log.LogDebug("created cSharpCompilation");
                         m_Assembly = CreateAssemblyFromCSharpCompilation(cSharpCompilation);
-                        Log.DebugFormat("created assembly");
+                        Log.LogDebug("created assembly");
                         object[] args = new object[] { new Uri(restServiceDefinition.GetEndPoint()) };
                         string proxyClass = string.Format("{0}.{1}", restApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
                         m_RESTServiceClient = m_Assembly.CreateInstance(proxyClass, false, BindingFlags.CreateInstance, null, args, null, null);
@@ -1434,14 +1429,14 @@ namespace XCaseServiceClient
                                 ((SwaggerProxy)m_RESTServiceClient).Proxy = new WebProxy(m_ProxyAddress, m_ProxyPort);
                             }
 
-                            Log.Debug("set client credentials");
+                            Log.LogDebug("set client credentials");
                         }
                         else
                         {
-                            Log.Debug("m_RESTServiceClient is null");
+                            Log.LogDebug("m_RESTServiceClient is null");
                         }
 
-                        Log.Debug("about to re-render service control");
+                        Log.LogDebug("about to re-render service control");
                         RerenderServiceControl(m_RESTServiceClient);
                     }
                     else if (m_Language == "Java")
@@ -1449,12 +1444,12 @@ namespace XCaseServiceClient
                         MessageBox.Show("Finished generating classes.");
                     }
 
-                    Log.DebugFormat("{0}", restServiceDefinition.GetEndPoint());
+                    Log.LogDebug("{0}", restServiceDefinition.GetEndPoint());
                 }
                 else
                 {
                     /* refresh is false, but service or proxy class has changed */
-                    Log.DebugFormat("refresh is false");
+                    Log.LogDebug("refresh is false");
                     if (string.IsNullOrEmpty(m_Language) || m_Language == "CSharp")
                     {
                         object[] args = new object[] { new Uri(restServiceDefinition.GetEndPoint()) };
@@ -1464,25 +1459,25 @@ namespace XCaseServiceClient
                         {
                             NetworkCredential networkCredential = new NetworkCredential(m_ClientCredentialUserName, m_ClientCredentialPassword, m_ClientCredentialDomain);
                             ((SwaggerProxy)m_RESTServiceClient).ClientCredentials = networkCredential;
-                            Log.Debug("set client credentials");
+                            Log.LogDebug("set client credentials");
                         }
                         else
                         {
-                            Log.Debug("m_RESTServiceClient is null");
+                            Log.LogDebug("m_RESTServiceClient is null");
                         }
 
-                        Log.Debug("about to re-render service control");
+                        Log.LogDebug("about to re-render service control");
                         RerenderServiceControl(m_RESTServiceClient);
                     }
 
-                    Log.DebugFormat("{0}", restServiceDefinition.GetEndPoint());
+                    Log.LogDebug("{0}", restServiceDefinition.GetEndPoint());
                 }
 
-                Log.Debug("finishing ProcessSwaggerType()");
+                Log.LogDebug("finishing ProcessSwaggerType()");
             }
             catch (AggregateException ae)
             {
-                Log.Debug("aggregate exception thrown: " + ae.Message);
+                Log.LogDebug("aggregate exception thrown: " + ae.Message);
                 if (!m_Starting)
                 {
                     MessageBox.Show("Aggregate exception thrown: " + ae.Message);
@@ -1490,7 +1485,7 @@ namespace XCaseServiceClient
             }
             catch (Exception e)
             {
-                Log.Debug("exception thrown: " + e.Message);
+                Log.LogDebug("exception thrown: " + e.Message);
                 if (!m_Starting)
                 {
                     MessageBox.Show("Exception thrown: " + e.Message);
@@ -1500,7 +1495,7 @@ namespace XCaseServiceClient
 
         private void ProcessSourceType()
         {
-            Log.Debug("starting ProcessSourceType()");
+            Log.LogDebug("starting ProcessSourceType()");
             try
             {
                 this.Text = m_WindowTitle + " - using source service definition";
@@ -1535,7 +1530,7 @@ namespace XCaseServiceClient
                     }
                     else
                     {
-                        Log.Warn("unrecognized prefix");
+                        Log.LogWarning("unrecognized prefix");
                     }
                 }
 
@@ -1544,7 +1539,7 @@ namespace XCaseServiceClient
                 {
                     foreach (string sourceString in m_SourceStringArray)
                     {
-                        Log.DebugFormat("sourceString is {0}", sourceString);
+                        Log.LogDebug("sourceString is {0}", sourceString);
                     }
                 }
 
@@ -1562,10 +1557,10 @@ namespace XCaseServiceClient
                 }
 
                 restApiProxySettingsEndPoint.Url = m_ServiceDescriptionURL;
-                Log.DebugFormat("m_ServiceDescriptionURL is {0}", m_ServiceDescriptionURL);
+                Log.LogDebug("m_ServiceDescriptionURL is {0}", m_ServiceDescriptionURL);
                 RESTApiProxySettingsEndPoint[] endpoints = new RESTApiProxySettingsEndPoint[] { restApiProxySettingsEndPoint };
                 this.Text = m_WindowTitle + " - got source service definition";
-                Log.DebugFormat("endpoint is {0}", restServiceDefinition.GetEndPoint());
+                Log.LogDebug("endpoint is {0}", restServiceDefinition.GetEndPoint());
                 if (string.IsNullOrEmpty(m_Language) || m_Language == "CSharp")
                 {
                     m_ServicesComboBox.DataSource = proxyStringList;
@@ -1580,13 +1575,13 @@ namespace XCaseServiceClient
 
                     List<SyntaxTree> syntaxTreeList = CreateSyntaxTreeListFromSourceStringArray();
                     string assemblyName = Path.GetRandomFileName();
-                    Log.DebugFormat("assemblyName is {0}", assemblyName);
+                    Log.LogDebug("assemblyName is {0}", assemblyName);
                     List<MetadataReference> metadataReferenceList = CreateMetadataReferenceList();
-                    Log.DebugFormat("created metadataReferenceList");
+                    Log.LogDebug("created metadataReferenceList");
                     CSharpCompilation cSharpCompilation = CSharpCompilation.Create(assemblyName, syntaxTrees: syntaxTreeList, references: metadataReferenceList, options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
-                    Log.DebugFormat("created cSharpCompilation");
+                    Log.LogDebug("created cSharpCompilation");
                     m_Assembly = CreateAssemblyFromCSharpCompilation(cSharpCompilation);
-                    Log.DebugFormat("created assembly");
+                    Log.LogDebug("created assembly");
                     object[] args = argStringList.ToArray();
                     string proxyClass = string.Format("{0}.{1}", restApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
                     m_RESTServiceClient = m_Assembly.CreateInstance(proxyClass, false, BindingFlags.CreateInstance, null, args, null, null);
@@ -1599,20 +1594,20 @@ namespace XCaseServiceClient
                             ((SwaggerProxy)m_RESTServiceClient).Proxy = new WebProxy(m_ProxyAddress, m_ProxyPort);
                         }
 
-                        Log.Debug("set client credentials");
+                        Log.LogDebug("set client credentials");
                     }
                     else
                     {
-                        Log.Debug("m_RESTServiceClient is null");
+                        Log.LogDebug("m_RESTServiceClient is null");
                     }
 
-                    Log.Debug("about to re-render service control");
+                    Log.LogDebug("about to re-render service control");
                     RerenderServiceControl(m_RESTServiceClient);
                 }
             }
             catch (Exception e)
             {
-                Log.WarnFormat("exception processing source type: " + e.Message);
+                Log.LogWarning("exception processing source type: " + e.Message);
                 MessageBox.Show("Exception thrown: " + e.Message);
             }
         }
@@ -1639,29 +1634,29 @@ namespace XCaseServiceClient
 
         public void RenderServiceControl(object client)
         {
-            Log.Debug("starting RenderServiceControl()");
+            Log.LogDebug("starting RenderServiceControl()");
             if (client == null)
             {
-                Log.Debug("client is null");
+                Log.LogDebug("client is null");
                 return;
             }
 
             if (client != null)
             {
                 Type clientType = client.GetType();
-                Log.Debug("client type is " + clientType);
+                Log.LogDebug("client type is " + clientType);
                 Type baseClientType = clientType.BaseType;
-                Log.Debug("base client type is " + baseClientType);
+                Log.LogDebug("base client type is " + baseClientType);
                 if (baseClientType != null)
                 {
                     Type baseBaseClientType = baseClientType.BaseType;
-                    Log.Debug("base base client type is " + baseBaseClientType);
+                    Log.LogDebug("base base client type is " + baseBaseClientType);
                 }
 
                 Type[] clientInterfaceTypes = clientType.GetInterfaces();
                 foreach (Type clientInterfaceType in clientInterfaceTypes)
                 {
-                    Log.Debug("client interface type is " + clientInterfaceType);
+                    Log.LogDebug("client interface type is " + clientInterfaceType);
                 }
 
                 this.Controls.Remove(m_MethodsTabControl);
@@ -1677,14 +1672,14 @@ namespace XCaseServiceClient
                 IEnumerable<MethodInfo> methodArray = allPublicMethodInfoArray.Where(m => !m.IsConstructor).OrderBy(m => m.Name);
                 foreach (MethodInfo methodInfo in methodArray)
                 {
-                    Log.DebugFormat("** Method is " + methodInfo.Name + " **");
+                    Log.LogDebug("** Method is " + methodInfo.Name + " **");
                     this.Text = m_WindowTitle + " - rendering " + methodInfo.Name;
                     TabPage methodTabPage = CreateXCaseTabPageForMethod(client, methodInfo);
-                    Log.DebugFormat("created methodTabPage");
+                    Log.LogDebug("created methodTabPage");
                     m_MethodsTabControl.Controls.Add(methodTabPage);
-                    Log.DebugFormat("added methodTabPage");
+                    Log.LogDebug("added methodTabPage");
                     methodTabPage.Select();
-                    Log.DebugFormat("selected methodTabPage");
+                    Log.LogDebug("selected methodTabPage");
                     this.Text = m_WindowTitle + " - rendered " + methodInfo.Name;
                 }
 
@@ -1692,7 +1687,7 @@ namespace XCaseServiceClient
             }
 
             this.Text = m_WindowTitle;
-            Log.Debug("finishing RenderServiceControl()");
+            Log.LogDebug("finishing RenderServiceControl()");
         }
 
         private TabPage CreateXCaseTabPageForMethod(object client, MethodInfo methodInfo)
@@ -1708,7 +1703,7 @@ namespace XCaseServiceClient
 
         private void MethodTab_Entered(object sender, EventArgs e)
         {
-            Log.Debug("starting MethodTab_Entered()");
+            Log.LogDebug("starting MethodTab_Entered()");
             TableLayoutPanel methodTableLayoutPanel = CreateTableLayoutPanelForMethod(((XCaseTabPage)sender));
             ((XCaseTabPage)sender).Controls.Add(methodTableLayoutPanel);
         }
@@ -1742,29 +1737,29 @@ namespace XCaseServiceClient
             headerLabel.Text = "Enter data here:";
             requestTableLayoutPanel.Controls.Add(headerLabel, 0, 0);
             Type returnType = methodInfo.ReturnType;
-            Log.DebugFormat("returnType is {0}", returnType);
-            Log.DebugFormat("returnType name is {0}", returnType.Name);
+            Log.LogDebug("returnType is {0}", returnType);
+            Log.LogDebug("returnType name is {0}", returnType.Name);
             Label returnLabel = new Label();
             returnLabel.AutoSize = true;
             string returnLabelText = "Returns: " + returnType.Name;
-            Log.DebugFormat("returnLabelText is {0}", returnLabelText);
+            Log.LogDebug("returnLabelText is {0}", returnLabelText);
             returnLabel.Text = returnLabelText;
             requestTableLayoutPanel.Controls.Add(returnLabel, 1, 0);
             for (int i = 0; i < parameterInfoArray.Length; i++)
             {
                 ParameterInfo parameterInfo = parameterInfoArray[i];
-                Log.DebugFormat("parameter name is {0}", parameterInfo.Name);
+                Log.LogDebug("parameter name is {0}", parameterInfo.Name);
                 if (parameterInfo.IsOut)
                 {
                     continue;
                 }
 
                 /* For each input parameter, create a parameter object */
-                Log.DebugFormat("parameter type is {0}", parameterInfo.ParameterType);
+                Log.LogDebug("parameter type is {0}", parameterInfo.ParameterType);
                 object parameterObject = ObjectFactory.CreateDefaultObject(parameterInfo.ParameterType);
                 if (parameterObject != null)
                 {
-                    Log.DebugFormat("parameter object type is {0}", parameterObject.GetType());
+                    Log.LogDebug("parameter object type is {0}", parameterObject.GetType());
                 }
 
                 parameterValueArray[i] = parameterObject;
@@ -1772,7 +1767,7 @@ namespace XCaseServiceClient
                 RenderParameterObject(i, requestTableLayoutPanel, parameterInfo, parameterInfoArray, parameterObject, parameterValueArray);
             }
 
-            Log.Debug("finished laying out parameter");
+            Log.LogDebug("finished laying out parameter");
             TextBox resultTextBox = new TextBox();
             resultTextBox.Size = new Size(100, 100);
             resultTextBox.Multiline = true;
@@ -1785,10 +1780,10 @@ namespace XCaseServiceClient
             submitButton.Method = methodInfo;
             submitButton.MouseClick += delegate (object o, MouseEventArgs mev)
             {
-                Log.Debug("Submit button clicked");
+                Log.LogDebug("Submit button clicked");
                 this.Text = m_WindowTitle + " - invoking " + methodInfo.Name;
                 Cursor.Current = Cursors.WaitCursor;
-                Log.DebugFormat("parameter value array length is {0}", parameterValueArray.Length);
+                Log.LogDebug("parameter value array length is {0}", parameterValueArray.Length);
                 for (int i = 0; i < parameterValueArray.Length; i++)
                 {
                     UpdateParameterValue(parameterValueArray[i]);
@@ -1798,18 +1793,18 @@ namespace XCaseServiceClient
                     }
                 }
 
-                Log.Debug("finished assembling parameter value array");
+                Log.LogDebug("finished assembling parameter value array");
                 LogParameterValueArray(parameterValueArray);
                 try
                 {
                     string methodName = submitButton.Method.Name;
-                    Log.Debug("methodName is " + methodName);
+                    Log.LogDebug("methodName is " + methodName);
                     MethodInfo clientMethodInfo = null;
                     if (!parameterValueArray.Any<object>(parameter => parameter == null))
                     {
                         /* If the parameterValueArray does not contain nulls, then can use parameterValueArray to get method signature */
                         Type[] typeArray = GetTypeArrayFromObjectArray(parameterValueArray);
-                        Log.Debug("got Type array");
+                        Log.LogDebug("got Type array");
                         clientMethodInfo = client.GetType().GetMethod(methodName, typeArray);
                     }
                     else
@@ -1818,38 +1813,38 @@ namespace XCaseServiceClient
                         clientMethodInfo = client.GetType().GetMethod(methodName);
                     }
 
-                    Log.Debug("method is " + clientMethodInfo.Name);
+                    Log.LogDebug("method is " + clientMethodInfo.Name);
                     ServicePointManager.Expect100Continue = false;
-                    Log.Debug("about to invoke method " + methodName);
+                    Log.LogDebug("about to invoke method " + methodName);
                     object resultObject = submitButton.Method.Invoke(client, parameterValueArray);
-                    Log.Debug("invoked method " + methodName);
+                    Log.LogDebug("invoked method " + methodName);
                     resultTextBox.Text = string.Format("Success invoking {0}!", methodName);
                     if (resultObject != null)
                     {
-                        Log.DebugFormat("result object type is {0}", resultObject.GetType());
+                        Log.LogDebug("result object type is {0}", resultObject.GetType());
                     }
                     else
                     {
-                        Log.Debug("result object is null");
+                        Log.LogDebug("result object is null");
                         if (HasOutParameter(parameterInfoArray))
                         {
                             resultObject = GetOutParameter(parameterInfoArray, parameterValueArray);
                             if (resultObject != null)
                             {
-                                Log.DebugFormat("result object type is {0}", resultObject.GetType());
+                                Log.LogDebug("result object type is {0}", resultObject.GetType());
                             }
                         }
                     }
 
                     resultTableLayoutPanel = ObjectRenderer.RenderResultObject(resultObject, m_MaxArrayLength);
-                    Log.Debug("rendered result object");
+                    Log.LogDebug("rendered result object");
                     Cursor.Current = Cursors.Default;
                     resultTableLayoutPanel.AutoScroll = true;
                     resultTableLayoutPanel.AutoSize = true;
                     resultTableLayoutPanel.Dock = DockStyle.Fill;
                     resultTableLayoutPanel.PerformLayout();
                     resultTableLayoutPanel.Visible = true;
-                    Log.Debug("finished displaying result table panel layout");
+                    Log.LogDebug("finished displaying result table panel layout");
                     methodTableLayoutPanel.Controls.Clear();
                     methodTableLayoutPanel.Controls.Add(requestTableLayoutPanel, 0, 0);
                     methodTableLayoutPanel.Controls.Add(resultTableLayoutPanel, 1, 0);
@@ -1857,15 +1852,15 @@ namespace XCaseServiceClient
                     methodTableLayoutPanel.PerformLayout();
                     methodTableLayoutPanel.Visible = true;
                     this.Text = m_WindowTitle + " - invoked " + methodInfo.Name;
-                    Log.Debug("finished try block of Submit button mouse click");
+                    Log.LogDebug("finished try block of Submit button mouse click");
                 }
                 catch (Exception e)
                 {
                     resultTextBox.Text = e.Message + "\n" + e.InnerException;
-                    Log.Debug("method invoked with exception " + e.Message);
+                    Log.LogDebug("method invoked with exception " + e.Message);
                 }
 
-                Log.Debug("finishing Submit button mouse click");
+                Log.LogDebug("finishing Submit button mouse click");
             };
             requestTableLayoutPanel.Controls.Add(submitButton, 0, parameterInfoArray.Length + 1);
             requestTableLayoutPanel.SetColumnSpan(submitButton, 3);
@@ -1886,7 +1881,7 @@ namespace XCaseServiceClient
 
         private static object GetOutParameter(ParameterInfo[] parameterInfoArray, object[] parameterValueArray)
         {
-            Log.Debug("starting GetOutParameter()");
+            Log.LogDebug("starting GetOutParameter()");
             int index = 0;
             foreach (ParameterInfo parameterInfo in parameterInfoArray)
             {
@@ -1903,7 +1898,7 @@ namespace XCaseServiceClient
 
         private bool HasOutParameter(ParameterInfo[] parameterInfoArray)
         {
-            Log.Debug("starting HasOutParameter()");
+            Log.LogDebug("starting HasOutParameter()");
             foreach (ParameterInfo parameterInfo in parameterInfoArray)
             {
                 if (parameterInfo.IsOut)
@@ -1917,7 +1912,7 @@ namespace XCaseServiceClient
 
         private Type[] GetTypeArrayFromObjectArray(object[] objectArray)
         {
-            Log.Debug("starting GetTypeArrayFromObjectArray()");
+            Log.LogDebug("starting GetTypeArrayFromObjectArray()");
             List<Type> typeList = new List<Type>();
             foreach (object objectObject in objectArray)
             {
@@ -1937,91 +1932,91 @@ namespace XCaseServiceClient
 
         private static void LogParameterValueArray(object[] parameterValueArray)
         {
-            Log.Debug("starting LogParameterValueArray()");
-            Log.DebugFormat("parameterValueArray length is {0}", parameterValueArray.Length);
+            Log.LogDebug("starting LogParameterValueArray()");
+            Log.LogDebug("parameterValueArray length is {0}", parameterValueArray.Length);
             for (int i = 0; i < parameterValueArray.Length; i++)
             {
                 object parameterValue = parameterValueArray[i];
                 if (parameterValue != null)
                 {
-                    Log.Debug("parameterValue is not null");
-                    Log.DebugFormat("parameterValue type is {0}", parameterValue.GetType());
+                    Log.LogDebug("parameterValue is not null");
+                    Log.LogDebug("parameterValue type is {0}", parameterValue.GetType());
                     if (ObjectFactory.IsArrayType(parameterValue.GetType()))
                     {
-                        Log.DebugFormat("parameterValue type is array");
+                        Log.LogDebug("parameterValue type is array");
                         if (((Array)parameterValue).Length > 0)
                         {
                             object firstArrayValue = (parameterValue as Array).GetValue(0);
                             if (firstArrayValue != null)
                             {
-                                Log.DebugFormat("firstArrayValue type is {0}", firstArrayValue.GetType());
-                                Log.DebugFormat("firstArrayValue is {0}", firstArrayValue);
+                                Log.LogDebug("firstArrayValue type is {0}", firstArrayValue.GetType());
+                                Log.LogDebug("firstArrayValue is {0}", firstArrayValue);
                             }
                         }
                     }
                     else if (ObjectFactory.IsListType(parameterValue.GetType()))
                     {
-                        Log.DebugFormat("parameterValue type is list");
+                        Log.LogDebug("parameterValue type is list");
                         if ((parameterValue as IList).Count > 0)
                         {
                             object firstListValue = (parameterValue as IList)[0];
                             if (firstListValue != null)
                             {
-                                Log.DebugFormat("firstListValue type is {0}", firstListValue.GetType());
-                                Log.DebugFormat("firstListValue is {0}", firstListValue);
+                                Log.LogDebug("firstListValue type is {0}", firstListValue.GetType());
+                                Log.LogDebug("firstListValue is {0}", firstListValue);
                             }
                         }
                     }
                     else
                     {
-                        Log.DebugFormat("parameterValue is {0}", parameterValue);
+                        Log.LogDebug("parameterValue is {0}", parameterValue);
                     }
                 }
                 else
                 {
-                    Log.Debug("parameterValue is null");
+                    Log.LogDebug("parameterValue is null");
                 }
             }
 
-            Log.Debug("finishing LogParameterValueArray()");
+            Log.LogDebug("finishing LogParameterValueArray()");
         }
 
         private void UpdateParameterValue(object parameterValue)
         {
-            Log.Debug("starting UpdateParameterValue()");
+            Log.LogDebug("starting UpdateParameterValue()");
             if (parameterValue != null)
             {
-                Log.DebugFormat("parameter type is {0}", parameterValue.GetType());
+                Log.LogDebug("parameter type is {0}", parameterValue.GetType());
                 if (parameterValue.GetType() == typeof(XmlDocument))
                 {
                     /* Just print it out to check it is the right document */
-                    Log.Debug("parameter type is XmlDocument");
-                    Log.Debug(((XmlDocument)parameterValue).OuterXml);
+                    Log.LogDebug("parameter type is XmlDocument");
+                    Log.LogDebug(((XmlDocument)parameterValue).OuterXml);
                 }
 
                 if (parameterValue.GetType() == typeof(XmlElement))
                 {
                     /* Just print it out to check it is the right element */
-                    Log.Debug("parameter type is XmlElement");
-                    Log.Debug(((XmlElement)parameterValue).InnerXml);
+                    Log.LogDebug("parameter type is XmlElement");
+                    Log.LogDebug(((XmlElement)parameterValue).InnerXml);
                 }
 
                 if (parameterValue.GetType() != null && parameterValue.GetType().IsArray)
                 {
-                    Log.Debug("parameter is array");
+                    Log.LogDebug("parameter is array");
                     ArrayList tempArrayList = new ArrayList(0);
-                    Log.DebugFormat("parameter value array length is {0}", ((Array)parameterValue).Length);
+                    Log.LogDebug("parameter value array length is {0}", ((Array)parameterValue).Length);
                     for (int j = 0; j < ((Array)parameterValue).Length; j++)
                     {
-                        Log.Debug(j + " value: " + ((Array)parameterValue).GetValue(j));
+                        Log.LogDebug(j + " value: " + ((Array)parameterValue).GetValue(j));
                         if (((Array)parameterValue).GetValue(j) != null)
                         {
-                            Log.Debug("parameter value is not null at " + j);
+                            Log.LogDebug("parameter value is not null at " + j);
                             tempArrayList.Add(((Array)parameterValue).GetValue(j));
                         }
                     }
 
-                    Log.Debug("length of array list is " + tempArrayList.Count);
+                    Log.LogDebug("length of array list is " + tempArrayList.Count);
                     Array truncatedArray = Array.CreateInstance(parameterValue.GetType().GetElementType(), tempArrayList.Count);
                     for (int k = 0; k < tempArrayList.Count; k++)
                     {
@@ -2029,18 +2024,18 @@ namespace XCaseServiceClient
                     }
 
                     parameterValue = truncatedArray;
-                    Log.Debug("set parameter to truncated array");
+                    Log.LogDebug("set parameter to truncated array");
                 }
             }
             else
             {
-                Log.DebugFormat("parameterValue is null");
+                Log.LogDebug("parameterValue is null");
             }
         }
 
         private void RenderParameterObject(int i, TableLayoutPanel requestTableLayoutPanel, ParameterInfo parameterInfo, ParameterInfo[] parameterInfoArray, object parameterObject, object[] parameterValueArray)
         {
-            Log.DebugFormat("starting RenderParameterObject()");
+            Log.LogDebug("starting RenderParameterObject()");
             Label parameterLabel = new Label();
             parameterLabel.AutoSize = true;
             parameterLabel.Text = string.Format("{0} ({1})", parameterInfoArray[i].Name, parameterInfo.ParameterType.Name);
@@ -2048,19 +2043,19 @@ namespace XCaseServiceClient
             if (ObjectFactory.IsArrayType(parameterInfo.ParameterType))
             {
                 /* Parameter is array type */
-                Log.Debug("parameter is array type");
+                Log.LogDebug("parameter is array type");
                 ObjectRenderer.RenderArray(requestTableLayoutPanel, parameterValueArray, parameterObject, i);
             }
             else if (ObjectFactory.IsListType(parameterInfo.ParameterType))
             {
                 /* Parameter is list type */
-                Log.Debug("parameter is list type");
+                Log.LogDebug("parameter is list type");
                 ObjectRenderer.RenderList(requestTableLayoutPanel, parameterValueArray, parameterObject, i);
             }
             else if (ObjectFactory.IsBooleanType(parameterInfo.ParameterType))
             {
                 /* Parameter is boolean type */
-                Log.Debug("parameter is boolean type");
+                Log.LogDebug("parameter is boolean type");
                 if (parameterObject != null)
                 {
                     ((bool)parameterObject).RenderBoolean(requestTableLayoutPanel, parameterValueArray, i);
@@ -2073,7 +2068,7 @@ namespace XCaseServiceClient
             else if (ObjectFactory.IsByteType(parameterInfo.ParameterType))
             {
                 /* Parameter is Byte type */
-                Log.Debug("parameter is Byte type");
+                Log.LogDebug("parameter is Byte type");
                 if (parameterObject != null)
                 {
                     ((Byte)parameterObject).RenderByte(requestTableLayoutPanel, parameterValueArray, i);
@@ -2086,7 +2081,7 @@ namespace XCaseServiceClient
             else if (ObjectFactory.IsCharType(parameterInfo.ParameterType))
             {
                 /* Parameter is Char type */
-                Log.Debug("parameter is Char type");
+                Log.LogDebug("parameter is Char type");
                 if (parameterObject != null)
                 {
                     ((Char)parameterObject).RenderChar(requestTableLayoutPanel, parameterValueArray, i);
@@ -2099,7 +2094,7 @@ namespace XCaseServiceClient
             else if (ObjectFactory.IsDateTimeType(parameterInfo.ParameterType))
             {
                 /* Parameter is datetime type */
-                Log.Debug("parameter is datetime type");
+                Log.LogDebug("parameter is datetime type");
                 if (parameterObject != null)
                 {
                     if (parameterObject is DateTime)
@@ -2119,7 +2114,7 @@ namespace XCaseServiceClient
             else if (ObjectFactory.IsDecimalType(parameterInfo.ParameterType))
             {
                 /* Parameter is Decimal type */
-                Log.Debug("parameter is Decimal type");
+                Log.LogDebug("parameter is Decimal type");
                 if (parameterObject != null)
                 {
                     ((Decimal)parameterObject).RenderDecimal(requestTableLayoutPanel, parameterValueArray, i);
@@ -2132,7 +2127,7 @@ namespace XCaseServiceClient
             else if (ObjectFactory.IsDoubleType(parameterInfo.ParameterType))
             {
                 /* Parameter is Double type */
-                Log.Debug("parameter is Double type");
+                Log.LogDebug("parameter is Double type");
                 if (parameterObject != null)
                 {
                     ((Double)parameterObject).RenderDouble(requestTableLayoutPanel, parameterValueArray, i);
@@ -2145,13 +2140,13 @@ namespace XCaseServiceClient
             else if (ObjectFactory.IsEnumType(parameterInfo.ParameterType))
             {
                 /* Parameter is enum type */
-                Log.Debug("parameter is enum type");
+                Log.LogDebug("parameter is enum type");
                 ((System.Enum)parameterObject).RenderEnum(requestTableLayoutPanel, parameterValueArray, i);
             }
             else if (ObjectFactory.IsIntegerType(parameterInfo.ParameterType))
             {
                 /* Parameter is integer type */
-                Log.Debug("parameter is integer type");
+                Log.LogDebug("parameter is integer type");
                 if (parameterObject != null)
                 {
                     ((int)parameterObject).RenderInteger(requestTableLayoutPanel, parameterValueArray, i);
@@ -2164,7 +2159,7 @@ namespace XCaseServiceClient
             else if (ObjectFactory.IsSingleType(parameterInfo.ParameterType))
             {
                 /* Parameter is Single type */
-                Log.Debug("parameter is Single type");
+                Log.LogDebug("parameter is Single type");
                 if (parameterObject != null)
                 {
                     ((Single)parameterObject).RenderSingle(requestTableLayoutPanel, parameterValueArray, i);
@@ -2177,34 +2172,34 @@ namespace XCaseServiceClient
             else if (ObjectFactory.IsStringType(parameterInfo.ParameterType))
             {
                 /* Parameter is string type */
-                Log.Debug("parameter is string type");
+                Log.LogDebug("parameter is string type");
                 ((string)parameterObject).RenderString(requestTableLayoutPanel, parameterValueArray, i);
             }
             else if (ObjectFactory.IsTimeSpanType(parameterInfo.ParameterType))
             {
                 /* Parameter is TimeSpan type */
-                Log.Debug("parameter is TimeSpan type");
+                Log.LogDebug("parameter is TimeSpan type");
                 ((TimeSpan)parameterObject).RenderTimeSpan(requestTableLayoutPanel, parameterValueArray, i);
             }
             else if (ObjectFactory.IsXmlDocumentType(parameterInfo.ParameterType))
             {
                 /* Parameter is XML document type */
-                Log.Debug("parameter is XML document type");
+                Log.LogDebug("parameter is XML document type");
                 ObjectRenderer.RenderXmlDocument(requestTableLayoutPanel, parameterValueArray, parameterObject, i);
             }
             else if (ObjectFactory.IsXmlNodeType(parameterInfo.ParameterType))
             {
-                Log.Debug("parameter is XML node type");
+                Log.LogDebug("parameter is XML node type");
                 ObjectRenderer.RenderXmlNode(requestTableLayoutPanel, parameterValueArray, parameterObject, i);
             }
             else
             {
                 /* Parameter is not standard type */
-                Log.Debug("parameter is not standard type");
+                Log.LogDebug("parameter is not standard type");
                 if (ObjectFactory.IsNullableType(parameterInfo.ParameterType))
                 {
                     /* Parameter is not array and is nullable type */
-                    Log.Debug("parameter is not array and is nullable type");
+                    Log.LogDebug("parameter is not array and is nullable type");
                     Type parameterUnderlyingFieldType = Nullable.GetUnderlyingType(parameterInfo.ParameterType);
                     if (parameterInfo.IsOut)
                     {
@@ -2254,7 +2249,7 @@ namespace XCaseServiceClient
                     else if (ObjectFactory.IsBooleanType(parameterUnderlyingFieldType))
                     {
                         /* Parameter is not array and is nullable type and underlying type is boolean */
-                        Log.Debug("parameter is not array and is nullable type and underlying type is boolean");
+                        Log.LogDebug("parameter is not array and is nullable type and underlying type is boolean");
                         XCaseCheckBox checkBox = new XCaseCheckBox();
                         checkBox.Index = i;
                         checkBox.FieldType = parameterInfo.ParameterType;
@@ -2274,7 +2269,7 @@ namespace XCaseServiceClient
                     else if (parameterUnderlyingFieldType.IsEnum)
                     {
                         /* Parameter is not array and is nullable type and underlying type is enum */
-                        Log.Debug("parameter is not array and is nullable type and underlying type is enum");
+                        Log.LogDebug("parameter is not array and is nullable type and underlying type is enum");
                         XCaseComboBox comboBox = new XCaseComboBox();
                         comboBox.Index = i;
                         comboBox.FieldType = parameterInfo.ParameterType;
@@ -2295,7 +2290,7 @@ namespace XCaseServiceClient
                     else if (ObjectFactory.IsLongType(parameterUnderlyingFieldType))
                     {
                         /* Parameter is not array and is nullable type and underlying type is long */
-                        Log.Debug("parameter is not array and is nullable type and underlying type is long");
+                        Log.LogDebug("parameter is not array and is nullable type and underlying type is long");
                         XCaseTextBox textBox = new XCaseTextBox();
                         textBox.Index = i;
                         textBox.FieldType = parameterInfo.ParameterType;
@@ -2314,7 +2309,7 @@ namespace XCaseServiceClient
                     else
                     {
                         /* Parameter is not array and is nullable type and underlying type is none of string, boolean, or enum */
-                        Log.Debug("parameter is not array and is nullable type and underlying type is none of string, boolean, or enum");
+                        Log.LogDebug("parameter is not array and is nullable type and underlying type is none of string, boolean, or enum");
                     }
                 }
                 else if (parameterInfo.ParameterType.IsEnum)
@@ -2331,7 +2326,7 @@ namespace XCaseServiceClient
                         System.Enum value = (System.Enum)comboBox.SelectedValue;
                         int index = comboBox.Index;
                         Type fieldType = comboBox.FieldType;
-                        Log.Debug("about to create object for not nullable enum");
+                        Log.LogDebug("about to create object for not nullable enum");
                         parameterObject = ObjectFactory.CreateObjectFromTypeAndValue(fieldType, value);
                         parameterValueArray[index] = parameterObject;
                     };
@@ -2339,17 +2334,17 @@ namespace XCaseServiceClient
                 else
                 {
                     /* Parameter is a complex type */
-                    Log.Debug("parameter is a complex type");
+                    Log.LogDebug("parameter is a complex type");
                     if (parameterObject != null)
                     {
-                        Log.Debug("parameter object is not null");
+                        Log.LogDebug("parameter object is not null");
                         ObjectXMLRenderer.WriteXmlNodeToLog(ObjectXMLRenderer.RenderObject(null, parameterObject, parameterInfo.Name));
                         TableLayoutPanel propertyTableLayoutPanel = ObjectRenderer.RenderParameterObject(parameterObject);
                         requestTableLayoutPanel.Controls.Add(propertyTableLayoutPanel, 1, i + 1);
                     }
                     else
                     {
-                        Log.Debug("parameter object is null");
+                        Log.LogDebug("parameter object is null");
                     }
                 }
             }
@@ -2366,15 +2361,15 @@ namespace XCaseServiceClient
 
         public void RerenderServiceControl(object client)
         {
-            Log.Debug("starting RerenderServiceControl()");
+            Log.LogDebug("starting RerenderServiceControl()");
             if (client == null)
             {
-                Log.Debug("client is null");
+                Log.LogDebug("client is null");
                 return;
             }
 
             RenderServiceControl(client);
-            Log.Debug("finishing RerenderServiceControl()");
+            Log.LogDebug("finishing RerenderServiceControl()");
         }
 
         public bool AcceptAllCertifications(object sender, X509Certificate certification, X509Chain chain, SslPolicyErrors sslPolicyErrors)
@@ -2405,7 +2400,7 @@ namespace XCaseServiceClient
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        private static readonly ILog Log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         #endregion
 
@@ -2421,7 +2416,7 @@ namespace XCaseServiceClient
             //Log.Debug("starting XCaseDateTimePicker()");
             Format = DateTimePickerFormat.Custom;
             CustomFormat = "MM/dd/yyyyThh:mm:ssTtt";
-            Log.DebugFormat("object is {0}", dateTime);
+            Log.LogDebug("object is {0}", dateTime);
             try
             {
                 Value = (DateTime)dateTime;
@@ -2431,7 +2426,7 @@ namespace XCaseServiceClient
                 Value = DateTime.Now;
             }
 
-            Log.DebugFormat("value is {0}", Value);
+            Log.LogDebug("value is {0}", Value);
         }
 
         public int Index { get; set; }
@@ -2445,7 +2440,7 @@ namespace XCaseServiceClient
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        private static readonly ILog Log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public new TimeSpan Value;
 
@@ -2463,7 +2458,7 @@ namespace XCaseServiceClient
             //Log.Debug("starting XCaseDateTimePicker()");
             Format = DateTimePickerFormat.Custom;
             CustomFormat = "MM/dd/yyyyThh:mm:ssTtt";
-            Log.DebugFormat("object is {0}", timeSpan);
+            Log.LogDebug("object is {0}", timeSpan);
             try
             {
                 Value = (TimeSpan)timeSpan;
@@ -2473,7 +2468,7 @@ namespace XCaseServiceClient
                 Value = TimeSpan.Zero;
             }
 
-            Log.DebugFormat("value is {0}", Value);
+            Log.LogDebug("value is {0}", Value);
         }
 
         public int Index { get; set; }

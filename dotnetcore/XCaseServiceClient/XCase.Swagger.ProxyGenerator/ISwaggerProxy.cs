@@ -10,7 +10,7 @@
     using System.Reflection;
     using System.Threading.Tasks;
     using System.Web;
-    using log4net;
+    using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 

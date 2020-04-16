@@ -10,7 +10,7 @@
     using System.Reflection;
     using System.Threading.Tasks;
     using System.Web;
-    using log4net;
+    using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
@@ -21,7 +21,7 @@
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        private static readonly ILog Log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         #endregion
 
@@ -47,15 +47,15 @@
         {
             HttpClientHandler httpClientHandler = new HttpClientHandler { Credentials = ClientCredentials, Proxy = Proxy };
             HttpClient httpClient = new HttpClient(httpClientHandler);
-            Log.DebugFormat("created httpClient");
+            Log.LogDebug("created httpClient");
             httpClient.BaseAddress = _baseUrl;
-            Log.DebugFormat("set BaseAddress to {0}", _baseUrl);
-            Log.DebugFormat("_username is {0}", _username);
-            Log.DebugFormat("_password is {0}", _password);
-            Log.DebugFormat("_tenantId is {0}", _tenantId);
+            Log.LogDebug("set BaseAddress to {0}", _baseUrl);
+            Log.LogDebug("_username is {0}", _username);
+            Log.LogDebug("_password is {0}", _password);
+            Log.LogDebug("_tenantId is {0}", _tenantId);
             string token = this.GetAccessToken(httpClient, _username, _password, _tenantId);
             this.token = token;
-            Log.DebugFormat("set token to {0}", token);
+            Log.LogDebug("set token to {0}", token);
             return httpClient;
         }
 
@@ -63,12 +63,12 @@
         {
             HttpClientHandler httpClientHandler = new HttpClientHandler { Credentials = ClientCredentials, Proxy = Proxy, UseCookies = false };
             HttpClient httpClient = new HttpClient(httpClientHandler);
-            Log.DebugFormat("created httpClient");
+            Log.LogDebug("created httpClient");
             httpClient.BaseAddress = _baseUrl;
-            Log.DebugFormat("set BaseAddress to {0}", _baseUrl);
+            Log.LogDebug("set BaseAddress to {0}", _baseUrl);
             string token = this.GetAccessToken(httpClient, username, password, tenant);
             this.token = token;
-            Log.DebugFormat("set token to {0}", token);
+            Log.LogDebug("set token to {0}", token);
             return httpClient;
         }
 
