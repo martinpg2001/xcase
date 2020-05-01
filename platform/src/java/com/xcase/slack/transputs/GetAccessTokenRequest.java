@@ -1,6 +1,4 @@
-package com.xcase.slack;
-
-import com.xcase.slack.transputs.SlackRequest;
+package com.xcase.slack.transputs;
 
 public interface GetAccessTokenRequest extends SlackRequest {
 

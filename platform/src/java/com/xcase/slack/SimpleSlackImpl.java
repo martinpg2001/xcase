@@ -1,6 +1,6 @@
 package com.xcase.slack;
 
-import com.xcase.slack.transputs.GetAccessTokenResponse;
+import com.xcase.slack.transputs.*;
 
 public class SimpleSlackImpl implements SlackExternalAPI {
 

@@ -1,5 +1,6 @@
 package com.xcase.slack;
 
+import com.xcase.slack.transputs.GetAccessTokenRequest;
 import com.xcase.slack.transputs.GetAccessTokenResponse;
 
 public interface SlackExternalAPI {

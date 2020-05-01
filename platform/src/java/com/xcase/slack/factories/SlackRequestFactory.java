@@ -1,6 +1,6 @@
 package com.xcase.slack.factories;
 
-import com.xcase.slack.GetAccessTokenRequest;
+import com.xcase.slack.transputs.GetAccessTokenRequest;
 
 public class SlackRequestFactory {
 
