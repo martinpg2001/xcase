@@ -38,7 +38,9 @@ public class BaseKlearNowFactory {
         LOGGER.debug("className is " + className);
         try {
             Class clazz = Class.forName(className);
+            LOGGER.debug("got class for name " + className);
             obj = clazz.getDeclaredConstructor().newInstance();
+            LOGGER.debug("got obj");
         } catch (ClassNotFoundException cnfe) {
             LOGGER.info("exception creating new instance: " + cnfe.getMessage());
         } catch (InstantiationException ie) {

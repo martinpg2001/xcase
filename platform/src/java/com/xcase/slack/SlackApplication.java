@@ -28,6 +28,7 @@ public class SlackApplication {
             LOGGER.debug("starting main()");
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             SlackExternalAPI slackExternalAPI = new SimpleSlackImpl();
+            LOGGER.debug("created slackExternalAPI");
             String apiEventsURL = SlackConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(SlackConstant.LOCAL_API_URL);
             LOGGER.debug("apiEventsURL is " + apiEventsURL);
             String userEmail = SlackConfigurationManager.getConfigurationManager().getLocalConfig().getProperty(SlackConstant.LOCAL_USER_EMAIL);
@@ -37,28 +38,15 @@ public class SlackApplication {
             /* First, get access token */
             String accessToken = null;
             GetAccessTokenRequest getAccessTokenRequest = SlackRequestFactory.createGetAccessTokenRequest();
+            LOGGER.debug("created getAccessTokenRequest");
             getAccessTokenRequest.setAPIUrl(apiEventsURL);
+            LOGGER.debug("set apiEventsURL");
             getAccessTokenRequest.setEntityRequest("{\n" +
                                                    "  \"email\" : \"" + userEmail + "\",\n" +
                                                    "  \"password\": \"" + userPassword + "\"\n" +
                                                    "}");
+            LOGGER.debug("set entity request");
             GetAccessTokenResponse getAccessTokenResponse = slackExternalAPI.getAccessToken(getAccessTokenRequest);
-            JsonObject eventMessageJsonObject = getAccessTokenResponse.getEventMessage();
-            LOGGER.debug("got eventMessageJsonObject");
-            JsonPrimitive kxTokenJsonPrimitive = eventMessageJsonObject.getAsJsonPrimitive("kxToken");
-            LOGGER.debug("kxTokenJsonPrimitive is " + kxTokenJsonPrimitive);
-            if (kxTokenJsonPrimitive != null && !kxTokenJsonPrimitive.isJsonNull()) {
-                LOGGER.debug("kxTokenJsonPrimitive is not null");
-                accessToken = kxTokenJsonPrimitive.getAsString();
-                LOGGER.debug("accessToken is " + accessToken);
-                SlackConfigurationManager.getConfigurationManager().getLocalConfig().setProperty(SlackConstant.LOCAL_ACCESS_TOKEN, accessToken);
-                SlackConfigurationManager.getConfigurationManager().storeLocalConfigProperties();
-                LOGGER.debug("stored local config properties");
-            } else {
-                JsonElement errorElement = eventMessageJsonObject.get("error");
-                JsonElement errorDescriptionElement = eventMessageJsonObject.get("error_description");
-                LOGGER.debug("error description is " + errorDescriptionElement.getAsString());
-            }
         } catch (Exception e) {
             LOGGER.warn("exception invoking Slack operation: " + e.getMessage());
         }

@@ -6,4 +6,6 @@ public interface GetAccessTokenRequest extends SlackRequest {
 
     void setEntityRequest(String string);
 
+    String getEntityRequest();
+
 }
