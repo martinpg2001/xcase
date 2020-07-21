@@ -96,7 +96,7 @@
     <property name="cucumber-junit-jar" value="lib/cucumber-junit-4.3.1.jar" />
     <property name="db2jcc-jar" value="lib/db2jcc.jar" />
     <property name="db2jcc_license-cisuz-jar" value="lib/db2jcc_license_cisuz.jar" />
-    <property name="dom4j-jar" value="lib/dom4j-1.6.1.jar" />
+    <property name="dom4j-jar" value="lib/dom4j-2.1.3.jar" />
     <property name="dunamis-jar" value="lib/dunamis.jar" />
     <property name="filters-jar" value="lib/filters-2.0.235.jar" />
     <property name="ganymed-ssh2-jar" value="lib/ganymed-ssh2.jar" />
