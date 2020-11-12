@@ -30,13 +30,13 @@
         public static void RenderTimeSpanProperty(this TimeSpan propertyTypeObject, TableLayoutPanel propertyTableLayoutPanel, object parameterObject, PropertyInfo[] propertyInfoArray, int index)
         {
             XCaseTextBox textBox = new XCaseTextBox();
-            if (propertyTypeObject != null)
+            if (true)
             {
                 textBox.FieldType = propertyTypeObject.GetType();
             }
             else
             {
-                textBox.FieldType = typeof(Nullable<DateTime>);
+                //textBox.FieldType = typeof(Nullable<DateTime>);
             }
 
             propertyInfoArray[index].SetValue(parameterObject, textBox.Text, null);

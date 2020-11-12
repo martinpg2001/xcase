@@ -13,13 +13,13 @@
         public static void RenderDateTime(this DateTime parameterObject, TableLayoutPanel propertyTableLayoutPanel, object[] parameterArray, int index)
         {
             XCaseDateTimePicker dateTimePicker = new XCaseDateTimePicker();
-            if (parameterObject != null)
+            if (true)
             {
                 dateTimePicker.FieldType = parameterObject.GetType();
             }
             else
             {
-                dateTimePicker.FieldType = typeof(Nullable<DateTime>);
+                //dateTimePicker.FieldType = typeof(Nullable<DateTime>);
             }
 
             propertyTableLayoutPanel.Controls.Add(dateTimePicker, 1, index + 1);
@@ -37,13 +37,13 @@
         public static void RenderDateTimeProperty(this DateTime propertyTypeObject, TableLayoutPanel propertyTableLayoutPanel, object parameterObject, PropertyInfo[] propertyInfoArray, int index)
         {
             XCaseDateTimePicker dateTimePicker = new XCaseDateTimePicker(propertyTypeObject);
-            if (propertyTypeObject != null)
+            if (true)
             {
                 dateTimePicker.FieldType = propertyTypeObject.GetType();
             }
             else
             {
-                dateTimePicker.FieldType = typeof(Nullable<DateTime>);
+                //dateTimePicker.FieldType = typeof(Nullable<DateTime>);
             }
 
             propertyInfoArray[index].SetValue(parameterObject, dateTimePicker.Value, null);
