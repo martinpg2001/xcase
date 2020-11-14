@@ -101,28 +101,28 @@ namespace XCaseServiceClient
 
         private void FileOpen_Click(object sender, EventArgs e)
         {
-            Log.LogDebug("starting FileOpen_Click()");
+            Log.Debug("starting FileOpen_Click()");
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            Log.LogDebug("m_CurrentDirectory is " + m_CurrentDirectory);
+            Log.Debug("m_CurrentDirectory is " + m_CurrentDirectory);
             if (m_CurrentDirectory == null)
             {
-                Log.LogDebug("m_CurrentDirectory is null");
+                Log.Debug("m_CurrentDirectory is null");
                 m_CurrentDirectory = Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()));
                 //Properties.Settings.Default.ServicesDirectory = m_CurrentDirectory;
             }
 
             openFileDialog.InitialDirectory = m_CurrentDirectory;
-            Log.LogDebug("set InitialDirectory");
+            Log.Debug("set InitialDirectory");
             openFileDialog.Filter = "Service Files (*.xsvc)|*.xsvc|All Files (*.*)|*.*";
             openFileDialog.Multiselect = false;
-            Log.LogDebug("set Multiselect to false");
+            Log.Debug("set Multiselect to false");
             bool? userClickedOK = openFileDialog.ShowDialog() == DialogResult.OK;
-            Log.LogDebug("userClickedOK is {0}", userClickedOK);
+            Log.Debug("userClickedOK is {0}", userClickedOK);
             if (userClickedOK == true)
             {
-                Log.LogDebug("user clicked OK");
+                Log.Debug("user clicked OK");
                 m_CurrentDirectory = Path.GetDirectoryName(openFileDialog.FileName);
-                Log.LogDebug("m_CurrentDirectory is " + m_CurrentDirectory);
+                Log.Debug("m_CurrentDirectory is " + m_CurrentDirectory);
                 Stream fileStream = openFileDialog.OpenFile();
                 using (StreamReader reader = new StreamReader(fileStream))
                 {
@@ -130,11 +130,11 @@ namespace XCaseServiceClient
                     {
                         Config config = XCaseServiceDescription.OpenFromFile(openFileDialog.FileName);
                         SetServicePropertiesFromConfig(config);
-                        Log.LogDebug("loaded service file");
+                        Log.Debug("loaded service file");
                     }
                     catch (Exception exception)
                     {
-                        Log.LogWarning("exception opening service file: " + exception.Message);
+                        Log.Warning("exception opening service file: " + exception.Message);
                         MessageBox.Show("Exception opening service file: " + exception.Message);
                     }
                 }
@@ -143,49 +143,49 @@ namespace XCaseServiceClient
             }
             else
             {
-                Log.LogDebug("user clicked Cancel");
+                Log.Debug("user clicked Cancel");
             }
 
-            Log.LogDebug("finishing FileOpen_Click()");
+            Log.Debug("finishing FileOpen_Click()");
         }
 
         private void SetServicePropertiesFromConfig(Config config)
         {
-            Log.LogDebug("starting SetServicePropertiesFromConfig()");
+            Log.Debug("starting SetServicePropertiesFromConfig()");
             m_Binding = config.binding;
-            Log.LogDebug("m_Binding is {0}", m_Binding);
+            Log.Debug("m_Binding is {0}", m_Binding);
             m_BindingLabel.Text = string.Format("Binding: {0}", m_Binding);
             m_ClientCredentialType = config.client;
-            Log.LogDebug("m_ClientCredentialType is {0}", m_ClientCredentialType);
+            Log.Debug("m_ClientCredentialType is {0}", m_ClientCredentialType);
             m_MessageCredentialTypeLabel.Text = string.Format("Client: {0}", m_ClientCredentialType);
             m_ClientCredentialDomain = config.domain;
             m_DomainTextBox.Text = m_ClientCredentialDomain;
             m_ServiceDescriptionURL = config.endpoint;
-            Log.LogDebug("m_ServiceDescriptionURL is {0}", m_ServiceDescriptionURL);
+            Log.Debug("m_ServiceDescriptionURL is {0}", m_ServiceDescriptionURL);
             m_ServiceDescriptionURLTextBox.Text = m_ServiceDescriptionURL;
             m_MessageCredentialType = config.message;
-            Log.LogDebug("m_MessageCredentialType is {0}", m_MessageCredentialType);
+            Log.Debug("m_MessageCredentialType is {0}", m_MessageCredentialType);
             m_MessageCredentialTypeLabel.Text = string.Format("Message: {0}", m_MessageCredentialType);
             m_OnPremise = config.onpremise;
-            Log.LogDebug("m_OnPremise is {0}", m_OnPremise);
+            Log.Debug("m_OnPremise is {0}", m_OnPremise);
             m_SecurityMode = config.security;
-            Log.LogDebug("m_SecurityMode is {0}", m_SecurityMode);
+            Log.Debug("m_SecurityMode is {0}", m_SecurityMode);
             m_SecurityLabel.Text = string.Format("Message: {0}", m_SecurityMode);
             m_ClientCredentialUserName = config.username;
             m_UsernameTextBox.Text = m_ClientCredentialUserName;
             m_ClientCredentialPassword = config.password;
             m_PasswordTextBox.Text = m_ClientCredentialPassword;
             m_Language = config.language ?? "CSharp";
-            Log.LogDebug("m_Language is {0}", m_Language);
+            Log.Debug("m_Language is {0}", m_Language);
             m_LanguageComboBox.SelectedItem = m_Language;
             m_LanguageComboBox.Text = m_Language;
             m_Timeout = config.timeout;
             m_TimeoutTextBox.Text = Convert.ToString(m_Timeout);
             m_Type = config.type ?? "SOAP";
-            Log.LogDebug("m_Type is {0}", m_Type);
+            Log.Debug("m_Type is {0}", m_Type);
             m_TypeComboBox.SelectedItem = m_Type;
             m_TypeComboBox.Text = m_Type;
-            Log.LogDebug("finishing SetServicePropertiesFromConfig()");
+            Log.Debug("finishing SetServicePropertiesFromConfig()");
         }
 
         private void FileSave_Click(object sender, EventArgs e)
@@ -193,20 +193,20 @@ namespace XCaseServiceClient
             string fileName = appDataDirectoryString + Path.DirectorySeparatorChar + "XCaseService.xsvc";
             using (System.IO.Stream myStream = File.Create(fileName))
             {
-                Log.LogDebug("myStream is not null");
+                Log.Debug("myStream is not null");
                 XmlWriter xmlWriter = new XmlTextWriter(myStream, Encoding.UTF8);
                 Config config = SetConfigFromServiceProperties();
                 XCaseServiceDescription.SaveToFile(myStream, config);
                 myStream.Close();
-                Log.LogDebug("saved service file");
+                Log.Debug("saved service file");
             }
 
-            Log.LogDebug("saved service file");
+            Log.Debug("saved service file");
         }
 
         private void FileSaveAs_Click(object sender, EventArgs e)
         {
-            Log.LogDebug("starting FileSaveAs_Click()");
+            Log.Debug("starting FileSaveAs_Click()");
             Stream myStream;
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "Service Files (*.xsvc)|*.xsvc";
@@ -216,12 +216,12 @@ namespace XCaseServiceClient
             {
                 if ((myStream = saveFileDialog.OpenFile()) != null)
                 {
-                    Log.LogDebug("myStream is not null");
+                    Log.Debug("myStream is not null");
                     XmlWriter xmlWriter = new XmlTextWriter(myStream, Encoding.UTF8);
                     Config config = SetConfigFromServiceProperties();
                     XCaseServiceDescription.SaveToFile(myStream, config);
                     myStream.Close();
-                    Log.LogDebug("saved service file");
+                    Log.Debug("saved service file");
                 }
             }
         }
@@ -250,11 +250,11 @@ namespace XCaseServiceClient
             {
                 Config config = XCaseServiceDescription.OpenFromFile(fileName);
                 SetServicePropertiesFromConfig(config);
-                Log.LogDebug("loaded service file");
+                Log.Debug("loaded service file");
             }
             catch (Exception exception)
             {
-                Log.LogWarning("exception opening service file: " + exception.Message);
+                Log.Warning("exception opening service file: " + exception.Message);
                 MessageBox.Show("Exception opening service file: " + exception.Message);
             }
         }
@@ -278,7 +278,7 @@ namespace XCaseServiceClient
 
         private void Interface_Click(object sender, EventArgs e)
         {
-            Log.LogDebug("starting Interface_Click()");
+            Log.Debug("starting Interface_Click()");
             Form interfaceForm = new Form();
             interfaceForm.StartPosition = FormStartPosition.CenterParent;
             interfaceForm.Text = XCaseServiceClient.Properties.Resources.Appearance;
@@ -295,9 +295,9 @@ namespace XCaseServiceClient
             colorComboBox.DataSource = Enum.GetValues(typeof(KnownColor));
             colorComboBox.SelectionChangeCommitted += delegate (object o, EventArgs ev)
             {
-                Log.LogDebug("colorComboBox SelectionChangeCommitted");
+                Log.Debug("colorComboBox SelectionChangeCommitted");
                 productColor = Color.FromKnownColor((KnownColor)colorComboBox.SelectedItem);
-                Log.LogDebug("m_Color is {0}", productColor);
+                Log.Debug("m_Color is {0}", productColor);
             };
             interfaceTableLayoutPanel.Controls.Add(colorComboBox, 1, 0);
             /* Font picker */
@@ -309,7 +309,7 @@ namespace XCaseServiceClient
             fontComboBox.DataSource = new InstalledFontCollection().Families;
             fontComboBox.SelectionChangeCommitted += delegate (object o, EventArgs ev)
             {
-                Log.LogDebug("fontComboBox SelectionChangeCommitted");
+                Log.Debug("fontComboBox SelectionChangeCommitted");
                 m_FontFamily = (FontFamily)fontComboBox.SelectedItem;
             };
             fontComboBox.Dock = DockStyle.Fill;
@@ -323,7 +323,7 @@ namespace XCaseServiceClient
             multilineCheckBox.Checked = multiline;
             multilineCheckBox.CheckedChanged += delegate (object o, EventArgs ev)
             {
-                Log.LogDebug("multilineCheckBox CheckedChanged");
+                Log.Debug("multilineCheckBox CheckedChanged");
             };
             interfaceTableLayoutPanel.Controls.Add(multilineCheckBox, 1, 2);
             /* Buttons row */
@@ -363,7 +363,7 @@ namespace XCaseServiceClient
 
         private void Security_Protocol_Click(object sender, EventArgs e)
         {
-            Log.LogDebug("starting Security_Protocol_Click()");
+            Log.Debug("starting Security_Protocol_Click()");
             Form securityProtocolForm = new Form();
             securityProtocolForm.StartPosition = FormStartPosition.CenterParent;
             securityProtocolForm.Text = "Security_Protocol";
@@ -393,9 +393,9 @@ namespace XCaseServiceClient
             securityProtocolComboBox.SelectedValue = m_SecurityProtocol;
             securityProtocolComboBox.SelectionChangeCommitted += delegate (object o, EventArgs ev)
             {
-                Log.LogDebug("securityProtocolComboBox SelectionChangeCommitted");
+                Log.Debug("securityProtocolComboBox SelectionChangeCommitted");
                 securityProtocolComboBox.SelectedIndex = securityProtocolComboBox.FindStringExact(securityProtocolComboBox.SelectedItem.ToString());
-                Log.LogDebug("securityProtocolComboBox SelectedIndex is {0}", securityProtocolComboBox.SelectedIndex);
+                Log.Debug("securityProtocolComboBox SelectedIndex is {0}", securityProtocolComboBox.SelectedIndex);
             };
             securityProtocolTableLayoutPanel.Controls.Add(securityProtocolComboBox, 1, 0);
             /* Buttons row */
@@ -426,7 +426,7 @@ namespace XCaseServiceClient
 
         private void Proxy_Click(object sender, EventArgs e)
         {
-            Log.LogDebug("starting Proxy_Click()");
+            Log.Debug("starting Proxy_Click()");
             Form proxyForm = new Form();
             proxyForm.StartPosition = FormStartPosition.CenterParent;
             proxyForm.Text = "Proxy Server";
@@ -492,7 +492,7 @@ namespace XCaseServiceClient
 
         private void Transport_Click(object sender, EventArgs e)
         {
-            Log.LogDebug("starting Transport_Click()");
+            Log.Debug("starting Transport_Click()");
             Form transportForm = new Form();
             transportForm.StartPosition = FormStartPosition.CenterParent;
             transportForm.Text = "Transport";
@@ -521,9 +521,9 @@ namespace XCaseServiceClient
             bindingComboBox.SelectedValue = m_Binding;
             bindingComboBox.SelectionChangeCommitted += delegate (object o, EventArgs ev)
             {
-                Log.LogDebug("bindingComboBox SelectionChangeCommitted");
+                Log.Debug("bindingComboBox SelectionChangeCommitted");
                 bindingComboBox.SelectedIndex = bindingComboBox.FindStringExact(bindingComboBox.SelectedItem.ToString());
-                Log.LogDebug("bindingComboBox SelectedIndex is {0}", bindingComboBox.SelectedIndex);
+                Log.Debug("bindingComboBox SelectedIndex is {0}", bindingComboBox.SelectedIndex);
             };
             transportTableLayoutPanel.Controls.Add(bindingComboBox, 1, 0);
             /* Security mode row */
@@ -550,9 +550,9 @@ namespace XCaseServiceClient
             securityModeComboBox.SelectedValue = m_SecurityMode;
             securityModeComboBox.SelectionChangeCommitted += delegate (object o, EventArgs ev)
             {
-                Log.LogDebug("securityModeComboBox SelectionChangeCommitted");
+                Log.Debug("securityModeComboBox SelectionChangeCommitted");
                 securityModeComboBox.SelectedIndex = securityModeComboBox.FindStringExact(securityModeComboBox.SelectedItem.ToString());
-                Log.LogDebug("securityModeComboBox SelectedIndex is {0}", securityModeComboBox.SelectedIndex);
+                Log.Debug("securityModeComboBox SelectedIndex is {0}", securityModeComboBox.SelectedIndex);
             };
             transportTableLayoutPanel.Controls.Add(securityModeComboBox, 1, 1);
             /* Message client credential type row */
@@ -579,9 +579,9 @@ namespace XCaseServiceClient
             messageClientCredentialTypeComboBox.SelectedValue = m_MessageCredentialType;
             messageClientCredentialTypeComboBox.SelectionChangeCommitted += delegate (object o, EventArgs ev)
             {
-                Log.LogDebug("messageClientCredentialTypeComboBox SelectionChangeCommitted");
+                Log.Debug("messageClientCredentialTypeComboBox SelectionChangeCommitted");
                 messageClientCredentialTypeComboBox.SelectedIndex = messageClientCredentialTypeComboBox.FindStringExact(messageClientCredentialTypeComboBox.SelectedItem.ToString());
-                Log.LogDebug("messageClientCredentialTypeComboBox SelectedIndex is {0}", messageClientCredentialTypeComboBox.SelectedIndex);
+                Log.Debug("messageClientCredentialTypeComboBox SelectedIndex is {0}", messageClientCredentialTypeComboBox.SelectedIndex);
             };
             transportTableLayoutPanel.Controls.Add(messageClientCredentialTypeComboBox, 1, 2);
             /* Transport client credential type row */
@@ -609,9 +609,9 @@ namespace XCaseServiceClient
             transportClientCredentialTypeComboBox.SelectedValue = m_ClientCredentialType;
             transportClientCredentialTypeComboBox.SelectionChangeCommitted += delegate (object o, EventArgs ev)
             {
-                Log.LogDebug("transportClientCredentialTypeComboBox SelectionChangeCommitted");
+                Log.Debug("transportClientCredentialTypeComboBox SelectionChangeCommitted");
                 transportClientCredentialTypeComboBox.SelectedIndex = transportClientCredentialTypeComboBox.FindStringExact(transportClientCredentialTypeComboBox.SelectedItem.ToString());
-                Log.LogDebug("transportClientCredentialTypeComboBox SelectedIndex is {0}", transportClientCredentialTypeComboBox.SelectedIndex);
+                Log.Debug("transportClientCredentialTypeComboBox SelectedIndex is {0}", transportClientCredentialTypeComboBox.SelectedIndex);
             };
             transportTableLayoutPanel.Controls.Add(transportClientCredentialTypeComboBox, 1, 3);
             /* Buttons row */

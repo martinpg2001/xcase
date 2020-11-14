@@ -31,7 +31,7 @@
 
         public override string GetSwaggerDocument()
         {
-            Log.LogDebug("starting GetSwaggerDocument()");
+            Log.Debug("starting GetSwaggerDocument()");
             return GetSwaggerDocument("admin/refdata/v2/api-docs?group=public-tenant-dependent");
         }
     }

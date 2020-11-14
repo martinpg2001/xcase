@@ -13,6 +13,8 @@
     using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
+    using Serilog;
+    using Serilog.Events;
 
     public abstract class SwaggerProxy : RESTProxy
     {
@@ -21,7 +23,7 @@
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        //public static readonly Serilog.ILogger Log = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.File("XCaseServiceClient.log").WriteTo.Console(restrictedToMinimumLevel: LogEventLevel.Information).CreateLogger();
 
         #endregion
 
@@ -47,15 +49,15 @@
         {
             HttpClientHandler httpClientHandler = new HttpClientHandler { Credentials = ClientCredentials, Proxy = Proxy };
             HttpClient httpClient = new HttpClient(httpClientHandler);
-            Log.LogDebug("created httpClient");
+            Log.Debug("created httpClient");
             httpClient.BaseAddress = _baseUrl;
-            Log.LogDebug("set BaseAddress to {0}", _baseUrl);
-            Log.LogDebug("_username is {0}", _username);
-            Log.LogDebug("_password is {0}", _password);
-            Log.LogDebug("_tenantId is {0}", _tenantId);
+            Log.Debug("set BaseAddress to {0}", _baseUrl);
+            Log.Debug("_username is {0}", _username);
+            Log.Debug("_password is {0}", _password);
+            Log.Debug("_tenantId is {0}", _tenantId);
             string token = this.GetAccessToken(httpClient, _username, _password, _tenantId);
             this.token = token;
-            Log.LogDebug("set token to {0}", token);
+            Log.Debug("set token to {0}", token);
             return httpClient;
         }
 
@@ -63,12 +65,12 @@
         {
             HttpClientHandler httpClientHandler = new HttpClientHandler { Credentials = ClientCredentials, Proxy = Proxy, UseCookies = false };
             HttpClient httpClient = new HttpClient(httpClientHandler);
-            Log.LogDebug("created httpClient");
+            Log.Debug("created httpClient");
             httpClient.BaseAddress = _baseUrl;
-            Log.LogDebug("set BaseAddress to {0}", _baseUrl);
+            Log.Debug("set BaseAddress to {0}", _baseUrl);
             string token = this.GetAccessToken(httpClient, username, password, tenant);
             this.token = token;
-            Log.LogDebug("set token to {0}", token);
+            Log.Debug("set token to {0}", token);
             return httpClient;
         }
 

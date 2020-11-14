@@ -21,7 +21,7 @@
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        //private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         #endregion
 
@@ -47,30 +47,30 @@
 
         public override string GetSwaggerDocument()
         {
-            Log.LogDebug("starting GetSwaggerDocument()");
+            Log.Debug("starting GetSwaggerDocument()");
             string url = "api/v1/swagger";
             //string url = "api/api/swagger/docs/v1";
-            Log.LogDebug("url is {0}", url);
+            Log.Debug("url is {0}", url);
             using (HttpClient apiClient = BuildHttpClient(_username, _password, _tenantId))
             {
-                Log.LogDebug("about to invoke method using url {0}", url);
+                Log.Debug("about to invoke method using url {0}", url);
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = ((sender, certificate, chain, sslPolicyErrors) => true);
-                Log.LogDebug("method is GET");
+                Log.Debug("method is GET");
                 string requestURL = string.Format("{0}{1}", apiClient.BaseAddress, url);
-                Log.LogDebug("requestURL is {0}", requestURL);
+                Log.Debug("requestURL is {0}", requestURL);
                 HttpRequestMessage request = CreateRequestMessageForSwaggerDocument(requestURL, token);
-                Log.LogDebug("about to send request for Swagger document");
+                Log.Debug("about to send request for Swagger document");
                 HttpResponseMessage response = apiClient.SendAsync(request).Result;
-                Log.LogDebug("response StatusCode is {0}", response.StatusCode.ToString());
+                Log.Debug("response StatusCode is {0}", response.StatusCode.ToString());
                 string content = response.Content.ReadAsStringAsync().Result;
-                Log.LogDebug("content is {0}", content);
+                Log.Debug("content is {0}", content);
                 return content;
             }
         }
 
         public override string GetAccessToken(HttpClient client, string userName = "admin", string password = "", string tenantId = null)
         {
-            Log.LogDebug("starting GetAccessToken()");
+            Log.Debug("starting GetAccessToken()");
             /* In this case, we are assuming that the username is the access token, so just return this */
             return userName;
         }

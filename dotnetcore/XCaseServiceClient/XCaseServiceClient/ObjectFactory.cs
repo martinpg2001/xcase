@@ -9,6 +9,8 @@
     using System.Text;
     using System.Xml;
     using Microsoft.Extensions.Logging;
+    using Serilog;
+    using Serilog.Events;
 
     public class ObjectFactory
     {
@@ -17,7 +19,7 @@
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        public static readonly Serilog.ILogger Log = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.Console().WriteTo.File("XCaseServiceClient.log", rollingInterval: RollingInterval.Day).CreateLogger();
 
         #endregion
 
@@ -25,7 +27,7 @@
 
         public static object CreateDefaultObject(Type type)
         {
-            Log.LogDebug("starting CreateDefaultObject() for " + type);
+            Log.Debug("starting CreateDefaultObject() for " + type);
             ConstructorInfo[] constructorInfoArray = type.GetConstructors();
             if (constructorInfoArray.Length == 0)
             {
@@ -51,12 +53,12 @@
             {
                 if (!IsNullableType(type))
                 {
-                    Log.LogDebug("type is not nullable");
+                    Log.Debug("type is not nullable");
                     if (type.IsArray)
                     {
-                        Log.LogDebug("type is array");
+                        Log.Debug("type is array");
                         Type elementType = type.GetElementType();
-                        Log.LogDebug("element type is {0}", elementType);
+                        Log.Debug("element type is {0}", elementType);
                         defaultObject = Array.CreateInstance(elementType, 0);
                     }
                     else if (IsTupleType(type))
@@ -67,7 +69,7 @@
                         if (constructorInfo != null)
                         {
                             defaultObject = constructorInfo.Invoke(values);
-                            Log.LogDebug("created defaultObject for Tuple");
+                            Log.Debug("created defaultObject for Tuple");
                         }
                     }
                     else if (type == typeof(Boolean))
@@ -90,12 +92,12 @@
                     }
                     else if (type == typeof(Decimal))
                     {
-                        Log.LogDebug("type is Decimal");
+                        Log.Debug("type is Decimal");
                         defaultObject = new Decimal(0);
                     }
                     else if (GetRootElementType(type) == typeof(Decimal))
                     {
-                        Log.LogDebug("root element type is Decimal");
+                        Log.Debug("root element type is Decimal");
                         defaultObject = new Decimal(0);
                     }
                     else if (type == typeof(Double))
@@ -150,16 +152,16 @@
                     }
                     else if (type == typeof(XmlAttribute))
                     {
-                        Log.LogDebug("type is XmlAttribute");
+                        Log.Debug("type is XmlAttribute");
                         XmlDocument xmlDocument = new XmlDocument();
                         XmlAttribute xmlAttribute = xmlDocument.CreateAttribute("attribute");
-                        Log.LogDebug("created attribute");
+                        Log.Debug("created attribute");
                         defaultObject = xmlAttribute;
-                        Log.LogDebug("default object set to xmlAttribute");
+                        Log.Debug("default object set to xmlAttribute");
                     }
                     else if (GetRootElementType(type) == typeof(XmlAttribute))
                     {
-                        Log.LogDebug("root type is XmlAttribute");
+                        Log.Debug("root type is XmlAttribute");
                         XmlDocument xmlDocument = new XmlDocument();
                         XmlAttribute xmlAttribute = xmlDocument.CreateAttribute("attribute");
                         defaultObject = xmlAttribute;
@@ -182,16 +184,16 @@
                     }
                     else
                     {
-                        Log.LogDebug("non-nullable type is not accounted for");
+                        Log.Debug("non-nullable type is not accounted for");
                         try
                         {
                             defaultObject = Activator.CreateInstance(type, true);
-                            Log.LogDebug("created default object of type " + type);
+                            Log.Debug("created default object of type " + type);
                         }
                         catch (Exception e)
                         {
-                            Log.LogDebug("exception thrown using CreateInstance(type, true) " + e.Message);
-                            Log.LogDebug("root element type is " + GetRootElementType(type));
+                            Log.Debug("exception thrown using CreateInstance(type, true) " + e.Message);
+                            Log.Debug("root element type is " + GetRootElementType(type));
                             if (type != GetRootElementType(type))
                             {
                                 //Log.Debug("type is not equal to root element type");
@@ -201,7 +203,7 @@
                                 }
                                 catch (Exception f)
                                 {
-                                    Log.LogDebug("exception thrown using CreateDefaultObject(GetRootElementType(type) " + f.Message);
+                                    Log.Debug("exception thrown using CreateDefaultObject(GetRootElementType(type) " + f.Message);
                                 }
                             }
                             else
@@ -213,23 +215,23 @@
                 }
                 else
                 {
-                    Log.LogDebug("type is nullable");
+                    Log.Debug("type is nullable");
                     Type underlyingType = Nullable.GetUnderlyingType(type);
-                    Log.LogDebug("underlying type is {0}", underlyingType.FullName);
+                    Log.Debug("underlying type is {0}", underlyingType.FullName);
                     if (IsEnumType(underlyingType))
                     {
-                        Log.LogDebug("underlying type is enum");
+                        Log.Debug("underlying type is enum");
                         defaultObject = CreateDefaultObject(underlyingType);
                     }
                 }
             }
             catch (Exception e)
             {
-                Log.LogDebug("exception creating default object: " + e.Message);
+                Log.Debug("exception creating default object: " + e.Message);
                 defaultObject = null;
             }
 
-            Log.LogDebug("finishing CreateDefaultObject() for " + type);
+            Log.Debug("finishing CreateDefaultObject() for " + type);
             return defaultObject;
         }
 
@@ -271,7 +273,7 @@
 
         public static object CreateObjectFromTypeAndValue(Type type, Byte value)
         {
-            Log.LogDebug("starting CreateObjectFromTypeAndValue for Byte");
+            Log.Debug("starting CreateObjectFromTypeAndValue for Byte");
             if (IsNullableType(type))
             {
                 Byte? valueObject = value;
@@ -283,7 +285,7 @@
 
         public static object CreateObjectFromTypeAndValue(Type type, Char value)
         {
-            Log.LogDebug("starting CreateObjectFromTypeAndValue for Char");
+            Log.Debug("starting CreateObjectFromTypeAndValue for Char");
             if (IsNullableType(type))
             {
                 Char? valueObject = value;
@@ -362,7 +364,7 @@
 
         public static object CreateObjectFromTypeAndValue(Type type, Single value)
         {
-            Log.LogDebug("starting CreateObjectFromTypeAndValue for Single");
+            Log.Debug("starting CreateObjectFromTypeAndValue for Single");
             if (IsNullableType(type))
             {
                 Single? valueObject = value;
@@ -394,7 +396,7 @@
                 }
                 catch (Exception e)
                 {
-                    Log.LogDebug("exception thrown using createObjectFromTypeAndValue(Type type, string value): " + e.Message);
+                    Log.Debug("exception thrown using createObjectFromTypeAndValue(Type type, string value): " + e.Message);
                 }
 
                 valueObject = underlyingValueObject;
@@ -408,7 +410,7 @@
                 }
                 catch (Exception)
                 {
-                    Log.LogDebug("invalid int value");
+                    Log.Debug("invalid int value");
                 }
             }
             else if (type.BaseType == typeof(Enum))
@@ -420,7 +422,7 @@
                 }
                 catch (Exception)
                 {
-                    Log.LogDebug("invalid Enum value");
+                    Log.Debug("invalid Enum value");
                     valueObject = Activator.CreateInstance(type);
                 }
             }
@@ -435,7 +437,7 @@
 
         public static object CreateObjectFromTypeAndValue(Type type, TimeSpan value)
         {
-            Log.LogDebug("starting CreateObjectFromTypeAndValue for TimeSpan");
+            Log.Debug("starting CreateObjectFromTypeAndValue for TimeSpan");
             if (IsNullableType(type))
             {
                 TimeSpan? valueObject = value;
@@ -456,7 +458,7 @@
 
         public static object CreateInt64ObjectFromTypeAndValue(Type type, Int64 value)
         {
-            Log.LogDebug("starting CreateInt64ObjectFromTypeAndValue for long {0}", value);
+            Log.Debug("starting CreateInt64ObjectFromTypeAndValue for long {0}", value);
             if (IsNullableType(type))
             {
                 //Log.Debug("type is nullable");
@@ -494,7 +496,7 @@
             //Log.Debug("starting IsArrayType()");
             if (type.IsArray)
             {
-                Log.LogDebug("element type is " + type.GetElementType().ToString());
+                Log.Debug("element type is " + type.GetElementType().ToString());
             }
 
             return type.IsArray;
@@ -546,15 +548,15 @@
             }
             else if (type != null && IsNullableType(type))
             {
-                Log.LogDebug("type is {0}", type.FullName);
+                Log.Debug("type is {0}", type.FullName);
                 Type underlyingType = Nullable.GetUnderlyingType(type);
                 if (underlyingType != null)
                 {
-                    Log.LogDebug("underlying type is {0}", underlyingType);
+                    Log.Debug("underlying type is {0}", underlyingType);
                 }
                 else
                 {
-                    Log.LogDebug("underlying type is null");
+                    Log.Debug("underlying type is null");
                 }
 
                 return IsBooleanType(underlyingType);
@@ -581,9 +583,9 @@
             }
             else if (IsNullableType(type))
             {
-                Log.LogDebug("type is nullable");
+                Log.Debug("type is nullable");
                 Type nullableType = Nullable.GetUnderlyingType(type);
-                Log.LogDebug("nullable type is {0}", nullableType);
+                Log.Debug("nullable type is {0}", nullableType);
                 return IsByteType(nullableType);
             }
 
@@ -608,9 +610,9 @@
             }
             else if (IsNullableType(type))
             {
-                Log.LogDebug("type is nullable");
+                Log.Debug("type is nullable");
                 Type nullableType = Nullable.GetUnderlyingType(type);
-                Log.LogDebug("nullable type is {0}", nullableType);
+                Log.Debug("nullable type is {0}", nullableType);
                 return IsCharType(nullableType);
             }
 
@@ -635,9 +637,9 @@
             }
             else if (IsNullableType(type))
             {
-                Log.LogDebug("type is nullable");
+                Log.Debug("type is nullable");
                 Type nullableType = Nullable.GetUnderlyingType(type);
-                Log.LogDebug("nullable type is {0}", nullableType);
+                Log.Debug("nullable type is {0}", nullableType);
                 return IsDateTimeType(nullableType);
             }
 
@@ -662,9 +664,9 @@
             }
             else if (IsNullableType(type))
             {
-                Log.LogDebug("type is nullable");
+                Log.Debug("type is nullable");
                 Type nullableType = Nullable.GetUnderlyingType(type);
-                Log.LogDebug("nullable type is {0}", nullableType);
+                Log.Debug("nullable type is {0}", nullableType);
                 return IsDecimalType(nullableType);
             }
 
@@ -700,9 +702,9 @@
             }
             else if (IsNullableType(type))
             {
-                Log.LogDebug("type is nullable");
+                Log.Debug("type is nullable");
                 Type nullableType = Nullable.GetUnderlyingType(type);
-                Log.LogDebug("nullable type is {0}", nullableType);
+                Log.Debug("nullable type is {0}", nullableType);
                 return IsDoubleType(nullableType);
             }
 
@@ -778,9 +780,9 @@
             }
             else if (IsNullableType(type))
             {
-                Log.LogDebug("type is nullable");
+                Log.Debug("type is nullable");
                 Type nullableType = Nullable.GetUnderlyingType(type);
-                Log.LogDebug("nullable type is {0}", nullableType);
+                Log.Debug("nullable type is {0}", nullableType);
                 return IsIntegerType(nullableType);
             }
 
@@ -805,9 +807,9 @@
             }
             else if (IsNullableType(type))
             {
-                Log.LogDebug("type is nullable");
+                Log.Debug("type is nullable");
                 Type nullableType = Nullable.GetUnderlyingType(type);
-                Log.LogDebug("nullable type is {0}", nullableType);
+                Log.Debug("nullable type is {0}", nullableType);
                 return IsInt64Type(nullableType);
             }
 
@@ -816,10 +818,10 @@
 
         public static bool IsListType(Type type)
         {
-            Log.LogDebug("starting IsListType()");
+            Log.Debug("starting IsListType()");
             if (type.IsGenericType && (type.GetGenericTypeDefinition().IsAssignableFrom(typeof(List<>))))
             {
-                Log.LogDebug("element type is " + type.GetGenericArguments()[0].ToString());
+                Log.Debug("element type is " + type.GetGenericArguments()[0].ToString());
                 return true;
             }
 
@@ -844,9 +846,9 @@
             }
             else if (IsNullableType(type))
             {
-                Log.LogDebug("type is nullable");
+                Log.Debug("type is nullable");
                 Type nullableType = Nullable.GetUnderlyingType(type);
-                Log.LogDebug("nullable type is {0}", nullableType);
+                Log.Debug("nullable type is {0}", nullableType);
                 return IsLongType(nullableType);
             }
 
@@ -871,9 +873,9 @@
             }
             else if (IsNullableType(type))
             {
-                Log.LogDebug("type is nullable");
+                Log.Debug("type is nullable");
                 Type nullableType = Nullable.GetUnderlyingType(type);
-                Log.LogDebug("nullable type is {0}", nullableType);
+                Log.Debug("nullable type is {0}", nullableType);
                 return IsSingleType(nullableType);
             }
 
@@ -1039,7 +1041,7 @@
 
         public static bool IsXmlAttributeType(Type type)
         {
-            Log.LogDebug("starting IsXmlAttributeType()");
+            Log.Debug("starting IsXmlAttributeType()");
             if (type == null)
             {
                 return false;
@@ -1047,12 +1049,12 @@
 
             if (type == typeof(XmlAttribute))
             {
-                Log.LogDebug("type is XmlAttribute");
+                Log.Debug("type is XmlAttribute");
                 return true;
             }
             else if (GetRootElementType(type) == typeof(XmlAttribute))
             {
-                Log.LogDebug("root type is XmlAttribute");
+                Log.Debug("root type is XmlAttribute");
                 return true;
             }
 
@@ -1077,9 +1079,9 @@
             }
             else if (IsNullableType(type))
             {
-                Log.LogDebug("type is nullable");
+                Log.Debug("type is nullable");
                 Type nullableType = Nullable.GetUnderlyingType(type);
-                Log.LogDebug("nullable type is {0}", nullableType);
+                Log.Debug("nullable type is {0}", nullableType);
                 return IsInt16Type(nullableType);
             }
 
@@ -1101,12 +1103,12 @@
 
         public static object CreateInt64ObjectFromTypeAndValue(Type type, string value)
         {
-            Log.LogDebug("starting CreateInt64ObjectFromTypeAndValue for string {0}", value);
+            Log.Debug("starting CreateInt64ObjectFromTypeAndValue for string {0}", value);
             Int64 valueInt64 = 0;
             Int64.TryParse(value, out valueInt64);
             if (IsNullableType(type))
             {
-                Log.LogDebug("type is nullable");
+                Log.Debug("type is nullable");
                 Int64? valueObject = (Int64?)valueInt64;
                 return valueObject;
             }
@@ -1116,11 +1118,11 @@
 
         public static TimeSpan CreateTimeSpanObjectFromTypeAndValue(Type type, TimeSpan value)
         {
-            Log.LogDebug("starting CreateTimeSpanObjectFromTypeAndValue for TimeSpan {0}", value);
+            Log.Debug("starting CreateTimeSpanObjectFromTypeAndValue for TimeSpan {0}", value);
             TimeSpan valueTimeSpan = value;
             if (IsNullableType(type))
             {
-                Log.LogDebug("type is nullable");
+                Log.Debug("type is nullable");
                 TimeSpan? valueObject = (TimeSpan?)valueTimeSpan;
                 return valueTimeSpan;
             }
@@ -1130,10 +1132,10 @@
 
         public static bool IsCancellationTokenType(Type type)
         {
-            Log.LogDebug("starting IsCancellationTokenType()");
+            Log.Debug("starting IsCancellationTokenType()");
             if (type == typeof(System.Threading.CancellationToken))
             {
-                Log.LogDebug("type is CancellationToken");
+                Log.Debug("type is CancellationToken");
                 return true;
             }
 
@@ -1142,7 +1144,7 @@
 
         public static object CreateUniqueObject(Type type)
         {
-            Log.LogDebug("starting CreateUniqueObject()");
+            Log.Debug("starting CreateUniqueObject()");
             if (type.Equals(typeof(string)))
             {
                 return Guid.NewGuid().ToString();

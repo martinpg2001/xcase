@@ -17,15 +17,15 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        //private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         #endregion
 
         public override IProxyDefinition ParseDoc(string document, IAPIProxySettingsEndpoint endpoint)
         {
-            Log.LogDebug("starting ParseDoc()");
+            Log.Debug("starting ParseDoc()");
             ProxyDefinition proxyDefinition = new ProxyDefinition();
-            Log.LogDebug("document is {0}", document);
+            Log.Debug("document is {0}", document);
             JObject jObject = JObject.Parse(document);
             JToken swaggerToken = jObject["swagger"];
             if (swaggerToken != null)
@@ -37,7 +37,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
 
             }
 
-            Log.LogDebug("proxyDefinition REST is {0}", proxyDefinition.Swagger);
+            Log.Debug("proxyDefinition REST is {0}", proxyDefinition.Swagger);
             JToken infoToken = jObject["info"];
             if (infoToken != null)
             {
@@ -48,9 +48,9 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
                 proxyDefinition.Version = versionToken != null ? versionToken.ToString() : null;
             }
 
-            Log.LogDebug("proxyDefinition Description is {0}", proxyDefinition.Description);
-            Log.LogDebug("proxyDefinition Title is {0}", proxyDefinition.Title);
-            Log.LogDebug("proxyDefinition Version is {0}", proxyDefinition.Version);
+            Log.Debug("proxyDefinition Description is {0}", proxyDefinition.Description);
+            Log.Debug("proxyDefinition Title is {0}", proxyDefinition.Title);
+            Log.Debug("proxyDefinition Version is {0}", proxyDefinition.Version);
             JToken hostToken = jObject["host"];
             if (hostToken != null)
             {
@@ -61,7 +61,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
                 proxyDefinition.Host = endpoint.GetHost();
             }
 
-            Log.LogDebug("proxyDefinition Host is {0}", proxyDefinition.Host);
+            Log.Debug("proxyDefinition Host is {0}", proxyDefinition.Host);
             JToken basePathToken = jObject["basePath"];
             if (basePathToken != null)
             {
@@ -72,7 +72,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
                 proxyDefinition.BasePath = endpoint.GetBasePath();
             }
 
-            Log.LogDebug("proxyDefinition BasePath is {0}", proxyDefinition.BasePath);
+            Log.Debug("proxyDefinition BasePath is {0}", proxyDefinition.BasePath);
             JToken schemesToken = jObject["schemes"];
             if (schemesToken != null)
             {
@@ -80,20 +80,20 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
             }
             else
             {
-                Log.LogDebug("no schemes specified");
+                Log.Debug("no schemes specified");
             }
 
             this.ParsePaths(jObject, proxyDefinition, endpoint.GetParseOperationIdForProxyName());
-            Log.LogDebug("parsed paths");
+            Log.Debug("parsed paths");
             this.ParseDefinitions(jObject, proxyDefinition);
-            Log.LogDebug("finishing ParseSwaggerDoc()");
+            Log.Debug("finishing ParseSwaggerDoc()");
             ParseSecuritySchema(jObject, proxyDefinition);
             return proxyDefinition;
         }
 
         private void ParseSecuritySchema(JObject jObject, ProxyDefinition proxyDefinition)
         {
-            Log.LogDebug("starting ParseSecuritySchema()");
+            Log.Debug("starting ParseSecuritySchema()");
             IDictionary<string, RESTSecurityScheme> restSecuritySchemeDictionary = new Dictionary<string, RESTSecurityScheme>();
             if (jObject["securitySchemes"] != null)
             {
@@ -107,7 +107,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
             }
             else
             {
-                Log.LogDebug("jObject[\"securitySchemes\"] is null");
+                Log.Debug("jObject[\"securitySchemes\"] is null");
             }
 
             proxyDefinition.SecuritySchemes = restSecuritySchemeDictionary;
@@ -115,7 +115,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
 
         private RESTSecurityScheme CreateRESTSecuritySchemeFromSchemeJToken(JToken schemeJToken)
         {
-            Log.LogDebug("starting CreateRESTSecuritySchemeFromSchemeJToken()");
+            Log.Debug("starting CreateRESTSecuritySchemeFromSchemeJToken()");
             /* This is not correct, but points to what has to be done to process the scheme tokens */
             RESTSecurityScheme restSecurityScheme = new RESTSecurityScheme();
             restSecurityScheme.Type = schemeJToken["type"].ToString();
@@ -127,16 +127,16 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
 
         private void ParsePaths(JObject jObject, ProxyDefinition proxyDefinition, bool parseOperationIdForProxyName)
         {
-            Log.LogDebug("starting ParsePaths()");
+            Log.Debug("starting ParsePaths()");
             List<Operation> pathOperationList = CreateOperationListFromJObject(jObject, parseOperationIdForProxyName);
-            Log.LogDebug("created pathOperationList");
+            Log.Debug("created pathOperationList");
             proxyDefinition.Operations.AddRange(pathOperationList);
-            Log.LogDebug("finishing ParsePaths()");
+            Log.Debug("finishing ParsePaths()");
         }
 
         private List<Operation> CreateOperationListFromJObject(JObject jObject, bool parseOperationIdForProxyName)
         {
-            Log.LogDebug("starting CreateOperationListFromJObject()");
+            Log.Debug("starting CreateOperationListFromJObject()");
             List<Operation> operationList = new List<Operation>();
             foreach (JProperty pathToken in jObject["paths"].Cast<JProperty>())
             {
@@ -149,10 +149,10 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
 
         private List<Operation> CreateOperationListFromPathToken(JProperty pathToken, bool parseOperationIdForProxyName)
         {
-            Log.LogDebug("starting CreateOperationListFromPathToken()");
+            Log.Debug("starting CreateOperationListFromPathToken()");
             List<Operation> pathOperationList = new List<Operation>();
             string path = pathToken.Name;
-            Log.LogDebug("path is {0}", path);
+            Log.Debug("path is {0}", path);
             IEnumerable<JProperty> jPropertyEnumerable = pathToken.First.Cast<JProperty>();
             /* Process common parameters first */
             List<Parameter> parameterList = new List<Parameter>();
@@ -170,37 +170,37 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
             /* Now process methods, and pass common parameters in */
             foreach (JProperty operationToken in jPropertyEnumerable)
             {
-                Log.LogDebug("next operationToken");
+                Log.Debug("next operationToken");
                 if ((new string[] { "delete", "get", "patch", "post", "put" }).Contains(operationToken.Name)) {
                     List<Parameter> operationParameterList = new List<Parameter>(parameterList);
                     Operation operation = CreateOperationFromOperationToken(operationToken, operationParameterList, path, parseOperationIdForProxyName);
-                    Log.LogDebug("created operation " + operation.OperationId);
+                    Log.Debug("created operation " + operation.OperationId);
                     pathOperationList.Add(operation);
                 }
             }
 
-            Log.LogDebug("finished processing operationTokens for pathToken");
+            Log.Debug("finished processing operationTokens for pathToken");
             return pathOperationList;
         }
 
         private Operation CreateOperationFromOperationToken(JProperty operationToken, List<Parameter> parameterList, string path, bool parseOperationIdForProxyName)
         {
-            Log.LogDebug("starting CreateOperationFromOperationToken()");
+            Log.Debug("starting CreateOperationFromOperationToken()");
             string method = operationToken.Name;
-            Log.LogDebug("method is {0}", method);
+            Log.Debug("method is {0}", method);
             string unqueriedPath = path.Contains("?") ? path.Substring(0, path.IndexOf("?")) : path;
-            Log.LogDebug("unqueriedPath is {0}", unqueriedPath);
+            Log.Debug("unqueriedPath is {0}", unqueriedPath);
             unqueriedPath = unqueriedPath.Replace("/", "").Replace("{", "").Replace("}", "");
-            Log.LogDebug("unqueriedPath is {0}", unqueriedPath);
+            Log.Debug("unqueriedPath is {0}", unqueriedPath);
             string proxyName = unqueriedPath;
-            Log.LogDebug("proxyName is {0}", proxyName);
+            Log.Debug("proxyName is {0}", proxyName);
             string operationId = method + unqueriedPath;
             if (operationToken.First["operationId"] != null)
             {
                 operationId = operationToken.First["operationId"].ToString();
             }
 
-            Log.LogDebug("operationId is {0}", operationId);
+            Log.Debug("operationId is {0}", operationId);
             if (parseOperationIdForProxyName)
             {
                 if (operationId.Contains("_"))
@@ -211,7 +211,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
                 }
             }
 
-            Log.LogDebug("operationId is {0}", operationId);
+            Log.Debug("operationId is {0}", operationId);
             if (string.IsNullOrWhiteSpace(proxyName))
             {
                 /* Did not get the proxy name from the operation id, so take the first tag value */
@@ -263,38 +263,38 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
                 foreach (JToken paramToken in paramTokens)
                 {
                     Parameter parameter = CreateParameterFromJToken(paramToken);
-                    Log.LogDebug("created parameter");
+                    Log.Debug("created parameter");
                     parameters.Add(parameter);
                 }
             }
 
-            Log.LogDebug("processed parameters");
+            Log.Debug("processed parameters");
             JToken requestBodyJToken = operationToken.First["requestBody"];
-            Log.LogDebug("got requestBodyJToken");
+            Log.Debug("got requestBodyJToken");
             if (requestBodyJToken != null)
             {
-                Log.LogDebug("requestBodyJToken is not null");
+                Log.Debug("requestBodyJToken is not null");
                 JToken contentJToken = requestBodyJToken["content"];
                 if (contentJToken != null)
                 {
-                    Log.LogDebug("contentJToken is not null");
+                    Log.Debug("contentJToken is not null");
 
                     JToken? applicationJsonJToken = contentJToken["application/json"];
                     if (applicationJsonJToken != null)
                     {
-                        Log.LogDebug("applicationJsonJToken is not null");
+                        Log.Debug("applicationJsonJToken is not null");
                         bool isNullable = false;
                         string typeName = GetTypeName(applicationJsonJToken, out isNullable);
-                        Log.LogDebug("typeName is {0}", typeName);
+                        Log.Debug("typeName is {0}", typeName);
                         Parameter requestBodyParameter = new Parameter(new TypeDefinition(typeName, "body", null, false), ParameterIn.Body, true, null, null);
-                        Log.LogDebug("created requestBodyParameter");
+                        Log.Debug("created requestBodyParameter");
                         parameters.Add(requestBodyParameter);
                     }
                 }
             }
 
             Operation operation = new Operation(returnType, method, path, parameters, operationId, description, proxyName);
-            Log.LogDebug("created operation");
+            Log.Debug("created operation");
             return operation;
         }
 
@@ -344,7 +344,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
 
         private void ParseDefinitions(JObject jObject, ProxyDefinition proxyDefinition)
         {
-            Log.LogDebug("starting ParseDefinitions()");
+            Log.Debug("starting ParseDefinitions()");
             if (jObject["definitions"] != null)
             {
                 foreach (JProperty definitionToken in jObject["definitions"].Where(i => i.Type == JTokenType.Property).Cast<JProperty>())
@@ -369,7 +369,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
                 
             if (jObject["components"] == null)
             {
-                Log.LogDebug("components property is null");
+                Log.Debug("components property is null");
                 return;
             }
 
@@ -377,21 +377,21 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
             JToken schemasJToken = componentsJToken["schemas"];
             if (schemasJToken == null)
             {
-                Log.LogDebug("schemasJToken is null");
+                Log.Debug("schemasJToken is null");
                 return;
             }
 
             IEnumerable<JProperty> jpropertyEnumerable = schemasJToken.Where(i => i.Type == JTokenType.Property).Cast<JProperty>();
-            Log.LogDebug("jpropertyEnumerable Count is {0}", jpropertyEnumerable.Count<JProperty>());
+            Log.Debug("jpropertyEnumerable Count is {0}", jpropertyEnumerable.Count<JProperty>());
             foreach (JProperty definitionJProperty in jpropertyEnumerable)
             {
-                Log.LogDebug("next definition");
+                Log.Debug("next definition");
                 bool addIt = true;
                 ClassDefinition classDefinition = new ClassDefinition(definitionJProperty.Name);
                 JToken allOfJToken = definitionJProperty.First["allOf"];
                 if (allOfJToken != null)
                 {
-                    Log.LogDebug("allOfJToken is is not null");
+                    Log.Debug("allOfJToken is is not null");
                     foreach (JToken itemToken in allOfJToken)
                     {
                         JValue refType = itemToken["$ref"] as JValue;
@@ -419,13 +419,13 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
                 }
                 else
                 {
-                    Log.LogDebug("allOfJToken is null");
+                    Log.Debug("allOfJToken is null");
                     JToken propertiesJToken = definitionJProperty.Value["properties"];
                     if (propertiesJToken != null)
                     {
                         foreach (JToken propertyJToken in propertiesJToken)
                         {
-                            Log.LogDebug("next propertyJToken");
+                            Log.Debug("next propertyJToken");
                             TypeDefinition type = ParseType(propertyJToken);
                             classDefinition.Properties.Add(type);
                         }
@@ -438,23 +438,23 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
                 }
 
                 classDefinition.Name = FixGenericName(classDefinition.Name);
-                Log.LogDebug("classDefinition Name is {0}", classDefinition.Name);
+                Log.Debug("classDefinition Name is {0}", classDefinition.Name);
                 /* Some classes should not be added if they exist in .Net */
                 if (classDefinition.Name.Equals("Void", StringComparison.InvariantCulture) || 
                     classDefinition.Name.Equals("IterableOfstring", StringComparison.InvariantCulture))
                 {
-                    Log.LogDebug("set addIt to false");
+                    Log.Debug("set addIt to false");
                     addIt = false;
                 }
 
-                Log.LogDebug("addIt is {0}", addIt);
+                Log.Debug("addIt is {0}", addIt);
                 if (addIt)
                 {
                     proxyDefinition.ClassDefinitions.Add(classDefinition);
                 }
             }
 
-            Log.LogDebug("finishing ParseDefinitions()");
+            Log.Debug("finishing ParseDefinitions()");
         }
 
         private TypeDefinition ParseType(JToken token)
@@ -514,7 +514,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
                     }
                 }
 
-                Log.LogDebug("isEnum is {0}", isEnum);
+                Log.Debug("isEnum is {0}", isEnum);
                 typeName = FixGenericName(typeName);
                 //Log.DebugFormat("typeName is {0}", typeName);
                 TypeDefinition type = new TypeDefinition(typeName, name, enumValues, isNullable);

@@ -8,6 +8,8 @@
     using System.Text;
     using System.Xml;
     using Microsoft.Extensions.Logging;
+    using Serilog;
+    using Serilog.Events;
 
     public class ObjectXMLRenderer
     {
@@ -16,7 +18,7 @@
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        public static readonly Serilog.ILogger Log = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.Console().WriteTo.File("XCaseServiceClient.log", rollingInterval: RollingInterval.Day).CreateLogger();
 
         #endregion
 
@@ -24,16 +26,16 @@
 
         public static XmlElement RenderObject(XmlElement parentObjectElement, object o, string name)
         {
-            Log.LogDebug("starting RenderObject({0})", o.GetType().Name);
+            Log.Debug("starting RenderObject({0})", o.GetType().Name);
             XmlElement objectXmlElement;
             if (parentObjectElement != null)
             {
-                Log.LogDebug("parentObjectElement is not null");
+                Log.Debug("parentObjectElement is not null");
                 objectXmlElement = parentObjectElement;
             }
             else
             {
-                Log.LogDebug("parentObjectElement is null");
+                Log.Debug("parentObjectElement is null");
                 objectXmlElement = objectXmlDocument.CreateElement("type");
             }
 
@@ -41,14 +43,14 @@
             propertyNameXmlAttribute.Value = name;
             if (ObjectFactory.IsArrayType(o.GetType()))
             {
-                Log.LogDebug("object is array type");
+                Log.Debug("object is array type");
                 Type elementType = o.GetType().GetElementType();
                 XmlElement arrayElement = objectXmlDocument.CreateElement("array" + elementType.Name);
                 arrayElement.Attributes.Append(propertyNameXmlAttribute);
                 objectXmlElement.AppendChild(arrayElement);
-                Log.LogDebug("appended array element");
+                Log.Debug("appended array element");
                 object elementObject = ObjectFactory.CreateDefaultObject(elementType);
-                Log.LogDebug("created default object of type " + elementType.ToString());
+                Log.Debug("created default object of type " + elementType.ToString());
                 XmlElement elementObjectXmlElement = RenderObject(arrayElement, elementObject, "example");
             }
             else if (ObjectFactory.IsBooleanType(o.GetType()))
@@ -89,9 +91,9 @@
             }
             else
             {
-                Log.LogDebug("object type is not standard type");
+                Log.Debug("object type is not standard type");
                 string typeName = o.GetType().Name;
-                Log.LogDebug("typeName is " + typeName);
+                Log.Debug("typeName is " + typeName);
             }
 
             return objectXmlElement;
@@ -103,13 +105,13 @@
         /// <param name="xmlNode">The xmlNode parameter</param>
         public static void WriteXmlNodeToLog(XmlNode xmlNode)
         {
-            Log.LogDebug("starting WriteXmlNodeToLog()");
+            Log.Debug("starting WriteXmlNodeToLog()");
             StringWriter stringWriter = new StringWriter();
             XmlTextWriter xmlTextWriter = new XmlTextWriter(stringWriter);
             xmlTextWriter.Formatting = Formatting.Indented;
             xmlNode.WriteTo(xmlTextWriter);
             xmlTextWriter.Flush();
-            Log.LogDebug(stringWriter.ToString() + Environment.NewLine);
+            Log.Debug(stringWriter.ToString() + Environment.NewLine);
         }
     }
 }

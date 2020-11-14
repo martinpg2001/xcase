@@ -31,7 +31,7 @@
 
         public override string GetSwaggerDocument()
         {
-            Log.LogDebug("starting GetSwaggerDocument()");
+            Log.Debug("starting GetSwaggerDocument()");
             return GetSwaggerDocument("tms/v2/api-docs?group=tenant-dependent");
         }
     }

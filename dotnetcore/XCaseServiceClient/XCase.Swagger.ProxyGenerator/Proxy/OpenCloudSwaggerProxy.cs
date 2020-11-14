@@ -21,7 +21,7 @@
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        //private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         #endregion
 
@@ -46,35 +46,35 @@
 
         public override string GetSwaggerDocument()
         {
-            Log.LogDebug("starting GetSwaggerDocument()");
+            Log.Debug("starting GetSwaggerDocument()");
             string url = "api/swagger/docs/v1";
-            Log.LogDebug("url is {0}", url);
+            Log.Debug("url is {0}", url);
             using HttpClient apiClient = BuildHttpClient(_username, _password, _tenantId);
-            Log.LogDebug("about to invoke method using url {0}", url);
-            Log.LogDebug("method is GET");
+            Log.Debug("about to invoke method using url {0}", url);
+            Log.Debug("method is GET");
             string requestURL = string.Format("{0}{1}", apiClient.BaseAddress, url);
-            Log.LogDebug("requestURL is {0}", requestURL);
+            Log.Debug("requestURL is {0}", requestURL);
             HttpRequestMessage request = CreateRequestMessageForSwaggerDocument(requestURL, token);
-            Log.LogDebug("about to send request for Swagger document");
+            Log.Debug("about to send request for Swagger document");
             HttpResponseMessage response = apiClient.SendAsync(request).Result;
-            Log.LogDebug("response StatusCode is {0}", response.StatusCode.ToString());
+            Log.Debug("response StatusCode is {0}", response.StatusCode.ToString());
             string content = response.Content.ReadAsStringAsync().Result;
-            Log.LogDebug("content is {0}", content);
+            Log.Debug("content is {0}", content);
             return content;
         }
 
         public override string GetAccessToken(HttpClient client, string userName = "admin", string password = "", string tenantId = null)
         {
-            Log.LogDebug("starting GetAccessToken()");
+            Log.Debug("starting GetAccessToken()");
             string baseUrl = _baseUrl.AbsoluteUri;
             string truncatedBaseUrl = baseUrl[0..^4];
             string tokenURL = string.Format("{0}auth/oauth/token", truncatedBaseUrl);
-            Log.LogDebug("tokenURL is {0}", tokenURL);
+            Log.Debug("tokenURL is {0}", tokenURL);
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, tokenURL);
             request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
-            Log.LogDebug("userName is {0}", userName);
-            Log.LogDebug("password is {0}", password);
-            Log.LogDebug("tenantId is {0}", tenantId);
+            Log.Debug("userName is {0}", userName);
+            Log.Debug("password is {0}", password);
+            Log.Debug("tenantId is {0}", tenantId);
             request.Content = new FormUrlEncodedContent(
                 new[]
                 {

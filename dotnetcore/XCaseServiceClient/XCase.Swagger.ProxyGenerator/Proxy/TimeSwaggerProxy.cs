@@ -31,7 +31,7 @@ namespace XCase.REST.ProxyGenerator.Proxy
 
         public override string GetSwaggerDocument()
         {
-            Log.LogDebug("starting GetSwaggerDocument()");
+            Log.Debug("starting GetSwaggerDocument()");
             return GetSwaggerDocument("time/Api/time/api/swagger/docs/v1");
         }
     }

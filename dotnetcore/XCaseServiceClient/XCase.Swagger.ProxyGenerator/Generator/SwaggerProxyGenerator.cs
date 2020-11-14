@@ -15,6 +15,8 @@
 //    using Microsoft.Owin.Testing;
     using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
+    using Serilog;
+    using Serilog.Events;
     using XCase.ProxyGenerator;
     using XCase.REST.ProxyGenerator.Generator;
     using XCase.REST.ProxyGenerator.OpenAPI;
@@ -26,7 +28,7 @@
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        //public static readonly Serilog.ILogger Log = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.Console().WriteTo.File("XCaseServiceClient.log", rollingInterval: RollingInterval.Day).CreateLogger();
 
         #endregion
 
@@ -40,13 +42,13 @@
 
         public static async Task GetEndpointSwaggerDoc(string requestUri, IAPIProxySettingsEndpoint endPoint)
         {
-            Log.LogDebug("starting GetEndpointSwaggerDoc()");
+            Log.Debug("starting GetEndpointSwaggerDoc()");
             string swaggerString = null;
             System.Net.WebRequest webRequest = System.Net.WebRequest.Create(requestUri);
-            Log.LogDebug("created webRequest");
+            Log.Debug("created webRequest");
             using (WebResponse webResponse = await webRequest.GetResponseAsync().ConfigureAwait(false))
             {
-                Log.LogDebug("got webResponse");
+                Log.Debug("got webResponse");
                 Stream webResponseStream = webResponse.GetResponseStream();
                 StreamReader webResponseStreamReader = new StreamReader(webResponseStream);
                 swaggerString = await webResponseStreamReader.ReadToEndAsync().ConfigureAwait(false);
@@ -57,9 +59,9 @@
                 throw new Exception(string.Format("Error downloading from: {0}", endPoint.GetUrl()));
             }
 
-            Log.LogDebug("downloaded: {0}", requestUri);
+            Log.Debug("downloaded: {0}", requestUri);
             swaggerDocDictionary.GetOrAdd(endPoint, swaggerString);
-            Log.LogDebug("finishing GetEndpointSwaggerDoc()");
+            Log.Debug("finishing GetEndpointSwaggerDoc()");
         }
     }
 }

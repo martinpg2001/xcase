@@ -1,6 +1,8 @@
 ﻿namespace XCase.ProxyGenerator.REST
 {
     using Microsoft.Extensions.Logging;
+    using Serilog;
+    using Serilog.Events;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -15,7 +17,7 @@
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        public static readonly Serilog.ILogger Log = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.Console().WriteTo.File("XCaseServiceClient.log", rollingInterval: RollingInterval.Day).CreateLogger();
 
         #endregion
 
@@ -51,7 +53,7 @@
 
             if (typeName.StartsWith("#/components/schemas/"))
             {
-                Log.LogDebug("typeName starts with #/components/schemas/");
+                Log.Debug("typeName starts with #/components/schemas/");
                 return typeName.Substring("#/components/schemas/".Length);
             }
 

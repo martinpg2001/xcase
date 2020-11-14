@@ -14,6 +14,8 @@
     using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
+    using Serilog;
+    using Serilog.Events;
 
     public class NetDocsRESTProxy : RESTProxy
     {
@@ -22,7 +24,7 @@
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        //private static readonly Serilog.ILogger Log = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.File("XCaseServiceClient.log").WriteTo.Console(restrictedToMinimumLevel: LogEventLevel.Information).CreateLogger();
 
         #endregion
 
@@ -49,15 +51,15 @@
         {
             HttpClientHandler httpClientHandler = new HttpClientHandler { Credentials = ClientCredentials, Proxy = Proxy };
             HttpClient httpClient = new HttpClient(httpClientHandler);
-            Log.LogDebug("created httpClient");
+            Log.Debug("created httpClient");
             httpClient.BaseAddress = _baseUrl;
-            Log.LogDebug("set BaseAddress to {0}", _baseUrl);
-            Log.LogDebug("_username is {0}", _username);
-            Log.LogDebug("_password is {0}", _password);
-            Log.LogDebug("_tenantId is {0}", _tenantId);
+            Log.Debug("set BaseAddress to {0}", _baseUrl);
+            Log.Debug("_username is {0}", _username);
+            Log.Debug("_password is {0}", _password);
+            Log.Debug("_tenantId is {0}", _tenantId);
             string token = this.GetAccessToken(httpClient, _username, _password, _tenantId);
             this.token = token;
-            Log.LogDebug("set token to {0}", token);
+            Log.Debug("set token to {0}", token);
             return httpClient;
         }
 
@@ -65,32 +67,32 @@
         {
             HttpClientHandler httpClientHandler = new HttpClientHandler { Credentials = ClientCredentials, Proxy = Proxy };
             HttpClient httpClient = new HttpClient(httpClientHandler);
-            Log.LogDebug("created httpClient");
+            Log.Debug("created httpClient");
             httpClient.BaseAddress = _baseUrl;
-            Log.LogDebug("set BaseAddress to {0}", _baseUrl);
+            Log.Debug("set BaseAddress to {0}", _baseUrl);
             string token = this.GetAccessToken(httpClient, username, password, tenant);
             this.token = token;
-            Log.LogDebug("set token to {0}", token);
+            Log.Debug("set token to {0}", token);
             return httpClient;
         }
 
         public override string GetAccessToken(HttpClient client, string clientId = "admin", string clientSecret = "", string authorizationCode = null)
         {
-            Log.LogDebug("starting GetAccessToken()");
+            Log.Debug("starting GetAccessToken()");
             string redirectURL = "https://www.xcase.com/auth/netdocuments-auth?region=US";
             string tokenURL = _baseUrl + "v1/OAuth";
-            Log.LogDebug("tokenURL is {0}", tokenURL);
-            Log.LogDebug("clientId is {0}", clientId);
-            Log.LogDebug("clientSecret is {0}", clientSecret);
-            Log.LogDebug("authorizationCode is {0}", authorizationCode);
+            Log.Debug("tokenURL is {0}", tokenURL);
+            Log.Debug("clientId is {0}", clientId);
+            Log.Debug("clientSecret is {0}", clientSecret);
+            Log.Debug("authorizationCode is {0}", authorizationCode);
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, tokenURL);
             request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/xml"));
             string clientIdSecret = clientId + ":" + clientSecret;
             byte[] clientIdSecretBytes = Encoding.UTF8.GetBytes(clientIdSecret);
             string encodedClientIdSecret = Convert.ToBase64String(clientIdSecretBytes);
-            Log.LogDebug("encodedClientIdSecret is {0}", encodedClientIdSecret);
+            Log.Debug("encodedClientIdSecret is {0}", encodedClientIdSecret);
             string authorizationHeader = string.Format("Basic {0}", encodedClientIdSecret);
-            Log.LogDebug("authorizationHeader is {0}", authorizationHeader);
+            Log.Debug("authorizationHeader is {0}", authorizationHeader);
             request.Headers.Add("Authorization", authorizationHeader);
             //request.Content = new FormUrlEncodedContent(
             //new[]
@@ -100,19 +102,19 @@
             //    new KeyValuePair<string, string>("redirect_uri", redirectURL)
             //});
             string stringContent = "grant_type=authorization_code&code=" + HttpUtility.UrlEncode(authorizationCode) + "&redirect_uri=" + redirectURL;
-            Log.LogDebug("stringContent is {0}", stringContent);
+            Log.Debug("stringContent is {0}", stringContent);
             request.Content = new StringContent(stringContent, Encoding.UTF8, "application/x-www-form-urlencoded");
             HttpResponseMessage response = client.SendAsync(request).Result;
-            Log.LogDebug("got response status code {0}", response.StatusCode.ToString());
+            Log.Debug("got response status code {0}", response.StatusCode.ToString());
             if (!response.IsSuccessStatusCode)
             {
-                Log.LogDebug("response status code is not IsSuccessStatusCode");
+                Log.Debug("response status code is not IsSuccessStatusCode");
                 throw new Exception("Response status code is " + response.StatusCode);
             }
 
-            Log.LogDebug("response status code is IsSuccessStatusCode");
+            Log.Debug("response status code is IsSuccessStatusCode");
             string content = response.Content.ReadAsStringAsync().Result;
-            Log.LogDebug("content is {0}", content);
+            Log.Debug("content is {0}", content);
             StringReader stringReader = null;
             try
             {
@@ -122,7 +124,7 @@
                     stringReader = null;
                     JObject json = (JObject)JsonSerializer.CreateDefault().Deserialize(jsonReader);
                     string token = json["access_token"].Value<string>();
-                    Log.LogDebug("token is {0}", token);
+                    Log.Debug("token is {0}", token);
                     return token;
                 }
             }

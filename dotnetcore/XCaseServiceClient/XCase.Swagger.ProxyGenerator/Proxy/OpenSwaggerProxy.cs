@@ -21,7 +21,7 @@
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        //private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         #endregion
 
@@ -46,22 +46,22 @@
 
         public override string GetSwaggerDocument()
         {
-            Log.LogDebug("starting GetOpenSwaggerDocument()");
+            Log.Debug("starting GetOpenSwaggerDocument()");
             string url = "api/swagger/docs/v1";
             //string url = "api/api/swagger/docs/v1";
-            Log.LogDebug("url is {0}", url);
+            Log.Debug("url is {0}", url);
             using (HttpClient apiClient = BuildHttpClient(_username, _password, _tenantId))
             {
-                Log.LogDebug("about to invoke method using url {0}", url);
-                Log.LogDebug("method is GET");
+                Log.Debug("about to invoke method using url {0}", url);
+                Log.Debug("method is GET");
                 string requestURL = string.Format("{0}{1}", apiClient.BaseAddress, url);
-                Log.LogDebug("requestURL is {0}", requestURL);
+                Log.Debug("requestURL is {0}", requestURL);
                 HttpRequestMessage request = CreateRequestMessageForSwaggerDocument(requestURL, token);
-                Log.LogDebug("about to send request for Swagger document");
+                Log.Debug("about to send request for Swagger document");
                 HttpResponseMessage response = apiClient.SendAsync(request).Result;
-                Log.LogDebug("response StatusCode is {0}", response.StatusCode.ToString());
+                Log.Debug("response StatusCode is {0}", response.StatusCode.ToString());
                 string content = response.Content.ReadAsStringAsync().Result;
-                Log.LogDebug("content is {0}", content);
+                Log.Debug("content is {0}", content);
                 return content;
             }
         }
@@ -73,19 +73,19 @@
 
         public string GetAccessTokenFromAuthorizationCode(HttpClient client, string clientId = "admin", string clientSecret = "", string tenantId = null)
         {
-            Log.LogDebug("starting GetAccessToken()");
+            Log.Debug("starting GetAccessToken()");
             string tokenURL = string.Format("{0}token", _baseUrl);
             //string tokenURL = string.Format("{0}auth/oauth/token", _baseUrl);
-            Log.LogDebug("tokenURL is {0}", tokenURL);
+            Log.Debug("tokenURL is {0}", tokenURL);
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, tokenURL);
             request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
             string authorizationCode = "e864c8edc6264a719c216aa81489ac57";
             string redirectUri = "http://cornhill:80/Open.Services/oauth2/callback";
-            Log.LogDebug("clientId is {0}", clientId);
-            Log.LogDebug("clientSecret is {0}", clientSecret);
-            Log.LogDebug("tenantId is {0}", tenantId);
-            Log.LogDebug("authorizationCode is {0}", authorizationCode);
-            Log.LogDebug("redirectUri is {0}", redirectUri);
+            Log.Debug("clientId is {0}", clientId);
+            Log.Debug("clientSecret is {0}", clientSecret);
+            Log.Debug("tenantId is {0}", tenantId);
+            Log.Debug("authorizationCode is {0}", authorizationCode);
+            Log.Debug("redirectUri is {0}", redirectUri);
             request.Content = new FormUrlEncodedContent(
                 new[]
                 {
@@ -98,23 +98,23 @@
                 });
 
             HttpResponseMessage response = client.SendAsync(request).Result;
-            Log.LogDebug("got response status code {0}", response.StatusCode.ToString());
+            Log.Debug("got response status code {0}", response.StatusCode.ToString());
             if (!response.IsSuccessStatusCode)
             {
-                Log.LogDebug("response status code is not IsSuccessStatusCode");
+                Log.Debug("response status code is not IsSuccessStatusCode");
                 return null;
             }
 
-            Log.LogDebug("response status code is IsSuccessStatusCode");
+            Log.Debug("response status code is IsSuccessStatusCode");
             string content = response.Content.ReadAsStringAsync().Result;
-            Log.LogDebug("content is {0}", content);
+            Log.Debug("content is {0}", content);
             using (StringReader stringReader = new StringReader(content))
             {
                 using (JsonTextReader jsonReader = new JsonTextReader(stringReader))
                 {
                     JObject json = (JObject)JsonSerializer.CreateDefault().Deserialize(jsonReader);
                     string token = json["access_token"].Value<string>();
-                    Log.LogDebug("token is {0}", token);
+                    Log.Debug("token is {0}", token);
                     return token;
                 }
             }
@@ -122,15 +122,15 @@
 
         public string GetAccessTokenFromUsernamePassword(HttpClient client, string userName = "admin", string password = "", string tenantId = null)
         {
-            Log.LogDebug("starting GetAccessToken()");
+            Log.Debug("starting GetAccessToken()");
             string tokenURL = string.Format("{0}token", _baseUrl);
             //string tokenURL = string.Format("{0}auth/oauth/token", _baseUrl);
-            Log.LogDebug("tokenURL is {0}", tokenURL);
+            Log.Debug("tokenURL is {0}", tokenURL);
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, tokenURL);
             request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
-            Log.LogDebug("userName is {0}", userName);
-            Log.LogDebug("password is {0}", password);
-            Log.LogDebug("tenantId is {0}", tenantId);
+            Log.Debug("userName is {0}", userName);
+            Log.Debug("password is {0}", password);
+            Log.Debug("tenantId is {0}", tenantId);
             request.Content = new FormUrlEncodedContent(
                 new[]
                 {
@@ -141,23 +141,23 @@
                 });
 
             HttpResponseMessage response = client.SendAsync(request).Result;
-            Log.LogDebug("got response status code {0}", response.StatusCode.ToString());
+            Log.Debug("got response status code {0}", response.StatusCode.ToString());
             if (!response.IsSuccessStatusCode)
             {
-                Log.LogDebug("response status code is not IsSuccessStatusCode");
+                Log.Debug("response status code is not IsSuccessStatusCode");
                 return null;
             }
 
-            Log.LogDebug("response status code is IsSuccessStatusCode");
+            Log.Debug("response status code is IsSuccessStatusCode");
             string content = response.Content.ReadAsStringAsync().Result;
-            Log.LogDebug("content is {0}", content);
+            Log.Debug("content is {0}", content);
             using (StringReader stringReader = new StringReader(content))
             {
                 using (JsonTextReader jsonReader = new JsonTextReader(stringReader))
                 {
                     JObject json = (JObject)JsonSerializer.CreateDefault().Deserialize(jsonReader);
                     string token = json["access_token"].Value<string>();
-                    Log.LogDebug("token is {0}", token);
+                    Log.Debug("token is {0}", token);
                     return token;
                 }
             }

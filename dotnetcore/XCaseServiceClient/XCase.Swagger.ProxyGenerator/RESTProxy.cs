@@ -13,6 +13,8 @@
     using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
+    using Serilog;
+    using Serilog.Events;
 
     public abstract class RESTProxy : IRESTProxy
     {
@@ -21,7 +23,7 @@
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        public static readonly Serilog.ILogger Log = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.File("XCaseServiceClient.log").WriteTo.Console(restrictedToMinimumLevel: LogEventLevel.Information).CreateLogger();
 
         #endregion
 
@@ -81,16 +83,16 @@
 
         public async Task EnsureSuccessStatusCodeAsync(HttpResponseMessage response)
         {
-            Log.LogDebug("starting EnsureSuccessStatusCodeAsync()");
+            Log.Debug("starting EnsureSuccessStatusCodeAsync()");
             if (response.IsSuccessStatusCode)
             {
-                Log.LogDebug("response IsSuccessStatusCode");
+                Log.Debug("response IsSuccessStatusCode");
                 return;
             }
 
             try
             {
-                Log.LogDebug("trying to read content");
+                Log.Debug("trying to read content");
                 var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false); ;
                 throw new SimpleHttpResponseException(response.StatusCode, content);
             }
@@ -98,7 +100,7 @@
             {
                 if (response.Content != null)
                 {
-                    Log.LogDebug("about to dispose of content");
+                    Log.Debug("about to dispose of content");
                     response.Content.Dispose();
                 }
             }
@@ -138,7 +140,7 @@
             }
 
             string encodedParameterString = string.Join("", encodedParameterStringList);
-            Log.LogDebug("encodedParameterString is {0}", encodedParameterString);
+            Log.Debug("encodedParameterString is {0}", encodedParameterString);
             return encodedParameterString;
         }
 

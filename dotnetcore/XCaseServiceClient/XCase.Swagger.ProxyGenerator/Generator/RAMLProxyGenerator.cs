@@ -18,7 +18,7 @@ namespace XCase.REST.ProxyGenerator.Generator
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        //private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         #endregion
 
@@ -32,13 +32,13 @@ namespace XCase.REST.ProxyGenerator.Generator
 
         public static async Task GetEndpointRAMLDoc(string requestUri, IAPIProxySettingsEndpoint endPoint)
         {
-            Log.LogDebug("starting GetEndpointRAMLDoc()");
+            Log.Debug("starting GetEndpointRAMLDoc()");
             string ramlString = null;
             System.Net.WebRequest webRequest = System.Net.WebRequest.Create(requestUri);
-            Log.LogDebug("created webRequest");
+            Log.Debug("created webRequest");
             using (WebResponse webResponse = await webRequest.GetResponseAsync().ConfigureAwait(false))
             {
-                Log.LogDebug("got webResponse");
+                Log.Debug("got webResponse");
                 Stream webResponseStream = webResponse.GetResponseStream();
                 StreamReader webResponseStreamReader = new StreamReader(webResponseStream);
                 ramlString = await webResponseStreamReader.ReadToEndAsync().ConfigureAwait(false);
@@ -49,9 +49,9 @@ namespace XCase.REST.ProxyGenerator.Generator
                 throw new Exception(string.Format("Error downloading from: {0}", endPoint.GetUrl()));
             }
 
-            Log.LogDebug("downloaded: {0}", requestUri);
+            Log.Debug("downloaded: {0}", requestUri);
             ramlDocDictionary.GetOrAdd(endPoint, ramlString);
-            Log.LogDebug("finishing GetEndpointRAMLDoc()");
+            Log.Debug("finishing GetEndpointRAMLDoc()");
         }
     }
 }
