@@ -20,12 +20,7 @@
     public class NetDocsRESTProxy : RESTProxy
     {
         #region Logger Setup
-
-        /// <summary>
-        /// A log4net log instance.
-        /// </summary>
-        //private static readonly Serilog.ILogger Log = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.File("XCaseServiceClient.log").WriteTo.Console(restrictedToMinimumLevel: LogEventLevel.Information).CreateLogger();
-
+        
         #endregion
 
         public NetDocsRESTProxy()

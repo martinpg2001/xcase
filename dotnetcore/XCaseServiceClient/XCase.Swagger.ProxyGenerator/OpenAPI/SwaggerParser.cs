@@ -14,11 +14,6 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
     {
         #region Logger Setup
 
-        /// <summary>
-        /// A log4net log instance.
-        /// </summary>
-        //private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         #endregion
 
         public override IProxyDefinition ParseDoc(string document, IAPIProxySettingsEndpoint endpoint)

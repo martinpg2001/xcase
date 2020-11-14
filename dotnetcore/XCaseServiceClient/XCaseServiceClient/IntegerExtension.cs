@@ -2,14 +2,20 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Text;
     using System.Threading.Tasks;
     using System.Windows.Forms;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Serilog;
+    using Serilog.Core;
     using Serilog.Events;
+    using Serilog.Formatting.Json;
+    using Serilog.Configuration;
+    using Serilog.Settings;
 
     public static class IntegerExtension
     {
@@ -17,7 +23,10 @@
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        public static readonly Serilog.ILogger Log = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.Console().WriteTo.File("XCaseServiceClient.log", rollingInterval: RollingInterval.Day).CreateLogger();
+        public static readonly Serilog.ILogger Log = new LoggerConfiguration().ReadFrom.Configuration(new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .Build()).CreateLogger();
 
         public static void RenderInteger(this int parameterObject, TableLayoutPanel propertyTableLayoutPanel, object[] parameterArray, int index)
         {

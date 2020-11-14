@@ -12,11 +12,6 @@ namespace XCase.REST.ProxyGenerator.Proxy
     {
         #region Logger Setup
 
-        /// <summary>
-        /// A log4net log instance.
-        /// </summary>
-        //private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         #endregion
 
         public CustomBaseProxy(Uri baseUrl) : base(baseUrl)

@@ -42,11 +42,6 @@ namespace XCaseServiceClient
         /// <summary>
         /// A log instance.
         /// </summary>
-        //private static ILoggerFactory loggerFactory = new LoggerFactory();
-        //private static IConfigurationRoot configuration = new ConfigurationBuilder()
-        //    .SetBasePath(Directory.GetCurrentDirectory())
-        //    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-        //    .Build();
         private static readonly Serilog.ILogger Log = new LoggerConfiguration().ReadFrom.Configuration(new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -2421,8 +2416,11 @@ namespace XCaseServiceClient
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        private static readonly Serilog.ILogger Log = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.File("XCaseServiceClient.log").WriteTo.Console(restrictedToMinimumLevel: LogEventLevel.Information).CreateLogger();
-
+        private static readonly Serilog.ILogger Log = new LoggerConfiguration().ReadFrom.Configuration(new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .Build()).CreateLogger();
+            
         #endregion
 
         public XCaseDateTimePicker()
@@ -2461,7 +2459,10 @@ namespace XCaseServiceClient
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        private static readonly Serilog.ILogger Log = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.File("XCaseServiceClient.log").WriteTo.Console(restrictedToMinimumLevel: LogEventLevel.Information).CreateLogger();
+        private static readonly Serilog.ILogger Log = new LoggerConfiguration().ReadFrom.Configuration(new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .Build()).CreateLogger();
 
         public new TimeSpan Value;
 

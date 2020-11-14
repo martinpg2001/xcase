@@ -20,11 +20,6 @@ namespace XCase.REST.ProxyGenerator.Generator
     {
         #region Logger Setup
 
-        /// <summary>
-        /// A log4net log instance.
-        /// </summary>
-        //private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         #endregion
 
         public override IServiceDefinition GenerateSourceString(string ramlDocument)

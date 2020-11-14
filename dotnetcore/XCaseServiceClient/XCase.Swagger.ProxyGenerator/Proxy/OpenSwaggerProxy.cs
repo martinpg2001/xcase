@@ -18,11 +18,6 @@
     {
         #region Logger Setup
 
-        /// <summary>
-        /// A log4net log instance.
-        /// </summary>
-        //private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         #endregion
 
         public OpenSwaggerProxy(Uri baseUrl) : base(baseUrl)

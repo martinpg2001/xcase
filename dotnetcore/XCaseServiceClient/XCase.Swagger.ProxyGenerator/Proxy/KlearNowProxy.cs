@@ -16,11 +16,6 @@
     {
         #region Logger Setup
 
-        /// <summary>
-        /// A log4net log instance.
-        /// </summary>
-        //private static readonly ILogger Log = (new LoggerFactory()).CreateLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         #endregion
 
         public KlearNowProxy(Uri baseUrl) : base(baseUrl)
