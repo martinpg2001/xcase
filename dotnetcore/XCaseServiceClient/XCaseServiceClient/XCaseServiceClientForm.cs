@@ -6,8 +6,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using Serilog;
+using Serilog.Core;
 using Serilog.Events;
 using Serilog.Formatting.Json;
+using Serilog.Configuration;
+using Serilog.Settings;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections;
@@ -40,7 +43,14 @@ namespace XCaseServiceClient
         /// A log instance.
         /// </summary>
         //private static ILoggerFactory loggerFactory = new LoggerFactory();
-        private static readonly Serilog.ILogger Log = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.Console().WriteTo.File("XCaseServiceClient.log", rollingInterval: RollingInterval.Day).CreateLogger();
+        //private static IConfigurationRoot configuration = new ConfigurationBuilder()
+        //    .SetBasePath(Directory.GetCurrentDirectory())
+        //    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+        //    .Build();
+        private static readonly Serilog.ILogger Log = new LoggerConfiguration().ReadFrom.Configuration(new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .Build()).CreateLogger();
 
         #endregion
 

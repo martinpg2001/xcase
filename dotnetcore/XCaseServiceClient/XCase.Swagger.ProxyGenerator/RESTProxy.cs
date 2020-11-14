@@ -10,11 +10,16 @@
     using System.Reflection;
     using System.Threading.Tasks;
     using System.Web;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     using Serilog;
+    using Serilog.Core;
     using Serilog.Events;
+    using Serilog.Formatting.Json;
+    using Serilog.Configuration;
+    using Serilog.Settings;
 
     public abstract class RESTProxy : IRESTProxy
     {
@@ -23,7 +28,10 @@
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        public static readonly Serilog.ILogger Log = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.File("XCaseServiceClient.log").WriteTo.Console(restrictedToMinimumLevel: LogEventLevel.Information).CreateLogger();
+        public static readonly Serilog.ILogger Log = new LoggerConfiguration().ReadFrom.Configuration(new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .Build()).CreateLogger();
 
         #endregion
 
