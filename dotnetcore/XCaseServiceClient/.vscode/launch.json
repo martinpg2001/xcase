@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/XCaseServiceClient/bin/Debug/netcoreapp3.1/XCaseServiceClient.exe",
+            "program": "${workspaceFolder}/XCaseServiceClient/bin/Debug/net5.0-windows/XCaseServiceClient.exe",
             "args": [],
             "cwd": "${workspaceFolder}/XCaseServiceClient",
             "console": "internalConsole",
