@@ -3,13 +3,13 @@
   <binding>Basic</binding>
   <client>None</client>
   <domain />
-  <endpoint>https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml</endpoint>
+  <endpoint>https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/uspto.json</endpoint>
   <language>CSharp</language>
   <message>None</message>
   <onpremise>false</onpremise>
   <password />
   <security>None</security>
   <timeout>30</timeout>
-  <type>RAML</type>
+  <type>Swagger</type>
   <username />
 </Config>

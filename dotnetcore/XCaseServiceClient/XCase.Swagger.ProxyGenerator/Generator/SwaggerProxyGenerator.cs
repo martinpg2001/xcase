@@ -45,7 +45,7 @@
             Log.Debug("starting GetEndpointSwaggerDoc()");
             string swaggerString = null;
             System.Net.WebRequest webRequest = System.Net.WebRequest.Create(requestUri);
-            Log.Debug("created webRequest");
+            Log.Debug("created webRequest for {1}", requestUri);
             using (WebResponse webResponse = await webRequest.GetResponseAsync().ConfigureAwait(false))
             {
                 Log.Debug("got webResponse");
