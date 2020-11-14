@@ -121,6 +121,7 @@ namespace XCase.REST.ProxyGenerator.Generator
         {
             IAPIProxySettingsEndpoint endPoint = swaggerDocDictionaryEntry.Key;
             string result = swaggerDocDictionaryEntry.Value;
+            Log.Debug("result is {0}", result);
             /* Process endpoint information */
             string endPointURL = endPoint.GetUrl();
             Log.Debug("endPointURL is {0}", endPointURL);
