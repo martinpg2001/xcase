@@ -45,6 +45,7 @@
 
         public static StringBuilder WriteClassDefinitionToStringBuilder(ClassDefinition classDefinition, IAPIProxySettingsEndpoint endPoint)
         {
+            Log.Debug("starting WriteClassDefinitionToStringBuilder()");
             StringBuilder classStringBuilder = new StringBuilder();
             WriteLine(classStringBuilder, string.Format("namespace {0} {{", endPoint.GetNamespace()));
             PrintHeaders(classStringBuilder);

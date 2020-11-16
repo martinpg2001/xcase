@@ -23,6 +23,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Security;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.Text;
@@ -32,6 +33,8 @@ using System.Xml;
 using XCase.ProxyGenerator;
 using XCase.REST.ProxyGenerator;
 using XCase.REST.ProxyGenerator.Generator;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace XCaseServiceClient
 {
@@ -109,6 +112,17 @@ namespace XCaseServiceClient
         TextBox m_TimeoutTextBox = new TextBox();
         TextBox m_UsernameTextBox = new TextBox();
         RichTextBox m_ViewRichTextBox = new RichTextBox();
+        [JsonConverter(typeof(StringEnumConverter))]
+        public languages codeLanguages { get; set; }
+        public enum languages
+        {
+            [EnumMember(Value = "CSharp")]
+            CSharp,
+            [EnumMember(Value = "Java")]
+            Java,
+            [EnumMember(Value = "Python")]
+            Python,
+        }
 
         #endregion
 
@@ -674,6 +688,14 @@ namespace XCaseServiceClient
                     Log.Debug("failed to get MetadataReference {0}", e.Message);
                 }
             }
+
+            foreach (MetadataReference metadataReference in metadataReferenceList)
+            {
+                Log.Debug("metadataReference Display is {0}", metadataReference.Properties.Kind);
+            }
+
+            var assemblyPath = Path.GetDirectoryName(typeof(object).Assembly.Location);
+            metadataReferenceList.Add(MetadataReference.CreateFromFile(Path.Combine(assemblyPath, "System.Runtime.Serialization.Primitives.dll")));
 
             return metadataReferenceList;
         }
@@ -1368,20 +1390,24 @@ namespace XCaseServiceClient
         private void ProcessSwaggerType(bool refresh)
         {
             Log.Debug("starting ProcessSwaggerType()");
-            this.Controls.Remove(m_ViewRichTextBox);
-            Log.Debug("m_Language is {0}", m_Language);
-            Log.Debug("m_Type is {0}", m_Type);
-            m_ClientCredentialDomain = m_DomainTextBox.Text;
-            Log.Debug("m_ClientCredentialDomain is {0}", m_ClientCredentialDomain);
-            m_ClientCredentialUserName = m_UsernameTextBox.Text;
-            Log.Debug("m_ClientCredentialUserName is {0}", m_ClientCredentialUserName);
-            m_ClientCredentialPassword = m_PasswordTextBox.Text;
-            Log.Debug("m_ClientCredentialPassword is {0}", m_ClientCredentialPassword);
-            m_ServiceDescriptionURL = m_ServiceDescriptionURLTextBox.Text;
-            Log.Debug("about to get REST description from " + m_ServiceDescriptionURL);
-            this.Text = m_WindowTitle + " - retrieving REST description from " + m_ServiceDescriptionURL;
             try
             {
+                /* Force loading the Newtonsoft library */
+                JObject jObject = JObject.Parse("{}");
+                /* Force loading the System.Runtime.Serialization library */
+                codeLanguages = languages.CSharp;
+                this.Controls.Remove(m_ViewRichTextBox);
+                Log.Debug("m_Language is {0}", m_Language);
+                Log.Debug("m_Type is {0}", m_Type);
+                m_ClientCredentialDomain = m_DomainTextBox.Text;
+                Log.Debug("m_ClientCredentialDomain is {0}", m_ClientCredentialDomain);
+                m_ClientCredentialUserName = m_UsernameTextBox.Text;
+                Log.Debug("m_ClientCredentialUserName is {0}", m_ClientCredentialUserName);
+                m_ClientCredentialPassword = m_PasswordTextBox.Text;
+                Log.Debug("m_ClientCredentialPassword is {0}", m_ClientCredentialPassword);
+                m_ServiceDescriptionURL = m_ServiceDescriptionURLTextBox.Text;
+                Log.Debug("about to get REST description from " + m_ServiceDescriptionURL);
+                this.Text = m_WindowTitle + " - retrieving REST description from " + m_ServiceDescriptionURL;
                 if (refresh)
                 {
                     Log.Debug("refresh is true");
@@ -1433,27 +1459,35 @@ namespace XCaseServiceClient
                         Log.Debug("created cSharpCompilation");
                         m_Assembly = CreateAssemblyFromCSharpCompilation(cSharpCompilation);
                         Log.Debug("created assembly");
-                        object[] args = new object[] { new Uri(restServiceDefinition.GetEndPoint()) };
-                        string proxyClass = string.Format("{0}.{1}", restApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
-                        m_RESTServiceClient = m_Assembly.CreateInstance(proxyClass, false, BindingFlags.CreateInstance, null, args, null, null);
-                        if (m_RESTServiceClient != null)
+                        if (m_Assembly != null)
                         {
-                            NetworkCredential networkCredential = new NetworkCredential(m_ClientCredentialUserName, m_ClientCredentialPassword, m_ClientCredentialDomain);
-                            ((SwaggerProxy)m_RESTServiceClient).ClientCredentials = networkCredential;
-                            if (m_ProxyEnable)
+                            object[] args = new object[] { new Uri(restServiceDefinition.GetEndPoint()) };
+                            string proxyClass = string.Format("{0}.{1}", restApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
+                            m_RESTServiceClient = m_Assembly.CreateInstance(proxyClass, false, BindingFlags.CreateInstance, null, args, null, null);
+                            if (m_RESTServiceClient != null)
                             {
-                                ((SwaggerProxy)m_RESTServiceClient).Proxy = new WebProxy(m_ProxyAddress, m_ProxyPort);
+                                NetworkCredential networkCredential = new NetworkCredential(m_ClientCredentialUserName, m_ClientCredentialPassword, m_ClientCredentialDomain);
+                                ((SwaggerProxy)m_RESTServiceClient).ClientCredentials = networkCredential;
+                                if (m_ProxyEnable)
+                                {
+                                    ((SwaggerProxy)m_RESTServiceClient).Proxy = new WebProxy(m_ProxyAddress, m_ProxyPort);
+                                }
+
+                                Log.Debug("set client credentials");
+                            }
+                            else
+                            {
+                                Log.Debug("m_RESTServiceClient is null");
                             }
 
-                            Log.Debug("set client credentials");
+                            Log.Debug("about to re-render service control");
+                            RerenderServiceControl(m_RESTServiceClient);
                         }
                         else
                         {
-                            Log.Debug("m_RESTServiceClient is null");
+                            Log.Debug("m_Assembly is null");
+                            MessageBox.Show("m_Assembly is null. Check the log for compilation errors");
                         }
-
-                        Log.Debug("about to re-render service control");
-                        RerenderServiceControl(m_RESTServiceClient);
                     }
                     else if (m_Language == "Java")
                     {

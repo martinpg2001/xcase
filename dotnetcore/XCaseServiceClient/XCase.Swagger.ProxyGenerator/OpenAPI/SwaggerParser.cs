@@ -257,6 +257,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
             {
                 foreach (JToken paramToken in paramTokens)
                 {
+                    Log.Debug("next paramToken " + paramToken.ToString());
                     Parameter parameter = CreateParameterFromJToken(paramToken);
                     Log.Debug("created parameter");
                     parameters.Add(parameter);
@@ -305,16 +306,20 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
             ParameterIn parameterIn = ParameterIn.Body;
             if (paramToken["in"] != null)
             {
+                Log.Debug("paramToken in is not null");
                 if (paramToken["in"].ToString().Equals("path"))
                 {
+                    Log.Debug("paramToken in is path");
                     parameterIn = ParameterIn.Path;
                 }
                 else if (paramToken["in"].ToString().Equals("query"))
                 {
+                    Log.Debug("paramToken in is query");
                     parameterIn = ParameterIn.Query;
                 }
                 else if (paramToken["in"].ToString().Equals("formData"))
                 {
+                    Log.Debug("paramToken in is formData");
                     parameterIn = ParameterIn.FormData;
                 }
             }
@@ -324,6 +329,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
             if (propDescriptionToken != null)
             {
                 propDescription = propDescriptionToken.ToString();
+                Log.Debug("propDescription is {0}", propDescription);
             }
 
             string collectionFormat = string.Empty;
@@ -331,6 +337,13 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
             if (collectionFormatToken != null)
             {
                 collectionFormat = collectionFormatToken.ToString();
+            }
+
+            string schema = string.Empty;
+            JToken schemaJToken = paramToken["schema"];
+            if (schemaJToken != null)
+            {
+                Log.Debug("schemaJToken is {0}", schemaJToken);
             }
 
             Parameter parameter = new Parameter(type, parameterIn, isRequired, propDescription, collectionFormat);
@@ -454,7 +467,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
 
         private TypeDefinition ParseType(JToken token)
         {
-            //Log.DebugFormat("starting ParseType(JToken token)");
+            Log.Debug("starting ParseType(JToken token)");
             bool isNullable;
             JToken workingToken;
             string name;
@@ -479,20 +492,20 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
             if (workingToken != null)
             {
                 string typeName = GetTypeName(workingToken, out isNullable);
-                //Log.DebugFormat("typeName is {0}", typeName);
+                Log.Debug("typeName is {0}", typeName);
                 JToken enumToken = workingToken["enum"];
                 string[] enumValues = null;
                 bool isEnum = false;
                 if (enumToken != null)
                 {
                     isEnum = true;
-                    //Log.DebugFormat("isEnum is {0}", isEnum);
+                    Log.Debug("isEnum is {0}", isEnum);
                     List<string> enumList = new List<string>();
                     bool anyRawNumbers = false;
                     foreach (JToken enumValueToken in enumToken)
                     {
                         string enumValue = enumValueToken.ToString();
-                        //Log.DebugFormat("enumValue is {0}", enumValue);
+                        Log.Debug("enumValue is {0}", enumValue);
                         decimal value;
                         if (Decimal.TryParse(enumValue, out value))
                         {
@@ -509,11 +522,43 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
                     }
                 }
 
+                JToken schemaToken = workingToken["schema"];
+                if (schemaToken != null)
+                {
+                    Log.Debug("schemaToken is {0}", schemaToken);
+                    enumToken = schemaToken["enum"];
+                    if (enumToken != null)
+                    {
+                        isEnum = true;
+                        Log.Debug("isEnum is {0}", isEnum);
+                        List<string> enumList = new List<string>();
+                        bool anyRawNumbers = false;
+                        foreach (JToken enumValueToken in enumToken)
+                        {
+                            string enumValue = enumValueToken.ToString();
+                            Log.Debug("enumValue is {0}", enumValue);
+                            decimal value;
+                            if (Decimal.TryParse(enumValue, out value))
+                            {
+                                anyRawNumbers = true;
+                            }
+
+                            enumList.Add(XCase.ProxyGenerator.REST.Enum.FixEnumValue(enumValue));
+                        }
+
+                        if (anyRawNumbers == false)
+                        {
+                            enumValues = enumList.ToArray();
+                            typeName = FixTypeName(name + "Values");
+                        }
+                    }
+                }
+
                 Log.Debug("isEnum is {0}", isEnum);
                 typeName = FixGenericName(typeName);
-                //Log.DebugFormat("typeName is {0}", typeName);
-                TypeDefinition type = new TypeDefinition(typeName, name, enumValues, isNullable);
-                return type;
+                Log.Debug("typeName is {0}", typeName);
+                TypeDefinition typeDefinition = new TypeDefinition(typeName, name, enumValues, isNullable);
+                return typeDefinition;
             }
             else
             {
