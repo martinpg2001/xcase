@@ -307,7 +307,12 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
             if (paramToken["in"] != null)
             {
                 Log.Debug("paramToken in is not null");
-                if (paramToken["in"].ToString().Equals("path"))
+                if (paramToken["in"].ToString().Equals("header"))
+                {
+                    Log.Debug("paramToken in is header");
+                    parameterIn = ParameterIn.Header;
+                }
+                else if (paramToken["in"].ToString().Equals("path"))
                 {
                     Log.Debug("paramToken in is path");
                     parameterIn = ParameterIn.Path;

@@ -358,6 +358,16 @@
             WriteLine(proxyStringBuilder, "httpRequestMessage.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(\"" + endPoint.GetAccept() + "\"));");
             WriteLine(proxyStringBuilder, "httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue(\"" + endPoint.GetTokenName() + "\", token);");
             //WriteLine(proxyStringBuilder, "httpRequestMessage.Headers.Add(\"IntegrateAuthenticationToken\", token);");
+            List<Parameter> headerParams = operation.Parameters.Where(i => i.ParameterIn == ParameterIn.Header).ToList();
+            if (headerParams.Count > 0)
+            {
+                foreach (Parameter parameter in headerParams)
+                {
+                    WriteLine(proxyStringBuilder, "httpRequestMessage.Headers.Add(\"" + parameter.Type.Name + "\", " + parameter.Type.GetCleanTypeName() + ");");
+                    WriteLine(proxyStringBuilder, "Log.Debug(\"added header is {0}\", \"" + parameter.Type.Name + ":\" + " + parameter.Type.GetCleanTypeName() + ");");
+                }
+            }
+
             Parameter bodyParameter = operation.Parameters.FirstOrDefault(p => p.ParameterIn == ParameterIn.Body);
             if (bodyParameter != null && method != "GET")
             {

@@ -47,6 +47,7 @@
 
         public override HttpClient BuildHttpClient()
         {
+            Log.Debug("starting BuildHttpClient()");
             HttpClientHandler httpClientHandler = new HttpClientHandler { Credentials = ClientCredentials, Proxy = Proxy };
             HttpClient httpClient = new HttpClient(httpClientHandler);
             Log.Debug("created httpClient");
@@ -56,6 +57,7 @@
             Log.Debug("_password is {0}", _password);
             Log.Debug("_tenantId is {0}", _tenantId);
             string token = this.GetAccessToken(httpClient, _username, _password, _tenantId);
+            Log.Debug("got access token {0}", token);
             this.token = token;
             Log.Debug("set token to {0}", token);
             return httpClient;
@@ -63,12 +65,14 @@
 
         public override HttpClient BuildHttpClient(string username, string password, string tenant)
         {
+            Log.Debug("starting BuildHttpClient(string username, string password, string tenant)");
             HttpClientHandler httpClientHandler = new HttpClientHandler { Credentials = ClientCredentials, Proxy = Proxy, UseCookies = false };
             HttpClient httpClient = new HttpClient(httpClientHandler);
             Log.Debug("created httpClient");
             httpClient.BaseAddress = _baseUrl;
             Log.Debug("set BaseAddress to {0}", _baseUrl);
             string token = this.GetAccessToken(httpClient, username, password, tenant);
+            Log.Debug("got access token {0}", token);
             this.token = token;
             Log.Debug("set token to {0}", token);
             return httpClient;
