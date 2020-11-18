@@ -405,6 +405,10 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                 {
                     parameterIn = ParameterIn.Path;
                 }
+                else if (parameterInLocation.Equals(ParameterLocation.Header))
+                {
+                    parameterIn = ParameterIn.Header;
+                }
             }
 
             string propDescription = string.Empty;
