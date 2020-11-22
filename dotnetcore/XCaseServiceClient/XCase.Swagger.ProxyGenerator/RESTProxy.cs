@@ -38,7 +38,7 @@
         public Uri _baseUrl;
         public string _password = string.Empty;
         public string _redirectURL = string.Empty;
-        public string _tenantId = string.Empty;
+        public string _domain = string.Empty;
         public string _username = "Admin";
         public string token;
         public NetworkCredential ClientCredentials { get; set; }
@@ -54,12 +54,12 @@
             _baseUrl = baseUrl;
         }
 
-        public RESTProxy(Uri baseUrl, string username, string password, string tenant)
+        public RESTProxy(Uri baseUrl, string username, string password, string domain)
         {
             _baseUrl = baseUrl;
             _username = username;
             _password = password;
-            _tenantId = tenant;
+            _domain = domain;
         }
 
         public abstract HttpClient BuildHttpClient();

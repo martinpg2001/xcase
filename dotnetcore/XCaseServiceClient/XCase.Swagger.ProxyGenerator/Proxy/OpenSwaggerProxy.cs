@@ -23,12 +23,12 @@
         public OpenSwaggerProxy(Uri baseUrl) : base(baseUrl)
         {}
 
-        public OpenSwaggerProxy(Uri baseUrl, string username, string password, string tenant)
+        public OpenSwaggerProxy(Uri baseUrl, string username, string password, string domain)
             : base(baseUrl)
         {
             _username = username;
             _password = password;
-            _tenantId = tenant;
+            _domain = domain;
         }
 
         public override HttpRequestMessage CreateRequestMessageForSwaggerDocument(string requestURL, string token)
@@ -45,7 +45,7 @@
             string url = "api/swagger/docs/v1";
             //string url = "api/api/swagger/docs/v1";
             Log.Debug("url is {0}", url);
-            using (HttpClient apiClient = BuildHttpClient(_username, _password, _tenantId))
+            using (HttpClient apiClient = BuildHttpClient(_username, _password, _domain))
             {
                 Log.Debug("about to invoke method using url {0}", url);
                 Log.Debug("method is GET");
@@ -61,12 +61,12 @@
             }
         }
 
-        public override string GetAccessToken(HttpClient client, string userName = "admin", string password = "", string tenantId = null)
+        public override string GetAccessToken(HttpClient client, string userName = "admin", string password = "", string domain = null)
         {
-            return GetAccessTokenFromUsernamePassword(client, userName, password, tenantId);
+            return GetAccessTokenFromUsernamePassword(client, userName, password, domain);
         }
 
-        public string GetAccessTokenFromAuthorizationCode(HttpClient client, string clientId = "admin", string clientSecret = "", string tenantId = null)
+        public string GetAccessTokenFromAuthorizationCode(HttpClient client, string clientId = "admin", string clientSecret = "", string domain = null)
         {
             Log.Debug("starting GetAccessToken()");
             string tokenURL = string.Format("{0}token", _baseUrl);
@@ -78,7 +78,7 @@
             string redirectUri = "http://cornhill:80/Open.Services/oauth2/callback";
             Log.Debug("clientId is {0}", clientId);
             Log.Debug("clientSecret is {0}", clientSecret);
-            Log.Debug("tenantId is {0}", tenantId);
+            Log.Debug("tenantId is {0}", domain);
             Log.Debug("authorizationCode is {0}", authorizationCode);
             Log.Debug("redirectUri is {0}", redirectUri);
             request.Content = new FormUrlEncodedContent(
@@ -87,7 +87,7 @@
                     new KeyValuePair<string, string>("grant_type", "authorization_code"),
                     new KeyValuePair<string, string>("client_id", clientId),
                     new KeyValuePair<string, string>("client_secret", clientSecret),
-                    new KeyValuePair<string, string>("tenant_id", tenantId),
+                    new KeyValuePair<string, string>("tenant_id", domain),
                     new KeyValuePair<string, string>("code", authorizationCode),
                     new KeyValuePair<string, string>("redirect_uri", redirectUri)
                 });

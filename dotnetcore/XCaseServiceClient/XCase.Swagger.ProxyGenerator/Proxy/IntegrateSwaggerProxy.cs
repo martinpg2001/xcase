@@ -23,12 +23,12 @@
         public IntegrateSwaggerProxy(Uri baseUrl) : base(baseUrl)
         { }
 
-        public IntegrateSwaggerProxy(Uri baseUrl, string username, string password, string tenant)
+        public IntegrateSwaggerProxy(Uri baseUrl, string username, string password, string domain)
             : base(baseUrl)
         {
             _username = username;
             _password = password;
-            _tenantId = tenant;
+            _domain = domain;
         }
 
         public override HttpRequestMessage CreateRequestMessageForSwaggerDocument(string requestURL, string token)
@@ -46,7 +46,7 @@
             string url = "api/v1/swagger";
             //string url = "api/api/swagger/docs/v1";
             Log.Debug("url is {0}", url);
-            using (HttpClient apiClient = BuildHttpClient(_username, _password, _tenantId))
+            using (HttpClient apiClient = BuildHttpClient(_username, _password, _domain))
             {
                 Log.Debug("about to invoke method using url {0}", url);
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = ((sender, certificate, chain, sslPolicyErrors) => true);

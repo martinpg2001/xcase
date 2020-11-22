@@ -67,9 +67,9 @@ namespace XCase.REST.ProxyGenerator.Generator
 
         public RESTApiProxySettingsEndPoint(string language)
         {
-            BaseProxyClass = "OpenCloudSwaggerProxy";
-            Id = "SwaggerProxy";
-            Namespace = Namespace = iConfigurationRoot.GetSection("AppSettings").GetSection("Namespace").Value;// ConfigurationManager.AppSettings["Namespace"];
+            BaseProxyClass = "OpenApiProxy";
+            Id = "OpenApiProxy";
+            Namespace = iConfigurationRoot.GetSection("AppSettings").GetSection("Namespace").Value;
             switch (language)
             {
                 case "CSharp":

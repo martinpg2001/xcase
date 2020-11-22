@@ -32,12 +32,12 @@
 
         }
 
-        public SwaggerProxy(Uri baseUrl, string username, string password, string tenant)
+        public SwaggerProxy(Uri baseUrl, string username, string password, string domain)
         {
             _baseUrl = baseUrl;
             _username = username;
             _password = password;
-            _tenantId = tenant;
+            _domain = domain;
         }
 
         public SwaggerProxy(Uri baseUrl)
@@ -55,15 +55,15 @@
             Log.Debug("set BaseAddress to {0}", _baseUrl);
             Log.Debug("_username is {0}", _username);
             Log.Debug("_password is {0}", _password);
-            Log.Debug("_tenantId is {0}", _tenantId);
-            string token = this.GetAccessToken(httpClient, _username, _password, _tenantId);
+            Log.Debug("_tenantId is {0}", _domain);
+            string token = this.GetAccessToken(httpClient, _username, _password, _domain);
             Log.Debug("got access token {0}", token);
             this.token = token;
             Log.Debug("set token to {0}", token);
             return httpClient;
         }
 
-        public override HttpClient BuildHttpClient(string username, string password, string tenant)
+        public override HttpClient BuildHttpClient(string username, string password, string domain)
         {
             Log.Debug("starting BuildHttpClient(string username, string password, string tenant)");
             HttpClientHandler httpClientHandler = new HttpClientHandler { Credentials = ClientCredentials, Proxy = Proxy, UseCookies = false };
@@ -71,7 +71,7 @@
             Log.Debug("created httpClient");
             httpClient.BaseAddress = _baseUrl;
             Log.Debug("set BaseAddress to {0}", _baseUrl);
-            string token = this.GetAccessToken(httpClient, username, password, tenant);
+            string token = this.GetAccessToken(httpClient, username, password, domain);
             Log.Debug("got access token {0}", token);
             this.token = token;
             Log.Debug("set token to {0}", token);

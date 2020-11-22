@@ -46,6 +46,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
             Log.Debug("proxyDefinition Description is {0}", proxyDefinition.Description);
             Log.Debug("proxyDefinition Title is {0}", proxyDefinition.Title);
             Log.Debug("proxyDefinition Version is {0}", proxyDefinition.Version);
+            /* OpenAPi 2.0 */
             JToken hostToken = jObject["host"];
             if (hostToken != null)
             {
@@ -65,6 +66,29 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
             else
             {
                 proxyDefinition.BasePath = endpoint.GetBasePath();
+            }
+
+            /* OpenAPi 3.0 */
+            JToken serversToken = jObject["servers"];
+            if (serversToken != null)
+            {
+                Log.Debug("serversToken is not null");
+                JToken serverToken = serversToken.First;
+                if (serverToken != null)
+                {
+                    Log.Debug("serverToken is not null");
+                    string url = serverToken["url"].ToString();
+                    Log.Debug("url is {0}", url);
+                    proxyDefinition.BasePath = url;
+                }
+                else
+                {
+                    proxyDefinition.BasePath = endpoint.GetHost();
+                }
+            }
+            else
+            {
+                Log.Debug("serversToken is null");
             }
 
             Log.Debug("proxyDefinition BasePath is {0}", proxyDefinition.BasePath);

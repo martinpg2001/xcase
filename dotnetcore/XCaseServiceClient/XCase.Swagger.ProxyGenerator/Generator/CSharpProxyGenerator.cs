@@ -156,7 +156,7 @@
             return stringBuilder;
         }
 
-        public static StringBuilder CreateProxyStringBuilderForProxy(IProxyDefinition proxyDefinition, string proxy, IAPIProxySettingsEndpoint endPoint, string methodNameAppend, string username, string password, string tenant)
+        public static StringBuilder CreateProxyStringBuilderForProxy(IProxyDefinition proxyDefinition, string proxy, IAPIProxySettingsEndpoint endPoint, string methodNameAppend, string username, string password, string domain)
         {
             Log.Debug("starting CreateProxyStringBuilderForProxy()");
             StringBuilder proxyStringBuilder = new StringBuilder();
@@ -173,7 +173,7 @@
             WriteLine(proxyStringBuilder, "{");
             WriteLine(proxyStringBuilder, string.Format("_username = \"{0}\";", username));
             WriteLine(proxyStringBuilder, string.Format("_password = \"{0}\";", password));
-            WriteLine(proxyStringBuilder, string.Format("_tenantId = \"{0}\";", tenant));
+            WriteLine(proxyStringBuilder, string.Format("_domain = \"{0}\";", domain));
             WriteLine(proxyStringBuilder, "}");
             WriteLine(proxyStringBuilder);
             List<XCase.ProxyGenerator.REST.Enum> proxyParamEnums = new List<XCase.ProxyGenerator.REST.Enum>();

@@ -22,14 +22,14 @@
         {
             _username = "";
             _password = "";
-            _tenantId = "";
+            _domain = "";
         }
 
         public KlearNowProxy(Uri baseUrl, string username, string password, string domain) : base(baseUrl)
         {
             _username = username;
             _password = password;
-            _tenantId = domain;
+            _domain = domain;
         }
 
         public override HttpClient BuildHttpClient(string username, string password, string domain)

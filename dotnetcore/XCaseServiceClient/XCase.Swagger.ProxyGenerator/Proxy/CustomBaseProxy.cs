@@ -18,17 +18,17 @@ namespace XCase.REST.ProxyGenerator.Proxy
         {
             _username = "";
             _password = "";
-            _tenantId = "";
+            _domain = "";
         }
 
-        public override HttpClient BuildHttpClient(string username, string password, string tenant)
+        public override HttpClient BuildHttpClient(string username, string password, string domain)
         {
             HttpClientHandler httpClientHandler = new HttpClientHandler { Credentials = ClientCredentials, Proxy = Proxy, UseCookies = false };
             HttpClient httpClient = new HttpClient(httpClientHandler);
             Log.Debug("created httpClient");
             httpClient.BaseAddress = _baseUrl;
             Log.Debug("set BaseAddress to {0}", _baseUrl);
-            string token = this.GetAccessToken(httpClient, username, password, tenant);
+            string token = this.GetAccessToken(httpClient, username, password, domain);
             this.token = token;
             Log.Debug("set token to {0}", token);
             return httpClient;

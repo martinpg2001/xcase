@@ -14,16 +14,16 @@
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
-    public class OpenCloudSwaggerProxy : SwaggerProxy, ISwaggerProxy
+    public class OpenApiProxy : SwaggerProxy, ISwaggerProxy
     {
         #region Logger Setup
 
         #endregion
 
-        public OpenCloudSwaggerProxy(Uri baseUrl) : base(baseUrl)
+        public OpenApiProxy(Uri baseUrl) : base(baseUrl)
         { }
 
-        public OpenCloudSwaggerProxy(Uri baseUrl, string username, string password, string domain)
+        public OpenApiProxy(Uri baseUrl, string username, string password, string domain)
             : base(baseUrl)
         {
             _username = username;
@@ -58,7 +58,7 @@
             return content;
         }
 
-        public override string GetAccessToken(HttpClient client, string userName = "admin", string password = "", string domain = null)
+        public override string GetAccessToken(HttpClient client, string userName = "admin", string password = "", string tenantId = null)
         {
             Log.Debug("starting GetAccessToken()");
             string baseUrl = _baseUrl.AbsoluteUri;
@@ -69,14 +69,14 @@
             request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
             Log.Debug("userName is {0}", userName);
             Log.Debug("password is {0}", password);
-            Log.Debug("tenantId is {0}", domain);
+            Log.Debug("tenantId is {0}", tenantId);
             request.Content = new FormUrlEncodedContent(
                 new[]
                 {
                     new KeyValuePair<string, string>("grant_type", "password"),
                     new KeyValuePair<string, string>("username", userName),
                     new KeyValuePair<string, string>("password", password),
-                    new KeyValuePair<string, string>("tenantId", domain)
+                    new KeyValuePair<string, string>("tenantId", tenantId)
                 });
 
             //HttpResponseMessage response = client.SendAsync(request).Result;

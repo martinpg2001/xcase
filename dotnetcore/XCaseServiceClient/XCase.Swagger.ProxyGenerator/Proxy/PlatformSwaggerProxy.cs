@@ -98,7 +98,7 @@
         {
             Log.Debug("starting GetSwaggerDocument(string url)");
             Log.Debug("url is {0}", url);
-            using (HttpClient apiClient = BuildHttpClient(_username, _password, _tenantId))
+            using (HttpClient apiClient = BuildHttpClient(_username, _password, _domain))
             {
                 Log.Debug("about to invoke method using url {0}", url);
                 Log.Debug("method is GET");

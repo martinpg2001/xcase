@@ -21,12 +21,12 @@ namespace XCase.REST.ProxyGenerator.Proxy
             _baseUrl = baseUrl;
         }
 
-        public TimeSwaggerProxy(Uri baseUrl, string username, string password, string tenant)
+        public TimeSwaggerProxy(Uri baseUrl, string username, string password, string domain)
         {
             _baseUrl = baseUrl;
             _username = username;
             _password = password;
-            _tenantId = tenant;
+            _domain = domain;
         }
 
         public override string GetSwaggerDocument()

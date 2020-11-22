@@ -691,7 +691,7 @@ namespace XCaseServiceClient
 
             foreach (MetadataReference metadataReference in metadataReferenceList)
             {
-                Log.Debug("metadataReference Display is {0}", metadataReference.Properties.Kind);
+                //Log.Debug("metadataReference Display is {0}", metadataReference.Properties.Kind);
             }
 
             var assemblyPath = Path.GetDirectoryName(typeof(object).Assembly.Location);

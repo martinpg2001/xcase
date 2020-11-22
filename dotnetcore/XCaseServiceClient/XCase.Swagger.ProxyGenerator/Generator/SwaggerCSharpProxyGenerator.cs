@@ -79,7 +79,7 @@
         public override IServiceDefinition GenerateSourceString(IAPIProxySettingsEndpoint swaggerApiProxySettingsEndPoint, string swaggerDocument)
         {
             Log.Debug("starting GenerateSourceString()");
-            return GenerateSourceString(swaggerApiProxySettingsEndPoint, swaggerDocument, "Admin", "1nt@ppC10ud2016", "tenant1");
+            return GenerateSourceString(swaggerApiProxySettingsEndPoint, swaggerDocument, "Admin", "password", "domain");
         }
 
         public override IServiceDefinition GenerateSourceString(IAPIProxySettingsEndpoint[] endpoints)
@@ -114,7 +114,7 @@
             }
         }
 
-        private static RESTServiceDefinition ProcessSwaggerDocuments(string username, string password, string tenant)
+        private static RESTServiceDefinition ProcessSwaggerDocuments(string username, string password, string domain)
         {
             Log.Debug("starting ProcessSwaggerDocuments()");
             RESTServiceDefinition swaggerServiceDefinition = new RESTServiceDefinition();
@@ -123,7 +123,7 @@
             Log.Debug("created SwaggerParser");
             foreach (KeyValuePair<IAPIProxySettingsEndpoint, string> swaggerDocDictionaryEntry in swaggerDocDictionary.OrderBy(x => x.Key.GetId()))
             {
-                ProcessSwaggerDocDictionaryEntry(swaggerServiceDefinition, swaggerDocDictionaryEntry, sourceStringList, parser, username, password, tenant);
+                ProcessSwaggerDocDictionaryEntry(swaggerServiceDefinition, swaggerDocDictionaryEntry, sourceStringList, parser, username, password, domain);
             }
 
             swaggerServiceDefinition.SourceStrings = sourceStringList.ToArray<string>();
@@ -131,7 +131,7 @@
             return swaggerServiceDefinition;
         }
 
-        private static void ProcessSwaggerDocDictionaryEntry(RESTServiceDefinition swaggerServiceDefinition, KeyValuePair<IAPIProxySettingsEndpoint, string> swaggerDocDictionaryEntry, List<string> sourceStringList, SwaggerParser parser, string username, string password, string tenant)
+        private static void ProcessSwaggerDocDictionaryEntry(RESTServiceDefinition swaggerServiceDefinition, KeyValuePair<IAPIProxySettingsEndpoint, string> swaggerDocDictionaryEntry, List<string> sourceStringList, SwaggerParser parser, string username, string password, string domain)
         {
             IAPIProxySettingsEndpoint endPoint = swaggerDocDictionaryEntry.Key;
             string result = swaggerDocDictionaryEntry.Value;
@@ -189,7 +189,7 @@
                 string className = SwaggerParser.FixTypeName(proxy) + "WebProxy";
                 swaggerServiceDefinition.ProxyClasses.Add(className);
                 Log.Debug("added className {0}", className);
-                StringBuilder proxyStringBuilder = CreateProxyStringBuilderForProxy(proxyDefinition, proxy, endPoint, methodNameAppend, username, password, tenant);
+                StringBuilder proxyStringBuilder = CreateProxyStringBuilderForProxy(proxyDefinition, proxy, endPoint, methodNameAppend, username, password, domain);
                 Log.Debug("created proxyStringBuilder for {0}", proxy);
                 sourceStringList.Add(proxyStringBuilder.ToString());
                 Log.Debug("finished proxy {0}", proxy);
