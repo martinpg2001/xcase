@@ -406,10 +406,63 @@ namespace XCaseServiceClient
             Log.Debug("starting ProcessServicesChange()");
             Log.Debug("m_Language is {0}", m_Language);
             Log.Debug("m_Type is {0}", m_Type);
+            m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
+            Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
+            Log.Debug("about to execute switch statement on " + m_Type);
+            switch (m_Type)
+            {
+                case "Custom":
+                    ProcessCustomType(false);
+                    break;
+                case "Integrate":
+                    //ProcessIntegrateType(false);
+                    break;
+                case "Open":
+                    ProcessSwaggerType(false);
+                    break;
+                case "PlatformCDS":
+                    //ProcessPlatformCDSType(false);
+                    break;
+                case "PlatformDocument":
+                    //ProcessPlatformDocumentType(false);
+                    break;
+                case "PlatformRefData":
+                    //ProcessPlatformRefDataType(false);
+                    break;
+                case "PlatformSanctionLists":
+                    //ProcessPlatformSanctionListsType(false);
+                    break;
+                case "PlatformTMS":
+                    //ProcessPlatformTMSType(false);
+                    break;
+                case "RAML":
+                    ProcessRAMLType(false);
+                    break;
+                case "REST":
+                    ProcessSwaggerType(false);
+                    break;
+                case "SOAP":
+                    Log.Debug("about to get service contract client from WSDL");
+                    //m_ServiceClient = GetServiceContractClientFromWSDL(m_ServiceName);
+                    Log.Debug("got service contract client from WSDL");
+                    break;
+                case "Swagger":
+                    ProcessSwaggerType(false);
+                    break;
+                case "Time":
+                    //ProcessTimeType(false);
+                    break;
+                default:
+                    Log.Debug("about to get service contract client from WSDL");
+                    //m_ServiceClient = GetServiceContractClientFromWSDL(m_ServiceName);
+                    Log.Debug("got service contract client from WSDL");
+                    break;
+            }
+
+            /*
             if (string.IsNullOrEmpty(m_Type) || m_Type == "SOAP")
             {
-                m_ServiceName = (string)m_ServicesComboBox.SelectedValue;
-                Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
+
                 if (string.IsNullOrEmpty(m_ServiceName))
                 {
                     Log.Debug("service name is empty");
@@ -493,6 +546,7 @@ namespace XCaseServiceClient
                 Log.Debug("service name changed to " + (string)m_ServicesComboBox.SelectedValue);
                 //ProcessTimeType(false);
             }
+            */
         }
 
         private void ProcessCustomType(Boolean refresh)
