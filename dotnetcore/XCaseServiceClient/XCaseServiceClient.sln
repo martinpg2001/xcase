@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XCase.Swagger.ProxyGenerato
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneratedCode", "GeneratedCode\GeneratedCode.csproj", "{1432661A-BEBF-4AE0-BB6F-65F58C1C564B}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "XCaseServiceClientSetup", "XCaseServiceClientSetup\XCaseServiceClientSetup.vdproj", "{F1079FFF-CB09-49EE-B4C5-D6946E8D1009}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "XCaseServiceClientInstallerSetup", "XCaseServiceClientInstallerSetup\XCaseServiceClientInstallerSetup.vdproj", "{F2715FE7-F387-4C86-B925-5B23915BFE2D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -107,17 +107,17 @@ Global
 		{1432661A-BEBF-4AE0-BB6F-65F58C1C564B}.Release|x64.Build.0 = Release|Any CPU
 		{1432661A-BEBF-4AE0-BB6F-65F58C1C564B}.Release|x86.ActiveCfg = Release|Any CPU
 		{1432661A-BEBF-4AE0-BB6F-65F58C1C564B}.Release|x86.Build.0 = Release|Any CPU
-		{F1079FFF-CB09-49EE-B4C5-D6946E8D1009}.Debug|Any CPU.ActiveCfg = Debug
-		{F1079FFF-CB09-49EE-B4C5-D6946E8D1009}.Debug|Any CPU.Build.0 = Debug
-		{F1079FFF-CB09-49EE-B4C5-D6946E8D1009}.Debug|ARM.ActiveCfg = Debug
-		{F1079FFF-CB09-49EE-B4C5-D6946E8D1009}.Debug|ARM64.ActiveCfg = Debug
-		{F1079FFF-CB09-49EE-B4C5-D6946E8D1009}.Debug|x64.ActiveCfg = Debug
-		{F1079FFF-CB09-49EE-B4C5-D6946E8D1009}.Debug|x86.ActiveCfg = Debug
-		{F1079FFF-CB09-49EE-B4C5-D6946E8D1009}.Release|Any CPU.ActiveCfg = Release
-		{F1079FFF-CB09-49EE-B4C5-D6946E8D1009}.Release|ARM.ActiveCfg = Release
-		{F1079FFF-CB09-49EE-B4C5-D6946E8D1009}.Release|ARM64.ActiveCfg = Release
-		{F1079FFF-CB09-49EE-B4C5-D6946E8D1009}.Release|x64.ActiveCfg = Release
-		{F1079FFF-CB09-49EE-B4C5-D6946E8D1009}.Release|x86.ActiveCfg = Release
+		{F2715FE7-F387-4C86-B925-5B23915BFE2D}.Debug|Any CPU.ActiveCfg = Debug
+		{F2715FE7-F387-4C86-B925-5B23915BFE2D}.Debug|Any CPU.Build.0 = Debug
+		{F2715FE7-F387-4C86-B925-5B23915BFE2D}.Debug|ARM.ActiveCfg = Debug
+		{F2715FE7-F387-4C86-B925-5B23915BFE2D}.Debug|ARM64.ActiveCfg = Debug
+		{F2715FE7-F387-4C86-B925-5B23915BFE2D}.Debug|x64.ActiveCfg = Debug
+		{F2715FE7-F387-4C86-B925-5B23915BFE2D}.Debug|x86.ActiveCfg = Debug
+		{F2715FE7-F387-4C86-B925-5B23915BFE2D}.Release|Any CPU.ActiveCfg = Release
+		{F2715FE7-F387-4C86-B925-5B23915BFE2D}.Release|ARM.ActiveCfg = Release
+		{F2715FE7-F387-4C86-B925-5B23915BFE2D}.Release|ARM64.ActiveCfg = Release
+		{F2715FE7-F387-4C86-B925-5B23915BFE2D}.Release|x64.ActiveCfg = Release
+		{F2715FE7-F387-4C86-B925-5B23915BFE2D}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
