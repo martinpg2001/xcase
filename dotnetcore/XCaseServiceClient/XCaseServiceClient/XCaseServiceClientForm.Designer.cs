@@ -273,7 +273,7 @@ namespace XCaseServiceClient
         {
             WebBrowser webBrowser = new WebBrowser();
             webBrowser.AllowNavigation = false;
-            webBrowser.Navigate(Application.StartupPath + "\\Help.html", true);
+            webBrowser.Navigate(Application.StartupPath + "Help.html", true);
         }
 
         private void Interface_Click(object sender, EventArgs e)

@@ -94,6 +94,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
     }
@@ -223,7 +231,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:XCaseServiceClient"
         "ProductCode" = "8:{EF4D0182-329A-4041-B6C3-60A53C835696}"
-        "PackageCode" = "8:{950A9F8D-B21C-44E1-BB78-49147A2339F9}"
+        "PackageCode" = "8:{42F9CFA5-1968-45EC-85F7-2BB43816B164}"
         "UpgradeCode" = "8:{C44CA08C-662F-4D91-83D6-74976197F3BD}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -238,9 +246,9 @@
         "Subject" = "8:"
         "ARPCONTACT" = "8:XCase"
         "Keywords" = "8:"
-        "ARPCOMMENTS" = "8:"
+        "ARPCOMMENTS" = "8:XCase Service Client"
         "ARPURLINFOABOUT" = "8:"
-        "ARPPRODUCTICON" = "8:"
+        "ARPPRODUCTICON" = "8:_EFAA606369E04AAA9ACAAB5D611B5046"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
@@ -345,7 +353,7 @@
         {
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_29004137E8D246A4B8B5190E69C099BF"
             {
-            "Name" = "8:XCaseServiceClient (Active)"
+            "Name" = "8:XCaseServiceClient"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
@@ -359,7 +367,7 @@
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_CD670613982A4E5990F60BF5F91567B9"
             {
-            "Name" = "8:XCaseServiceClient (Active)"
+            "Name" = "8:XCaseServiceClient"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
@@ -848,6 +856,34 @@
             "ProjectOutputGroupRegister" = "3:1"
             "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:Built"
+            "OutputProjectGuid" = "8:{1075780B-F228-4A22-B895-FD5B0340F9C2}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_BA427FE435604EABA3FC0212B9B2C154"
+            {
+            "SourcePath" = "8:"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5A66AC2FEA2A43AEB6DC009840F09921"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:ContentFiles"
             "OutputProjectGuid" = "8:{1075780B-F228-4A22-B895-FD5B0340F9C2}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
