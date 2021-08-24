@@ -35,7 +35,7 @@
     <url>https://github.com/martinpg2001/</url>
   </scm>
   <url>https://github.com/martinpg2001/</url>
-  <version>1.0.28</version>
+  <version>1.0.29</version>
   <build>
     <outputDirectory>build</outputDirectory>
     <plugins>
@@ -197,25 +197,29 @@
         <artifactId>axis2-transport-local</artifactId>
         <version>1.7.8</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/com.microsoft.azure/azure -->
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure</artifactId>
-      <version>1.22.0</version>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure</artifactId>
+        <version>1.41.2</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/com.microsoft.azure/azure-client-authentication -->
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-client-authentication</artifactId>
-      <version>1.6.8</version>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-client-authentication</artifactId>
+        <version>1.7.14</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/com.microsoft.azure/azure-client-runtime -->
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-client-runtime</artifactId>
-      <version>1.6.8</version>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-client-runtime</artifactId>
+        <version>1.7.14</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/com.microsoft.azure/azure-storage -->
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-storage</artifactId>
-      <version>8.3.0</version>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-storage</artifactId>
+        <version>8.6.6</version>
     </dependency>
     <dependency>
         <groupId>commons-cli</groupId>

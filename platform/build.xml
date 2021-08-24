@@ -48,9 +48,9 @@
     <property name="axis2-transport-base-jar" value="lib/axis2-transport-base-1.7.8.jar" />
     <property name="axis2-transport-http-jar" value="lib/axis2-transport-http-1.7.8.jar" />
     <property name="axis2-transport-local-jar" value="lib/axis2-transport-local-1.7.8.jar" />
-    <property name="azure-jar" value="lib/azure-1.22.0.jar" />
-    <property name="azure-client-authentication-jar" value="lib/azure-client-authentication-1.6.8.jar" />
-    <property name="azure-client-runtime-jar" value="lib/azure-client-runtime-1.6.8.jar" />
+    <property name="azure-jar" value="lib/azure-1.41.2.jar" />
+    <property name="azure-client-authentication-jar" value="lib/azure-client-authentication-1.7.14.jar" />
+    <property name="azure-client-runtime-jar" value="lib/azure-client-runtime-1.7.14.jar" />
     <property name="azure-mgmt-appservice-jar" value="lib/azure-mgmt-appservice-1.22.0.jar" />
     <property name="azure-mgmt-batch-jar" value="lib/azure-mgmt-batch-1.22.0.jar" />
     <property name="azure-mgmt-batchai-jar" value="lib/azure-mgmt-batchai-1.22.0.jar" />
@@ -75,7 +75,7 @@
     <property name="azure-mgmt-sql-jar" value="lib/azure-mgmt-sql-1.22.0.jar" />
     <property name="azure-mgmt-storage-jar" value="lib/azure-mgmt-storage-1.22.0.jar" />
     <property name="azure-mgmt-trafficmanager-jar" value="lib/azure-mgmt-trafficmanager-1.22.0.jar" />
-    <property name="azure-storage-jar" value="lib/azure-storage-8.3.0.jar" />
+    <property name="azure-storage-jar" value="lib/azure-storage-8.6.6.jar" />
     <property name="bcel-jar" value="lib/bcel-5.1.jar" />
     <property name="bcprov-jar" value="lib/bcprov.jar" />
     <property name="bsf-jar" value="lib/bsf.jar" />
