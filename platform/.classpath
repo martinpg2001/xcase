@@ -127,7 +127,7 @@
     <classpathentry kind="lib" path="lib/joda-time-2.10.2.jar"/>
     <classpathentry kind="lib" path="lib/jsch-0.1.54.jar"/>
     <classpathentry kind="lib" path="lib/json-smart-2.3.jar"/>
-    <classpathentry kind="lib" path="lib/jsoup-1.11.3.jar"/>
+    <classpathentry kind="lib" path="lib/jsoup-1.14.2.jar"/>
     <classpathentry kind="lib" path="lib/jtds.jar"/>
     <classpathentry kind="lib" path="lib/junit-4.13.1.jar"/>
     <classpathentry kind="lib" path="lib/kafka-clients-2.2.0.jar"/>
