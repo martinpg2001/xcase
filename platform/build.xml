@@ -129,9 +129,8 @@
     <property name="jTDS3-jar" value="lib/jTDS3.jar" />
     <property name="junit-jar" value="lib/junit-4.13.1.jar" />
     <property name="kafka-clients-jar" value="lib/kafka-clients-2.2.0.jar" />
-    <property name="log4j-api-jar" value="lib/log4j-api-2.11.2.jar" />
-    <property name="log4j-core-jar" value="lib/log4j-core-2.11.2.jar" />
-    <property name="log4j-jar" value="lib/log4j.jar" />
+    <property name="log4j-api-jar" value="lib/log4j-api-2.13.2.jar" />
+    <property name="log4j-core-jar" value="lib/log4j-core-2.13.2.jar" />
     <property name="mail-jar" value="lib/mail-1.4.7.jar" />
     <property name="mocquer-jar" value="lib/mocquer.jar" />
     <property name="msedgedriver" value="lib/msedgedriver" />
