@@ -1,3 +1,5 @@
+Update the maven version number.
+
 D:\xcase\xcase\platform\mainClass
 D:\xcase\xcase\platform\SetClassPath.sh
 D:\xcase\xcase\platform\SetClassPath.bat
