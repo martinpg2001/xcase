@@ -1,4 +1,4 @@
-Update the maven version number.
+Update the maven pom.xml version number and update the ant build.xml number.
 
 D:\xcase\xcase\platform\mainClass
 D:\xcase\xcase\platform\SetClassPath.sh
@@ -6,3 +6,6 @@ D:\xcase\xcase\platform\SetClassPath.bat
 D:\xcase\xcase\platform\pom.xml
 D:\xcase\xcase\platform\.classpath
 D:\xcase\xcase\platform\build.xml
+
+ant jar
+mvn clean install
