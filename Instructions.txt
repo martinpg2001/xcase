@@ -1,0 +1,17 @@
+The basic command to build a new version and to deploy it to OSSH is:
+
+mvn -Prelease -Dgpg.executable=gpg2 clean deploy
+
+All commands to be run from platform directory.
+
+cd xcase/platform
+
+Before building, be sure to perform clean up:
+
+mvn clean
+
+Make sure that the JAVA_HOME environment variable points to the correct Java instance. For example:
+
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+
+You will be prompted for passphrase of your certificate.
