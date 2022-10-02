@@ -45,8 +45,8 @@ public class GetEmailMethod extends BaseMailMethod {
                 messageArray = folder.getMessages();
                 LOGGER.debug("got messages");
             }
-            
-            /* We are going to close the connection to the server, and so we must clone the messages to 
+
+            /* We are going to close the connection to the server, and so we must clone the messages to
              * return them to the calling class.
              */
             if (messageArray != null) {
@@ -55,17 +55,16 @@ public class GetEmailMethod extends BaseMailMethod {
                 for (Message message : messageArray) {
                     messageList.add(new MimeMessage( (MimeMessage) message ));
                 }
-                
+
                 response.setMessages(messageList.toArray(new Message[0]));
             } else {
                 LOGGER.debug("messageArray is null");
             }
-            
+
             folder.close(false);
             LOGGER.debug("closed folder");
             store.close();
             LOGGER.debug("closed store");
-            response.setMessages(messageArray);
         } catch (Exception e) {
             LOGGER.warn("exception getting email: " + e.getMessage());
         }
