@@ -79,8 +79,7 @@ public class CreateMembershipMethod extends BaseBoxMethod {
                 String result = httpManager.doStringPost(groupMembershipsApiUrl, headers, null, entityString, null);
                 LOGGER.info("done post");
                 LOGGER.debug("result is " + result);
-                JsonParser jsonParser = new JsonParser();
-                JsonObject jsonObject = (JsonObject) jsonParser.parse(result);
+                JsonObject jsonObject = (JsonObject) JsonParser.parseString(result);
                 BoxMembership boxMembership = ConverterUtils.toBoxMembership(jsonObject);
                 createMembershipResponse.setMembership(boxMembership);
             } catch (Exception e) {

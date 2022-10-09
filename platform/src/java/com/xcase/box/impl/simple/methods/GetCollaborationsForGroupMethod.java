@@ -56,8 +56,7 @@ public class GetCollaborationsForGroupMethod extends BaseBoxMethod {
             try {
                 String getCollaborationsForGroupResult = httpManager.doStringGet(groupsApiUrl, headers, null);
                 LOGGER.info("done get");
-                JsonParser jsonParser = new JsonParser();
-                JsonObject jsonObject = (JsonObject) jsonParser.parse(getCollaborationsForGroupResult);
+                JsonObject jsonObject = (JsonObject) JsonParser.parseString(getCollaborationsForGroupResult);
             } catch (Exception e) {
                 LOGGER.debug("failed to parse to a document");
                 BoxException be = new BoxException("failed to parse to a document.", e);

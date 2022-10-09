@@ -55,8 +55,7 @@ public class GetGroupsForUserMethod extends BaseBoxMethod {
             try {
                 String getGroupsForUserResult = httpManager.doStringGet(getGroupsforUserApiUrl, headers, null);
                 LOGGER.debug("getGroupsForUserResult is " + getGroupsForUserResult);
-                JsonParser jsonParser = new JsonParser();
-                JsonObject jsonObject = (JsonObject) jsonParser.parse(getGroupsForUserResult);
+                JsonObject jsonObject = (JsonObject) JsonParser.parseString(getGroupsForUserResult);
                 String totalCount = jsonObject.getAsJsonPrimitive("total_count").getAsString();
                 getGroupsForUserResponse.setTotalCount(totalCount);
                 LOGGER.debug("totalCount is " + totalCount);

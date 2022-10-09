@@ -82,8 +82,7 @@ public class CreateCollaborationMethod extends BaseBoxMethod {
                 String createCollaborationString = httpManager.doStringPost(collaborationsApiUrl, headers, null, entityString, null);
                 LOGGER.info("done post");
                 LOGGER.debug("createCollaborationString is " + createCollaborationString);
-                JsonParser jsonParser = new JsonParser();
-                JsonObject jsonObject = (JsonObject) jsonParser.parse(createCollaborationString);
+                JsonObject jsonObject = (JsonObject) JsonParser.parseString(createCollaborationString);
                 LOGGER.info("about to convert jsonObject to BoxCollaboration");
                 BoxCollaboration boxCollaboration = ConverterUtils.toBoxCollaboration(jsonObject);
                 LOGGER.info("converted jsonObject to BoxCollaboration");

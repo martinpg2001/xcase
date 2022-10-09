@@ -59,8 +59,7 @@ public class GetPendingCollaborationsMethod extends BaseBoxMethod {
             try {
                 String pendingCollaborationsString = httpManager.doStringGet(pendingCollaborationsApiUrl, headers, null);
                 LOGGER.debug("folderCollaborationString is " + pendingCollaborationsString);
-                JsonParser jsonParser = new JsonParser();
-                JsonObject jsonObject = (JsonObject) jsonParser.parse(pendingCollaborationsString);
+                JsonObject jsonObject = (JsonObject) JsonParser.parseString(pendingCollaborationsString);
                 JsonArray entriesArray = jsonObject.getAsJsonArray("entries");
                 List<BoxCollaboration> boxCollaborationList = new ArrayList<BoxCollaboration>();
                 for (int i = 0; i < entriesArray.size(); i++) {

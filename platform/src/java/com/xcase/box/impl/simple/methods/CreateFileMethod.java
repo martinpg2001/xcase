@@ -95,8 +95,7 @@ public class CreateFileMethod extends BaseBoxMethod {
                 String result = httpManager.doMultipartByteArrayPost(filesApiUrl, byteArrayHashMap, headers, parameters);
                 LOGGER.info("done multipart post");
                 LOGGER.debug("result is " + result);
-                JsonParser jsonParser = new JsonParser();
-                JsonObject jsonObject = (JsonObject) jsonParser.parse(result);
+                JsonObject jsonObject = (JsonObject) JsonParser.parseString(result);
                 JsonElement totalCountElement = jsonObject.get("total_count");
                 LOGGER.debug("totalCountElement is " + totalCountElement);
                 JsonArray entriesArray = jsonObject.getAsJsonArray("entries");

@@ -115,8 +115,7 @@ public class UploadMethod extends BaseBoxMethod {
             }
 
             LOGGER.debug("result is " + result);
-            JsonParser jsonParser = new JsonParser();
-            JsonObject jsonObject = (JsonObject) jsonParser.parse(result);
+            JsonObject jsonObject = (JsonObject) JsonParser.parseString(result);
             JsonElement totalCountElement = jsonObject.get("total_count");
             LOGGER.debug("totalCountElement is " + totalCountElement);
             JsonArray entriesArray = jsonObject.getAsJsonArray("entries");
@@ -274,8 +273,7 @@ public class UploadMethod extends BaseBoxMethod {
         String resultString = httpManager.doMultipartPost(filesApiUrl, fileList, headers, parameters);
         LOGGER.debug("done multipart post with result " + resultString);
         try {
-            JsonParser jsonParser = new JsonParser();
-            JsonObject jsonObject = (JsonObject) jsonParser.parse(resultString);
+            JsonObject jsonObject = (JsonObject) JsonParser.parseString(resultString);
             LOGGER.debug("created jsonObject");
             try {
                 int totalCount = jsonObject.get("total_count").getAsInt();

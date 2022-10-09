@@ -71,8 +71,7 @@ public class GetCollaborationsMethod extends BaseBoxMethod {
             try {
                 String folderCollaborationString = httpManager.doStringGet(folderUrl, headers, null);
                 LOGGER.debug("folderCollaborationString is " + folderCollaborationString);
-                JsonParser jsonParser = new JsonParser();
-                JsonObject jsonObject = (JsonObject) jsonParser.parse(folderCollaborationString);
+                JsonObject jsonObject = (JsonObject) JsonParser.parseString(folderCollaborationString);
                 JsonArray entriesArray = jsonObject.getAsJsonArray("entries");
                 List<BoxCollaboration> boxCollaborationList = new ArrayList<BoxCollaboration>();
                 for (int i = 0; i < entriesArray.size(); i++) {

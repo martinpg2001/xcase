@@ -59,8 +59,7 @@ public class GetMembershipsForGroupMethod extends BaseBoxMethod {
             try {
                 String getMembershipsForGroupResult = httpManager.doStringGet(groupsApiUrl, headers, null);
                 LOGGER.debug("getMembershipsForGroupResult is " + getMembershipsForGroupResult);
-                JsonParser jsonParser = new JsonParser();
-                JsonObject jsonObject = (JsonObject) jsonParser.parse(getMembershipsForGroupResult);
+                JsonObject jsonObject = (JsonObject) JsonParser.parseString(getMembershipsForGroupResult);
                 String totalCount = jsonObject.getAsJsonPrimitive("total_count").getAsString();
                 getMembershipsForGroupResponse.setTotalCount(totalCount);
                 LOGGER.debug("totalCount is " + totalCount);
