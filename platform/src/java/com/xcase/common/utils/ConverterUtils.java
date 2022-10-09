@@ -21,9 +21,8 @@ public class ConverterUtils {
 
     public static JsonElement parseStringToJson(String jsonString) {
         JsonElement jsonElement = null;
-        JsonParser jsonParser = new JsonParser();
         if (jsonString != null && !jsonString.equals("")) {
-            jsonElement = jsonParser.parse(jsonString);
+            jsonElement = JsonParser.parseString(jsonString);
         } else {
             jsonElement = JsonNull.INSTANCE;
         }
@@ -35,6 +34,6 @@ public class ConverterUtils {
      *
      */
     private ConverterUtils() {
-        
+
     }
 }

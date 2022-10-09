@@ -86,7 +86,6 @@ public class OpenCloudSwaggerProxy extends SwaggerProxy implements ISwaggerProxy
             if (httpEntity != null) {
                 String responseEntityString = EntityUtils.toString(httpEntity);
                 LOGGER.debug("responseEntityString is " + responseEntityString);
-                JsonParser jsonParser = new JsonParser();
                 JsonElement jsonElement = ConverterUtils.parseStringToJson(responseEntityString);
                 if (jsonElement != null) {
                     JsonElement tokenElement = ((JsonObject) jsonElement).get("access_token");

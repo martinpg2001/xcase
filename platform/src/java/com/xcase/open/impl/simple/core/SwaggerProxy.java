@@ -24,7 +24,7 @@ public class SwaggerProxy {
      * log4j object.
      */
     protected static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
-    
+
     protected String accessToken;
     protected URL baseUrl;
 
@@ -37,7 +37,7 @@ public class SwaggerProxy {
     public SwaggerProxy(URL url) {
         baseUrl = url;
     }
-    
+
     /**
      * This constructor sets the base URL used by the proxy classes. The URL
      * must end in a /.
@@ -54,7 +54,7 @@ public class SwaggerProxy {
         getAuthenticationToken(httpClient);
         return httpClient;
     }
-    
+
     public CommonHTTPManager buildHttpClient(String accessToken) {
         CommonHTTPManager commonHTTPManager = CommonHTTPManager.getCommonHTTPManager();
         return commonHTTPManager;
@@ -77,7 +77,6 @@ public class SwaggerProxy {
             if (httpEntity != null) {
                 String responseEntityString = EntityUtils.toString(httpEntity);
                 LOGGER.debug("responseEntityString is " + responseEntityString);
-                JsonParser jsonParser = new JsonParser();
                 JsonElement jsonElement = ConverterUtils.parseStringToJson(responseEntityString);
                 if (jsonElement != null) {
                     JsonElement tokenElement = ((JsonObject) jsonElement).get("access_token");

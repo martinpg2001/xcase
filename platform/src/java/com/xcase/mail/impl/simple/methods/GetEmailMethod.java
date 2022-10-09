@@ -54,6 +54,7 @@ public class GetEmailMethod extends BaseMailMethod {
                 List<Message> messageList = new ArrayList<Message>();
                 for (Message message : messageArray) {
                     messageList.add(new MimeMessage( (MimeMessage) message ));
+                    LOGGER.debug("added message to messageList");
                 }
 
                 response.setMessages(messageList.toArray(new Message[0]));

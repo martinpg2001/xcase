@@ -28,7 +28,7 @@ public class RAMLProxy extends RESTProxy
 
 
     public RAMLProxy(URI baseUrl) {
-        
+
     }
 
     public RAMLProxy(URI baseUrl, String username, String password, String tenant) {
@@ -43,7 +43,7 @@ public class RAMLProxy extends RESTProxy
         getAuthenticationToken(commonHTTPManager);
         return commonHTTPManager;
     }
-    
+
     public CommonHTTPManager buildHttpClient(String accessToken) {
         LOGGER.debug("starting buildHttpClient()");
         CommonHTTPManager commonHTTPManager = CommonHTTPManager.getCommonHTTPManager();
@@ -70,7 +70,6 @@ public class RAMLProxy extends RESTProxy
             if (httpEntity != null) {
                 String responseEntityString = EntityUtils.toString(httpEntity);
                 LOGGER.debug("responseEntityString is " + responseEntityString);
-                JsonParser jsonParser = new JsonParser();
                 JsonElement jsonElement = ConverterUtils.parseStringToJson(responseEntityString);
                 if (jsonElement != null) {
                     JsonElement tokenElement = ((JsonObject) jsonElement).get("access_token");

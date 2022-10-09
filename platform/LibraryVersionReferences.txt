@@ -1,4 +1,4 @@
-Update the maven pom.xml version number and update the ant build.xml number.
+Update the maven pom.xml version number and update the ant build.xml version number.
 
 D:\xcase\xcase\platform\mainClass
 D:\xcase\xcase\platform\SetClassPath.sh

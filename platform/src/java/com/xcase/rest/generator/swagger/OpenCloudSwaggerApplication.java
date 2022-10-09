@@ -36,7 +36,6 @@ public class OpenCloudSwaggerApplication {
             swaggerApiProxySettingsEndPoint.Url = "https://stage1.openstage.intapp.com/api/";
             RESTApiProxySettingsEndpoint[] endpoints = new RESTApiProxySettingsEndpoint[] { swaggerApiProxySettingsEndPoint };
             RESTServiceDefinition restServiceDefinition = swaggerProxyGenerator.generateSourceString(swaggerApiProxySettingsEndPoint, swaggerDocument, "Admin", "pass2app", "stage1");
-//            List<RESTServiceDefinition> swaggerServiceDefinitionList = swaggerProxyGenerator.generateSourceStringForRestServiceDefinitionList(swaggerApiProxySettingsEndPoint, swaggerDocument, "Admin", "pass2app", "stage1");
             LOGGER.debug("got swaggerServiceDefinitionList");
         } catch (Exception e) {
             LOGGER.warn("exception generating from Swagger document: " + e.getMessage());

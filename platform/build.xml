@@ -102,8 +102,8 @@
     <property name="ganymed-ssh2-jar" value="lib/ganymed-ssh2.jar" />
     <property name="geckodriver-exe" value="lib/geckodriver.exe" />
     <property name="gnu-regexp-jar" value="lib/gnu-regexp.jar" />
-    <property name="gson-jar" value="lib/gson-2.2.3.jar" />
-    <property name="guava-jar" value="lib/guava-29.0-jre.jar" />
+    <property name="gson-jar" value="lib/gson-2.9.1.jar" />
+    <property name="guava-jar" value="lib/guava-31.1-jre.jar" />
     <property name="hamcrest-core-jar" value="lib/hamcrest-core-1.3.jar" />
     <property name="httpclient-jar" value="lib/httpclient-4.5.13.jar" />
     <property name="http-client-spi-jar" value="lib/http-client-spi-2.5.58.jar" />
@@ -124,13 +124,13 @@
     <property name="jna-platform-jar" value="lib/jna-platform-4.2.2.jar" />
     <property name="jnaexamples-jar" value="lib/jnaexamples.jar" />
     <property name="jsch-jar" value="lib/jsch-0.1.54.jar" />
-    <property name="jsoup-jar" value="lib/jsoup-1.14.2.jar" />
+    <property name="jsoup-jar" value="lib/jsoup-1.15.3.jar" />
     <property name="jtds-jar" value="lib/jtds.jar" />
     <property name="jTDS3-jar" value="lib/jTDS3.jar" />
     <property name="junit-jar" value="lib/junit-4.13.1.jar" />
     <property name="kafka-clients-jar" value="lib/kafka-clients-2.2.0.jar" />
-    <property name="log4j-api-jar" value="lib/log4j-api-2.17.0.jar" />
-    <property name="log4j-core-jar" value="lib/log4j-core-2.17.0.jar" />
+    <property name="log4j-api-jar" value="lib/log4j-api-2.19.0.jar" />
+    <property name="log4j-core-jar" value="lib/log4j-core-2.19.0.jar" />
     <property name="mail-jar" value="lib/mail-1.4.7.jar" />
     <property name="mocquer-jar" value="lib/mocquer.jar" />
     <property name="msedgedriver" value="lib/msedgedriver" />
@@ -162,7 +162,7 @@
     <property name="tst.dir" location="src/testng" />
     <property name="TALK" value="false" />
     <property name="tomcat.home" value="${env.TOMCAT_HOME}"/>
-    <property name="version" value="1.0.31"/>
+    <property name="version" value="1.0.34"/>
     <path id="classpath.base">
         <pathelement location="${abbot-jar}" />
         <pathelement location="${activation-jar}" />
