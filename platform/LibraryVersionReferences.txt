@@ -7,5 +7,8 @@ D:\xcase\xcase\platform\pom.xml
 D:\xcase\xcase\platform\.classpath
 D:\xcase\xcase\platform\build.xml
 
+cd /mnt/d/<path to platform directory>
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 ant jar
 mvn clean install
+mvn -Prelease -Dgpg.executable=gpg2 clean deploy

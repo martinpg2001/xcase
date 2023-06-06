@@ -124,7 +124,7 @@
     <property name="jna-platform-jar" value="lib/jna-platform-4.2.2.jar" />
     <property name="jnaexamples-jar" value="lib/jnaexamples.jar" />
     <property name="jsch-jar" value="lib/jsch-0.1.54.jar" />
-    <property name="json-smart-jar" value="lib/json-smart-2.4.8.jar" />
+    <property name="json-smart-jar" value="lib/json-smart-2.4.11.jar" />
     <property name="jsoup-jar" value="lib/jsoup-1.15.3.jar" />
     <property name="jtds-jar" value="lib/jtds.jar" />
     <property name="jTDS3-jar" value="lib/jTDS3.jar" />
@@ -163,7 +163,7 @@
     <property name="tst.dir" location="src/testng" />
     <property name="TALK" value="false" />
     <property name="tomcat.home" value="${env.TOMCAT_HOME}"/>
-    <property name="version" value="1.0.35"/>
+    <property name="version" value="1.0.36"/>
     <path id="classpath.base">
         <pathelement location="${abbot-jar}" />
         <pathelement location="${activation-jar}" />
