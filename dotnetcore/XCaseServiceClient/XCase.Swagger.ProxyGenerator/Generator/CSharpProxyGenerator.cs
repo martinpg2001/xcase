@@ -4,6 +4,7 @@
     using Microsoft.Extensions.Logging;
     using Microsoft.CSharp;
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -42,6 +43,9 @@
         public abstract IServiceDefinition GenerateSourceString(string document);
 
         public static int TextPadding { get; set; }
+        public static StringBuilder SourceStringBuilder { get; set; }
+        public static ConcurrentDictionary<IAPIProxySettingsEndpoint, string> swaggerDocDictionary = new ConcurrentDictionary<IAPIProxySettingsEndpoint, string>();
+        public static ConcurrentDictionary<IAPIProxySettingsEndpoint, string> ramlDocDictionary = new ConcurrentDictionary<IAPIProxySettingsEndpoint, string>();
 
         public static StringBuilder WriteClassDefinitionToStringBuilder(ClassDefinition classDefinition, IAPIProxySettingsEndpoint endPoint)
         {

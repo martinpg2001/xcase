@@ -6,6 +6,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Security;
 using System.Text;
@@ -16,7 +18,7 @@ using XCase.Swagger.ProxyGenerator.OpenAPI;
 
 namespace XCase.REST.ProxyGenerator.Generator
 {
-    public class RAMLCSharpProxyGenerator : RAMLProxyGenerator
+    public class RAMLCSharpProxyGenerator : CSharpProxyGenerator
     {
         #region Logger Setup
 
@@ -202,6 +204,30 @@ namespace XCase.REST.ProxyGenerator.Generator
             StreamReader streamReader = new StreamReader(settingStream);
             string value = streamReader.ReadToEnd();
             return JsonConvert.DeserializeObject<RESTApiProxySettings>(value);
+        }
+
+        public static async Task GetEndpointRAMLDoc(string requestUri, IAPIProxySettingsEndpoint endPoint)
+        {
+            Log.Debug("starting GetEndpointRAMLDoc()");
+            string ramlString = null;
+            System.Net.WebRequest webRequest = System.Net.WebRequest.Create(requestUri);
+            Log.Debug("created webRequest");
+            using (WebResponse webResponse = await webRequest.GetResponseAsync().ConfigureAwait(false))
+            {
+                Log.Debug("got webResponse");
+                Stream webResponseStream = webResponse.GetResponseStream();
+                StreamReader webResponseStreamReader = new StreamReader(webResponseStream);
+                ramlString = await webResponseStreamReader.ReadToEndAsync().ConfigureAwait(false);
+            }
+
+            if (ramlString == null)
+            {
+                throw new Exception(string.Format("Error downloading from: {0}", endPoint.GetUrl()));
+            }
+
+            Log.Debug("downloaded: {0}", requestUri);
+            ramlDocDictionary.GetOrAdd(endPoint, ramlString);
+            Log.Debug("finishing GetEndpointRAMLDoc()");
         }
     }
 }

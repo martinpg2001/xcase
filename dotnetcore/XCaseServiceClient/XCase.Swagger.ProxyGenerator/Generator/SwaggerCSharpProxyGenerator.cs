@@ -20,7 +20,7 @@
     using XCase.ProxyGenerator.REST;
     using XCase.REST.ProxyGenerator.OpenAPI;
 
-    public class SwaggerCSharpProxyGenerator : SwaggerProxyGenerator, IProxyGenerator
+    public class SwaggerCSharpProxyGenerator : CSharpProxyGenerator
     {
         #region Logger Setup
 
@@ -215,6 +215,30 @@
             StreamReader streamReader = new StreamReader(settingStream);
             string value = streamReader.ReadToEnd();
             return JsonConvert.DeserializeObject<RESTApiProxySettings>(value);
+        }
+
+        public static async Task GetEndpointSwaggerDoc(string requestUri, IAPIProxySettingsEndpoint endPoint)
+        {
+            Log.Debug("starting GetEndpointSwaggerDoc()");
+            string swaggerString = null;
+            System.Net.WebRequest webRequest = System.Net.WebRequest.Create(requestUri);
+            Log.Debug("created webRequest for {1}", requestUri);
+            using (WebResponse webResponse = await webRequest.GetResponseAsync().ConfigureAwait(false))
+            {
+                Log.Debug("got webResponse");
+                Stream webResponseStream = webResponse.GetResponseStream();
+                StreamReader webResponseStreamReader = new StreamReader(webResponseStream);
+                swaggerString = await webResponseStreamReader.ReadToEndAsync().ConfigureAwait(false);
+            }
+
+            if (swaggerString == null)
+            {
+                throw new Exception(string.Format("Error downloading from: {0}", endPoint.GetUrl()));
+            }
+
+            Log.Debug("downloaded: {0}", requestUri);
+            swaggerDocDictionary.GetOrAdd(endPoint, swaggerString);
+            Log.Debug("finishing GetEndpointSwaggerDoc()");
         }
     }
 }

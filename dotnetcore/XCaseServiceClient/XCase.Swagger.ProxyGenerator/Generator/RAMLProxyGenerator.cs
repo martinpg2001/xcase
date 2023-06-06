@@ -17,9 +17,6 @@ namespace XCase.REST.ProxyGenerator.Generator
 
         #endregion
 
-        public static StringBuilder SourceStringBuilder { get; set; }
-        public static ConcurrentDictionary<IAPIProxySettingsEndpoint, string> ramlDocDictionary = new ConcurrentDictionary<IAPIProxySettingsEndpoint, string>();
-
         public override abstract IServiceDefinition GenerateSourceString(IAPIProxySettingsEndpoint[] endpoints);
         public override abstract IServiceDefinition GenerateSourceString(IAPIProxySettingsEndpoint endpoint, string document, string username, string password, string tenant);
         public override abstract IServiceDefinition GenerateSourceString(IAPIProxySettingsEndpoint endpoint, string document);

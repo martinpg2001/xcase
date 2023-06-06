@@ -21,7 +21,7 @@
     using XCase.REST.ProxyGenerator.Generator;
     using XCase.REST.ProxyGenerator.OpenAPI;
 
-    public abstract class SwaggerProxyGenerator : CSharpProxyGenerator
+    public abstract class SwaggerProxyGenerator : IProxyGenerator
     {
         #region Logger Setup
 
@@ -35,10 +35,10 @@
         public static StringBuilder SourceStringBuilder { get; set; }
         public static ConcurrentDictionary<IAPIProxySettingsEndpoint, string> swaggerDocDictionary = new ConcurrentDictionary<IAPIProxySettingsEndpoint, string>();
 
-        public override abstract IServiceDefinition GenerateSourceString(IAPIProxySettingsEndpoint[] endpoints);
-        public override abstract IServiceDefinition GenerateSourceString(IAPIProxySettingsEndpoint endpoint, string document, string username, string password, string tenant);
-        public override abstract IServiceDefinition GenerateSourceString(IAPIProxySettingsEndpoint endpoint, string document);
-        public override abstract IServiceDefinition GenerateSourceString(string document);
+        public abstract IServiceDefinition GenerateSourceString(IAPIProxySettingsEndpoint[] endpoints);
+        public abstract IServiceDefinition GenerateSourceString(IAPIProxySettingsEndpoint endpoint, string document, string username, string password, string tenant);
+        public abstract IServiceDefinition GenerateSourceString(IAPIProxySettingsEndpoint endpoint, string document);
+        public abstract IServiceDefinition GenerateSourceString(string document);
 
         public static async Task GetEndpointSwaggerDoc(string requestUri, IAPIProxySettingsEndpoint endPoint)
         {
