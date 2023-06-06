@@ -1548,7 +1548,7 @@ namespace XCaseServiceClient
                         MessageBox.Show("Finished generating classes.");
                     }
 
-                    Log.Debug("{0}", restServiceDefinition.GetEndPoint());
+                    Log.Debug("REST service definiton endpoint is {0}", restServiceDefinition.GetEndPoint());
                 }
                 else
                 {
@@ -1556,7 +1556,9 @@ namespace XCaseServiceClient
                     Log.Debug("refresh is false");
                     if (string.IsNullOrEmpty(m_Language) || m_Language == "CSharp")
                     {
-                        object[] args = new object[] { new Uri(restServiceDefinition.GetEndPoint()) };
+                        string endpoint = restServiceDefinition.GetEndPoint();
+                        Log.Debug("endpoint is {0}", endpoint);
+                        object[] args = new object[] { new Uri(endpoint) };
                         string proxyClass = string.Format("{0}.{1}", restApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
                         m_RESTServiceClient = m_Assembly.CreateInstance(proxyClass, false, BindingFlags.CreateInstance, null, args, null, null);
                         if (m_RESTServiceClient != null)
@@ -1574,7 +1576,7 @@ namespace XCaseServiceClient
                         RerenderServiceControl(m_RESTServiceClient);
                     }
 
-                    Log.Debug("{0}", restServiceDefinition.GetEndPoint());
+                    Log.Debug("REST service definiton endpoint is {0}", restServiceDefinition.GetEndPoint());
                 }
 
                 Log.Debug("finishing ProcessSwaggerType()");

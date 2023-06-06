@@ -32,6 +32,18 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
 
             }
 
+            Log.Debug("swagger is {0}", document);
+            JToken openapiToken = jObject["openapi"];
+            if (openapiToken != null)
+            {
+                proxyDefinition.Swagger = openapiToken.ToString();
+            }
+            else
+            {
+
+            }
+
+            Log.Debug("swagger is {0}", document);
             Log.Debug("proxyDefinition REST is {0}", proxyDefinition.Swagger);
             JToken infoToken = jObject["info"];
             if (infoToken != null)
@@ -79,7 +91,20 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
                     Log.Debug("serverToken is not null");
                     string url = serverToken["url"].ToString();
                     Log.Debug("url is {0}", url);
-                    proxyDefinition.BasePath = url;
+                    if (url.StartsWith("http"))
+                    {
+                        Log.Debug("url is absolute");
+                        Uri serverUri = new Uri(url);
+                        Log.Debug("created serverUri");
+                        proxyDefinition.BasePath = serverUri.AbsolutePath;
+                        proxyDefinition.Host = serverUri.Host;
+                    }
+                    else
+                    {
+                        Log.Debug("url is relative");
+                        proxyDefinition.BasePath = url;
+                        proxyDefinition.Host = endpoint.GetHost();
+                    }
                 }
                 else
                 {
@@ -105,8 +130,8 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
             this.ParsePaths(jObject, proxyDefinition, endpoint.GetParseOperationIdForProxyName());
             Log.Debug("parsed paths");
             this.ParseDefinitions(jObject, proxyDefinition);
-            Log.Debug("finishing ParseSwaggerDoc()");
             ParseSecuritySchema(jObject, proxyDefinition);
+            Log.Debug("finishing ParseDoc()");
             return proxyDefinition;
         }
 

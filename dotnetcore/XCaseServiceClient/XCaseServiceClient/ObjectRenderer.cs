@@ -2988,7 +2988,7 @@
                             }
                             catch (Exception e)
                             {
-                                Log.Debug("exception casting result property as int: " + e.Message);
+                                Log.Debug("exception casting result property as int so try to cast as int64");
                                 ((Int64)resultPropertyObject).RenderResultInt64(resultTableLayoutPanel, j + 1);
                             }
                         }

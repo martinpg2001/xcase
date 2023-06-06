@@ -61,7 +61,7 @@
                 //SwaggerApiProxySettingsEndPoint swaggerApiProxySettingsEndPoint = new SwaggerApiProxySettingsEndPoint();
                 ((RESTApiProxySettingsEndPoint)swaggerApiProxySettingsEndPoint).AppendAsyncToMethodName = false;
                 swaggerDocDictionary.GetOrAdd(swaggerApiProxySettingsEndPoint, swaggerDocument);
-                Log.Debug("about to process REST document");
+                Log.Debug("about to process Swagger document");
                 return ProcessSwaggerDocuments(username, password, tenant);
             }
             catch (AggregateException ae)
@@ -150,12 +150,16 @@
             IProxyDefinition proxyDefinition = parser.ParseDoc(result, (RESTApiProxySettingsEndPoint)endPoint);
             string scheme = proxyDefinition.Schemes != null ? proxyDefinition.Schemes[0] : schemeFromURL;
             Log.Debug("scheme is {0}", scheme);
+            Log.Debug("proxyDefinition.Host is {0}", proxyDefinition.Host);
+            Log.Debug("proxyDefinition.BasePath is {0}", proxyDefinition.BasePath);
             string endPointString = string.Format("{0}://{1}{2}", scheme, proxyDefinition.Host, proxyDefinition.BasePath);
+           // string endPointString = proxyDefinition.BasePath;
             if (!endPointString.EndsWith("/"))
             {
                 endPointString = string.Format(endPointString + "{0}", "/");
             }
 
+            Log.Debug("endPointString is {0}", endPointString);
             swaggerServiceDefinition.EndPoint = endPointString;
             List<string> proxies = proxyDefinition.Operations.Select(i => i.ProxyName).Distinct().ToList();
             /* Before writing out the proxy classes, we have to ensure that the operation ids are
