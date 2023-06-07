@@ -21,6 +21,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Net.Security;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -879,20 +880,22 @@ namespace XCaseServiceClient
             }
         }
 
-        private void ProcessKlearNowType(bool refresh)
+        private async void ProcessKlearNowType(bool refresh)
         {
             Log.Debug("starting ProcessKlearNowType()");
             try
             {
                 /* Force loading System.Net libraries */
-                System.Net.WebRequest webRequest = System.Net.WebRequest.Create("http://www.google.com");
-                Log.Debug("created webRequest");
-                using (WebResponse webResponse = webRequest.GetResponse())
-                {
-                    Log.Debug("got webResponse");
-                    Stream webResponseStream = webResponse.GetResponseStream();
-                    StreamReader webResponseStreamReader = new StreamReader(webResponseStream);
-                }
+                // System.Net.WebRequest webRequest = System.Net.WebRequest.Create("http://www.google.com");
+                // Log.Debug("created webRequest");
+                // using (WebResponse webResponse = webRequest.GetResponse())
+                // {
+                //     Log.Debug("got webResponse");
+                //     Stream webResponseStream = webResponse.GetResponseStream();
+                //     StreamReader webResponseStreamReader = new StreamReader(webResponseStream);
+                // }
+                HttpClient httpClient = new();
+                string googleString = await httpClient.GetStringAsync("http://www.google.com");
 
                 /* Force loading the Newtonsoft library */
                 JObject jObject = JObject.Parse("{}");

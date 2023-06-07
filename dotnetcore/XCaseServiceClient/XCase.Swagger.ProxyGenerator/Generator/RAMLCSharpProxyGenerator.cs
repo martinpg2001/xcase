@@ -210,15 +210,17 @@ namespace XCase.REST.ProxyGenerator.Generator
         {
             Log.Debug("starting GetEndpointRAMLDoc()");
             string ramlString = null;
-            System.Net.WebRequest webRequest = System.Net.WebRequest.Create(requestUri);
-            Log.Debug("created webRequest");
-            using (WebResponse webResponse = await webRequest.GetResponseAsync().ConfigureAwait(false))
-            {
-                Log.Debug("got webResponse");
-                Stream webResponseStream = webResponse.GetResponseStream();
-                StreamReader webResponseStreamReader = new StreamReader(webResponseStream);
-                ramlString = await webResponseStreamReader.ReadToEndAsync().ConfigureAwait(false);
-            }
+            // System.Net.WebRequest webRequest = System.Net.WebRequest.Create(requestUri);
+            // Log.Debug("created webRequest");
+            // using (WebResponse webResponse = await webRequest.GetResponseAsync().ConfigureAwait(false))
+            // {
+            //     Log.Debug("got webResponse");
+            //     Stream webResponseStream = webResponse.GetResponseStream();
+            //     StreamReader webResponseStreamReader = new StreamReader(webResponseStream);
+            //     ramlString = await webResponseStreamReader.ReadToEndAsync().ConfigureAwait(false);
+            // }
+            HttpClient httpClient = new();
+            ramlString = await httpClient.GetStringAsync(requestUri);
 
             if (ramlString == null)
             {

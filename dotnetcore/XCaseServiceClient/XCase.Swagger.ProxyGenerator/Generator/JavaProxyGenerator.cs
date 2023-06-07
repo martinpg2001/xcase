@@ -52,19 +52,21 @@ namespace XCase.REST.ProxyGenerator.Generator
         {
             Log.Debug("starting GetEndpointSwaggerDoc()");
             string swaggerString = null;
-            System.Net.WebRequest webRequest = System.Net.WebRequest.Create(requestUri);
-            Log.Debug("created webRequest for {1}", requestUri);
-            using (WebResponse webResponse = await webRequest.GetResponseAsync().ConfigureAwait(false))
-            {
-                Log.Debug("got webResponse");
-                Stream webResponseStream = webResponse.GetResponseStream();
-                StreamReader webResponseStreamReader = new StreamReader(webResponseStream);
-                swaggerString = await webResponseStreamReader.ReadToEndAsync().ConfigureAwait(false);
-            }
+            // System.Net.WebRequest webRequest = System.Net.WebRequest.Create(requestUri);
+            // Log.Debug("created webRequest for {1}", requestUri);
+            // using (WebResponse webResponse = await webRequest.GetResponseAsync().ConfigureAwait(false))
+            // {
+            //     Log.Debug("got webResponse");
+            //     Stream webResponseStream = webResponse.GetResponseStream();
+            //     StreamReader webResponseStreamReader = new StreamReader(webResponseStream);
+            //     swaggerString = await webResponseStreamReader.ReadToEndAsync().ConfigureAwait(false);
+            // }
+            HttpClient httpClient = new();
+            swaggerString = await httpClient.GetStringAsync(requestUri);
 
             if (swaggerString == null)
             {
-                throw new Exception(string.Format("Error downloading from: {0}", endPoint.GetUrl()));
+                throw new Exception(string.Format("Error downloading from: {0}", requestUri));
             }
 
             Log.Debug("downloaded: {0}", requestUri);

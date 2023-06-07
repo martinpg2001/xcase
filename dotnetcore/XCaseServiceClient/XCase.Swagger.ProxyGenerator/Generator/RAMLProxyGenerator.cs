@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,16 +27,18 @@ namespace XCase.REST.ProxyGenerator.Generator
         {
             Log.Debug("starting GetEndpointRAMLDoc()");
             string ramlString = null;
-            System.Net.WebRequest webRequest = System.Net.WebRequest.Create(requestUri);
-            Log.Debug("created webRequest");
-            using (WebResponse webResponse = await webRequest.GetResponseAsync().ConfigureAwait(false))
-            {
-                Log.Debug("got webResponse");
-                Stream webResponseStream = webResponse.GetResponseStream();
-                StreamReader webResponseStreamReader = new StreamReader(webResponseStream);
-                ramlString = await webResponseStreamReader.ReadToEndAsync().ConfigureAwait(false);
-            }
+            // System.Net.WebRequest webRequest = System.Net.WebRequest.Create(requestUri);
+            // Log.Debug("created webRequest");
+            // using (WebResponse webResponse = await webRequest.GetResponseAsync().ConfigureAwait(false))
+            // {
+            //     Log.Debug("got webResponse");
+            //     Stream webResponseStream = webResponse.GetResponseStream();
+            //     StreamReader webResponseStreamReader = new StreamReader(webResponseStream);
+            //     ramlString = await webResponseStreamReader.ReadToEndAsync().ConfigureAwait(false);
+            // }
 
+            HttpClient httpClient = new();
+            ramlString = await httpClient.GetStringAsync(requestUri);
             if (ramlString == null)
             {
                 throw new Exception(string.Format("Error downloading from: {0}", endPoint.GetUrl()));
