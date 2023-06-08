@@ -33,9 +33,9 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
         {
             Log.Debug("starting ParseDoc()");
             ProxyDefinition proxyDefinition = new ProxyDefinition();
-            Log.Debug("document is {0}", document);
             try
             {
+                Log.Debug("document is\r\n{0}", document);
                 byte[] byteArray = Encoding.ASCII.GetBytes(document);
                 MemoryStream stream = new MemoryStream(byteArray);
                 OpenApiDocument openApiDocument = new OpenApiStreamReader().Read(stream, out var diagnostic);

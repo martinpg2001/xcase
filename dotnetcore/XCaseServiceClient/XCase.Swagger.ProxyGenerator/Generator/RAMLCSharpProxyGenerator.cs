@@ -31,7 +31,7 @@ namespace XCase.REST.ProxyGenerator.Generator
             {
                 ramlDocDictionary = new ConcurrentDictionary<IAPIProxySettingsEndpoint, string>();
                 SourceStringBuilder = new StringBuilder();
-                RESTApiProxySettingsEndPoint swaggerApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint();
+                RESTApiProxySettingsEndPoint swaggerApiProxySettingsEndPoint = new();
                 //swaggerApiProxySettingsEndPoint.AppendAsyncToMethodName = false;
                 ramlDocDictionary.GetOrAdd(swaggerApiProxySettingsEndPoint, ramlDocument);
                 Log.Debug("about to process RAML document");
@@ -56,16 +56,21 @@ namespace XCase.REST.ProxyGenerator.Generator
             {
                 ramlDocDictionary = new ConcurrentDictionary<IAPIProxySettingsEndpoint, string>();
                 SourceStringBuilder = new StringBuilder();
-                List<Task> taskList = new List<Task>();
+                List<Task<string>> taskList = new();
                 foreach (IAPIProxySettingsEndpoint endPoint in endpoints)
                 {
                     string requestUri = endPoint.GetUrl();
                     Log.Debug("about to add task for {0}", requestUri);
-                    taskList.Add(GetEndpointRAMLDoc(requestUri, endPoint));
+                    Task<string> endpointTask = GetEndpointDoc(requestUri);
+                    taskList.Add(endpointTask);
+                    Log.Debug("added endpointTask");
+                    string ramlString = endpointTask.Result;
+                    Log.Debug("ramlString is\r\n{0}", ramlString);
+                    ramlDocDictionary.GetOrAdd(endPoint, ramlString);
                 }
 
                 Log.Debug("waiting for REST documents to complete downloading...");
-                Task.WaitAll(taskList.ToArray());
+                Task.WhenAll(taskList);
                 Log.Debug("REST documents completed downloading");
                 return ProcessRAMLDocuments();
             }
@@ -99,26 +104,30 @@ namespace XCase.REST.ProxyGenerator.Generator
 
         private static RESTServiceDefinition ProcessRAMLDocuments(string username, string password, string tenant)
         {
-            Log.Debug("starting ProcessRAMLDocuments()");
-            RESTServiceDefinition ramlServiceDefinition = new RESTServiceDefinition();
-            List<string> sourceStringList = new List<string>();
-            OpenApiParser parser = new OpenApiParser();
-            Log.Debug("created RAMLParser");
-            foreach (KeyValuePair<IAPIProxySettingsEndpoint, string> swaggerDocDictionaryEntry in ramlDocDictionary.OrderBy(x => x.Key.GetId()))
+            Log.Debug("starting ProcessRAMLDocuments(string username, string password, string tenant)");
+            RESTServiceDefinition ramlServiceDefinition = new();
+            Log.Debug("created ramlServiceDefinition");
+            List<string> sourceStringList = new();
+            OpenApiParser parser = new();
+            Log.Debug("created parser");
+            foreach (KeyValuePair<IAPIProxySettingsEndpoint, string> ramlDocDictionaryEntry in ramlDocDictionary.OrderBy(x => x.Key.GetId()))
             {
-                ProcessRAMLDocDictionaryEntry(ramlServiceDefinition, swaggerDocDictionaryEntry, sourceStringList, parser, username, password, tenant);
+                Log.Debug("next ramlDocDictionaryEntry");
+                ProcessRAMLDocDictionaryEntry(ramlServiceDefinition, ramlDocDictionaryEntry, sourceStringList, parser, username, password, tenant);
             }
 
+            Log.Debug("processed ramlDocDictionary");
             ramlServiceDefinition.SourceStrings = sourceStringList.ToArray<string>();
             ramlServiceDefinition.GetProxyClasses().Sort();
             return ramlServiceDefinition;
         }
 
-        private static void ProcessRAMLDocDictionaryEntry(RESTServiceDefinition ramlServiceDefinition, KeyValuePair<IAPIProxySettingsEndpoint, string> swaggerDocDictionaryEntry, List<string> sourceStringList, OpenApiParser parser, string username, string password, string tenant)
+        private static void ProcessRAMLDocDictionaryEntry(RESTServiceDefinition ramlServiceDefinition, KeyValuePair<IAPIProxySettingsEndpoint, string> ramlDocDictionaryEntry, List<string> sourceStringList, OpenApiParser parser, string username, string password, string tenant)
         {
-            IAPIProxySettingsEndpoint endPoint = swaggerDocDictionaryEntry.Key;
-            string result = swaggerDocDictionaryEntry.Value;
-            Log.Debug("result is {0}", result);
+            Log.Debug("starting ProcessRAMLDocDictionaryEntry()");
+            IAPIProxySettingsEndpoint endPoint = ramlDocDictionaryEntry.Key;
+            string result = ramlDocDictionaryEntry.Value;
+            Log.Debug("result is\r\n{0}", result);
             /* Process endpoint information */
             string endPointURL = endPoint.GetUrl();
             Log.Debug("endPointURL is {0}", endPointURL);
@@ -201,33 +210,33 @@ namespace XCase.REST.ProxyGenerator.Generator
         public static RESTApiProxySettings GetSettings(string path)
         {
             using FileStream settingStream = File.OpenRead(path);
-            StreamReader streamReader = new StreamReader(settingStream);
+            StreamReader streamReader = new(settingStream);
             string value = streamReader.ReadToEnd();
             return JsonConvert.DeserializeObject<RESTApiProxySettings>(value);
         }
 
-        public static async Task GetEndpointRAMLDoc(string requestUri, IAPIProxySettingsEndpoint endPoint)
-        {
-            Log.Debug("starting GetEndpointRAMLDoc()");
-            string ramlString = null;
-            System.Net.WebRequest webRequest = System.Net.WebRequest.Create(requestUri);
-            Log.Debug("created webRequest");
-            using (WebResponse webResponse = await webRequest.GetResponseAsync().ConfigureAwait(false))
-            {
-                Log.Debug("got webResponse");
-                Stream webResponseStream = webResponse.GetResponseStream();
-                StreamReader webResponseStreamReader = new StreamReader(webResponseStream);
-                ramlString = await webResponseStreamReader.ReadToEndAsync().ConfigureAwait(false);
-            }
+        //public static async Task GetEndpointRAMLDoc(string requestUri, IAPIProxySettingsEndpoint endPoint)
+        //{
+        //    Log.Debug("starting GetEndpointRAMLDoc()");
+        //    string ramlString = null;
+        //    System.Net.WebRequest webRequest = System.Net.WebRequest.Create(requestUri);
+        //    Log.Debug("created webRequest");
+        //    using (WebResponse webResponse = await webRequest.GetResponseAsync().ConfigureAwait(false))
+        //    {
+        //        Log.Debug("got webResponse");
+        //        Stream webResponseStream = webResponse.GetResponseStream();
+        //        StreamReader webResponseStreamReader = new StreamReader(webResponseStream);
+        //        ramlString = await webResponseStreamReader.ReadToEndAsync().ConfigureAwait(false);
+        //    }
 
-            if (ramlString == null)
-            {
-                throw new Exception(string.Format("Error downloading from: {0}", endPoint.GetUrl()));
-            }
+        //    if (ramlString == null)
+        //    {
+        //        throw new Exception(string.Format("Error downloading from: {0}", endPoint.GetUrl()));
+        //    }
 
-            Log.Debug("downloaded: {0}", requestUri);
-            ramlDocDictionary.GetOrAdd(endPoint, ramlString);
-            Log.Debug("finishing GetEndpointRAMLDoc()");
-        }
+        //    Log.Debug("downloaded: {0}", requestUri);
+        //    ramlDocDictionary.GetOrAdd(endPoint, ramlString);
+        //    Log.Debug("finishing GetEndpointRAMLDoc()");
+        //}
     }
 }

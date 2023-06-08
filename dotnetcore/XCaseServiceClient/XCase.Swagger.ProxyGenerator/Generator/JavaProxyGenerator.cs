@@ -48,29 +48,35 @@ namespace XCase.REST.ProxyGenerator.Generator
         public static StringBuilder SourceStringBuilder { get; set; }
         public static ConcurrentDictionary<IAPIProxySettingsEndpoint, string> swaggerDocDictionary = new ConcurrentDictionary<IAPIProxySettingsEndpoint, string>();
 
-        public static async Task GetEndpointSwaggerDoc(string requestUri, IAPIProxySettingsEndpoint endPoint)
+        public static Task<string> GetEndpointDoc(string requestUri)
         {
-            Log.Debug("starting GetEndpointSwaggerDoc()");
-            string swaggerString = null;
-            System.Net.WebRequest webRequest = System.Net.WebRequest.Create(requestUri);
-            Log.Debug("created webRequest for {1}", requestUri);
-            using (WebResponse webResponse = await webRequest.GetResponseAsync().ConfigureAwait(false))
-            {
-                Log.Debug("got webResponse");
-                Stream webResponseStream = webResponse.GetResponseStream();
-                StreamReader webResponseStreamReader = new StreamReader(webResponseStream);
-                swaggerString = await webResponseStreamReader.ReadToEndAsync().ConfigureAwait(false);
-            }
-
-            if (swaggerString == null)
-            {
-                throw new Exception(string.Format("Error downloading from: {0}", endPoint.GetUrl()));
-            }
-
-            Log.Debug("downloaded: {0}", requestUri);
-            swaggerDocDictionary.GetOrAdd(endPoint, swaggerString);
-            Log.Debug("finishing GetEndpointSwaggerDoc()");
+            HttpClient httpClient = new();
+            return httpClient.GetStringAsync(requestUri);
         }
+
+        //public static async Task GetEndpointSwaggerDoc(string requestUri, IAPIProxySettingsEndpoint endPoint)
+        //{
+        //    Log.Debug("starting GetEndpointSwaggerDoc()");
+        //    string swaggerString = null;
+        //    System.Net.WebRequest webRequest = System.Net.WebRequest.Create(requestUri);
+        //    Log.Debug("created webRequest for {1}", requestUri);
+        //    using (WebResponse webResponse = await webRequest.GetResponseAsync().ConfigureAwait(false))
+        //    {
+        //        Log.Debug("got webResponse");
+        //        Stream webResponseStream = webResponse.GetResponseStream();
+        //        StreamReader webResponseStreamReader = new StreamReader(webResponseStream);
+        //        swaggerString = await webResponseStreamReader.ReadToEndAsync().ConfigureAwait(false);
+        //    }
+
+        //    if (swaggerString == null)
+        //    {
+        //        throw new Exception(string.Format("Error downloading from: {0}", endPoint.GetUrl()));
+        //    }
+
+        //    Log.Debug("downloaded: {0}", requestUri);
+        //    swaggerDocDictionary.GetOrAdd(endPoint, swaggerString);
+        //    Log.Debug("finishing GetEndpointSwaggerDoc()");
+        //}
 
         public static StringBuilder WriteClassDefinitionToStringBuilder(ClassDefinition classDefinition, IAPIProxySettingsEndpoint endPoint)
         {
@@ -488,7 +494,7 @@ namespace XCase.REST.ProxyGenerator.Generator
 
                 WriteLine(enumStringBuilder, "}");
                 WriteLine(enumStringBuilder);
-                StreamWriter enumStreamWriter = new StreamWriter(string.Format("{0}.java", SwaggerParser.FixTypeName(proxyParamEnum.Name)));
+                StreamWriter enumStreamWriter = new(string.Format("{0}.java", SwaggerParser.FixTypeName(proxyParamEnum.Name)));
                 enumStreamWriter.WriteLine(enumStringBuilder.ToString());
                 enumStreamWriter.Close();
                 /* TODO: do we still have to add to sourceStringList?

@@ -89,16 +89,21 @@
             {
                 swaggerDocDictionary = new ConcurrentDictionary<IAPIProxySettingsEndpoint, string>();
                 SourceStringBuilder = new StringBuilder();
-                List<Task> taskList = new List<Task>();
+                List<Task<string>> taskList = new List<Task<string>>();
                 foreach (IAPIProxySettingsEndpoint endPoint in endpoints)
                 {
                     string requestUri = endPoint.GetUrl();
                     Log.Debug("about to add task for {0}", requestUri);
-                    taskList.Add(GetEndpointSwaggerDoc(requestUri, endPoint));
+                    Task<string> endpointTask = GetEndpointDoc(requestUri);
+                    taskList.Add(endpointTask);
+                    Log.Debug("added endpointTask");
+                    string swaggerString = endpointTask.Result;
+                    Log.Debug("swaggerString is {0}", swaggerString);
+                    swaggerDocDictionary.GetOrAdd(endPoint, swaggerString);
                 }
 
                 Log.Debug("waiting for REST documents to complete downloading...");
-                Task.WaitAll(taskList.ToArray());
+                Task.WhenAll(taskList);
                 Log.Debug("REST documents completed downloading");
                 return ProcessSwaggerDocuments();
             }
@@ -113,6 +118,34 @@
                 throw;
             }
         }
+
+        //public static async Task GetEndpointSwaggerDoc(string requestUri, IAPIProxySettingsEndpoint endPoint)
+        //{
+        //    Log.Debug("starting GetEndpointSwaggerDoc()");
+        //    string swaggerString = null;
+        //    WebRequest webRequest = WebRequest.Create(requestUri);
+        //    Log.Debug("created webRequest for {0}", requestUri);
+        //    using (WebResponse webResponse = await webRequest.GetResponseAsync().ConfigureAwait(false))
+        //    {
+        //        Log.Debug("got webResponse");
+        //        //Stream webResponseStream = webResponse.GetResponseStream();
+        //        //StreamReader webResponseStreamReader = new StreamReader(webResponseStream);
+        //        //swaggerString = await webResponseStreamReader.ReadToEndAsync().ConfigureAwait(false);
+        //        //Log.Debug("swaggerString from WebResponse: {0}", swaggerString);
+        //        HttpClient httpClient = new();
+        //        swaggerString = await httpClient.GetStringAsync(requestUri);
+        //        Log.Debug("swaggerString from httpClient: {0}", swaggerString);
+        //    }
+
+        //    if (swaggerString == null)
+        //    {
+        //        throw new Exception(string.Format("Error downloading from: {0}", endPoint.GetUrl()));
+        //    }
+
+        //    Log.Debug("downloaded: {0}", requestUri);
+        //    swaggerDocDictionary.GetOrAdd(endPoint, swaggerString);
+        //    Log.Debug("finishing GetEndpointSwaggerDoc()");
+        //}
 
         private static RESTServiceDefinition ProcessSwaggerDocuments(string username, string password, string domain)
         {
@@ -219,30 +252,6 @@
             StreamReader streamReader = new StreamReader(settingStream);
             string value = streamReader.ReadToEnd();
             return JsonConvert.DeserializeObject<RESTApiProxySettings>(value);
-        }
-
-        public static async Task GetEndpointSwaggerDoc(string requestUri, IAPIProxySettingsEndpoint endPoint)
-        {
-            Log.Debug("starting GetEndpointSwaggerDoc()");
-            string swaggerString = null;
-            System.Net.WebRequest webRequest = System.Net.WebRequest.Create(requestUri);
-            Log.Debug("created webRequest for {1}", requestUri);
-            using (WebResponse webResponse = await webRequest.GetResponseAsync().ConfigureAwait(false))
-            {
-                Log.Debug("got webResponse");
-                Stream webResponseStream = webResponse.GetResponseStream();
-                StreamReader webResponseStreamReader = new StreamReader(webResponseStream);
-                swaggerString = await webResponseStreamReader.ReadToEndAsync().ConfigureAwait(false);
-            }
-
-            if (swaggerString == null)
-            {
-                throw new Exception(string.Format("Error downloading from: {0}", endPoint.GetUrl()));
-            }
-
-            Log.Debug("downloaded: {0}", requestUri);
-            swaggerDocDictionary.GetOrAdd(endPoint, swaggerString);
-            Log.Debug("finishing GetEndpointSwaggerDoc()");
         }
     }
 }
