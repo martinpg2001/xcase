@@ -21,29 +21,5 @@ namespace XCase.REST.ProxyGenerator.Generator
         public override abstract IServiceDefinition GenerateSourceString(IAPIProxySettingsEndpoint endpoint, string document, string username, string password, string tenant);
         public override abstract IServiceDefinition GenerateSourceString(IAPIProxySettingsEndpoint endpoint, string document);
         public override abstract IServiceDefinition GenerateSourceString(string document);
-
-        public static async Task GetEndpointRAMLDoc(string requestUri, IAPIProxySettingsEndpoint endPoint)
-        {
-            Log.Debug("starting GetEndpointRAMLDoc()");
-            string ramlString = null;
-            System.Net.WebRequest webRequest = System.Net.WebRequest.Create(requestUri);
-            Log.Debug("created webRequest");
-            using (WebResponse webResponse = await webRequest.GetResponseAsync().ConfigureAwait(false))
-            {
-                Log.Debug("got webResponse");
-                Stream webResponseStream = webResponse.GetResponseStream();
-                StreamReader webResponseStreamReader = new StreamReader(webResponseStream);
-                ramlString = await webResponseStreamReader.ReadToEndAsync().ConfigureAwait(false);
-            }
-
-            if (ramlString == null)
-            {
-                throw new Exception(string.Format("Error downloading from: {0}", endPoint.GetUrl()));
-            }
-
-            Log.Debug("downloaded: {0}", requestUri);
-            ramlDocDictionary.GetOrAdd(endPoint, ramlString);
-            Log.Debug("finishing GetEndpointRAMLDoc()");
-        }
     }
 }

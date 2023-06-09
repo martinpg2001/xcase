@@ -885,14 +885,8 @@ namespace XCaseServiceClient
             try
             {
                 /* Force loading System.Net libraries */
-                System.Net.WebRequest webRequest = System.Net.WebRequest.Create("http://www.google.com");
-                Log.Debug("created webRequest");
-                using (WebResponse webResponse = webRequest.GetResponse())
-                {
-                    Log.Debug("got webResponse");
-                    Stream webResponseStream = webResponse.GetResponseStream();
-                    StreamReader webResponseStreamReader = new StreamReader(webResponseStream);
-                }
+                System.Net.Http.HttpClient httpClient = new();
+                httpClient.GetStringAsync("http://www.google.com");
 
                 /* Force loading the Newtonsoft library */
                 JObject jObject = JObject.Parse("{}");

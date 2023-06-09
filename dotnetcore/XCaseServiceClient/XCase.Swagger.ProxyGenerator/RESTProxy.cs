@@ -79,11 +79,11 @@
         {
             if (currentUrl.Contains("?"))
             {
-                currentUrl += string.Format("&{0}={1}", paramName, Uri.EscapeUriString(value));
+                currentUrl += string.Format("&{0}={1}", paramName, Uri.EscapeDataString(value));
             }
             else
             {
-                currentUrl += string.Format("?{0}={1}", paramName, Uri.EscapeUriString(value));
+                currentUrl += string.Format("?{0}={1}", paramName, Uri.EscapeDataString(value));
             }
 
             return currentUrl;

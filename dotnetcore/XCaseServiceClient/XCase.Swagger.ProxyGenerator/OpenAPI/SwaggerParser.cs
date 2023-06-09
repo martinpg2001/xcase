@@ -323,8 +323,9 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
                 if (contentJToken != null)
                 {
                     Log.Debug("contentJToken is not null");
-
+                    #nullable enable
                     JToken? applicationJsonJToken = contentJToken["application/json"];
+                    #nullable disable
                     if (applicationJsonJToken != null)
                     {
                         Log.Debug("applicationJsonJToken is not null");
