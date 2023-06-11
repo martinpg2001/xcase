@@ -31,11 +31,10 @@
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        public static readonly Serilog.ILogger Log = new LoggerConfiguration().ReadFrom.Configuration(new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .Build()).CreateLogger();
-
+        private static readonly Serilog.ILogger Log = new LoggerConfiguration().Enrich.WithProperty("Class", "CSharpProxyGenerator").ReadFrom.Configuration(new ConfigurationBuilder()
+           .SetBasePath(Directory.GetCurrentDirectory())
+           .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+           .Build()).CreateLogger();
         #endregion
 
         public abstract IServiceDefinition GenerateSourceString(IAPIProxySettingsEndpoint[] endpoints);

@@ -28,11 +28,10 @@
         /// <summary>
         /// A log4net log instance.
         /// </summary>
-        public static readonly Serilog.ILogger Log = new LoggerConfiguration().ReadFrom.Configuration(new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .Build()).CreateLogger();
-
+        private static readonly Serilog.ILogger Log = new LoggerConfiguration().Enrich.WithProperty("Class", "ObjectRenderer").ReadFrom.Configuration(new ConfigurationBuilder()
+           .SetBasePath(Directory.GetCurrentDirectory())
+           .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+           .Build()).CreateLogger();
         #endregion
 
         public static XCaseTableLayoutPanel RenderParameterObject(object parameterObject)

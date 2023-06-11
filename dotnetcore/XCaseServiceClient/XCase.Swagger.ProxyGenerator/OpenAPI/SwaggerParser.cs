@@ -2,10 +2,13 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Newtonsoft.Json.Linq;
+    using Serilog;
     using XCase.ProxyGenerator;
     using XCase.ProxyGenerator.REST;
     using XCase.REST.ProxyGenerator.Generator;
@@ -13,7 +16,10 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
     public class SwaggerParser : RESTParser
     {
         #region Logger Setup
-
+        private static readonly Serilog.ILogger Log = new LoggerConfiguration().Enrich.WithProperty("Class", "SwaggerParser").ReadFrom.Configuration(new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .Build()).CreateLogger();
         #endregion
 
         public override IProxyDefinition ParseDoc(string document, IAPIProxySettingsEndpoint endpoint)

@@ -14,8 +14,10 @@
     using System.Threading.Tasks;
     using System.Web;
     using Microsoft.CSharp;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
+    using Serilog;
     using XCase.ProxyGenerator;
     using XCase.ProxyGenerator.REST;
     using XCase.REST.ProxyGenerator.OpenAPI;
@@ -23,7 +25,10 @@
     public class SwaggerCSharpProxyGenerator : CSharpProxyGenerator
     {
         #region Logger Setup
-
+        private static readonly Serilog.ILogger Log = new LoggerConfiguration().Enrich.WithProperty("Class", "SwaggerCSharpProxyGenerator").ReadFrom.Configuration(new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .Build()).CreateLogger();
         #endregion
 
         public override IServiceDefinition GenerateSourceString(string swaggerDocument)

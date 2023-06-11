@@ -45,7 +45,7 @@ namespace XCaseServiceClient
         /// <summary>
         /// A log instance.
         /// </summary>
-        private static readonly Serilog.ILogger Log = new LoggerConfiguration().ReadFrom.Configuration(new ConfigurationBuilder()
+        private static readonly Serilog.ILogger Log = new LoggerConfiguration().Enrich.WithProperty("Class", "XCaseServiceClientForm").ReadFrom.Configuration(new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
             .Build()).CreateLogger();
@@ -130,7 +130,7 @@ namespace XCaseServiceClient
         {
             //ILoggerFactory loggerFactory = new LoggerFactory().AddConsole();
             //ILogger logger = loggerFactory.CreateLogger<Program>();
-            Log.Information("This a log message");
+            Log.Information("this is a log message");
             Initialize();
         }
 
@@ -1394,7 +1394,11 @@ namespace XCaseServiceClient
                     Log.Debug("refresh is false");
                     if (string.IsNullOrEmpty(m_Language) || m_Language == "CSharp")
                     {
-                        object[] args = new object[] { new Uri(restServiceDefinition.GetEndPoint()) };
+                        Log.Debug("m_Language is null or empty or CSharp");
+                        string restServiceDefinitionEndpoint = restServiceDefinition.GetEndPoint();
+                        Log.Debug("restServiceDefinitionEndpoint is {0}", restServiceDefinitionEndpoint);
+                        object[] args = new object[] { new Uri(restServiceDefinitionEndpoint) };
+                        Log.Debug("created args array");
                         string proxyClass = string.Format("{0}.{1}", restApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
                         m_RESTServiceClient = m_Assembly.CreateInstance(proxyClass, false, BindingFlags.CreateInstance, null, args, null, null);
                         if (m_RESTServiceClient != null)

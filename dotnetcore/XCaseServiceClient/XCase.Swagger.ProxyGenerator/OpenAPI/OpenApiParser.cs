@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Microsoft.OpenApi.Readers;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Policy;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -21,12 +23,10 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
     public class OpenApiParser : RESTParser
     {
         #region Logger Setup
-
-        /// <summary>
-        /// A log4net log instance.
-        /// </summary>
-        //static readonly Serilog.ILogger Log = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.File("XCaseServiceClient.log").WriteTo.Console(restrictedToMinimumLevel: LogEventLevel.Information).CreateLogger();
-
+        private static readonly Serilog.ILogger Log = new LoggerConfiguration().Enrich.WithProperty("Class", "OpenApiParser").ReadFrom.Configuration(new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .Build()).CreateLogger();
         #endregion
 
         public override IProxyDefinition ParseDoc(string document, IAPIProxySettingsEndpoint endpoint)
@@ -147,14 +147,39 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                 }
 
                 Log.Debug("url is {0}", url);
-                proxyDefinition.Host = url;
-                proxyDefinition.BasePath = url;
+                try
+                {
+                    Uri uri = new Uri(url);
+                    Log.Debug("created uri");
+                    string host = uri.Host;
+                    Log.Debug("host is {0}", host);
+                    if (!string.IsNullOrEmpty(host))
+                    {
+                        proxyDefinition.Host = host;
+                        proxyDefinition.BasePath = uri.AbsolutePath;
+                    }
+                    else
+                    {
+                        proxyDefinition.Host = endpoint.GetHost();
+                        proxyDefinition.BasePath = endpoint.GetBasePath();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.Debug("exception parsing url: {0}", e.Message);
+                    proxyDefinition.Host = endpoint.GetHost();
+                    proxyDefinition.BasePath = endpoint.GetBasePath();
+                }
             }
             else
             {
+                Log.Debug("openApiDocument.Servers is null or openApiDocument.Servers.Count is zero");
                 proxyDefinition.Host = endpoint.GetHost();
                 proxyDefinition.BasePath = endpoint.GetBasePath();
             }
+
+            Log.Debug("proxyDefinition HOST is {0}", proxyDefinition.Host);
+            Log.Debug("proxyDefinition BasePath is {0}", proxyDefinition.BasePath);
         }
 
         private void ParsePaths(OpenApiDocument openApiDocument, ProxyDefinition proxyDefinition, bool parseOperationIdForProxyName)

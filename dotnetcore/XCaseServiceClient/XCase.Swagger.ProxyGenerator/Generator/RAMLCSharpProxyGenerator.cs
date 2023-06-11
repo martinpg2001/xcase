@@ -15,13 +15,21 @@ using System.Threading.Tasks;
 using XCase.ProxyGenerator;
 using XCase.ProxyGenerator.REST;
 using XCase.Swagger.ProxyGenerator.OpenAPI;
+using Microsoft.Extensions.Configuration;
+using Serilog;
 
 namespace XCase.REST.ProxyGenerator.Generator
 {
     public class RAMLCSharpProxyGenerator : CSharpProxyGenerator
     {
         #region Logger Setup
-
+        /// <summary>
+        /// A log instance.
+        /// </summary>
+        private static readonly Serilog.ILogger Log = new LoggerConfiguration().Enrich.WithProperty("Class", "RAMLCSharpProxyGenerator").ReadFrom.Configuration(new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .Build()).CreateLogger();
         #endregion
 
         public override IServiceDefinition GenerateSourceString(string ramlDocument)
