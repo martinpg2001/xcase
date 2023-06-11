@@ -89,6 +89,7 @@
                 .Replace(":", "_Colon_")
                 .Replace(",", "_Comma_")
                 .Replace("-", "_Dash_")
+                .Replace("#", "_Hash_")
                 .Replace("$", "_Dollar_")
                 .Replace(".", "_Dot_")
                 .Replace("(", "_Left_")
@@ -98,6 +99,7 @@
                 .Replace("}", "_RightBrace_")
                 .Replace("/", "_Slash_")
                 .Replace(" ", "_Space_")
+                .Replace("&", "_And_")
                 .Replace("*", "_Star_");
             fixedTypeName = RESTParser.FixGenericName(fixedTypeName);
             if ((char.IsLetter(fixedTypeName[0]) == false) && (fixedTypeName[0] != '_'))
