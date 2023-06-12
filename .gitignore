@@ -268,3 +268,8 @@ dotnetcore/XCaseServiceClient/.vs/XCaseServiceClient/v16/Server/sqlite3/storage.
 *.ide
 platform/klearnow-local-config.properties
 platform/slack-local-config.properties
+*.v2
+*.vsidx
+*.bin
+*.v2
+*.lock
