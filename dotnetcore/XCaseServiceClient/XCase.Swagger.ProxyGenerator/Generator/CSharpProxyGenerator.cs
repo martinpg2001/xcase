@@ -140,8 +140,11 @@
                     if (p.Type != null)
                     {
                         string defaultType = GetDefaultType(p);
+                        Log.Debug("defaultType is {0}", defaultType);
                         string cleanTypeName = p.Type.GetCleanTypeName();
+                        Log.Debug("cleanTypeName is {0}", cleanTypeName);
                         string defaultValue = GetDefaultValue(p);
+                        Log.Debug("defaultValue is {0}", defaultValue);
                         if (p.IsRequired)
                         {
                             parameter += string.Format("{0} {1}", defaultType, cleanTypeName);
@@ -204,7 +207,19 @@
                 WriteLine(proxyStringBuilder, "{");
                 foreach (string enumValue in proxyParamEnum.Values.Distinct())
                 {
-                    WriteLine(proxyStringBuilder, string.Format("{0},", XCase.ProxyGenerator.REST.Enum.FixEnumValue(enumValue)));
+                    if (enumValue.Contains(','))
+                    {
+                        string[] enumValueArray = enumValue.Split(',');
+                        foreach (string enumValueInstant in enumValueArray)
+                        {
+                            /* TODO: work out what to do if this allows for multiple values */
+                            //WriteLine(proxyStringBuilder, string.Format("{0},", XCase.ProxyGenerator.REST.Enum.FixEnumValue(enumValueInstant)));
+                        }
+                    }
+                    else
+                    {
+                        WriteLine(proxyStringBuilder, string.Format("{0},", XCase.ProxyGenerator.REST.Enum.FixEnumValue(enumValue)));
+                    }
                 }
 
                 WriteLine(proxyStringBuilder, "}");
@@ -454,6 +469,7 @@
 
             if (string.IsNullOrWhiteSpace(parameter.CollectionFormat) == false)
             {
+                Log.Debug("parameter CollectionFormat is not empty");
                 if (parameter.CollectionFormat.Equals("csv", StringComparison.OrdinalIgnoreCase))
                 {
                     WriteLine(proxyStringBuilder, string.Format("url = AppendQuery(url, \"{0}\", string.Join(\",\", {1}));", parameter.Type.Name, parameter.Type.GetCleanTypeName()));
@@ -502,9 +518,12 @@
 
         public static string GetDefaultType(Parameter parameter)
         {
+            Log.Debug("starting GetDefaultType()");
             if (parameter.Type != null)
             {
+                Log.Debug("parameter.Type is not null");
                 string typeName = parameter.Type.TypeName;
+                Log.Debug("typeName is {0}", typeName);
                 if (typeName == "file")
                 {
                     return "Tuple<string, byte[]>";
@@ -513,7 +532,12 @@
                 {
                     typeName = "int";
                 }
+                else if (typeName == "boolean")
+                {
+                    typeName = "bool";
+                }
 
+                Log.Debug("typeName is {0}", typeName);
                 if (!parameter.IsRequired && parameter.Type.IsNullableType)
                 {
                     typeName += "?";

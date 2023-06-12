@@ -695,12 +695,25 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                     Log.Debug("parameter type is array");
                     isArray = true;
                     OpenApiSchema itemsOpenApiSchema = openApiParameter.Schema.Items;
-                    typeName = GetTypeName(itemsOpenApiSchema, out isNullable) + "[]";
+                    if (itemsOpenApiSchema == null)
+                    {
+                        Log.Debug("itemsOpenApiSchema is null");
+                        typeName = "string[]";
+                    }
+                    else
+                    {
+                        Log.Debug("itemsOpenApiSchema is not null");
+                        typeName = GetTypeName(itemsOpenApiSchema, out isNullable) + "[]";
+                    }
+
                     Log.Debug("items typeName is {0}", typeName);
                 }
 
                 typeName = FixGenericName(typeName);
-                Log.Debug("typeName is {0}", typeName);
+                Log.Debug("fixed typeName is {0}", typeName);
+                Log.Debug("name is {0}", name);
+                Log.Debug("enumValues is {0}", enumValues);
+                Log.Debug("isNullable is {0}", isNullable);
                 TypeDefinition type = new TypeDefinition(typeName, name, enumValues, isNullable);
                 type.IsArray = isArray;
                 return type;
@@ -773,6 +786,12 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                 Log.Debug("schema.Type is not null");
                 isNullable = false;
                 return schema.Type;
+            }
+            else
+            {
+                Log.Debug("schema.Type is null");
+                isNullable = false;
+                return "string";
             }
 
             isNullable = true;
