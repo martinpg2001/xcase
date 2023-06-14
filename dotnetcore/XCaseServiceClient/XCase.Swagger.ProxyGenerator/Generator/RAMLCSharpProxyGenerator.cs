@@ -149,24 +149,29 @@ namespace XCase.REST.ProxyGenerator.Generator
 
             /* Parse REST document for endpoint */
             IProxyDefinition proxyDefinition = parser.ParseDoc(result, (RESTApiProxySettingsEndPoint)endPoint);
+            /* Use the parsed values of schemes, host, and basepath to build endpoint.
+             * Assume that host does NOT include schem or ://, and does not end in /
+             * Assume that basepath does start with /
+             */
             string scheme = proxyDefinition.Schemes != null ? proxyDefinition.Schemes[0] : schemeFromURL;
             Log.Debug("scheme is {0}", scheme);
-            string endPointString = proxyDefinition.Host;
             Log.Debug("proxyDefinition.Host is {0}", proxyDefinition.Host);
-            //string endPointString = string.Format("{0}://{1}{2}", scheme, proxyDefinition.Host, proxyDefinition.BasePath);
+            Log.Debug("proxyDefinition.BasePath is {0}", proxyDefinition.BasePath);
+            string endPointString = string.Format("{0}://{1}{2}", scheme, proxyDefinition.Host, proxyDefinition.BasePath);
+            Log.Debug("endPointString is {0}", endPointString);
             if (!endPointString.EndsWith("/"))
             {
                 endPointString = string.Format(endPointString + "{0}", "/");
             }
 
-            Log.Debug("endPointString is {0}", endPointString);
             if (endPointString.StartsWith("http"))
             {
                 ramlServiceDefinition.EndPoint = endPointString;
             }
             else
             {
-                ramlServiceDefinition.EndPoint = "http://localhost:8080/api/v3/";
+                ramlServiceDefinition.EndPoint = string.Format("{0}://{1}{2}", scheme, proxyDefinition.Host, proxyDefinition.BasePath);
+//                ramlServiceDefinition.EndPoint = "http://localhost:8080/api/v3/";
             }
 
             List<string> proxies = proxyDefinition.Operations.Select(i => i.ProxyName).Distinct().ToList();

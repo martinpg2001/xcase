@@ -273,3 +273,5 @@ platform/slack-local-config.properties
 *.bin
 *.v2
 *.lock
+dotnetcore/XCaseServiceClient/.vs/XCaseServiceClient/DesignTimeBuild/.dtbcache.v2
+dotnetcore/XCaseServiceClient/.vs/XCaseServiceClient/DesignTimeBuild/.dtbcache.v2

@@ -189,7 +189,7 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
             List<KeyValuePair<string, OpenApiPathItem>> endpointEnumerable = openApiPaths.ToList();
             foreach(KeyValuePair<string, OpenApiPathItem> endpoint in endpointEnumerable)
             {
-                List<XCase.ProxyGenerator.REST.Operation> endpointOperationList = CreateOperationListFromEndpoint(endpoint, parseOperationIdForProxyName, proxyDefinition.SecuritySchemes);
+                List<Operation> endpointOperationList = CreateOperationListFromEndpoint(endpoint, proxyDefinition, parseOperationIdForProxyName, proxyDefinition.SecuritySchemes);
                 Log.Debug("created endpointOperationList");
                 proxyDefinition.Operations.AddRange(endpointOperationList);
             }
@@ -197,29 +197,29 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
             Log.Debug("finishing ParsePaths()");
         }
 
-        private List<XCase.ProxyGenerator.REST.Operation> CreateOperationListFromEndpoint(KeyValuePair<string, OpenApiPathItem> endpoint, bool parseOperationIdForProxyName, IDictionary<string, RESTSecurityScheme> restSecuritySchemeDictionary)
+        private List<Operation> CreateOperationListFromEndpoint(KeyValuePair<string, OpenApiPathItem> endpoint, ProxyDefinition proxyDefinition, bool parseOperationIdForProxyName, IDictionary<string, RESTSecurityScheme> restSecuritySchemeDictionary)
         {
             Log.Debug("starting CreateOperationListFromEndpoint()");
-            List<XCase.ProxyGenerator.REST.Operation> operationList = new List<XCase.ProxyGenerator.REST.Operation>();
-            List < XCase.ProxyGenerator.REST.Operation> restOperationList = CreateOperationListFromPathToken(endpoint.Key, endpoint.Value, null, parseOperationIdForProxyName, restSecuritySchemeDictionary);
+            List<Operation> operationList = new List<Operation>();
+            List <Operation> restOperationList = CreateOperationListFromPathToken(endpoint.Key, endpoint.Value, proxyDefinition, null, parseOperationIdForProxyName, restSecuritySchemeDictionary);
             operationList.AddRange(restOperationList);
             return operationList;
         }
 
-        private List<XCase.ProxyGenerator.REST.Operation> CreateOperationListFromPathToken(string path, OpenApiPathItem endpoint, List<XCase.ProxyGenerator.REST.Parameter> parameterList, bool parseOperationIdForProxyName, IDictionary<string, RESTSecurityScheme> restSecuritySchemeDictionary)
+        private List<Operation> CreateOperationListFromPathToken(string path, OpenApiPathItem endpoint, ProxyDefinition proxyDefinition, List<Parameter> parameterList, bool parseOperationIdForProxyName, IDictionary<string, RESTSecurityScheme> restSecuritySchemeDictionary)
         {
             Log.Debug("starting CreateOperationListFromPathToken()");
-            List<XCase.ProxyGenerator.REST.Operation> pathOperationList = new List<XCase.ProxyGenerator.REST.Operation>();
+            List<Operation> pathOperationList = new List<Operation>();
             foreach (KeyValuePair<OperationType, OpenApiOperation> operation in endpoint.Operations)
             {
-                XCase.ProxyGenerator.REST.Operation restOperation = CreateOperationFromOpenApiOperation(path, operation, null, true, restSecuritySchemeDictionary);
+                Operation restOperation = CreateOperationFromOpenApiOperation(path, proxyDefinition, operation, null, true, restSecuritySchemeDictionary);
                 pathOperationList.Add(restOperation);
             }
 
             return pathOperationList;
         }
 
-        private XCase.ProxyGenerator.REST.Operation CreateOperationFromOpenApiOperation(string path, KeyValuePair<OperationType, OpenApiOperation> keyValuePair, List<XCase.ProxyGenerator.REST.Parameter> parameterList, bool parseOperationIdForProxyName, IDictionary<string, RESTSecurityScheme> restSecuritySchemeDictionary)
+        private Operation CreateOperationFromOpenApiOperation(string path, ProxyDefinition proxyDefinition, KeyValuePair<OperationType, OpenApiOperation> keyValuePair, List<Parameter> parameterList, bool parseOperationIdForProxyName, IDictionary<string, RESTSecurityScheme> restSecuritySchemeDictionary)
         {
             Log.Debug("starting CreateOperationFromOpenApiOperation()");
             string method = keyValuePair.Key.ToString();
@@ -298,6 +298,65 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                             {
                                 returnType = null;
                             }
+
+                            if (returnType != null && returnType.Equals("object"))
+                            {
+                                Log.Debug("returnType is object");
+                                ClassDefinition returnClassDefinition = new ClassDefinition("ReturnClass");
+                                IDictionary<string, OpenApiSchema> propertiesDictionary = openApiSchema.Properties;
+                                foreach (string key in propertiesDictionary.Keys)
+                                {
+                                    Log.Debug("key is {0}", key);
+                                    OpenApiSchema propertyOpenApiSchema = null;
+                                    if (propertiesDictionary.TryGetValue(key, out propertyOpenApiSchema))
+                                    {
+                                        Log.Debug("propertyOpenApiSchema is {0}", propertyOpenApiSchema.ToString());
+                                        string propertyType = propertyOpenApiSchema.Type;
+                                        Log.Debug("propertyType is {0}", propertyType);
+                                        if (propertyType.Equals("integer"))
+                                        {
+                                            returnType = "int";
+                                        }
+
+                                        if (propertyType.Equals("object"))
+                                        {
+                                            Log.Debug("propertyType is object");
+                                            OpenApiSchema additonalPropertiesSchema = propertyOpenApiSchema.AdditionalProperties;
+                                            Log.Debug("got additonalPropertiesSchema");
+                                            ClassDefinition additonalPropertyClassDefinition = new ClassDefinition(key + "AdditionalPropertyClass");
+                                            Log.Debug("created additonalPropertyClassDefinition");
+                                            IDictionary<string, OpenApiSchema> additionalPropertiesDictionary = additonalPropertiesSchema.Properties;
+                                            Log.Debug("got additionalPropertiesDictionary");
+                                            foreach (string additionalPropertyKey in additionalPropertiesDictionary.Keys)
+                                            {
+                                                Log.Debug("additionalPropertyKey is {0}", additionalPropertyKey);
+                                                OpenApiSchema additionalPropertyOpenApiSchema = null;
+                                                if (additionalPropertiesDictionary.TryGetValue(key, out additionalPropertyOpenApiSchema))
+                                                {
+                                                    string additionalPropertyType = additionalPropertyOpenApiSchema.Type;
+                                                    Log.Debug("additionalPropertyType is {0}", additionalPropertyType);
+                                                    TypeDefinition additionalPropertyTypeDefinition = new TypeDefinition(key + "AdditionalPropertyClass", additionalPropertyKey, null, true);
+                                                    additonalPropertyClassDefinition.Properties.Add(additionalPropertyTypeDefinition);
+                                                }
+                                            }
+
+                                            returnType = key + "AdditionalPropertyClass";
+                                            proxyDefinition.ClassDefinitions.Add(additonalPropertyClassDefinition);
+                                        }
+
+                                        if (propertyType.Equals("string"))
+                                        {
+                                            returnType = "string";
+                                        }
+
+                                        TypeDefinition returnTypeDefinition = new TypeDefinition(returnType, key, null, true);
+                                        returnClassDefinition.Properties.Add(returnTypeDefinition);
+                                    }
+                                }
+
+                                proxyDefinition.ClassDefinitions.Add(returnClassDefinition);
+                                returnType = "ReturnClass";
+                            }
                         }
                         else
                         {
@@ -323,7 +382,7 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
             {
                 foreach (OpenApiParameter paramToken in paramTokens)
                 {
-                    XCase.ProxyGenerator.REST.Parameter parameter = CreateParameterFromOpenApiParameter(paramToken);
+                    Parameter parameter = CreateParameterFromOpenApiParameter(paramToken);
                     Log.Debug("created parameter");
                     parameters.Add(parameter);
                 }
@@ -331,13 +390,13 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
 
             if (keyValuePair.Value.RequestBody != null)
             {
-                XCase.ProxyGenerator.REST.Parameter parameter = CreateParameterFromOpenApiRequestBody(keyValuePair.Value.RequestBody);
+                Parameter parameter = CreateParameterFromOpenApiRequestBody(keyValuePair.Value.RequestBody);
                 Log.Debug("created parameter");
                 parameters.Add(parameter);
             }
 
             Log.Debug("about to create operation");
-            XCase.ProxyGenerator.REST.Operation operation = new XCase.ProxyGenerator.REST.Operation(returnType, method, path, parameters, operationId, description, proxyName);
+            Operation operation = new Operation(returnType, method, path, parameters, operationId, description, proxyName);
             operation.SecurityScheme = restSecurityScheme;
             Log.Debug("created operation");
             return operation;
@@ -385,6 +444,7 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                         OpenApiReference openApiReference = openApiSchema.Reference;
                         if (openApiReference != null)
                         {
+                            Log.Debug("openApiReference is not null");
                             ReferenceType? referenceTye = openApiReference.Type;
                             typeName = openApiSchema.Reference.ReferenceV3.Substring("#/components/schemas/".Length);
                             Log.Debug("typeName is {0}", typeName);
@@ -392,8 +452,13 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                             Log.Debug("name is {0}", name);
                             return new TypeDefinition(typeName, name, null, false);
                         }
+                        else
+                        {
+                            Log.Debug("openApiReference is null");
+                        }
 
                         string type = openApiSchema.Type;
+                        Log.Debug("type is {0}", type);
                         if (type != null)
                         {
                             Log.Debug("type is {0}", type);
