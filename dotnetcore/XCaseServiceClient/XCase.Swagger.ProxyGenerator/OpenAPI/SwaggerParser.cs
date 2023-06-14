@@ -16,7 +16,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
     public class SwaggerParser : RESTParser
     {
         #region Logger Setup
-        private static readonly Serilog.ILogger Log = new LoggerConfiguration().Enrich.WithProperty("Class", "SwaggerParser").ReadFrom.Configuration(new ConfigurationBuilder()
+        private new static readonly Serilog.ILogger Log = new LoggerConfiguration().Enrich.WithProperty("Class", "SwaggerParser").ReadFrom.Configuration(new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
             .Build()).CreateLogger();
@@ -141,7 +141,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
             return proxyDefinition;
         }
 
-        private void ParseSecuritySchema(JObject jObject, ProxyDefinition proxyDefinition)
+        private static void ParseSecuritySchema(JObject jObject, ProxyDefinition proxyDefinition)
         {
             Log.Debug("starting ParseSecuritySchema()");
             IDictionary<string, RESTSecurityScheme> restSecuritySchemeDictionary = new Dictionary<string, RESTSecurityScheme>();
@@ -163,7 +163,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
             proxyDefinition.SecuritySchemes = restSecuritySchemeDictionary;
         }
 
-        private RESTSecurityScheme CreateRESTSecuritySchemeFromSchemeJToken(JToken schemeJToken)
+        private static RESTSecurityScheme CreateRESTSecuritySchemeFromSchemeJToken(JToken schemeJToken)
         {
             Log.Debug("starting CreateRESTSecuritySchemeFromSchemeJToken()");
             /* This is not correct, but points to what has to be done to process the scheme tokens */
@@ -238,7 +238,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
             Log.Debug("starting CreateOperationFromOperationToken()");
             string method = operationToken.Name;
             Log.Debug("method is {0}", method);
-            string unqueriedPath = path.Contains("?") ? path.Substring(0, path.IndexOf("?")) : path;
+            string unqueriedPath = path.Contains('?') ? path.Substring(0, path.IndexOf("?")) : path;
             Log.Debug("unqueriedPath is {0}", unqueriedPath);
             unqueriedPath = unqueriedPath.Replace("/", "").Replace("{", "").Replace("}", "");
             Log.Debug("unqueriedPath is {0}", unqueriedPath);
@@ -253,7 +253,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
             Log.Debug("operationId is {0}", operationId);
             if (parseOperationIdForProxyName)
             {
-                if (operationId.Contains("_"))
+                if (operationId.Contains('_'))
                 {
                     int underscoreLocation = operationId.IndexOf("_", StringComparison.OrdinalIgnoreCase);
                     proxyName = operationId.Substring(0, underscoreLocation);
@@ -297,7 +297,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
                 returnType = null;
             }
 
-            List<Parameter> parameters = null;
+            List<Parameter> parameters;
             if (parameterList != null)
             {
                 parameters = parameterList;
@@ -627,7 +627,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
             }
         }
 
-        private string ParseRef(string input)
+        private static string ParseRef(string input)
         {
             return input.StartsWith("#/definitions/") ? input.Substring("#/definitions/".Length) : input;
         }
@@ -645,7 +645,7 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
                     isNullable = false;
                     string refTypeValue = refType.Value.ToString();
                     //Log.DebugFormat("refTypeValue is {0}", refTypeValue);
-                    return FixTypeName(this.ParseRef(refTypeValue));
+                    return FixTypeName(ParseRef(refTypeValue));
                 }
 
                 JToken schema = token["schema"];
