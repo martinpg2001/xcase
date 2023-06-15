@@ -1,24 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.IO;
 using System.Collections.Concurrent;
-using System.Text;
 
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Configuration;
 
 namespace XCase.ProxyGenerator
 {
 
-	/// <summary>
-	/// Generic file logger provider.
-	/// </summary>
+    /// <summary>
+    /// Generic file logger provider.
+    /// </summary>
 #if NETSTANDARD2
 	[ProviderAlias("File")]
 #endif
-	public class FileLoggerProvider : ILoggerProvider
+    public class FileLoggerProvider : ILoggerProvider
 	{
 
 		private readonly string LogFileName;

@@ -7,16 +7,9 @@
     using System.Linq;
     using System.Reflection;
     using System.Runtime.Serialization;
-    using System.Text;
     using System.Xml;
     using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.Logging;
     using Serilog;
-    using Serilog.Core;
-    using Serilog.Events;
-    using Serilog.Formatting.Json;
-    using Serilog.Configuration;
-    using Serilog.Settings;
 
     public class ObjectFactory
     {

@@ -1,21 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.IO;
-using System.Collections.Concurrent;
 using System.Text;
 
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Configuration;
 
 namespace XCase.ProxyGenerator
 {
 
-	/// <summary>
-	/// Generic file logger that works in a similar way to standard ConsoleLogger.
-	/// </summary>
-	public class FileLogger : ILogger
+    /// <summary>
+    /// Generic file logger that works in a similar way to standard ConsoleLogger.
+    /// </summary>
+    public class FileLogger : ILogger
 	{
 
 		private readonly string logName;

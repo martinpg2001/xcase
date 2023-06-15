@@ -1,27 +1,18 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Microsoft.CSharp;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Reflection;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using XCase.ProxyGenerator;
 using XCase.ProxyGenerator.REST;
 using XCase.REST.ProxyGenerator.OpenAPI;
-using XCase.Swagger.ProxyGenerator.OpenAPI;
 using Serilog;
-using Serilog.Core;
-using Serilog.Events;
-using Serilog.Formatting.Json;
-using Serilog.Configuration;
-using Serilog.Settings;
 
 namespace XCase.REST.ProxyGenerator.Generator
 {

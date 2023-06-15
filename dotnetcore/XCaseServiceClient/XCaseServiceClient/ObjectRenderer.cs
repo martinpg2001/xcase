@@ -5,21 +5,12 @@
     using System.Collections.Generic;
     using System.Drawing;
     using System.IO;
-    using System.Linq;
     using System.Reflection;
     using System.Runtime.Serialization;
-    using System.Text;
     using System.Windows.Forms;
     using System.Xml;
     using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.Logging;
-    using Newtonsoft.Json;
     using Serilog;
-    using Serilog.Core;
-    using Serilog.Events;
-    using Serilog.Formatting.Json;
-    using Serilog.Configuration;
-    using Serilog.Settings;
 
     public class ObjectRenderer
     {

@@ -1,13 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using XCase.ProxyGenerator;
+﻿using XCase.ProxyGenerator;
 
 namespace XCase.REST.ProxyGenerator.Generator
 {

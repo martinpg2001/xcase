@@ -1,6 +1,5 @@
 namespace XCase.ProxyGenerator.REST
 {
-    using System;
     using System.Collections.Generic;
 
     public class ProxyDefinition : IProxyDefinition

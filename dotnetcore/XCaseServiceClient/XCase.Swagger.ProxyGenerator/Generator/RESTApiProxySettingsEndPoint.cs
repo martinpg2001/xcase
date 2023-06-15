@@ -2,9 +2,7 @@ namespace XCase.REST.ProxyGenerator.Generator
 {
     using Microsoft.Extensions.Configuration;
     using System;
-    using System.Collections.Generic;
     using System.Configuration;
-    using System.Net;
     using XCase.ProxyGenerator;
 
     public class RESTApiProxySettingsEndPoint : IAPIProxySettingsEndpoint

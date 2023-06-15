@@ -1,21 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.IO;
-using System.Collections.Concurrent;
-using System.Text;
-
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Configuration;
 
 namespace XCase.ProxyGenerator
 {
 
-	/// <summary>
-	/// Generic file logger options.
-	/// </summary>
-	public class FileLoggerOptions
+    /// <summary>
+    /// Generic file logger options.
+    /// </summary>
+    public class FileLoggerOptions
 	{
 
 		public bool Append { get; set; } = true;

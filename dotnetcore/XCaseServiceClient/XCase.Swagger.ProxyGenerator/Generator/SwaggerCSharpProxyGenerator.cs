@@ -1,21 +1,13 @@
 ﻿namespace XCase.REST.ProxyGenerator.Generator
 {
     using System;
-    using System.CodeDom;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Net;
-    using System.Net.Http;
-    using System.Reflection;
-    using System.Security;
     using System.Text;
     using System.Threading.Tasks;
-    using System.Web;
-    using Microsoft.CSharp;
     using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
     using Serilog;
     using XCase.ProxyGenerator;

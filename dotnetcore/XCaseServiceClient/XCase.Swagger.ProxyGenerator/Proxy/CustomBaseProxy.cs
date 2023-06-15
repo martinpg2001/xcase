@@ -1,10 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Net.Http;
-using System.Reflection;
-using System.Text;
-using XCase.REST.ProxyGenerator;
 
 namespace XCase.REST.ProxyGenerator.Proxy
 {

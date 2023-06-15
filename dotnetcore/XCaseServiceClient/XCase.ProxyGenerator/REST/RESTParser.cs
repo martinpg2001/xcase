@@ -1,23 +1,9 @@
 ﻿namespace XCase.ProxyGenerator.REST
 {
     using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.Logging;
     using Serilog;
-    using Serilog.Core;
-    using Serilog.Events;
-    using Serilog.Formatting.Json;
-    using Serilog.Configuration;
-    using Serilog.Settings;
     using System;
-    using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
-    using System.Net;
-    using System.Net.Http;
-    using System.Net.Http.Headers;
-    using System.Reflection;
-    using System.Threading.Tasks;
-    using System.Web;
 
     public abstract class RESTParser : IParser
     {

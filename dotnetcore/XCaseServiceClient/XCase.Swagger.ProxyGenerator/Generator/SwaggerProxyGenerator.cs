@@ -1,25 +1,9 @@
 ﻿namespace XCase.REST.ProxyGenerator
 {
-    using System;
     using System.Collections.Concurrent;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Net;
-    using System.Net.Http;
-    using System.Reflection;
-    using System.Security;
     using System.Text;
-    using System.Threading.Tasks;
-    using Microsoft.CSharp;
-//    using Microsoft.Owin.Testing;
-    using Microsoft.Extensions.Logging;
-    using Newtonsoft.Json;
-    using Serilog;
-    using Serilog.Events;
+    //    using Microsoft.Owin.Testing;
     using XCase.ProxyGenerator;
-    using XCase.REST.ProxyGenerator.Generator;
-    using XCase.REST.ProxyGenerator.OpenAPI;
 
     public abstract class SwaggerProxyGenerator : IProxyGenerator
     {

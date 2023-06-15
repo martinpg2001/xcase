@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +7,7 @@ using XCase.ProxyGenerator;
 namespace Microsoft.Extensions.Logging
 {
 
-	public static class FileLoggerExtensions
+    public static class FileLoggerExtensions
 	{
 
 		/// <summary>
