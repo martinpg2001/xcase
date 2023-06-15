@@ -323,6 +323,10 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                                             Log.Debug("propertyType is object");
                                             OpenApiSchema additonalPropertiesSchema = propertyOpenApiSchema.AdditionalProperties;
                                             Log.Debug("got additonalPropertiesSchema");
+                                            String additionalProperiesFormat = additonalPropertiesSchema.Format;
+                                            Log.Debug("additionalProperiesFormat is {0}", additionalProperiesFormat);
+                                            string additionalPropertiesType = additonalPropertiesSchema.Type;
+                                            Log.Debug("additionalPropertiesType is {0}", additionalPropertiesType);
                                             ClassDefinition additonalPropertyClassDefinition = new ClassDefinition(key + "AdditionalPropertyClass");
                                             Log.Debug("created additonalPropertyClassDefinition");
                                             IDictionary<string, OpenApiSchema> additionalPropertiesDictionary = additonalPropertiesSchema.Properties;
@@ -333,6 +337,8 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                                                 OpenApiSchema additionalPropertyOpenApiSchema = null;
                                                 if (additionalPropertiesDictionary.TryGetValue(key, out additionalPropertyOpenApiSchema))
                                                 {
+                                                    String additionalPropertyFormat = additionalPropertyOpenApiSchema.Format;
+                                                    Log.Debug("additionalPropertyFormat is {0}", additionalPropertyFormat);
                                                     string additionalPropertyType = additionalPropertyOpenApiSchema.Type;
                                                     Log.Debug("additionalPropertyType is {0}", additionalPropertyType);
                                                     TypeDefinition additionalPropertyTypeDefinition = new TypeDefinition(key + "AdditionalPropertyClass", additionalPropertyKey, null, true);
