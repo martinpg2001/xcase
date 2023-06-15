@@ -2,7 +2,6 @@ namespace XCase.REST.ProxyGenerator.Generator
 {
     using Microsoft.Extensions.Configuration;
     using System;
-    using System.Configuration;
     using XCase.ProxyGenerator;
 
     public class RESTApiProxySettingsEndPoint : IAPIProxySettingsEndpoint
@@ -23,7 +22,7 @@ namespace XCase.REST.ProxyGenerator.Generator
         public RESTApiProxySettingsEndPoint()
         {
             Accept = "application/json";
-            BaseProxyClass = ConfigurationManager.AppSettings["SwaggerProxy"];
+            BaseProxyClass = iConfigurationRoot["SwaggerProxy"];
             Id = "SwaggerProxy";
             Namespace = iConfigurationRoot.GetSection("AppSettings").GetSection("Namespace").Value;// "XCaseServiceClient";// ConfigurationManager.AppSettings["Namespace"];
             ProxyConstructorSuffix = "(Uri baseUrl) : base(baseUrl)";
@@ -152,7 +151,7 @@ namespace XCase.REST.ProxyGenerator.Generator
                 return null;
             }
 
-            Uri uri = new Uri(Url);
+            Uri uri = new(Url);
             return uri.Authority;
         }
 
@@ -163,7 +162,7 @@ namespace XCase.REST.ProxyGenerator.Generator
                 return null;
             }
 
-            Uri uri = new Uri(Url);
+            Uri uri = new(Url);
             return uri.AbsolutePath;
         }
     }

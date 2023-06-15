@@ -818,13 +818,6 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
             return type;
         }
 
-        private static string GetTypeName(string name, out bool isNullable)
-        {
-            Log.Debug("starting GetTypeName()");
-            isNullable = true;
-            return null;
-        }
-
         private static string GetTypeName(OpenApiSchema schema, out bool isNullable)
         {
             Log.Debug("starting GetTypeName(OpenApiSchema schema, out bool isNullable)");
