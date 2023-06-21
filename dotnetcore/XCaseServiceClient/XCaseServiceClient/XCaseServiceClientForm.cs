@@ -23,6 +23,7 @@ using XCase.REST.ProxyGenerator;
 using XCase.REST.ProxyGenerator.Generator;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System.Web;
 
 namespace XCaseServiceClient
 {
@@ -1436,6 +1437,8 @@ namespace XCaseServiceClient
                 JObject jObject = JObject.Parse("{}");
                 /* Force loading the System.Runtime.Serialization library */
                 codeLanguages = languages.CSharp;
+                /* Force loading the System.Web library */
+                HttpUtility.UrlEncode("https://www.google.com");
                 this.Controls.Remove(m_ViewRichTextBox);
                 Log.Debug("m_Language is {0}", m_Language);
                 Log.Debug("m_Type is {0}", m_Type);

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <binding>Basic</binding>
+  <client>None</client>
+  <domain />
+  <endpoint>https://api.apis.guru/v2/specs/amadeus.com/amadeus-hotel-ratings/1.0.2/swagger.json</endpoint>
+  <language>CSharp</language>
+  <message>None</message>
+  <onpremise>false</onpremise>
+  <password />
+  <security>None</security>
+  <timeout>30</timeout>
+  <type>Swagger</type>
+  <username />
+</Config>
