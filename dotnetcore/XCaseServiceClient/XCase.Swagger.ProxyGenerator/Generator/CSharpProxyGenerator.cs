@@ -121,6 +121,7 @@
                 {
                     Log.Debug("next enumParameter {0}", enumParameter.Type.Name);
                     enumParameter.Type.TypeName = operation.OperationId + enumParameter.Type.Name + "Enum";
+                    Log.Debug("*** enumParameter.Type.TypeName is {0} ***", enumParameter.Type.TypeName);
                 }
 
                 string className = OpenApiParser.FixTypeName(proxy) + "WebProxy";
@@ -196,6 +197,8 @@
              */
             foreach (XCase.ProxyGenerator.REST.Enum proxyParamEnum in proxyParamEnums.Distinct<XCase.ProxyGenerator.REST.Enum>())
             {
+                Log.Debug("*** proxyParamEnum.Name is {0} ***", proxyParamEnum.Name);
+                Log.Debug("*** fixed proxyParamEnum.Name is {0} ***", SwaggerParser.FixTypeName(proxyParamEnum.Name));
                 WriteLine(proxyStringBuilder, string.Format("public enum {0}", SwaggerParser.FixTypeName(proxyParamEnum.Name)));
                 WriteLine(proxyStringBuilder, "{");
                 foreach (string enumValue in proxyParamEnum.Values.Distinct())
@@ -280,8 +283,11 @@
                 string parameter = string.Empty;
                 if (p.Type != null)
                 {
+                    Log.Debug("parameter type name is {0}", p.Type.TypeName);
                     string defaultType = GetDefaultType(p);
+                    Log.Debug("defaultType is {0}", defaultType);
                     string cleanTypeName = p.Type.GetCleanTypeName();
+                    Log.Debug("cleanTypeName is {0}", cleanTypeName);
                     string defaultValue = GetDefaultValue(p);
                     if (p.IsRequired)
                     {
@@ -540,6 +546,8 @@
                     .Replace(":", "_Colon_")
                     .Replace("-", "_Dash_")
                     .Replace(".", "_Dot_")
+                    .Replace("=", "_Equals_")
+                    .Replace("#", "_Hash_")
                     .Replace("(", "_Left_")
                     .Replace("%", "_Percent_")
                     .Replace(")", "_Right_")

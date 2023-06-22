@@ -72,12 +72,14 @@
             }
 
             string fixedTypeName = typeName
+                .Replace("&", "_And_")
                 .Replace(":", "_Colon_")
                 .Replace(",", "_Comma_")
                 .Replace("-", "_Dash_")
-                .Replace("#", "_Hash_")
                 .Replace("$", "_Dollar_")
                 .Replace(".", "_Dot_")
+                .Replace("=", "_Equals_")
+                .Replace("#", "_Hash_")
                 .Replace("(", "_Left_")
                 .Replace("{", "_LeftBrace_")
                 .Replace("%", "_Percent_")
@@ -85,9 +87,8 @@
                 .Replace("}", "_RightBrace_")
                 .Replace("/", "_Slash_")
                 .Replace(" ", "_Space_")
-                .Replace("&", "_And_")
                 .Replace("*", "_Star_");
-            fixedTypeName = RESTParser.FixGenericName(fixedTypeName);
+            fixedTypeName = FixGenericName(fixedTypeName);
             if ((char.IsLetter(fixedTypeName[0]) == false) && (fixedTypeName[0] != '_'))
             {
                 fixedTypeName = "_" + fixedTypeName;
@@ -142,6 +143,8 @@
                 .Replace("-", "_Dash_")
                 .Replace("$", "_Dollar_")
                 .Replace(".", "_Dot_")
+                .Replace("=", "_Equals_")
+                .Replace("#", "_Hash_")
                 .Replace("(", "_Left_")
                 .Replace("{", "_LeftBrace_")
                 .Replace("%", "_Percent_")
