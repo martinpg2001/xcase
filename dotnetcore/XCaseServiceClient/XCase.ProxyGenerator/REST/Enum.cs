@@ -20,10 +20,9 @@ namespace XCase.ProxyGenerator.REST
                 return value.ToUpper();
             }
 
-            if (value.Contains("-"))
-            {
-                return value.Replace("-", "_Dash_");
-            }
+            value = value
+                .Replace("-", "_Dash_")
+                .Replace(".", "_Dot_");
 
             return value;
         }

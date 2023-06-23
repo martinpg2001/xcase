@@ -16,6 +16,7 @@
     using XCase.REST.ProxyGenerator.OpenAPI;
     using XCase.Swagger.ProxyGenerator.OpenAPI;
     using Serilog;
+    using System.Web;
 
     public abstract class CSharpProxyGenerator : IProxyGenerator
     {
@@ -120,7 +121,7 @@
                 foreach (Parameter enumParameter in enumParameterEnumerable)
                 {
                     Log.Debug("next enumParameter {0}", enumParameter.Type.Name);
-                    enumParameter.Type.TypeName = operation.OperationId + enumParameter.Type.Name + "Enum";
+//                    enumParameter.Type.TypeName = operation.OperationId + enumParameter.Type.Name + "Enum";
                     Log.Debug("*** enumParameter.Type.TypeName is {0} ***", enumParameter.Type.TypeName);
                 }
 
@@ -129,11 +130,19 @@
                 IEnumerable<Parameter> parameterEnumerable = operation.Parameters.OrderByDescending(parameter => parameter.IsRequired);
                 string parameters = string.Join(", ", parameterEnumerable.Select(p =>
                 {
+                    string defaultType = GetDefaultType(p);
+                    string parameter = string.Empty;
                     /* if parameter is enum include the namespace */
-                    string parameter = (p.Type != null && p.Type.EnumValues != null) ? string.Format("{0}.{1}.", endPoint.GetNamespace(), className) : string.Empty;
+                    if (p.Type != null && p.Type.EnumValues != null)
+                    {
+                        parameter = string.Format("{0}.{1}.", endPoint.GetNamespace(), className);
+                        defaultType = operation.OperationId + p.Type.Name + "Enum";
+                        Log.Debug("defaultType is {0}", defaultType);
+                        defaultType = CleanDefaultTypeName(defaultType);
+                    }
+ 
                     if (p.Type != null)
                     {
-                        string defaultType = GetDefaultType(p);
                         Log.Debug("defaultType is {0}", defaultType);
                         string cleanTypeName = p.Type.GetCleanTypeName();
                         Log.Debug("cleanTypeName is {0}", cleanTypeName);
@@ -243,7 +252,7 @@
             foreach (Parameter enumParameter in enumParameterEnumerable)
             {
                 Log.Debug("next enumParameter {0}", enumParameter.Type.Name);
-                enumParameter.Type.TypeName = operation.OperationId + enumParameter.Type.Name + "Enum";
+                enumParameter.Type.TypeName = operation.OperationId + CleanDefaultTypeName(enumParameter.Type.Name) + "Enum";
                 proxyParamEnums.Add(new XCase.ProxyGenerator.REST.Enum() { Name = enumParameter.Type.TypeName, Values = enumParameter.Type.EnumValues });
             }
 
@@ -387,7 +396,15 @@
             {
                 foreach (Parameter parameter in headerParams)
                 {
-                    WriteLine(proxyStringBuilder, "httpRequestMessage.Headers.Add(\"" + parameter.Type.Name + "\", " + parameter.Type.GetCleanTypeName() + ");");
+                    if (parameter.Type.EnumValues == null)
+                    {
+                        WriteLine(proxyStringBuilder, "httpRequestMessage.Headers.Add(\"" + parameter.Type.Name + "\", " + parameter.Type.GetCleanTypeName() + ");");
+                    }
+                    else
+                    {
+                        WriteLine(proxyStringBuilder, "httpRequestMessage.Headers.Add(\"" + parameter.Type.Name + "\", " + parameter.Type.GetCleanTypeName() + ".ToString());");
+                    }
+
                     WriteLine(proxyStringBuilder, "Log.Debug(\"added header is {0}\", \"" + parameter.Type.Name + ":\" + " + parameter.Type.GetCleanTypeName() + ");");
                 }
             }
@@ -513,6 +530,40 @@
             WriteLine(stringBuilder);
             WriteLine(stringBuilder, "private static readonly Serilog.ILogger Log = new LoggerConfiguration().ReadFrom.Configuration(new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile(\"appsettings.json\", optional: false, reloadOnChange: true).Build()).CreateLogger();");
             WriteLine(stringBuilder);
+        }
+
+        public static string CleanDefaultTypeName(string typeName)
+        {
+            if (typeName == "file")
+            {
+                return "Tuple<string, byte[]>";
+            }
+            else if (typeName == "integer")
+            {
+                typeName = "int";
+            }
+            else if (typeName == "boolean")
+            {
+                typeName = "bool";
+            }
+
+            typeName = typeName
+                .Replace(":", "_Colon_")
+                .Replace("-", "_Dash_")
+                .Replace(".", "_Dot_")
+                .Replace("=", "_Equals_")
+                .Replace("#", "_Hash_")
+                .Replace("(", "_Left_")
+                .Replace("%", "_Percent_")
+                .Replace(")", "_Right_")
+                .Replace(" ", "_Space_");
+            /* Ugly hack and will not work if type is both array and contains [ or ] */
+            if (!typeName.Contains("[]"))
+            {
+                typeName = typeName.Replace("[", "___").Replace("]", "___");
+            }
+
+            return typeName;
         }
 
         public static string GetDefaultType(Parameter parameter)

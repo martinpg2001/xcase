@@ -22,7 +22,7 @@
 
         public string GetCleanTypeName()
         {
-            /* Replace hyphenated type names with camelCase names */
+            /* Replace hyphenated type names with camelCase names 
             while (Name.Contains("-"))
             {
                 int index = Name.IndexOf("-", StringComparison.InvariantCulture);
@@ -30,6 +30,7 @@
                 Name = Name.Remove(index, 2);
                 Name = Name.Insert(index, letter);
             }
+            */
 
             string fixedName = RESTParser.FixTypeName(Name);
             return string.Format("@{0}", fixedName);
