@@ -177,6 +177,7 @@
             }
 
             /* Parse REST document for endpoint */
+            Log.Debug("endPoint BaseProxyClass is {0}", ((RESTApiProxySettingsEndPoint)endPoint).BaseProxyClass);
             IProxyDefinition proxyDefinition = parser.ParseDoc(result, (RESTApiProxySettingsEndPoint)endPoint);
             string scheme = proxyDefinition.Schemes != null ? proxyDefinition.Schemes[0] : schemeFromURL;
             Log.Debug("scheme is {0}", scheme);

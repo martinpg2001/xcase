@@ -4,11 +4,13 @@ namespace XCase.REST.ProxyGenerator.OpenAPI
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Net;
     using Microsoft.Extensions.Configuration;
     using Newtonsoft.Json.Linq;
     using Serilog;
     using XCase.ProxyGenerator;
     using XCase.ProxyGenerator.REST;
+    using XCase.REST.ProxyGenerator.Generator;
 
     public class SwaggerParser : RESTParser
     {

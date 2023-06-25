@@ -24,6 +24,7 @@ using XCase.REST.ProxyGenerator.Generator;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Web;
+using System.Net.Http;
 
 namespace XCaseServiceClient
 {
@@ -371,12 +372,13 @@ namespace XCaseServiceClient
                 }
 
                 openFileDialog.InitialDirectory = m_CurrentDirectory;
-                openFileDialog.Filter = "WSDL Files (*.wsdl)|*.WSDL";
+                openFileDialog.Filter = "OpenAPI or WSDL Files (*.json, *.wsdl, *.yaml, )|*.json; *.WSDL; *.yaml";
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     string fileName = openFileDialog.FileName;
                     Log.Debug("fileName is {0}", fileName);
                     //ProcessWSDLFile(fileName);
+                    ProcessFile(fileName);
                 }
             };
             m_TopTableLayoutPanel.Controls.Add(fileButton, 9, 1);
@@ -745,7 +747,8 @@ namespace XCaseServiceClient
 
         private List<SyntaxTree> CreateSyntaxTreeListFromSourceStringArray()
         {
-            List<SyntaxTree> syntaxTreeList = new List<SyntaxTree>();
+            Log.Debug("starting CreateSyntaxTreeListFromSourceStringArray()");
+            List <SyntaxTree> syntaxTreeList = new List<SyntaxTree>();
             if (m_SourceStringArray != null)
             {
                 foreach (string sourceString in m_SourceStringArray)
@@ -754,6 +757,10 @@ namespace XCaseServiceClient
                     SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(sourceString);
                     syntaxTreeList.Add(syntaxTree);
                 }
+            }
+            else
+            {
+                Log.Warning("m_SourceStringArray is null");
             }
 
             return syntaxTreeList;
@@ -773,6 +780,171 @@ namespace XCaseServiceClient
             }
 
             return syntaxTreeList;
+        }
+
+        private void ProcessFile(String fileName)
+        {
+            Log.Debug("starting ProcessFile()");
+            try
+            {
+                /* Force loading the Newtonsoft library */
+                JObject jObject = JObject.Parse("{}");
+                /* Force loading the System.Net library */
+                HttpClient httpClient = new HttpClient();
+                /* Force loading the System.Runtime.Serialization library */
+                codeLanguages = languages.CSharp;
+                /* Force loading the System.Web library */
+                HttpUtility.UrlEncode("https://www.google.com");
+                Boolean refresh = true;
+                this.Controls.Remove(m_ViewRichTextBox);
+                Log.Debug("m_Language is {0}", m_Language);
+                Log.Debug("m_Type is {0}", m_Type);
+                m_ClientCredentialDomain = m_DomainTextBox.Text;
+                Log.Debug("m_ClientCredentialDomain is {0}", m_ClientCredentialDomain);
+                m_ClientCredentialUserName = m_UsernameTextBox.Text;
+                Log.Debug("m_ClientCredentialUserName is {0}", m_ClientCredentialUserName);
+                m_ClientCredentialPassword = m_PasswordTextBox.Text;
+                Log.Debug("m_ClientCredentialPassword is {0}", m_ClientCredentialPassword);
+                m_ServiceDescriptionURL = fileName;
+                Log.Debug("about to get REST description from " + fileName);
+                this.Text = m_WindowTitle + " - retrieving REST description from " + fileName;
+                if (refresh)
+                {
+                    Log.Debug("refresh is true");
+                    this.Controls.Remove(m_MethodsTabControl);
+                    if (!string.IsNullOrEmpty(m_Language) && m_Language == "Java")
+                    {
+                        m_SwaggerProxyGenerator = new SwaggerJavaProxyGenerator();
+                        restApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("Java");
+                    }
+                    else
+                    {
+                        m_SwaggerProxyGenerator = new SwaggerCSharpProxyGenerator();
+                        restApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("CSharp");
+                    }
+
+                    Log.Debug("restApiProxySettingsEndPoint BaseProxyClass is {0}", restApiProxySettingsEndPoint.BaseProxyClass);
+                    restApiProxySettingsEndPoint.Url = m_ServiceDescriptionURL;
+                    Log.Debug("m_ServiceDescriptionURL is {0}", m_ServiceDescriptionURL);
+                    RESTApiProxySettingsEndPoint[] endpoints = new RESTApiProxySettingsEndPoint[] { restApiProxySettingsEndPoint };
+                    restServiceDefinition = m_SwaggerProxyGenerator.GenerateSourceString(restApiProxySettingsEndPoint, File.ReadAllText(fileName));
+                    Log.Debug("swaggerServiceDefinition EndPoint is {0}", restServiceDefinition.GetEndPoint());
+                    this.Text = m_WindowTitle + " - got REST service definition";
+                    m_SourceStringArray = restServiceDefinition.GetSourceStrings();
+                    if (m_SourceStringArray != null)
+                    {
+                        foreach (string sourceString in m_SourceStringArray)
+                        {
+                            Log.Debug("sourceString is {0}", sourceString);
+                        }
+                    }
+
+                    if (string.IsNullOrEmpty(m_Language) || m_Language == "CSharp")
+                    {
+                        if (restServiceDefinition.GetProxyClasses().Contains<string>(((string)m_ServicesComboBox.SelectedItem)))
+                        {
+                            m_ServicesComboBox.SelectedItem = restServiceDefinition.GetProxyClasses().First<string>(pc => pc == ((string)m_ServicesComboBox.SelectedItem));
+                        }
+                        else
+                        {
+                            m_ServicesComboBox.SelectedItem = restServiceDefinition.GetProxyClasses().First<string>();
+                        }
+
+                        m_ServicesComboBox.DataSource = restServiceDefinition.GetProxyClasses();
+                        List<SyntaxTree> syntaxTreeList = CreateSyntaxTreeListFromSourceStringArray();
+                        Log.Debug("created syntaxTreeList");
+                        string assemblyName = Path.GetRandomFileName();
+                        Log.Debug("assemblyName is {0}", assemblyName);
+                        List<MetadataReference> metadataReferenceList = CreateMetadataReferenceList();
+                        Log.Debug("created metadataReferenceList");
+                        CSharpCompilation cSharpCompilation = CSharpCompilation.Create(assemblyName, syntaxTrees: syntaxTreeList, references: metadataReferenceList, options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+                        Log.Debug("created cSharpCompilation");
+                        m_Assembly = CreateAssemblyFromCSharpCompilation(cSharpCompilation);
+                        Log.Debug("created assembly");
+                        if (m_Assembly != null)
+                        {
+                            object[] args = new object[] { new Uri(restServiceDefinition.GetEndPoint()) };
+                            string proxyClass = string.Format("{0}.{1}", restApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
+                            m_RESTServiceClient = m_Assembly.CreateInstance(proxyClass, false, BindingFlags.CreateInstance, null, args, null, null);
+                            if (m_RESTServiceClient != null)
+                            {
+                                NetworkCredential networkCredential = new NetworkCredential(m_ClientCredentialUserName, m_ClientCredentialPassword, m_ClientCredentialDomain);
+                                ((SwaggerProxy)m_RESTServiceClient).ClientCredentials = networkCredential;
+                                if (m_ProxyEnable)
+                                {
+                                    ((SwaggerProxy)m_RESTServiceClient).Proxy = new WebProxy(m_ProxyAddress, m_ProxyPort);
+                                }
+
+                                Log.Debug("set client credentials");
+                            }
+                            else
+                            {
+                                Log.Debug("m_RESTServiceClient is null");
+                            }
+
+                            Log.Debug("about to re-render service control");
+                            RerenderServiceControl(m_RESTServiceClient);
+                        }
+                        else
+                        {
+                            Log.Debug("m_Assembly is null");
+                            MessageBox.Show("m_Assembly is null. Check the log for compilation errors");
+                        }
+                    }
+                    else if (m_Language == "Java")
+                    {
+                        MessageBox.Show("Finished generating classes.");
+                    }
+
+                    Log.Debug("REST service definiton endpoint is {0}", restServiceDefinition.GetEndPoint());
+                }
+                else
+                {
+                    /* refresh is false, but service or proxy class has changed */
+                    Log.Debug("refresh is false");
+                    if (string.IsNullOrEmpty(m_Language) || m_Language == "CSharp")
+                    {
+                        string endpoint = restServiceDefinition.GetEndPoint();
+                        Log.Debug("endpoint is {0}", endpoint);
+                        object[] args = new object[] { new Uri(endpoint) };
+                        string proxyClass = string.Format("{0}.{1}", restApiProxySettingsEndPoint.Namespace, m_ServicesComboBox.SelectedItem);
+                        m_RESTServiceClient = m_Assembly.CreateInstance(proxyClass, false, BindingFlags.CreateInstance, null, args, null, null);
+                        if (m_RESTServiceClient != null)
+                        {
+                            NetworkCredential networkCredential = new NetworkCredential(m_ClientCredentialUserName, m_ClientCredentialPassword, m_ClientCredentialDomain);
+                            ((SwaggerProxy)m_RESTServiceClient).ClientCredentials = networkCredential;
+                            Log.Debug("set client credentials");
+                        }
+                        else
+                        {
+                            Log.Debug("m_RESTServiceClient is null");
+                        }
+
+                        Log.Debug("about to re-render service control");
+                        RerenderServiceControl(m_RESTServiceClient);
+                    }
+
+                    Log.Debug("REST service definiton endpoint is {0}", restServiceDefinition.GetEndPoint());
+                }
+
+                Log.Debug("finishing ProcessFile()");
+            }
+            catch (AggregateException ae)
+            {
+                Log.Debug("aggregate exception thrown: " + ae.Message);
+                if (!m_Starting)
+                {
+                    MessageBox.Show("Aggregate exception thrown: " + ae.Message);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Debug("exception thrown: " + e.Message);
+                if (!m_Starting)
+                {
+                    MessageBox.Show("Exception thrown: " + e.Message);
+                }
+            }
         }
 
         private void ProcessGoClicked()
@@ -1466,6 +1638,7 @@ namespace XCaseServiceClient
                         restApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("CSharp");
                     }
 
+                    Log.Debug("restApiProxySettingsEndPoint BaseProxyClass is {0}", restApiProxySettingsEndPoint.BaseProxyClass);
                     restApiProxySettingsEndPoint.Url = m_ServiceDescriptionURL;
                     Log.Debug("m_ServiceDescriptionURL is {0}", m_ServiceDescriptionURL);
                     RESTApiProxySettingsEndPoint[] endpoints = new RESTApiProxySettingsEndPoint[] { restApiProxySettingsEndPoint };
