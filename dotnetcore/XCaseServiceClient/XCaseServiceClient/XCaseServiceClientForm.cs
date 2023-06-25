@@ -90,7 +90,7 @@ namespace XCaseServiceClient
         //        string[] m_References = new string[] { "System.dll", "System.ComponentModel.DataAnnotations.dll", "System.Core.dll", "System.Data.dll", "System.Net.dll", "System.Net.Http.dll", "System.Runtime.Serialization.dll", "System.ServiceModel.dll", "System.Web.dll", "System.Web.Services.dll", "System.Xml.dll" };
         string[] m_Services = new string[] { };
         string[] m_SourceStringArray = new string[] { };
-        IProxyGenerator m_SwaggerProxyGenerator = new SwaggerCSharpProxyGenerator();
+        IProxyGenerator m_ProxyGenerator = new SwaggerCSharpProxyGenerator();
         RESTApiProxySettingsEndPoint restApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("CSharp");
         IServiceDefinition restServiceDefinition = null;
         TabControl m_MethodsTabControl;
@@ -563,12 +563,12 @@ namespace XCaseServiceClient
                     this.Controls.Remove(m_MethodsTabControl);
                     if (!string.IsNullOrEmpty(m_Language) && m_Language == "Java")
                     {
-                        m_SwaggerProxyGenerator = new SwaggerJavaProxyGenerator();
+                        m_ProxyGenerator = new SwaggerJavaProxyGenerator();
                         restApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("Java");
                     }
                     else
                     {
-                        m_SwaggerProxyGenerator = new SwaggerCSharpProxyGenerator();
+                        m_ProxyGenerator = new SwaggerCSharpProxyGenerator();
                         restApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("CSharp", "CustomBaseProxy");
                         restApiProxySettingsEndPoint.Accept = "application/json";
                     }
@@ -576,7 +576,7 @@ namespace XCaseServiceClient
                     restApiProxySettingsEndPoint.Url = m_ServiceDescriptionURL;
                     Log.Debug("m_ServiceDescriptionURL is {0}", m_ServiceDescriptionURL);
                     RESTApiProxySettingsEndPoint[] endpoints = new RESTApiProxySettingsEndPoint[] { restApiProxySettingsEndPoint };
-                    restServiceDefinition = m_SwaggerProxyGenerator.GenerateSourceString(endpoints);
+                    restServiceDefinition = m_ProxyGenerator.GenerateSourceString(endpoints);
                     //Log.Debug("swaggerServiceDefinition EndPoint is {0}", restServiceDefinition.GetEndPoint());
                     this.Text = m_WindowTitle + " - got REST service definition";
                     m_SourceStringArray = restServiceDefinition.GetSourceStrings();
@@ -812,22 +812,37 @@ namespace XCaseServiceClient
                 {
                     Log.Debug("refresh is true");
                     this.Controls.Remove(m_MethodsTabControl);
-                    if (!string.IsNullOrEmpty(m_Language) && m_Language == "Java")
+                    if (m_Type == "Swagger")
                     {
-                        m_SwaggerProxyGenerator = new SwaggerJavaProxyGenerator();
-                        restApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("Java");
+                        if (!string.IsNullOrEmpty(m_Language) && m_Language == "Java")
+                        {
+                            m_ProxyGenerator = new SwaggerJavaProxyGenerator();
+                            restApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("Java");
+                        }
+                        else
+                        {
+                            m_ProxyGenerator = new SwaggerCSharpProxyGenerator();
+                            restApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("CSharp");
+                        }
                     }
-                    else
+                    else if (m_Type == "RAML")
                     {
-                        m_SwaggerProxyGenerator = new SwaggerCSharpProxyGenerator();
-                        restApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("CSharp");
+                        if (!string.IsNullOrEmpty(m_Language) && m_Language == "Java")
+                        {
+                             /* TODO: add support for RAML and Java */
+                        }
+                        else
+                        {
+                            m_ProxyGenerator = new RAMLCSharpProxyGenerator();
+                            restApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("CSharp");
+                        }
                     }
 
                     Log.Debug("restApiProxySettingsEndPoint BaseProxyClass is {0}", restApiProxySettingsEndPoint.BaseProxyClass);
                     restApiProxySettingsEndPoint.Url = m_ServiceDescriptionURL;
                     Log.Debug("m_ServiceDescriptionURL is {0}", m_ServiceDescriptionURL);
                     RESTApiProxySettingsEndPoint[] endpoints = new RESTApiProxySettingsEndPoint[] { restApiProxySettingsEndPoint };
-                    restServiceDefinition = m_SwaggerProxyGenerator.GenerateSourceString(restApiProxySettingsEndPoint, File.ReadAllText(fileName));
+                    restServiceDefinition = m_ProxyGenerator.GenerateSourceString(restApiProxySettingsEndPoint, File.ReadAllText(fileName));
                     Log.Debug("swaggerServiceDefinition EndPoint is {0}", restServiceDefinition.GetEndPoint());
                     this.Text = m_WindowTitle + " - got REST service definition";
                     m_SourceStringArray = restServiceDefinition.GetSourceStrings();
@@ -1461,7 +1476,7 @@ namespace XCaseServiceClient
                     this.Controls.Remove(m_MethodsTabControl);
                     if (!string.IsNullOrEmpty(m_Language) && m_Language == "Java")
                     {
-                        m_SwaggerProxyGenerator = new SwaggerJavaProxyGenerator();
+                        m_ProxyGenerator = new SwaggerJavaProxyGenerator();
                         restApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("Java");
                     }
                     else
@@ -1629,12 +1644,12 @@ namespace XCaseServiceClient
                     this.Controls.Remove(m_MethodsTabControl);
                     if (!string.IsNullOrEmpty(m_Language) && m_Language == "Java")
                     {
-                        m_SwaggerProxyGenerator = new SwaggerJavaProxyGenerator();
+                        m_ProxyGenerator = new SwaggerJavaProxyGenerator();
                         restApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("Java");
                     }
                     else
                     {
-                        m_SwaggerProxyGenerator = new SwaggerCSharpProxyGenerator();
+                        m_ProxyGenerator = new SwaggerCSharpProxyGenerator();
                         restApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("CSharp");
                     }
 
@@ -1642,7 +1657,7 @@ namespace XCaseServiceClient
                     restApiProxySettingsEndPoint.Url = m_ServiceDescriptionURL;
                     Log.Debug("m_ServiceDescriptionURL is {0}", m_ServiceDescriptionURL);
                     RESTApiProxySettingsEndPoint[] endpoints = new RESTApiProxySettingsEndPoint[] { restApiProxySettingsEndPoint };
-                    restServiceDefinition = m_SwaggerProxyGenerator.GenerateSourceString(endpoints);
+                    restServiceDefinition = m_ProxyGenerator.GenerateSourceString(endpoints);
                     Log.Debug("swaggerServiceDefinition EndPoint is {0}", restServiceDefinition.GetEndPoint());
                     this.Text = m_WindowTitle + " - got REST service definition";
                     m_SourceStringArray = restServiceDefinition.GetSourceStrings();
@@ -1814,12 +1829,12 @@ namespace XCaseServiceClient
                 this.Controls.Remove(m_MethodsTabControl);
                 if (!string.IsNullOrEmpty(m_Language) && m_Language == "Java")
                 {
-                    m_SwaggerProxyGenerator = new SwaggerJavaProxyGenerator();
+                    m_ProxyGenerator = new SwaggerJavaProxyGenerator();
                     restApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("Java");
                 }
                 else
                 {
-                    m_SwaggerProxyGenerator = new SwaggerCSharpProxyGenerator();
+                    m_ProxyGenerator = new SwaggerCSharpProxyGenerator();
                     restApiProxySettingsEndPoint = new RESTApiProxySettingsEndPoint("CSharp", "CustomBaseProxy");
                     restApiProxySettingsEndPoint.Accept = "application/json";
                 }
