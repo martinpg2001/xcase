@@ -585,10 +585,14 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                         IDictionary<string, OpenApiSchema> propertiesDictionary = schemaKeyValuePair.Value.Properties;
                         if (propertiesDictionary != null)
                         {
+                            Log.Debug("propertiesDictionary is not null");
                             foreach (KeyValuePair<string, OpenApiSchema> propertyKeyValuePair in propertiesDictionary)
                             {
+                                Log.Debug("next propertyKeyValuePair");
                                 TypeDefinition typeDefinition = ParseType(propertyKeyValuePair);
+                                Log.Debug("created typeDefinition");
                                 classDefinition.Properties.Add(typeDefinition);
+                                Log.Debug("added typeDefinition");
                             }
                         }
                     }
@@ -622,6 +626,32 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
             Log.Debug("starting ParseType(KeyValuePair<string, OpenApiSchema> propertyKeyValuePair)");
             string name = propertyKeyValuePair.Key;
             Log.Debug("name is {0}", name);
+            IList<OpenApiSchema> allOf = propertyKeyValuePair.Value.AllOf;
+            Log.Debug("allOf is {0}", allOf);
+            if (allOf != null && allOf.Count > 0)
+            {
+                Log.Debug("allOf is not null");
+                OpenApiSchema firstOpenApiSchema = allOf.ToArray<OpenApiSchema>()[0];
+                Log.Debug("got first allOf OpenApiSchema");
+                KeyValuePair<string, OpenApiSchema> allOfOpenApiSchemaKeyValuePair = new KeyValuePair<string, OpenApiSchema>(name, firstOpenApiSchema);
+                TypeDefinition allOfTypeDefinition = ParseType(allOfOpenApiSchemaKeyValuePair);
+                Log.Debug("created allOfTypeDefinition from firstOpenApiSchema");
+                return allOfTypeDefinition;
+            }
+
+            IList<OpenApiSchema> anyOf = propertyKeyValuePair.Value.AnyOf;
+            Log.Debug("anyOf is {0}", anyOf);
+            if (anyOf != null && anyOf.Count > 0)
+            {
+                Log.Debug("anyOf is not null");
+                OpenApiSchema firstOpenApiSchema = anyOf.ToArray<OpenApiSchema>()[0];
+                Log.Debug("got first anyOf OpenApiSchema");
+                KeyValuePair<string, OpenApiSchema> anyOfOpenApiSchemaKeyValuePair = new KeyValuePair<string, OpenApiSchema>(name, firstOpenApiSchema);
+                TypeDefinition anyOfTypeDefinition = ParseType(anyOfOpenApiSchemaKeyValuePair);
+                Log.Debug("created anyOfTypeDefinition from firstOpenApiSchema");
+                return anyOfTypeDefinition;
+            }
+
             bool isNullable = propertyKeyValuePair.Value.Nullable;
             Log.Debug("isNullable is {0}", isNullable);
             string[] enumValues = null;
