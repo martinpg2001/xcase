@@ -5,6 +5,13 @@
 
     public class TypeDefinition
     {
+        public string Name { get; set; }
+        public string TypeName { get; set; }
+        public string[] EnumValues { get; set; }
+        public bool IsNullableType { get; set; }
+
+        public bool IsArray { get; set; }
+
         public TypeDefinition(string typeName, string name, string[] enumValues = null, bool isNullableType = false)
         {
             this.TypeName = typeName;
@@ -13,25 +20,8 @@
             this.IsNullableType = isNullableType;
         }
 
-        public string Name { get; set; }
-        public string TypeName { get; set; }
-        public string[] EnumValues { get; set; }
-        public bool IsNullableType { get; set; }
-
-        public bool IsArray { get; set; }
-
         public string GetCleanTypeName()
         {
-            /* Replace hyphenated type names with camelCase names 
-            while (Name.Contains("-"))
-            {
-                int index = Name.IndexOf("-", StringComparison.InvariantCulture);
-                var letter = Name[index + 1].ToString().ToUpper();
-                Name = Name.Remove(index, 2);
-                Name = Name.Insert(index, letter);
-            }
-            */
-
             string fixedName = RESTParser.FixTypeName(Name);
             return string.Format("@{0}", fixedName);
         }

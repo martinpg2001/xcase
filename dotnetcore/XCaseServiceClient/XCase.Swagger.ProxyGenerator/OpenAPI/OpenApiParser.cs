@@ -652,6 +652,19 @@ namespace XCase.Swagger.ProxyGenerator.OpenAPI
                 return anyOfTypeDefinition;
             }
 
+            IList<OpenApiSchema> oneOf = propertyKeyValuePair.Value.OneOf;
+            Log.Debug("oneOf is {0}", oneOf);
+            if (oneOf != null && oneOf.Count > 0)
+            {
+                Log.Debug("oneOf is not null");
+                OpenApiSchema firstOpenApiSchema = anyOf.ToArray<OpenApiSchema>()[0];
+                Log.Debug("got first oneOf OpenApiSchema");
+                KeyValuePair<string, OpenApiSchema> oneOfOpenApiSchemaKeyValuePair = new KeyValuePair<string, OpenApiSchema>(name, firstOpenApiSchema);
+                TypeDefinition oneOfTypeDefinition = ParseType(oneOfOpenApiSchemaKeyValuePair);
+                Log.Debug("created oneOfTypeDefinition from oneOfTypeDefinition");
+                return oneOfTypeDefinition;
+            }
+
             bool isNullable = propertyKeyValuePair.Value.Nullable;
             Log.Debug("isNullable is {0}", isNullable);
             string[] enumValues = null;
