@@ -2,7 +2,7 @@ The basic command to build a new version and to deploy it to OSSH is:
 
 mvn -Prelease -Dgpg.executable=gpg2 clean deploy
 
-The settings.xml used to connect to OSSHR should be in your ~/.m2 directory.
+The settings.xml used to connect to OSSHR should be in your ~/.m2 directory. This also has the GPG password used to sign artifacts.
 
 All commands to be run from platform directory.
 

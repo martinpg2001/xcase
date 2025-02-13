@@ -35,7 +35,7 @@
     <url>https://github.com/martinpg2001/</url>
   </scm>
   <url>https://github.com/martinpg2001/</url>
-  <version>1.0.37</version>
+  <version>1.0.39</version>
   <build>
     <outputDirectory>build</outputDirectory>
     <plugins>
@@ -97,7 +97,8 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration> 
+        <configuration>
+          <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
           <source>8</source> 
         </configuration> 
         <executions>
@@ -196,30 +197,6 @@
         <groupId>org.apache.axis2</groupId>
         <artifactId>axis2-transport-local</artifactId>
         <version>1.7.8</version>
-    </dependency>
-    <!-- https://mvnrepository.com/artifact/com.microsoft.azure/azure -->
-    <dependency>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure</artifactId>
-        <version>1.41.2</version>
-    </dependency>
-    <!-- https://mvnrepository.com/artifact/com.microsoft.azure/azure-client-authentication -->
-    <dependency>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-client-authentication</artifactId>
-        <version>1.7.14</version>
-    </dependency>
-    <!-- https://mvnrepository.com/artifact/com.microsoft.azure/azure-client-runtime -->
-    <dependency>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-client-runtime</artifactId>
-        <version>1.7.14</version>
-    </dependency>
-    <!-- https://mvnrepository.com/artifact/com.microsoft.azure/azure-storage -->
-    <dependency>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-storage</artifactId>
-        <version>8.6.6</version>
     </dependency>
     <dependency>
         <groupId>commons-cli</groupId>
@@ -419,7 +396,8 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <configuration> 
+            <configuration>
+              <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
               <source>8</source> 
             </configuration> 
             <executions>
@@ -537,6 +515,7 @@
             <configuration>
               <serverId>ossrh</serverId>
               <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+              <!-- <nexusUrl>s01.oss.sonatype.org</nexusUrl> -->
               <autoReleaseAfterClose>false</autoReleaseAfterClose>
             </configuration>
           </plugin>
