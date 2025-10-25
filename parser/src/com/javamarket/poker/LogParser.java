@@ -94,16 +94,16 @@ import com.javamarket.poker.logline.RaisesLogLine;
 import com.javamarket.poker.logline.ReturnedLogLine;
 import com.javamarket.poker.logline.ShowsLogLine;
 import com.javamarket.poker.logline.StartingHandLogLine;
-import com.microsoft.aad.msal4j.ClientCredentialFactory;
-import com.microsoft.aad.msal4j.ClientCredentialParameters;
-import com.microsoft.aad.msal4j.ConfidentialClientApplication;
-import com.microsoft.aad.msal4j.IAccount;
-import com.microsoft.aad.msal4j.IAuthenticationResult;
-import com.microsoft.aad.msal4j.IClientCredential;
-import com.microsoft.aad.msal4j.ITokenCacheAccessAspect;
-import com.microsoft.aad.msal4j.ITokenCacheAccessContext;
-import com.microsoft.aad.msal4j.PublicClientApplication;
-import com.microsoft.aad.msal4j.UserNamePasswordParameters;
+//import com.microsoft.aad.msal4j.ClientCredentialFactory;
+//import com.microsoft.aad.msal4j.ClientCredentialParameters;
+//import com.microsoft.aad.msal4j.ConfidentialClientApplication;
+//import com.microsoft.aad.msal4j.IAccount;
+//import com.microsoft.aad.msal4j.IAuthenticationResult;
+//import com.microsoft.aad.msal4j.IClientCredential;
+//import com.microsoft.aad.msal4j.ITokenCacheAccessAspect;
+//import com.microsoft.aad.msal4j.ITokenCacheAccessContext;
+//import com.microsoft.aad.msal4j.PublicClientApplication;
+//import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import com.nimbusds.jose.util.Base64;
 
 public class LogParser {
@@ -1325,24 +1325,6 @@ public class LogParser {
 //              return "Error parsing datetime " + datetime;
                 return null;
             }
-        }
-    }
-
-    static class TokenPersistence implements ITokenCacheAccessAspect {
-        String data;
-
-        TokenPersistence(String data) {
-            this.data = data;
-        }
-
-        @Override
-        public void beforeCacheAccess(ITokenCacheAccessContext iTokenCacheAccessContext) {
-            iTokenCacheAccessContext.tokenCache().deserialize(data);
-        }
-
-        @Override
-        public void afterCacheAccess(ITokenCacheAccessContext iTokenCacheAccessContext) {
-            data = iTokenCacheAccessContext.tokenCache().serialize();
         }
     }
 }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
+	<classpathentry kind="lib" path="lib/accessors-smart-2.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/activation-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/azure-core-1.55.4.jar"/>
+	<classpathentry kind="lib" path="lib/azure-identity-1.16.2.jar"/>
+	<classpathentry kind="lib" path="lib/content-type-2.3.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-annotations-2.18.0.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-core-2.18.0.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-databind-2.18.0.jar"/>
+	<classpathentry kind="lib" path="lib/jakarta.activation-2.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/jakarta.mail-2.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/javax.mail-api-1.6.2.jar"/>
+	<classpathentry kind="lib" path="lib/jfreechart-1.5.4.jar"/>
+	<classpathentry kind="lib" path="lib/json-smart-2.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2-api-2.22.1.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-api-2.22.1.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-core-2.22.1.jar"/>
+	<classpathentry kind="lib" path="lib/mail-1.4.3.jar"/>
+	<classpathentry kind="lib" path="lib/msal4j-1.17.2.jar"/>
+	<classpathentry kind="lib" path="lib/nimbus-jose-jwt-9.41.2.jar"/>
+	<classpathentry kind="lib" path="lib/oauth2-oidc-sdk-11.20.1.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-2.0.16.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
