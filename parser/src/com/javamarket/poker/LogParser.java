@@ -601,8 +601,6 @@ public class LogParser {
         }
 
         playerStackPivotFileWriter = new FileWriter(playerStackOutputFileName);
-//      LOGGER.info("created playerStackPivotFileWriter");
-        TimeSeriesCollection timeSeriesCollection = new TimeSeriesCollection();
         /* Create a time series for each player */
         HashMap<String, TimeSeries> playerTimeSeriesHashMap = new HashMap<String, TimeSeries>();
         for (String playerName : playerHashMap.values()) {
@@ -682,55 +680,15 @@ public class LogParser {
 
         playerStackPivotFileWriter.close();
         LOGGER.debug("closed playerStackPivotFileWriter");
-        String imageFileName = null;
+        String imageFileName = "ChipStacks" + Instant.now().toEpochMilli() + ".png";
         int numberAllIns = 0;
         try {
-            for (String player : playerHashMap.values()) {
-                timeSeriesCollection.addSeries(playerTimeSeriesHashMap.get(player));
-            }
-
-            JFreeChart timeSeriesChart = ChartFactory.createTimeSeriesChart("Chip Stacks", "Time", "Stacks",
-                    timeSeriesCollection);
-            timeSeriesChart.getPlot().setBackgroundPaint(Color.WHITE);
-            for (XYAnnotation annotation : xyTextAnnotationArraList) {
-                timeSeriesChart.getXYPlot().addAnnotation(annotation);
-            }
-
-            XYTextAnnotation handsXYTextAnnotation = new XYTextAnnotation("Number of hands: " + hands,
-                    new Second(startDate).getLastMillisecond() + 1000000, Integer.parseInt(totalStake));
-            handsXYTextAnnotation.setFont(new Font("SansSerif", Font.BOLD, 14));
-            timeSeriesChart.getXYPlot().addAnnotation(handsXYTextAnnotation);
-            XYItemRenderer renderer = timeSeriesChart.getXYPlot().getRenderer();
-            ((AbstractRenderer) renderer).setDefaultStroke(new BasicStroke(3.0f));
-            ((AbstractRenderer) renderer).setAutoPopulateSeriesStroke(false);
-            LOGGER.debug("created timeSeriesChart");
-            imageFileName = "ChipStacks" + Instant.now().toEpochMilli() + ".png";
-            ChartUtils.saveChartAsPNG(new File(imagesDirectory, imageFileName), timeSeriesChart, 1400, 800);
-            LOGGER.info("saved timeSeriesChart");
+        	createImageFromTimeSeriesHashMap(playerTimeSeriesHashMap, xyTextAnnotationArraList, totalStake, imageFileName);
             /* Code to display image */
             System.out.println("about to display image with message: " + message);
             BufferedImage img = ImageIO.read(new File(imagesDirectory, imageFileName));
             ImageIcon icon = new ImageIcon(img);
-            JDialog frame = new JDialog();
-            frame.setModal(true);
-            frame.setLayout(new FlowLayout());
-            Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
-            frame.setSize(screenDimension.width - 50, screenDimension.height - 50);
-            JTextField messageTextField = new JTextField(message);
-            messageTextField.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent ae) {
-                    System.out.println("action performed");
-                    message = messageTextField.getText();
-                }
-            });
-
-            frame.add(messageTextField);
-            JLabel lbl = new JLabel();
-            lbl.setIcon(icon);
-            frame.add(lbl);
-            frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
+            JDialog frame = createJDialogFromImage(icon);
             System.out.println("displayed image with message: " + message);
             /* End code to display image */
             for (String player : allInPlayerHashMap.keySet()) {
@@ -753,44 +711,15 @@ public class LogParser {
 
         LOGGER.debug("reversed log");
         try {
-            final String smtpServer = "smtp.office365.com";
-            final int smtpPort = 587;
-            final String smtpUsername = "";
-            final String smtpPassword = "";
-            final String fromEmail = "martinpg@outlook.com";
-            final String toEmail = "";
-            final String emailsubject = "Game chart";
+            String fromEmail = "martinpg@outlook.com";
+            String emailSubject = "Game chart";
             String userHome = System.getProperty("user.home");
-            Properties localProperties = new Properties();
-            String localPropertiesLocation = userHome + File.separator + "local.properties";
-            LOGGER.debug("localPropertiesLocation is " + localPropertiesLocation);
-            FileReader localPropertiesFileReader = new FileReader(localPropertiesLocation);
-            localProperties.load(localPropertiesFileReader);
+            Properties localProperties = loadLocalProperties(userHome);
             String username = localProperties.getProperty("username");
             LOGGER.debug("username is " + username);
             System.out.println("username is " + username);
             String password = localProperties.getProperty("password");
-            Properties properties = new Properties();
-            properties.put("mail.debug.auth", "true");
-            properties.put("mail.debug", "true");
-            properties.put("mail.smtp.auth", "true");
-            properties.put("mail.smtp.auth.login.disable", "true");
-            properties.put("mail.smtp.auth.mechanisms", "XOAUTH2");
-            properties.put("mail.smtp.auth.plain.disable", "true");
-            properties.put("mail.smtp.auth.xoauth2.disable", "false");
-            properties.put("mail.smtp.host", "smtp.office365.com");
-            properties.put("mail.smtp.port", "587");
-            properties.put("mail.smtp.sasl.enable", "true");
-            properties.put("mail.smtp.ssl.protocols", "TLSv1.1 TLSv1.2");
-            properties.put("mail.smtp.starttls.enable", "true");
-            properties.put("mail.smtp.starttls.required", "true");
-            properties.put("mail.transport.protocol", "smtp");
-            properties.put("mail.smtp.host", "smtp.gmail.com");
-            properties.put("mail.smtp.port", "465");
-            properties.put("mail.smtp.auth", "true");
-            properties.put("mail.smtp.socketFactory.port", "465");
-            properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-            LOGGER.debug("set properties");
+            Properties properties = createEmailProperties();
             Session session = Session.getDefaultInstance(properties,
                 new Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
@@ -806,22 +735,7 @@ public class LogParser {
             }
 
             session.setDebug(true);
-            Message message = new MimeMessage(session);
-            LOGGER.debug("created message");
-            System.out.println("created message");
-            setMailRecipients(message, recipientList);
-            LOGGER.debug("set recipients");
-            setCCMailRecipients(message, ccRecipientList);
-            LOGGER.debug("set CC recipients");
-            message.setFrom(new InternetAddress(fromEmail));
-            LOGGER.debug("set from to " + fromEmail);
-            message.setSubject(emailsubject);
-            LOGGER.debug("set subject to " + emailsubject);
-            System.out.println("set subject to " + emailsubject);
-            message.setSentDate(new Date());
-            message.setContent(createMultipart(imagesDirectory, imageFileName, numberAllIns));
-            LOGGER.debug("set content using imagesDirectory " + imagesDirectory);
-            LOGGER.debug("set content using imageFileName " + imageFileName);
+            Message message = createMessage(session, recipientList, ccRecipientList, fromEmail, emailSubject, imageFileName, imagesDirectory, numberAllIns);
             System.out.println("about to send message");
             Transport.send(message);
             LOGGER.info("sent game email");
@@ -832,8 +746,121 @@ public class LogParser {
             e.printStackTrace();
         }
     }
+    
+    private static Message createMessage(Session session, ArrayList<String> recipientList, ArrayList<String> ccRecipientList, String fromEmail, String emailSubject, String imageFileName, String imagesDirectory, int numberAllIns) throws Exception {
+    	Message message = new MimeMessage(session);
+        LOGGER.debug("created message");
+        System.out.println("created message");
+        setMailRecipients(message, recipientList);
+        LOGGER.debug("set recipients");
+        setCCMailRecipients(message, ccRecipientList);
+        LOGGER.debug("set CC recipients");
+        message.setFrom(new InternetAddress(fromEmail));
+        LOGGER.debug("set from to " + fromEmail);
+        message.setSubject(emailSubject);
+        LOGGER.debug("set subject to " + emailSubject);
+        System.out.println("set subject to " + emailSubject);
+        message.setSentDate(new Date());
+        message.setContent(createMultipart(imagesDirectory, imageFileName, numberAllIns));
+        LOGGER.debug("set content using imagesDirectory " + imagesDirectory);
+        LOGGER.debug("set content using imageFileName " + imageFileName);
+        return message;
+    }
 
-    private static int updatePlayerTimeSeries(HashMap<String, TimeSeries> playerTimeSeriesHashMap,
+    private static void createImageFromTimeSeriesHashMap(HashMap<String, TimeSeries> playerTimeSeriesHashMap, ArrayList<XYTextAnnotation> xyTextAnnotationArrayList, String totalStake, String imageFileName) {
+        try {
+    	TimeSeriesCollection timeSeriesCollection = new TimeSeriesCollection();
+        for (String player : playerHashMap.values()) {
+            timeSeriesCollection.addSeries(playerTimeSeriesHashMap.get(player));
+        }
+
+        JFreeChart timeSeriesChart = ChartFactory.createTimeSeriesChart("Chip Stacks", "Time", "Stacks",
+                timeSeriesCollection);
+        timeSeriesChart.getPlot().setBackgroundPaint(Color.WHITE);
+        for (XYAnnotation annotation : xyTextAnnotationArrayList) {
+            timeSeriesChart.getXYPlot().addAnnotation(annotation);
+        }
+
+        XYTextAnnotation handsXYTextAnnotation = new XYTextAnnotation("Number of hands: " + hands,
+                new Second(startDate).getLastMillisecond() + 1000000, Integer.parseInt(totalStake));
+        handsXYTextAnnotation.setFont(new Font("SansSerif", Font.BOLD, 14));
+        timeSeriesChart.getXYPlot().addAnnotation(handsXYTextAnnotation);
+        XYItemRenderer renderer = timeSeriesChart.getXYPlot().getRenderer();
+        ((AbstractRenderer) renderer).setDefaultStroke(new BasicStroke(3.0f));
+        ((AbstractRenderer) renderer).setAutoPopulateSeriesStroke(false);
+        LOGGER.debug("created timeSeriesChart");
+        ChartUtils.saveChartAsPNG(new File(imagesDirectory, imageFileName), timeSeriesChart, 1400, 800);
+        LOGGER.info("saved timeSeriesChart");
+        } catch (Exception e) {
+            LOGGER.warn(e.getMessage());
+            e.printStackTrace();
+        }
+	}
+
+	private static Properties loadLocalProperties(String userHome) {
+    	Properties localProperties = new Properties();
+    	try {
+        String localPropertiesLocation = userHome + File.separator + "local.properties";
+        LOGGER.debug("localPropertiesLocation is " + localPropertiesLocation);
+        FileReader localPropertiesFileReader = new FileReader(localPropertiesLocation);
+        localProperties.load(localPropertiesFileReader);
+    	} catch (Exception e) {
+            LOGGER.warn(e.getMessage());
+            e.printStackTrace();
+    	}
+    	
+        return localProperties;
+	}
+
+	private static Properties createEmailProperties() {
+        Properties properties = new Properties();
+        properties.put("mail.debug.auth", "true");
+        properties.put("mail.debug", "true");
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.auth.login.disable", "true");
+        properties.put("mail.smtp.auth.mechanisms", "XOAUTH2");
+        properties.put("mail.smtp.auth.plain.disable", "true");
+        properties.put("mail.smtp.auth.xoauth2.disable", "false");
+        properties.put("mail.smtp.host", "smtp.office365.com");
+        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.sasl.enable", "true");
+        properties.put("mail.smtp.ssl.protocols", "TLSv1.1 TLSv1.2");
+        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.smtp.starttls.required", "true");
+        properties.put("mail.transport.protocol", "smtp");
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.port", "465");
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.socketFactory.port", "465");
+        properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        LOGGER.debug("set properties");
+        return properties;
+	}
+
+	private static JDialog createJDialogFromImage(ImageIcon icon) {
+		JDialog frame = new JDialog();
+        frame.setModal(true);
+        frame.setLayout(new FlowLayout());
+        Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setSize(screenDimension.width - 50, screenDimension.height - 50);
+        JTextField messageTextField = new JTextField(message);
+        messageTextField.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent ae) {
+            System.out.println("action performed");
+            message = messageTextField.getText();
+            }
+       });
+        frame.add(messageTextField);
+        JLabel lbl = new JLabel();
+        lbl.setIcon(icon);
+        frame.add(lbl);
+        frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+        return frame;
+	}
+
+	private static int updatePlayerTimeSeries(HashMap<String, TimeSeries> playerTimeSeriesHashMap,
             PlayerStackPivot outputPlayerStackPivot, int maxPlayerStack, Date date, String player) {
         String playerStackString = outputPlayerStackPivot.playerStackHashMap.get(player);
         if (playerStackString == null) {
