@@ -86,6 +86,7 @@ import com.javamarket.poker.logline.BetsLogLine;
 import com.javamarket.poker.logline.CallsLogLine;
 import com.javamarket.poker.logline.ChecksLogLine;
 import com.javamarket.poker.logline.CollectedLogLine;
+import com.javamarket.poker.logline.FlopLogLine;
 import com.javamarket.poker.logline.FoldsLogLine;
 import com.javamarket.poker.logline.LogLine;
 import com.javamarket.poker.logline.PlayerStacksLogLine;
@@ -441,6 +442,9 @@ public class LogParser {
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         CollectedLogLine finalCollectedLogLine = null;
         ArrayList<LogLine> gameLogLineArrayList = new ArrayList<LogLine>();
+        int familyPotInt = 0;
+        boolean beforeFlop = true;
+        boolean familyPot = true;
         try (BufferedReader br = new BufferedReader(new FileReader(inputFile))) {
             /*
              * First read in all the lines from the log file, and for each Player stacks
@@ -455,8 +459,6 @@ public class LogParser {
                     continue;
                 }
 
-//              String[] values = line.split(COMMA_DELIMITER);
-//              LOGGER.debug("values is " + Arrays.toString(values));
                 /*
                  * We need to capture when the game starts and ends. Because the log is in
                  * reverse order by time, we can capture the finalEpoch from the first real line
@@ -474,6 +476,20 @@ public class LogParser {
                  * Parse each line and extract the player stack data into a PlayerStackPivot
                  * object.
                  */
+                if (logLine.message.contains("Flop")) {
+                    try {
+                        processFlopLogLine(gameLogLineArrayList, logLine);
+                        if (familyPot) {
+                        	familyPotInt++;
+                        }
+                        
+                        beforeFlop = false;
+                        continue;
+                    } catch (Exception e) {
+                        LOGGER.warn(e.getMessage());
+                    }
+                }
+                
                 if (logLine.message.contains("Player stacks")) {
                     try {
                         processPlayerStackLine(playerStackPivotList, gameLogLineArrayList, logLine);
@@ -532,6 +548,10 @@ public class LogParser {
                 if (logLine.message.contains("folds")) {
                     try {
                         processFoldsLogLine(simpleDateFormat, gameLogLineArrayList, logLine);
+                        if (beforeFlop) {
+                        	familyPot = false;
+                        }
+                        
                         continue;
                     } catch (Exception e) {
                         LOGGER.warn(e.getMessage());
@@ -541,6 +561,7 @@ public class LogParser {
                 if (logLine.message.contains("posts")) {
                     try {
                         processPostsLogLine(simpleDateFormat, gameLogLineArrayList, logLine);
+                        beforeFlop = true;
                         continue;
                     } catch (Exception e) {
                         LOGGER.warn(e.getMessage());
@@ -698,6 +719,7 @@ public class LogParser {
             }
 
             LOGGER.info("numberAllIns is " + numberAllIns);
+            LOGGER.info("familyPotInt is " + familyPotInt);
         } catch (Exception e) {
             LOGGER.warn(e.getMessage());
         }
@@ -735,7 +757,7 @@ public class LogParser {
             }
 
             session.setDebug(true);
-            Message message = createMessage(session, recipientList, ccRecipientList, fromEmail, emailSubject, imageFileName, imagesDirectory, numberAllIns);
+            Message message = createMessage(session, recipientList, ccRecipientList, fromEmail, emailSubject, imageFileName, imagesDirectory, numberAllIns, familyPotInt);
             System.out.println("about to send message");
             Transport.send(message);
             LOGGER.info("sent game email");
@@ -747,7 +769,7 @@ public class LogParser {
         }
     }
     
-    private static Message createMessage(Session session, ArrayList<String> recipientList, ArrayList<String> ccRecipientList, String fromEmail, String emailSubject, String imageFileName, String imagesDirectory, int numberAllIns) throws Exception {
+    private static Message createMessage(Session session, ArrayList<String> recipientList, ArrayList<String> ccRecipientList, String fromEmail, String emailSubject, String imageFileName, String imagesDirectory, int numberAllIns, int familyPotInt) throws Exception {
     	Message message = new MimeMessage(session);
         LOGGER.debug("created message");
         System.out.println("created message");
@@ -761,7 +783,7 @@ public class LogParser {
         LOGGER.debug("set subject to " + emailSubject);
         System.out.println("set subject to " + emailSubject);
         message.setSentDate(new Date());
-        message.setContent(createMultipart(imagesDirectory, imageFileName, numberAllIns));
+        message.setContent(createMultipart(imagesDirectory, imageFileName, numberAllIns, familyPotInt));
         LOGGER.debug("set content using imagesDirectory " + imagesDirectory);
         LOGGER.debug("set content using imageFileName " + imageFileName);
         return message;
@@ -987,6 +1009,11 @@ public class LogParser {
         gameLogLineArrayList.add(betsLogLine);
     }
 
+    private static void processFlopLogLine(ArrayList<LogLine> gameLogLineArrayList, LogLine logLine) {
+        FlopLogLine flopLogLine = parseFlopLogLineFromLogLine(logLine);
+        gameLogLineArrayList.add(flopLogLine);
+    }
+    
     private static void processAllInLogLine(ArrayList<LogLine> gameLogLineArrayList, LogLine logLine) {
         AllInLogLine allInLogLine = parseAllInLogLineFromLogLine(logLine);
         String allInPlayer = parseAllInPlayerFromLogLine(logLine);
@@ -1043,7 +1070,7 @@ public class LogParser {
 
     }
 
-    private static Multipart createMultipart(String directoryName, String imageFileName, int numberAllIns)
+    private static Multipart createMultipart(String directoryName, String imageFileName, int numberAllIns, int familyPotInt)
             throws MessagingException, IOException {
         POKER_LOGGER.debug("poker: starting createMultipart()");
         String chartUUID = UUID.randomUUID().toString();
@@ -1052,8 +1079,10 @@ public class LogParser {
         /* Create the message part */
         jakarta.mail.internet.MimeBodyPart messageBodyPart = new jakarta.mail.internet.MimeBodyPart();
         /* Fill the message */
-        String messageHeader = "<html><body><p>" + message + "</p><p>Number of all ins: " + numberAllIns
-                + "</p></hr><img src=\"cid:" + chartUUID + "\" /></body></html>";
+        String messageHeader = "<html><body><p>" + message + "</p>" 
+            + "<p>Number of all ins: " + numberAllIns + "</p>"
+            + "<p>Number of family pots: " + familyPotInt + "</p>"
+            + "</hr><img src=\"cid:" + chartUUID + "\" /></body></html>";
 //      String messageHeader = "<html><p>" + message + "</p><p>Number of all ins: " + numberAllIns + "</p></hr><img src=\"cid:" + chartUUID + "\" /><br/><img src=\"cid:" + handUUID + "\"/></html>";
         messageBodyPart.setContent(messageHeader, "text/html");
         /* Add body part to message */
@@ -1089,6 +1118,10 @@ public class LogParser {
         messageBodyPart.setHeader("Content-Type", "image/png");
         multipart.addBodyPart(messageBodyPart);
         LOGGER.info("added messageBodyPart");
+    }
+    
+    private static FlopLogLine parseFlopLogLineFromLogLine(LogLine logLine) {
+        return new FlopLogLine(logLine.message, logLine.dateTime, logLine.timestamp);
     }
 
     private static ReturnedLogLine parseReturnedLogLineFromLogLine(LogLine logLine) {
