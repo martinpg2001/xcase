@@ -453,6 +453,14 @@ public class LogParser {
             String line;
             while ((line = br.readLine()) != null) {
                 /* TODO: commas in usernames are not handled currently */
+                if (line.startsWith("*") ) {
+                	continue;
+                }
+                
+                if (line.contains("Game Config Changes") ) {
+                	continue;
+                }
+                
                 LogLine logLine = LogLine.parseLineAsLogLine(line);
                 LOGGER.debug("logLine is " + logLine);
                 if (logLine == null) {
