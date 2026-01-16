@@ -444,7 +444,7 @@ public class LogParser {
         ArrayList<LogLine> gameLogLineArrayList = new ArrayList<LogLine>();
         int familyPotInt = 0;
         boolean beforeFlop = true;
-        boolean familyPot = true;
+        boolean familyPot = false;
         try (BufferedReader br = new BufferedReader(new FileReader(inputFile))) {
             /*
              * First read in all the lines from the log file, and for each Player stacks
@@ -474,7 +474,6 @@ public class LogParser {
                  * stacks line in the log.
                  */
                 if (finalEpoch == null && !"order".equals(logLine.timestamp)) {
-
                     finalDateTime = logLine.dateTime;
                     finalEpoch = logLine.timestamp;
 //                  LOGGER.debug("finalEpoch is " + finalEpoch);
@@ -487,11 +486,9 @@ public class LogParser {
                 if (logLine.message.contains("Flop")) {
                     try {
                         processFlopLogLine(gameLogLineArrayList, logLine);
-                        if (familyPot) {
-                        	familyPotInt++;
-                        }
-                        
-                        beforeFlop = false;
+                        System.out.println("Flop is dealt");
+                        beforeFlop = true;
+                        familyPot = true;
                         continue;
                     } catch (Exception e) {
                         LOGGER.warn(e.getMessage());
@@ -506,9 +503,25 @@ public class LogParser {
                         LOGGER.warn(e.getMessage());
                     }
                 }
+                
+                if (logLine.message.contains("Your hand is")) {
+                    try {
+                    	System.out.println("Your hand is dealt");
+                        if (familyPot) {
+                        	familyPotInt++;
+                        	beforeFlop = false;
+                        }
+                        
+                        System.out.println("familypotInt is " + familyPotInt);
+                        continue;
+                    } catch (Exception e) {
+                        LOGGER.warn(e.getMessage());
+                    }
+                }
 
                 if (logLine.message.contains("all in")) {
                     try {
+                    	System.out.println("player goes all in");
                         processAllInLogLine(gameLogLineArrayList, logLine);
                         continue;
                     } catch (Exception e) {
@@ -518,6 +531,7 @@ public class LogParser {
 
                 if (logLine.message.contains("bets")) {
                     try {
+                    	System.out.println("player bets");
                         processBetsLogLine(simpleDateFormat, gameLogLineArrayList, logLine);
                         continue;
                     } catch (Exception e) {
@@ -527,6 +541,7 @@ public class LogParser {
 
                 if (logLine.message.contains("calls")) {
                     try {
+                    	System.out.println("player calls");
                         processCallsLogLine(simpleDateFormat, gameLogLineArrayList, logLine);
                         continue;
                     } catch (Exception e) {
@@ -536,6 +551,7 @@ public class LogParser {
 
                 if (logLine.message.contains("checks")) {
                     try {
+                    	System.out.println("player checks");
                         processChecksLogLine(simpleDateFormat, gameLogLineArrayList, logLine);
                         continue;
                     } catch (Exception e) {
@@ -555,6 +571,7 @@ public class LogParser {
 
                 if (logLine.message.contains("folds")) {
                     try {
+                    	System.out.println("player folds");
                         processFoldsLogLine(simpleDateFormat, gameLogLineArrayList, logLine);
                         if (beforeFlop) {
                         	familyPot = false;
@@ -568,8 +585,8 @@ public class LogParser {
 
                 if (logLine.message.contains("posts")) {
                     try {
+                    	System.out.println("player posts");
                         processPostsLogLine(simpleDateFormat, gameLogLineArrayList, logLine);
-                        beforeFlop = true;
                         continue;
                     } catch (Exception e) {
                         LOGGER.warn(e.getMessage());
@@ -578,6 +595,7 @@ public class LogParser {
 
                 if (logLine.message.contains("raises")) {
                     try {
+                    	System.out.println("player raises");
                         processRaisesLogLine(simpleDateFormat, gameLogLineArrayList, logLine);
                         continue;
                     } catch (Exception e) {
@@ -613,6 +631,8 @@ public class LogParser {
                 }
             }
         }
+        
+        System.out.println("familypotInt is " + familyPotInt);
 
         /* Now write out the all in HashMap */
         for (Entry<String, Integer> entry : allInPlayerHashMap.entrySet()) {
