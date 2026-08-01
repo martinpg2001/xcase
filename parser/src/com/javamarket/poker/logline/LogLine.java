@@ -2,10 +2,15 @@ package com.javamarket.poker.logline;
 
 import java.util.Date;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class LogLine {
 	public String message;
 	public String dateTime;
 	public String timestamp;
+	
+	protected static final Logger LOGGER = LogManager.getRootLogger();
 	
 	public LogLine(String message, String dateTime, String timestamp) {
 		this.message = message;
@@ -14,23 +19,28 @@ public class LogLine {
 	}
 	
 	public static LogLine parseLineAsLogLine(String line) {
-		if (line == null) {
+		try {
+		    if (line == null) {
+			    return null;
+		    }
+
+		    int indexOfLastQuote = line.lastIndexOf("\"");
+		    if (indexOfLastQuote < 0) {
+			    return null;
+		    }
+
+		    String message = line.substring(0, indexOfLastQuote + 1);
+//	        LOGGER.debug("message is " + message);
+		    String lineSubString = line.substring(indexOfLastQuote + 2, line.length());
+//		    LOGGER.debug("lineSubString is " + lineSubString);
+		    String[] lineSubStringArray = lineSubString.split(",");
+		    String dateTime = lineSubStringArray[0];
+		    String timestamp = lineSubStringArray[1];
+		    return new LogLine(message, dateTime, timestamp);
+		} catch (Exception e) {
+			LOGGER.warn("exception parsing log line: " + e.getMessage());
 			return null;
 		}
-
-		int indexOfLastQuote = line.lastIndexOf("\"");
-		if (indexOfLastQuote < 0) {
-			return null;
-		}
-
-		String message = line.substring(0, indexOfLastQuote + 1);
-//	    LOGGER.debug("message is " + message);
-		String lineSubString = line.substring(indexOfLastQuote + 2, line.length());
-//		LOGGER.debug("lineSubString is " + lineSubString);
-		String[] lineSubStringArray = lineSubString.split(",");
-		String dateTime = lineSubStringArray[0];
-		String timestamp = lineSubStringArray[1];
-		return new LogLine(message, dateTime, timestamp);
 	}
 	
 	public static LogLine getNewestLogLine() {

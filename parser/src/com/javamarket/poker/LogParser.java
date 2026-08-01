@@ -132,7 +132,8 @@ public class LogParser {
     /* Get path to root directory */
     private static Path currentRoot = Paths.get(".").toAbsolutePath().getRoot();
     /* Get path to target directory */
-    private static Path currentInputDirectory = Paths.get(currentRoot.toString(), "poker");
+    private static String homeDir = System.getProperty("user.home");
+    private static Path currentInputDirectory = Paths.get(homeDir, "poker");
     // The input directory
     private static String inputDirectory = currentInputDirectory.toString();
     /* Get path to target directory */
@@ -641,7 +642,7 @@ public class LogParser {
 
         /* Now we create a pivot file from the playerStackPivotList */
         FileWriter playerStackPivotFileWriter = null;
-//      LOGGER.info("outputFileName is " + playerStackOutputFileName);
+        LOGGER.info("outputFileName is " + playerStackOutputFileName);
         File outputFile = new File(playerStackOutputFileName);
         if (outputFile.createNewFile()) {
             LOGGER.debug("File created");
@@ -912,16 +913,24 @@ public class LogParser {
 
 	private static int updatePlayerTimeSeries(HashMap<String, TimeSeries> playerTimeSeriesHashMap,
             PlayerStackPivot outputPlayerStackPivot, int maxPlayerStack, Date date, String player) {
+		int numberOfPlayers = playerTimeSeriesHashMap.size();
         String playerStackString = outputPlayerStackPivot.playerStackHashMap.get(player);
         if (playerStackString == null) {
             playerStackString = "0";
         }
 
-        int playerStack = Integer.parseInt(playerStackString);
-        maxPlayerStack = Math.max(maxPlayerStack, playerStack);
-        playerTimeSeriesHashMap.get(player).add(new Second(date), playerStack);
+//        int playerStack = Integer.parseInt(playerStackString);
+        double adjustedPlayerStack = adjustPlayerStack(playerStackString, numberOfPlayers);
+        maxPlayerStack = Math.max(maxPlayerStack, (int) adjustedPlayerStack);
+        playerTimeSeriesHashMap.get(player).add(new Second(date), adjustedPlayerStack);
         return maxPlayerStack;
     }
+	
+	private static double adjustPlayerStack(String playerStack, int numberOfPlayers) {
+		//return 1/(1 + Double.parseDouble(playerStack));
+		return (double) Double.parseDouble(playerStack);
+		//return Math.log10(1 + Double.parseDouble(playerStack));
+	}
 
     private static void processShowsLogLine(SimpleDateFormat simpleDateFormat, ArrayList<LogLine> gameLogLineArrayList,
             LogLine logLine) throws ParseException {
