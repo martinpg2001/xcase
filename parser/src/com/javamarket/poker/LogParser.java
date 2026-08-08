@@ -184,6 +184,7 @@ public class LogParser {
      */
     public static void main(String[] args) {
         try {
+        	System.out.println("starting main()");
             LOGGER.debug("root: starting main()");
             POKER_LOGGER.debug("poker: starting main()");
             if (args.length > 0) {
@@ -487,7 +488,7 @@ public class LogParser {
                 if (logLine.message.contains("Flop")) {
                     try {
                         processFlopLogLine(gameLogLineArrayList, logLine);
-                        System.out.println("Flop is dealt");
+//                        System.out.println("Flop is dealt");
                         beforeFlop = true;
                         familyPot = true;
                         continue;
@@ -507,13 +508,13 @@ public class LogParser {
                 
                 if (logLine.message.contains("Your hand is")) {
                     try {
-                    	System.out.println("Your hand is dealt");
+//                    	System.out.println("Your hand is dealt");
                         if (familyPot) {
                         	familyPotInt++;
                         	beforeFlop = false;
                         }
                         
-                        System.out.println("familypotInt is " + familyPotInt);
+//                        System.out.println("familypotInt is " + familyPotInt);
                         continue;
                     } catch (Exception e) {
                         LOGGER.warn(e.getMessage());
@@ -522,7 +523,7 @@ public class LogParser {
 
                 if (logLine.message.contains("all in")) {
                     try {
-                    	System.out.println("player goes all in");
+//                    	System.out.println("player goes all in");
                         processAllInLogLine(gameLogLineArrayList, logLine);
                         continue;
                     } catch (Exception e) {
@@ -532,7 +533,7 @@ public class LogParser {
 
                 if (logLine.message.contains("bets")) {
                     try {
-                    	System.out.println("player bets");
+//                    	System.out.println("player bets");
                         processBetsLogLine(simpleDateFormat, gameLogLineArrayList, logLine);
                         continue;
                     } catch (Exception e) {
@@ -542,7 +543,7 @@ public class LogParser {
 
                 if (logLine.message.contains("calls")) {
                     try {
-                    	System.out.println("player calls");
+//                    	System.out.println("player calls");
                         processCallsLogLine(simpleDateFormat, gameLogLineArrayList, logLine);
                         continue;
                     } catch (Exception e) {
@@ -552,7 +553,7 @@ public class LogParser {
 
                 if (logLine.message.contains("checks")) {
                     try {
-                    	System.out.println("player checks");
+//                    	System.out.println("player checks");
                         processChecksLogLine(simpleDateFormat, gameLogLineArrayList, logLine);
                         continue;
                     } catch (Exception e) {
@@ -572,7 +573,7 @@ public class LogParser {
 
                 if (logLine.message.contains("folds")) {
                     try {
-                    	System.out.println("player folds");
+//                    	System.out.println("player folds");
                         processFoldsLogLine(simpleDateFormat, gameLogLineArrayList, logLine);
                         if (beforeFlop) {
                         	familyPot = false;
@@ -586,7 +587,7 @@ public class LogParser {
 
                 if (logLine.message.contains("posts")) {
                     try {
-                    	System.out.println("player posts");
+//                    	System.out.println("player posts");
                         processPostsLogLine(simpleDateFormat, gameLogLineArrayList, logLine);
                         continue;
                     } catch (Exception e) {
@@ -596,7 +597,7 @@ public class LogParser {
 
                 if (logLine.message.contains("raises")) {
                     try {
-                    	System.out.println("player raises");
+//                    	System.out.println("player raises");
                         processRaisesLogLine(simpleDateFormat, gameLogLineArrayList, logLine);
                         continue;
                     } catch (Exception e) {
@@ -633,7 +634,7 @@ public class LogParser {
             }
         }
         
-        System.out.println("familypotInt is " + familyPotInt);
+//        System.out.println("familypotInt is " + familyPotInt);
 
         /* Now write out the all in HashMap */
         for (Entry<String, Integer> entry : allInPlayerHashMap.entrySet()) {
@@ -735,11 +736,11 @@ public class LogParser {
         try {
         	createImageFromTimeSeriesHashMap(playerTimeSeriesHashMap, xyTextAnnotationArraList, totalStake, imageFileName);
             /* Code to display image */
-            System.out.println("about to display image with message: " + message);
+//            System.out.println("about to display image with message: " + message);
             BufferedImage img = ImageIO.read(new File(imagesDirectory, imageFileName));
             ImageIcon icon = new ImageIcon(img);
             JDialog frame = createJDialogFromImage(icon);
-            System.out.println("displayed image with message: " + message);
+//            System.out.println("displayed image with message: " + message);
             /* End code to display image */
             for (String player : allInPlayerHashMap.keySet()) {
                 Integer playerAllIn = allInPlayerHashMap.get(player);
@@ -768,7 +769,7 @@ public class LogParser {
             Properties localProperties = loadLocalProperties(userHome);
             String username = localProperties.getProperty("username");
             LOGGER.debug("username is " + username);
-            System.out.println("username is " + username);
+//            System.out.println("username is " + username);
             String password = localProperties.getProperty("password");
             Properties properties = createEmailProperties();
             Session session = Session.getDefaultInstance(properties,
@@ -779,7 +780,7 @@ public class LogParser {
                 }
             );
 
-            System.out.println("created session");
+//            System.out.println("created session");
             Properties sessionProperties = session.getProperties();
             for (Entry<Object, Object> entry : sessionProperties.entrySet()) {
                 System.out.println("entry is: " + entry.getKey() + ":" + entry.getValue());
@@ -787,10 +788,10 @@ public class LogParser {
 
             session.setDebug(true);
             Message message = createMessage(session, recipientList, ccRecipientList, fromEmail, emailSubject, imageFileName, imagesDirectory, numberAllIns, familyPotInt);
-            System.out.println("about to send message");
+//            System.out.println("about to send message");
             Transport.send(message);
             LOGGER.info("sent game email");
-            System.out.println("sent game email");
+//            System.out.println("sent game email");
             POKER_LOGGER.debug("poker: finishing stackAnalysis()");
         } catch (Exception e) {
             LOGGER.warn(e.getMessage());
@@ -801,7 +802,7 @@ public class LogParser {
     private static Message createMessage(Session session, ArrayList<String> recipientList, ArrayList<String> ccRecipientList, String fromEmail, String emailSubject, String imageFileName, String imagesDirectory, int numberAllIns, int familyPotInt) throws Exception {
     	Message message = new MimeMessage(session);
         LOGGER.debug("created message");
-        System.out.println("created message");
+//        System.out.println("created message");
         setMailRecipients(message, recipientList);
         LOGGER.debug("set recipients");
         setCCMailRecipients(message, ccRecipientList);
